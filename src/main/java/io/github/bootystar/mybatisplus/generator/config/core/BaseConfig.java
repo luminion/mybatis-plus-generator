@@ -207,6 +207,11 @@ public abstract class BaseConfig {
     protected ClassInfo mapperDTO;
 
     /**
+     * 动态服务类信息
+     */
+    protected ClassInfo dynamicServiceClassInfo;
+
+    /**
      * 额外字段后缀构建器
      */
     protected ExtraFieldSuffixBuilder extraFieldSuffixBuilder = new ExtraFieldSuffixBuilder();
