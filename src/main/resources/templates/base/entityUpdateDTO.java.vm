@@ -19,6 +19,20 @@ package ${basePackage}.${package4DTO};
 #foreach($pkg in ${importPackages4DTO})
 import ${pkg};
 #end
+## ---字段非空验证---end
+###if(${springdoc})
+##import io.swagger.v3.oas.annotations.media.Schema;
+##    #elseif(${swagger})
+##import io.swagger.annotations.ApiModel;
+##import io.swagger.annotations.ApiModelProperty;
+###end
+###if(${entityLombokModel})
+##import lombok.Data;
+##    #if(${chainModel})
+##import lombok.experimental.Accessors;
+##    #end
+###end
+
 #if(${validated})
 ## ---字段非空验证---start
     #if(${importSize})
@@ -29,19 +43,6 @@ import ${javaApiPackage}.validation.constraints.NotNull;
     #end
     #if(${importNotBlank})
 import ${javaApiPackage}.validation.constraints.NotBlank;
-    #end
-#end
-## ---字段非空验证---end
-#if(${springdoc})
-import io.swagger.v3.oas.annotations.media.Schema;
-    #elseif(${swagger})
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-#end
-#if(${entityLombokModel})
-import lombok.Data;
-    #if(${chainModel})
-import lombok.experimental.Accessors;
     #end
 #end
 
