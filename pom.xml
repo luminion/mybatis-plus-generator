@@ -8,7 +8,7 @@
     <artifactId>mybatis-plus-generator</artifactId>
     <groupId>io.github.bootystar</groupId>
     <description>generator of mybatis-plus</description>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     
     <licenses>
         <license>
@@ -41,14 +41,19 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mybatisplus.version>3.5.9</mybatisplus.version>
+        <mybatisplus.version>3.5.11</mybatisplus.version>
+        <enhancer.version>1.2.0-SNAPSHOT</enhancer.version>
     </properties>
 
     <dependencies>
         <dependency>
+            <groupId>io.github.bootystar</groupId>
+            <artifactId>mybatis-plus-enhancer</artifactId>
+            <version>${enhancer.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>

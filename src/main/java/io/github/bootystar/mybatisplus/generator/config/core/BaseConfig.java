@@ -89,6 +89,12 @@ public abstract class BaseConfig {
      * 新增或修改时排除的字段
      */
     protected Collection<String> editExcludeColumns;
+    
+    /**
+     * Excel导入类的包名
+     */
+    protected Collection<Class<?>> importEntityExcelPackages;
+ 
 
     // ------------------controller相关配置----------------
 

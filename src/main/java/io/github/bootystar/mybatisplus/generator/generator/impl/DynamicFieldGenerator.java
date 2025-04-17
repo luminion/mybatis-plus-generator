@@ -3,7 +3,6 @@ package io.github.bootystar.mybatisplus.generator.generator.impl;
 
 import io.github.bootystar.mybatisplus.enhancer.core.DynamicMapper;
 import io.github.bootystar.mybatisplus.enhancer.core.DynamicService;
-import io.github.bootystar.mybatisplus.enhancer.core.impl.DynamicFieldServiceImpl;
 import io.github.bootystar.mybatisplus.generator.config.builder.DynamicFieldBuilder;
 import io.github.bootystar.mybatisplus.generator.generator.core.AbstractGenerator;
 
@@ -27,7 +26,7 @@ public class DynamicFieldGenerator extends AbstractGenerator<DynamicFieldBuilder
         ;
         this.strategyConfigBuilder.serviceBuilder()
                 .superServiceClass(DynamicService.class)
-                .superServiceImplClass(DynamicFieldServiceImpl.class)
+//                .superServiceImplClass(DynamicFieldServiceImpl.class)
         ;
         this.strategyConfigBuilder.mapperBuilder()
                 .superClass(DynamicMapper.class)
