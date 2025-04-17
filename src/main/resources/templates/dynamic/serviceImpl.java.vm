@@ -16,6 +16,7 @@ package ${package.ServiceImpl};
 #end
 import ${superServiceImplClassPackage};
 #if(${overrideInitSuffixBuilder})
+import io.github.bootystar.mybatisplus.enhancer.builder.ExtraFieldSuffixBuilder;
 #end
 import ${package.Entity}.${entity};
 import ${basePackage}.${package4VO}.${entityVO};
@@ -46,8 +47,9 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}, ${entityVO}> implements ${table.serviceName} {
 #if(${overrideInitSuffixBuilder})
 
-    {
-        super.suffixBuilder = new ExtraFieldSuffixBuilder()
+    @Override
+    public ExtraFieldSuffixBuilder getSuffixBuilder() {
+        return new ExtraFieldSuffixBuilder()
                 #foreach($entry in ${extraFieldSuffixMap.entrySet()})
                     #set($key = $entry.key)
                     #set($value = $entry.value)
@@ -103,28 +105,28 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     }
     #end
 ##    @Override
-##    public List<${entityVO}> doSelect(Object s, IPage<${entityVO}> page) {
+##    public List<${entityVO}> doSelectVO(Object s, IPage<${entityVO}> page) {
 ####        #if(${entitySelectDTO})
 ####//        ${entitySelectDTO} dto = (${entitySelectDTO}) s;
 ####        #end
-##        return super.doSelect(s, page);
+##        return super.doSelectVO(s, page);
 ##        #end
 ##    }
     #if(${generateSelect})
 
     @Override
-    public ${entityVO} oneById(Serializable id) {
-        return super.oneById(id);
+    public ${entityVO} voById(Serializable id) {
+        return super.voById(id);
     }
 
     @Override
-    public List<${entityVO}> listByDTO(Object s) {
-        return super.listByDTO(s);
+    public List<${entityVO}> voList(Object s) {
+        return super.voList(s);
     }
 
     @Override
-    public IPage<${entityVO}> pageByDTO(Object s, Long current, Long size) {
-        return super.pageByDTO(s, current, size);
+    public IPage<${entityVO}> voPage(Object s, Long current, Long size) {
+        return super.voPage(s, current, size);
     }
     #end
     #if(${generateImport})
