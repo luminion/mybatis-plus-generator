@@ -60,7 +60,7 @@ interface ${table.serviceName} : ${superServiceClass}<${entity}>
 public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
     #if(${generateInsert})
 
-    Object insertByDTO(${entityInsertDTO} s);
+    <R> R insertByDTO(${entityInsertDTO} s);
 ##    Object insertByDTO(Object s);
     #end
     #if(${generateUpdate})
@@ -70,15 +70,13 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
     #end
     #if(${generateSelect})
 
-    ${entityVO} oneById(Serializable id);
+    ${entityVO} voById(Serializable id);
 
-    ${entityVO} oneByDTO(${entitySelectDTO} s);
+    ${entityVO} voByDTO(${entitySelectDTO} s);
 
-    List<${entityVO}> listByDTO(${entitySelectDTO} s);
-##    List<${entityVO}> listByDTO(Object s);
+    List<${entityVO}> voList(${entitySelectDTO} s);
 
-    IPage<${entityVO}> pageByDTO(${entitySelectDTO} s, Long current, Long size);
-##    IPage<${entityVO}> pageByDTO(Object s, Long current, Long size);
+    IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size);
     #end
     #if(${generateImport})
 

@@ -23,8 +23,8 @@ import ${basePackage}.${package4DTO}.${entity}SelectDTO;
 #end
 ## ------参数设置----end
 #if(${generateImport}||${generateExport})
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
+import cn.idev.excel.EasyExcel;
+import cn.idev.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 #end
 #if(${generateSelect}||${generateExport})
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -84,14 +84,14 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #if(${generateInsert})
 
     @Override
-    public Object insertByDTO(${entityInsertDTO} s) {
+    public <R> R insertByDTO(${entityInsertDTO} s) {
 ##    public Object insertByDTO(Object s) {
 ##//        ${entityInsertDTO} dto = (${entityInsertDTO}) s;
         ${entity} entity = new ${entity}();
         BeanUtils.copyProperties(s, entity);
         super.save(entity);
         TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
-        return tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
+        return (R)tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
     }
     #end
     #if(${generateUpdate})
@@ -114,8 +114,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #end
     #if(${generateSelect})
 
-    public List<${entityVO}> doSelect(${entitySelectDTO} s, IPage<${entityVO}> page) {
-##    public List<${entityVO}> doSelect(${entitySelectDTO} s, IPage<${entityVO}> page) {
+    public List<${entityVO}> doSelectVO(${entitySelectDTO} s, IPage<${entityVO}> page) {
+##    public List<${entityVO}> doSelectVO(${entitySelectDTO} s, IPage<${entityVO}> page) {
 ##//        ${entitySelectDTO} dto = (${entitySelectDTO}) s;
 ##        Map<Object, Object> map = null;
 ##        if (s == null || s instanceof Map) {
@@ -140,43 +140,42 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 ##                throw new RuntimeException(e);
 ##            }
 ##        }
-##        return getBaseMapper().listByDTO(map, page)
-        return getBaseMapper().listByDTO(s, page);
+        return getBaseMapper().doSelectVO(s, page);
     }
 
     @Override
-    public ${entityVO} oneById(Serializable id) {
+    public ${entityVO} voById(Serializable id) {
         ${entity} entity = new ${entity}();
         TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
         tableInfo.setPropertyValue(entity, tableInfo.getKeyProperty(), id);
-##        return oneByDTO(entity);
+##        return voByDTO(entity);
         ${entitySelectDTO} s = new ${entitySelectDTO}();
         BeanUtils.copyProperties(entity, s);
-        return oneByDTO(s);
+        return voByDTO(s);
     }
 
     @Override
-    public ${entityVO} oneByDTO(${entitySelectDTO} s) {
-##    public ${entityVO} oneByDTO(Object s) {
-        List<${entityVO}> vs = listByDTO(s);
+    public ${entityVO} voByDTO(${entitySelectDTO} s) {
+##    public ${entityVO} voByDTO(Object s) {
+        List<${entityVO}> vs = voList(s);
         if (vs == null || vs.isEmpty()) return null;
         if (vs.size() > 1) throw new RuntimeException("error query => required 1 but found " + vs.size());
         return vs.get(0);
     }
 
     @Override
-    public List<${entityVO}> listByDTO(${entitySelectDTO} s) {
-##    public List<${entityVO}> listByDTO(Object s) {
-        return doSelect(s, null);
+    public List<${entityVO}> voList(${entitySelectDTO} s) {
+##    public List<${entityVO}> voList(Object s) {
+        return doSelectVO(s, null);
     }
 
     @Override
-    public IPage<${entityVO}> pageByDTO(${entitySelectDTO} s, Long current, Long size) {
-##    public IPage<${entityVO}> pageByDTO(Object s, Long current, Long size) {
+    public IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size) {
+##    public IPage<${entityVO}> voPage(Object s, Long current, Long size) {
         if (current == null || current < 1) current = 1L;
         if (size == null) size = 10L;
         Page<${entityVO}> page = new Page<>(current, size);
-        List<${entityVO}> voList = doSelect(s, page);
+        List<${entityVO}> voList = doSelectVO(s, page);
         page.setRecords(voList);
         return page;
     }
@@ -210,12 +209,12 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     public void excelExport(${entitySelectDTO} s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
 ##    public void excelExport(Object s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
         #if(${generateSelect})
-        List<${entityVO}> voList = pageByDTO(s, current, size).getRecords();
+        List<${entityVO}> voList = voPage(s, current, size).getRecords();
             #else
         if (current == null || current < 1) current = 1L;
         if (size == null) size = 10L;
         Page<${entityVO}> page = new Page<>(current, size);
-        List<${entityVO}> voList = getBaseMapper().listByDTO(s, page);
+        List<${entityVO}> voList = getBaseMapper().doSelectVO(s, page);
         #end
         EasyExcel.write(os, clazz)
             .includeColumnFieldNames(Arrays.asList(includeFields))
