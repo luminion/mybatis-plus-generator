@@ -23,6 +23,7 @@ import ${package.Service}.${table.serviceName};
 #end
 import ${superServiceImplClassPackage};
 import org.springframework.stereotype.Service;
+import ${dynamicServiceClassInfo.classFullName};
 
 /**
  * $!{table.comment}服务实现类
@@ -35,7 +36,7 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 
 }
 #else
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>#if(${generateService}) implements ${table.serviceName}#else implements ${table.serviceName}#end {
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>#if(${generateService}) implements ${table.serviceName}#else implements ${dynamicServiceClassInfo.classSimpleName}#end {
 #if(${overrideInitSuffixBuilder})
 
     @Override

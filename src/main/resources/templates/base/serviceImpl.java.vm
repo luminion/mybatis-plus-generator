@@ -99,7 +99,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         BeanUtils.copyProperties(s, entity);
         super.save(entity);
         TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
-        return (R)tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
+        return tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
     }
     #end
     #if(${generateUpdate})
@@ -124,53 +124,32 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #end
     #if(${generateSelect})
 
-    public List<${entityVO}> doSelectVO(${entitySelectDTO} s, IPage<${entityVO}> page) {
-        return getBaseMapper().doSelectVO(s, page);
-    }
-
     #if(${generateService})
     @Override
     #end
     public ${entityVO} voById(Serializable id) {
-        ${entity} entity = new ${entity}();
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
-        tableInfo.setPropertyValue(entity, tableInfo.getKeyProperty(), id);
-##        return voByDTO(entity);
-        ${entitySelectDTO} s = new ${entitySelectDTO}();
-        BeanUtils.copyProperties(entity, s);
-        return voByDTO(s);
+        return getBaseMapper().voById(id);
     }
 
     #if(${generateService})
     @Override
     #end
     public ${entityVO} voByDTO(${entitySelectDTO} s) {
-##    public ${entityVO} voByDTO(Object s) {
-        List<${entityVO}> vs = voList(s);
-        if (vs == null || vs.isEmpty()) return null;
-        if (vs.size() > 1) throw new RuntimeException("error query => required 1 but found " + vs.size());
-        return vs.get(0);
+        return getBaseMapper().voByDTO(s);
     }
 
     #if(${generateService})
     @Override
     #end
     public List<${entityVO}> voList(${entitySelectDTO} s) {
-##    public List<${entityVO}> voList(Object s) {
-        return doSelectVO(s, null);
+        return getBaseMapper().voList(s);
     }
 
     #if(${generateService})
     @Override
     #end
     public IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size) {
-##    public IPage<${entityVO}> voPage(Object s, Long current, Long size) {
-        if (current == null || current < 1) current = 1L;
-        if (size == null) size = 10L;
-        Page<${entityVO}> page = new Page<>(current, size);
-        List<${entityVO}> voList = doSelectVO(s, page);
-        page.setRecords(voList);
-        return page;
+        return getBaseMapper().voPage(s, current, size);
     }
     #end
     #if(${generateImport})
@@ -179,10 +158,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     #end
     public void excelTemplate(OutputStream os, Class<?> clazz) {
-        EasyExcel.write(os, clazz)
-            .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
-            .sheet()
-            .doWrite(Collections.emptyList());
+        EasyExcel.write(os, clazz).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
+            .sheet().doWrite(Collections.emptyList());
     }
 
     #if(${generateService})
@@ -206,20 +183,10 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     #end
     public void excelExport(${entitySelectDTO} s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
-##    public void excelExport(Object s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
-        #if(${generateSelect})
-        List<${entityVO}> voList = voPage(s, current, size).getRecords();
-            #else
-        if (current == null || current < 1) current = 1L;
-        if (size == null) size = 10L;
-        Page<${entityVO}> page = new Page<>(current, size);
-        List<${entityVO}> voList = getBaseMapper().doSelectVO(s, page);
-        #end
-        EasyExcel.write(os, clazz)
-            .includeColumnFieldNames(Arrays.asList(includeFields))
+        List<${entityVO}> voList = getBaseMapper().voPage(s, current, size).getRecords();
+        EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields))
             .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
-            .sheet()
-            .doWrite(voList);
+            .sheet().doWrite(voList);
     }
     #end
 
