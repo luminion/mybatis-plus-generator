@@ -104,6 +104,7 @@ import java.util.List;
  * $!{table.comment}
  *
  * @author ${author}
+ * @since ${date}
 #if(${extraClassLinkComment})
  * @see ${package.Entity}.${entity}
  * @see ${basePackage}.${package4VO}.${entity}VO
@@ -309,7 +310,7 @@ public class ${table.controllerName} {
 ##     * @author ${author}
      */
     #end
-    @GetMapping("/excelTemplate")
+    @GetMapping("/excel/template")
     public void excelTemplate(HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.ms-excel");
 ##        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
@@ -333,7 +334,7 @@ public class ${table.controllerName} {
     #if(!${restControllerStyle})
     @ResponseBody
     #end
-    @PostMapping("/excelImport")
+    @PostMapping("/excel/import")
     public ${returnMethod.clazz("Integer")} excelImport(@RequestParam("excel") MultipartFile excel) throws IOException {
         if (excel == null || excel.isEmpty()) return ${returnMethod.method(0)};
         return ${returnMethod.method("baseService.excelImport(excel.getInputStream(), ${entityInsertDTO}.class)")};
@@ -354,7 +355,7 @@ public class ${table.controllerName} {
 ##     * @author ${author}
      */
     #end
-    ${requestMethod4Select}("/excelExport/{current}/{size}")
+    ${requestMethod4Select}("/excel/export/{current}/{size}")
     public void excelExport(#if(${postQuery})$!{optionalBodyStr}#end${entitySelectDTO} s, ${pagePathParams}, HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.ms-excel");
 ##        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");

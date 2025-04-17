@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import io.github.bootystar.mybatisplus.generator.config.core.BaseConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.CustomConfig;
-import io.github.bootystar.mybatisplus.enhancer.util.MybatisPlusReflectHelper;
+import io.github.bootystar.mybatisplus.generator.util.GenReflectHelper;
 import lombok.SneakyThrows;
 
 import java.io.File;
@@ -271,7 +271,7 @@ public abstract class BaseBuilder<B extends BaseBuilder<B>> extends BaseConfig {
      * @return this
      */
     public <R> B returnMethod(SFunction<Object, R> methodReference) {
-        this.returnMethod = MybatisPlusReflectHelper.lambdaMethodInfo(methodReference, Object.class);
+        this.returnMethod = GenReflectHelper.lambdaMethodInfo(methodReference, Object.class);
         return this.getBuilder();
     }
 
@@ -282,7 +282,7 @@ public abstract class BaseBuilder<B extends BaseBuilder<B>> extends BaseConfig {
      * @return this
      */
     public <O, R> B pageMethod(SFunction<IPage<O>, R> methodReference) {
-        this.pageMethod = MybatisPlusReflectHelper.lambdaMethodInfo(methodReference, IPage.class);
+        this.pageMethod = GenReflectHelper.lambdaMethodInfo(methodReference, IPage.class);
         return this.getBuilder();
     }
 
