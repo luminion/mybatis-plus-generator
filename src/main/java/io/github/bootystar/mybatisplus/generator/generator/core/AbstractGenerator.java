@@ -103,61 +103,61 @@ public abstract class AbstractGenerator<B extends BaseBuilder<B>> implements Enh
     }
 
     @Override
-    public EnhanceGenerator<B> dataSource(Consumer<DataSourceConfig.Builder> consumer) {
+    public EnhanceGenerator<B> dataSourceConfig(Consumer<DataSourceConfig.Builder> consumer) {
         consumer.accept(dataSourceConfigBuilder);
         return this;
     }
 
     @Override
-    public EnhanceGenerator<B> global(Consumer<GlobalConfig.Builder> consumer) {
+    public EnhanceGenerator<B> globalConfig(Consumer<GlobalConfig.Builder> consumer) {
         consumer.accept(globalConfigBuilder);
         return this;
     }
 
     @Override
-    public EnhanceGenerator<B> pkg(Consumer<PackageConfig.Builder> consumer) {
+    public EnhanceGenerator<B> packageConfig(Consumer<PackageConfig.Builder> consumer) {
         consumer.accept(packageConfigBuilder);
         return this;
     }
 
     @Override
-    public EnhanceGenerator<B> strategy(Consumer<StrategyConfig.Builder> consumer) {
+    public EnhanceGenerator<B> strategyConfig(Consumer<StrategyConfig.Builder> consumer) {
         consumer.accept(strategyConfigBuilder);
         return this;
     }
 
-    @Override
-    public EnhanceGenerator<B> entity(Consumer<Entity.Builder> consumer) {
-        consumer.accept(strategyConfigBuilder.entityBuilder());
-        return this;
-    }
+//    @Override
+//    public EnhanceGenerator<B> entity(Consumer<Entity.Builder> consumer) {
+//        consumer.accept(strategyConfigBuilder.entityBuilder());
+//        return this;
+//    }
+//
+//    @Override
+//    public EnhanceGenerator<B> mapper(Consumer<Mapper.Builder> consumer) {
+//        consumer.accept(strategyConfigBuilder.mapperBuilder());
+//        return this;
+//    }
+//
+//    @Override
+//    public EnhanceGenerator<B> service(Consumer<Service.Builder> consumer) {
+//        consumer.accept(strategyConfigBuilder.serviceBuilder());
+//        return this;
+//    }
+//
+//    @Override
+//    public EnhanceGenerator<B> controller(Consumer<Controller.Builder> consumer) {
+//        consumer.accept(strategyConfigBuilder.controllerBuilder());
+//        return this;
+//    }
 
     @Override
-    public EnhanceGenerator<B> mapper(Consumer<Mapper.Builder> consumer) {
-        consumer.accept(strategyConfigBuilder.mapperBuilder());
-        return this;
-    }
-
-    @Override
-    public EnhanceGenerator<B> service(Consumer<Service.Builder> consumer) {
-        consumer.accept(strategyConfigBuilder.serviceBuilder());
-        return this;
-    }
-
-    @Override
-    public EnhanceGenerator<B> controller(Consumer<Controller.Builder> consumer) {
-        consumer.accept(strategyConfigBuilder.controllerBuilder());
-        return this;
-    }
-
-    @Override
-    public EnhanceGenerator<B> injection(Consumer<InjectionConfig.Builder> consumer) {
+    public EnhanceGenerator<B> injectionConfig(Consumer<InjectionConfig.Builder> consumer) {
         consumer.accept(injectionConfigBuilder);
         return this;
     }
 
     @Override
-    public EnhanceGenerator<B> custom(Consumer<B> consumer) {
+    public EnhanceGenerator<B> customConfig(Consumer<B> consumer) {
         consumer.accept(customConfigBuilder);
         return this;
     }
