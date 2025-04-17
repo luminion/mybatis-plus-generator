@@ -12,26 +12,17 @@ package ${package.ServiceImpl};
 ##    #set($entitySelectDTO = "${entity}SelectDTO")
 ###end
 ## ------参数设置----end
-#if(${overrideMethods}&&${generateSelect})
-#end
-import ${superServiceImplClassPackage};
 #if(${overrideInitSuffixBuilder})
 import io.github.bootystar.mybatisplus.enhancer.builder.ExtraFieldSuffixBuilder;
 #end
-import ${package.Entity}.${entity};
 import ${basePackage}.${package4VO}.${entityVO};
+import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
+#if(${generateService})
 import ${package.Service}.${table.serviceName};
-import org.springframework.stereotype.Service;
-
-#if(${overrideMethods})
-    #if(${generateDelete}||${generateSelect})
-    #end
-    #if(${generateImport})
-    #end
-    #if(${generateExport})
-    #end
 #end
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
 
 /**
  * $!{table.comment}服务实现类
@@ -40,11 +31,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 #if(${kotlin})
-open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}, ${entityVO}>() implements ${table.serviceName} {
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>()#if(${generateService}), ${table.serviceName}#end {
 
 }
 #else
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}, ${entityVO}> implements ${table.serviceName} {
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>#if(${generateService}) implements ${table.serviceName}#else implements ${table.serviceName}#end {
 #if(${overrideInitSuffixBuilder})
 
     @Override
@@ -133,7 +124,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 
     @Override
     public int excelImport(InputStream is, Class<?> clazz) {
-//        List<${entityInsertDTO}> dataList = EasyExcel.read(is).head(clazz).sheet().doReadSync();
+//        List<${entityInsertDTO}> dataList = ExcelHelper.read(is).head(clazz).sheet().doReadSync();
         return super.excelImport(is, clazz);
     }
     #end

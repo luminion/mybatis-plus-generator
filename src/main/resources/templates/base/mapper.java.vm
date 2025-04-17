@@ -29,6 +29,7 @@ import java.util.Map;
  * $!{table.comment}Mapper
  *
  * @author ${author}
+ * @since ${date}
  */
 #if(${mapperAnnotationClass})
 @${mapperAnnotationClass.simpleName}

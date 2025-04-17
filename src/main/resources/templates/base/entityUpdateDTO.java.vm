@@ -50,6 +50,7 @@ import ${javaApiPackage}.validation.constraints.NotBlank;
  * $!{table.comment}-修改DTO
  *
  * @author ${author}
+ * @since ${date}
 #if(${extraClassLinkComment})
  * @see ${package.Entity}.${entity}
  * @see ${package.Mapper}.${table.mapperName}

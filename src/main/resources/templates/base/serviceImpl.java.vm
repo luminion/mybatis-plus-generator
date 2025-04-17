@@ -34,10 +34,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 #end
-import ${superServiceImplClassPackage};
-import ${package.Service}.${table.serviceName};
-import ${package.Mapper}.${table.mapperName};
+## ------默认导入----------
 import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+    #if(${generateService})
+import ${package.Service}.${table.serviceName};
+    #end
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+## ------默认导入----------
 #if(${generateSelect}||${generateExport})
 import ${basePackage}.${package4VO}.${entityVO};
 #end
@@ -73,18 +78,21 @@ import java.util.*;
  * $!{table.comment}服务实现类
  *
  * @author ${author}
+ * @since ${date}
  */
 @Service
 #if(${kotlin})
-open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>() implements ${table.serviceName} {
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>()#if(${generateService}), ${table.serviceName}#end {
 
 }
 #else
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>#if(${generateService}) implements ${table.serviceName}#end {
     #if(${generateInsert})
 
+    #if(${generateService})
     @Override
-    public <R> R insertByDTO(${entityInsertDTO} s) {
+    #end
+    public Object insertByDTO(${entityInsertDTO} s) {
 ##    public Object insertByDTO(Object s) {
 ##//        ${entityInsertDTO} dto = (${entityInsertDTO}) s;
         ${entity} entity = new ${entity}();
@@ -96,7 +104,9 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #end
     #if(${generateUpdate})
 
+    #if(${generateService})
     @Override
+    #end
     public boolean updateByDTO(${entityUpdateDTO} s) {
 ##    public boolean updateByDTO(Object s) {
 ##//        ${entityUpdateDTO} dto = (${entityUpdateDTO}) s;
@@ -115,35 +125,12 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #if(${generateSelect})
 
     public List<${entityVO}> doSelectVO(${entitySelectDTO} s, IPage<${entityVO}> page) {
-##    public List<${entityVO}> doSelectVO(${entitySelectDTO} s, IPage<${entityVO}> page) {
-##//        ${entitySelectDTO} dto = (${entitySelectDTO}) s;
-##        Map<Object, Object> map = null;
-##        if (s == null || s instanceof Map) {
-##            map = s == null ? new HashMap<>() : (Map<Object, Object>) s;
-##        } else {
-##            map = new HashMap<>();
-##            List<Field> fields = new ArrayList<>();
-##            Class<?> currentClass = s.getClass();
-##            while (currentClass != null && currentClass != Object.class && !currentClass.isInterface()) {
-##                Arrays.stream(currentClass.getDeclaredFields()).filter(f -> !Modifier.isStatic(f.getModifiers()))
-##                        .filter(f -> !Modifier.isFinal(f.getModifiers())).filter(f -> !Modifier.isNative(f.getModifiers()))
-##                        .peek(f -> f.setAccessible(true)).forEach(fields::add);
-##                currentClass = currentClass.getSuperclass();
-##            }
-##            try {
-##                for (Field field : fields) {
-##                    Object key = field.getName();
-##                    Object value = field.get(s);
-##                    if (value != null) map.put(key, value);
-##                }
-##            } catch (Exception e) {
-##                throw new RuntimeException(e);
-##            }
-##        }
         return getBaseMapper().doSelectVO(s, page);
     }
 
+    #if(${generateService})
     @Override
+    #end
     public ${entityVO} voById(Serializable id) {
         ${entity} entity = new ${entity}();
         TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
@@ -154,7 +141,9 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         return voByDTO(s);
     }
 
+    #if(${generateService})
     @Override
+    #end
     public ${entityVO} voByDTO(${entitySelectDTO} s) {
 ##    public ${entityVO} voByDTO(Object s) {
         List<${entityVO}> vs = voList(s);
@@ -163,13 +152,17 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         return vs.get(0);
     }
 
+    #if(${generateService})
     @Override
+    #end
     public List<${entityVO}> voList(${entitySelectDTO} s) {
 ##    public List<${entityVO}> voList(Object s) {
         return doSelectVO(s, null);
     }
 
+    #if(${generateService})
     @Override
+    #end
     public IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size) {
 ##    public IPage<${entityVO}> voPage(Object s, Long current, Long size) {
         if (current == null || current < 1) current = 1L;
@@ -182,7 +175,9 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #end
     #if(${generateImport})
 
+    #if(${generateService})
     @Override
+    #end
     public void excelTemplate(OutputStream os, Class<?> clazz) {
         EasyExcel.write(os, clazz)
             .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
@@ -190,7 +185,9 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
             .doWrite(Collections.emptyList());
     }
 
+    #if(${generateService})
     @Override
+    #end
     public int excelImport(InputStream is, Class<?> clazz) {
 //        List<${entityInsertDTO}> dataList = EasyExcel.read(is).head(clazz).sheet().doReadSync();
         List<?> dataList = EasyExcel.read(is).head(clazz).sheet().doReadSync();
@@ -205,7 +202,9 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #end
     #if(${generateExport})
 
+    #if(${generateService})
     @Override
+    #end
     public void excelExport(${entitySelectDTO} s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
 ##    public void excelExport(Object s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
         #if(${generateSelect})

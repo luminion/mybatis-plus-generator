@@ -10,9 +10,9 @@ import ${superServiceClassPackage};
  * @author ${author}
  */
 #if(${kotlin})
-interface ${table.serviceName} : ${superServiceClass}<${entity}, ${entity}VO>
+interface ${table.serviceName} : ${superServiceClass}<${entity}>, ${dynamicService}<${entity}VO>
 #else
-public interface ${table.serviceName} extends ${superServiceClass}<${entity}, ${entity}VO> {
+public interface ${table.serviceName} extends ${superServiceClass}<${entity}>, ${dynamicService}<${entity}VO> {
 
 }
 #end
