@@ -50,7 +50,7 @@ interface ${table.mapperName} : ${superMapperClass}<${entity}>
 #else
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 
-    List<${entityVO}> doSelectVO(${entitySelectDTO} s, IPage<${entity}VO> page);
+    List<${entityVO}> voSelectByXml(${entitySelectDTO} s, IPage<${entity}VO> page);
     #if(${generateSelect})
 
     default ${entityVO} voById(Serializable id) {
@@ -70,14 +70,14 @@ public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
     }
 
     default List<${entityVO}> voList(${entitySelectDTO} s) {
-        return doSelectVO(s, null);
+        return voSelectByXml(s, null);
     }
 
     default IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size) {
         if (current == null || current < 1) current = 1L;
         if (size == null) size = 10L;
         Page<${entityVO}> page = new Page<>(current, size);
-        List<${entityVO}> voList = doSelectVO(s, page);
+        List<${entityVO}> voList = voSelectByXml(s, page);
         page.setRecords(voList);
         return page;
     }
