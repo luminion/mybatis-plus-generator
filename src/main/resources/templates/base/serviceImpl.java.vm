@@ -24,7 +24,7 @@ import ${basePackage}.${package4DTO}.${entity}SelectDTO;
 ## ------参数设置----end
 #if(${generateImport}||${generateExport})
 import cn.idev.excel.EasyExcel;
-import cn.idev.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
+##import cn.idev.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 #end
 #if(${generateSelect}||${generateExport})
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -34,15 +34,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 #end
-## ------默认导入----------
+## ------默认导入 start----------
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
-    #if(${generateService})
+#if(${generateService})
 import ${package.Service}.${table.serviceName};
-    #end
+#end
 import ${superServiceImplClassPackage};
 import org.springframework.stereotype.Service;
-## ------默认导入----------
+## ------默认导入 end----------
 #if(${generateSelect}||${generateExport})
 import ${basePackage}.${package4VO}.${entityVO};
 #end
@@ -158,8 +158,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     #end
     public void excelTemplate(OutputStream os, Class<?> clazz) {
-        EasyExcel.write(os, clazz).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
-            .sheet().doWrite(Collections.emptyList());
+##        EasyExcel.write(os, clazz).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(Collections.emptyList());
+        EasyExcel.write(os, clazz).sheet().doWrite(Collections.emptyList());
     }
 
     #if(${generateService})
@@ -184,9 +184,10 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #end
     public void excelExport(${entitySelectDTO} s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
         List<${entityVO}> voList = getBaseMapper().voPage(s, current, size).getRecords();
-        EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields))
-            .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
-            .sheet().doWrite(voList);
+##        EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields))
+##            .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
+##            .sheet().doWrite(voList);
+        EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).sheet().doWrite(voList);
     }
     #end
 

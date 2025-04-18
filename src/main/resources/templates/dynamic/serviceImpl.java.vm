@@ -4,6 +4,11 @@ package ${package.ServiceImpl};
 #set($entityInsertDTO = "${entity}InsertDTO")
 #set($entityUpdateDTO = "${entity}UpdateDTO")
 #set($entityVO = "${entity}VO")
+#if(!${generateService})
+#set($superMehtod = "${dynamicServiceClassInfo.classSimpleName}.super")
+#else
+#set($superMehtod = "${table.serviceName}.super")
+#end
 ###if(${selectDTO.classFullName})
 ##import ${selectDTO.classFullName};
 ##    #set($entitySelectDTO = ${selectDTO.clazz("${entity}")})
@@ -12,18 +17,39 @@ package ${package.ServiceImpl};
 ##    #set($entitySelectDTO = "${entity}SelectDTO")
 ###end
 ## ------参数设置----end
-#if(${overrideInitSuffixBuilder})
-import io.github.bootystar.mybatisplus.enhancer.builder.ExtraFieldSuffixBuilder;
+#if(${overrideMethods}&&${generateSelect})
+import com.baomidou.mybatisplus.core.metadata.IPage;
 #end
+#if(!${generateService}||${overrideMethods})
 import ${basePackage}.${package4VO}.${entityVO};
+#end
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
 #if(${generateService})
 import ${package.Service}.${table.serviceName};
 #end
 import ${superServiceImplClassPackage};
-import org.springframework.stereotype.Service;
+#if(!${generateService})
 import ${dynamicServiceClassInfo.classFullName};
+#end
+#if(${overrideInitSuffixBuilder})
+import io.github.bootystar.mybatisplus.enhancer.builder.ExtraFieldSuffixBuilder;
+#end
+import org.springframework.stereotype.Service;
+
+
+#if(${overrideMethods})
+import java.util.List;
+    #if(${generateDelete}||${generateSelect})
+import java.io.Serializable;
+    #end
+    #if(${generateImport})
+import java.io.InputStream;
+    #end
+    #if(${generateExport})
+import java.io.OutputStream;
+    #end
+#end
 
 /**
  * $!{table.comment}服务实现类
@@ -32,11 +58,11 @@ import ${dynamicServiceClassInfo.classFullName};
  */
 @Service
 #if(${kotlin})
-open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>()#if(${generateService}), ${table.serviceName}#end {
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>()#if(${generateService}), ${table.serviceName}#else, ${dynamicServiceClassInfo.classSimpleName}<${entityVO}>#end {
 
 }
 #else
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>#if(${generateService}) implements ${table.serviceName}#else implements ${dynamicServiceClassInfo.classSimpleName}#end {
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>#if(${generateService}) implements ${table.serviceName}#else implements ${dynamicServiceClassInfo.classSimpleName}<${entityVO}>#end {
 #if(${overrideInitSuffixBuilder})
 
     @Override
@@ -78,7 +104,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     public Object insertByDTO(Object s) {
 //        ${entityInsertDTO} dto = (${entityInsertDTO}) s;
-        return super.insertByDTO(s);
+        return ${superMehtod}.insertByDTO(s);
     }
     #end
     #if(${generateUpdate})
@@ -86,7 +112,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     public boolean updateByDTO(Object s) {
 //        ${entityUpdateDTO} dto = (${entityUpdateDTO}) s;
-        return super.updateByDTO(s);
+        return ${superMehtod}.updateByDTO(s);
     }
     #end
     #if(${generateDelete})
@@ -108,17 +134,17 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 
     @Override
     public ${entityVO} voById(Serializable id) {
-        return super.voById(id);
+        return ${superMehtod}.voById(id);
     }
 
     @Override
     public List<${entityVO}> voList(Object s) {
-        return super.voList(s);
+        return ${superMehtod}.voList(s);
     }
 
     @Override
     public IPage<${entityVO}> voPage(Object s, Long current, Long size) {
-        return super.voPage(s, current, size);
+        return ${superMehtod}.voPage(s, current, size);
     }
     #end
     #if(${generateImport})
@@ -126,14 +152,14 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     public int excelImport(InputStream is, Class<?> clazz) {
 //        List<${entityInsertDTO}> dataList = ExcelHelper.read(is).head(clazz).sheet().doReadSync();
-        return super.excelImport(is, clazz);
+        return ${superMehtod}.excelImport(is, clazz);
     }
     #end
     #if(${generateExport})
 
     @Override
     public void excelExport(Object s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
-        super.excelExport(s, os, clazz, current, size, includeFields);
+        ${superMehtod}.excelExport(s, os, clazz, current, size, includeFields);
     }
     #end
 
