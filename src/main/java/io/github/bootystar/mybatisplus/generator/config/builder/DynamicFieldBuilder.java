@@ -1,6 +1,9 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import io.github.bootystar.mybatisplus.enhancer.builder.ExtraFieldSuffixBuilder;
+import io.github.bootystar.mybatisplus.enhancer.core.support.DynamicFieldService;
+import io.github.bootystar.mybatisplus.enhancer.core.support.DynamicSqlService;
+import io.github.bootystar.mybatisplus.generator.info.ClassInfo;
 import io.github.bootystar.mybatisplus.generator.strategy.ExtraFieldGenerateStrategy;
 import lombok.Getter;
 
@@ -13,9 +16,10 @@ import java.util.function.Consumer;
 @Getter
 public class DynamicFieldBuilder extends BaseEnhanceBuilder<DynamicFieldBuilder> {
 
-//    {
+    {
 //        mapperDTO = new ClassInfo(UnmodifiableSqlHelper.class);
-//    }
+        dynamicServiceClassInfo = new ClassInfo(DynamicFieldService.class);
+    }
 
     @Override
     public DynamicFieldBuilder disableOverrideMethods() {

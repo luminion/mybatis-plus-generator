@@ -25,11 +25,11 @@ public class DynamicFieldGenerator extends AbstractGenerator<DynamicFieldBuilder
                 .mapperXmlTemplate("/templates/dynamic/mapper.xml" )
         ;
         this.strategyConfigBuilder.serviceBuilder()
-                .superServiceClass(DynamicService.class)
+//                .superServiceClass(DynamicService.class)
 //                .superServiceImplClass(DynamicFieldServiceImpl.class)
         ;
         this.strategyConfigBuilder.mapperBuilder()
-                .superClass(DynamicMapper.class)
+//                .superClass(DynamicMapper.class)
         ;
     }
 

@@ -1,5 +1,6 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
+import io.github.bootystar.mybatisplus.enhancer.core.support.DynamicSqlService;
 import io.github.bootystar.mybatisplus.enhancer.helper.SqlHelper;
 import io.github.bootystar.mybatisplus.generator.info.ClassInfo;
 import lombok.Getter;
@@ -12,6 +13,7 @@ public class DynamicSqlBuilder extends BaseEnhanceBuilder<DynamicSqlBuilder> {
 
     {
         selectDTO = new ClassInfo(SqlHelper.class);
+        dynamicServiceClassInfo = new ClassInfo(DynamicSqlService.class);
 //        mapperDTO = new ClassInfo(UnmodifiableSqlHelper.class);
     }
 

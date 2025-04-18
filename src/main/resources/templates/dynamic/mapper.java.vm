@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import ${superMapperClassPackage};
 import ${package.Entity}.${entity};
 import ${basePackage}.${package4VO}.${entity}VO;
-
+import io.github.bootystar.mybatisplus.enhancer.core.DynamicMapper;
 
 #if(${overrideMethods})
 import java.util.List;
@@ -25,13 +25,13 @@ import java.util.List;
 @${mapperAnnotationClass.simpleName}
 #end
 #if(${kotlin})
-interface ${table.mapperName} : ${superMapperClass}<${entity}, ${entity}VO>
+interface ${table.mapperName} : ${superMapperClass}<${entity}>, DynamicMapper<${entity}VO>
 #else
-public interface ${table.mapperName} extends ${superMapperClass}<${entity}, ${entity}VO> {
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}>, DynamicMapper<${entity}VO> {
     #if(${overrideMethods})
 
     @Override
-    List<${entity}VO> listByDTO(Object param, IPage<${entity}VO> page);
+    List<${entity}VO> doSelectVO(Object param, IPage<${entity}VO> page);
     #end
 
 }
