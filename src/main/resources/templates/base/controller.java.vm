@@ -55,10 +55,12 @@ import ${basePackage}.${package4VO}.${entityVO};
 #if(${returnMethod.classFullName})
 import ${returnMethod.classFullName};
 #end
+#if(${generateSelect})
 #if(${pageMethod.classFullName})
 import ${pageMethod.classFullName};
     #else
 import com.baomidou.mybatisplus.core.metadata.IPage;
+#end
 #end
 import ${package.Service}.${table.serviceName};
 #if(${superControllerClassPackage})
