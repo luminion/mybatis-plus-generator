@@ -42,7 +42,7 @@ import ${basePackage}.${package4DTO}.${entity}SelectDTO;
     #else
 #set($pageClazz4return = "IPage<${entityVO}>")
 #end
-#if(!${generateService})
+#if(${generateService})
 import ${package.Service}.${table.serviceName};
     #set($baseService = ${table.serviceName})
 #else
