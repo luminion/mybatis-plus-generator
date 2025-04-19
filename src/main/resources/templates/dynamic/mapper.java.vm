@@ -5,16 +5,15 @@ import ${mapperAnnotationClass.name};
 #end
 #if(${overrideMethods})
 ##import org.apache.ibatis.annotations.Param;
-
 import com.baomidou.mybatisplus.core.metadata.IPage;
 #end
 import ${superMapperClassPackage};
 import ${package.Entity}.${entity};
 import ${basePackage}.${package4VO}.${entity}VO;
 import io.github.bootystar.mybatisplus.enhancer.core.DynamicMapper;
-#if(${overrideMethods})
-import io.github.bootystar.mybatisplus.enhancer.query.SqlTree;
-#end
+###if(${overrideMethods})
+##import io.github.bootystar.mybatisplus.enhancer.query.SqlTree;
+###end
 
 #if(${overrideMethods})
 import java.util.List;
@@ -35,7 +34,7 @@ public interface ${table.mapperName} extends ${superMapperClass}<${entity}>, Dyn
     #if(${overrideMethods})
 
     @Override
-    List<${entity}VO> voSelectByXml(SqlTree s, IPage<${entity}VO> page);
+    List<${entity}VO> voSelectByXml(Object s, IPage<${entity}VO> page);
     #end
 
 }

@@ -1,8 +1,5 @@
 package ${basePackage}.${package4DTO};
 
-#foreach($pkg in ${importPackages4DTO})
-import ${pkg};
-#end
 #if(${springdoc})
 import io.swagger.v3.oas.annotations.media.Schema;
 #elseif(${swagger})
@@ -16,6 +13,9 @@ import lombok.experimental.Accessors;
     #end
 #end
 
+#foreach($pkg in ${importPackages4DTO})
+import ${pkg};
+#end
 import java.util.List;
 
 /**

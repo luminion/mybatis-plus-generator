@@ -1,8 +1,5 @@
 package ${basePackage}.${package4DTO};
 
-#foreach($pkg in ${importPackages4DTO})
-import ${pkg};
-#end
 #if(${generateImport})
 import cn.idev.excel.annotation.ExcelIgnoreUnannotated;
 import cn.idev.excel.annotation.ExcelProperty;
@@ -18,6 +15,10 @@ import lombok.Data;
     #if(${chainModel}&&${generateImport})
 import lombok.experimental.Accessors;
     #end
+#end
+
+#foreach($pkg in ${importPackages4DTO})
+import ${pkg};
 #end
 
 #if(${validated})
