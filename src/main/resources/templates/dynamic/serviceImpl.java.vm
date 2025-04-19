@@ -9,13 +9,6 @@ package ${package.ServiceImpl};
 #else
 #set($superMehtod = "${table.serviceName}.super")
 #end
-###if(${selectDTO.classFullName})
-##import ${selectDTO.classFullName};
-##    #set($entitySelectDTO = ${selectDTO.clazz("${entity}")})
-###else
-##import ${basePackage}.${package4DTO}.${entity}SelectDTO;
-##    #set($entitySelectDTO = "${entity}SelectDTO")
-###end
 ## ------参数设置----end
 #if(${overrideMethods}&&${generateSelect})
 import com.baomidou.mybatisplus.core.metadata.IPage;

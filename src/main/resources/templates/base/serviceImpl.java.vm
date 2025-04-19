@@ -18,7 +18,7 @@ import ${selectDTO.classFullName};
 #else
     #set($entitySelectDTO = "${entity}SelectDTO")
     #if(${generateSelect}||${generateExport})
-import ${basePackage}.${package4DTO}.${entity}SelectDTO;
+import ${basePackage}.${package4DTO}.${entitySelectDTO};
     #end
 #end
 ## ------参数设置----end
@@ -34,15 +34,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 #end
-## ------默认导入 start----------
-import ${package.Entity}.${entity};
-import ${package.Mapper}.${table.mapperName};
-#if(${generateService})
-import ${package.Service}.${table.serviceName};
-#end
-import ${superServiceImplClassPackage};
-import org.springframework.stereotype.Service;
-## ------默认导入 end----------
 #if(${generateSelect}||${generateExport})
 import ${basePackage}.${package4VO}.${entityVO};
 #end
@@ -52,7 +43,15 @@ import ${basePackage}.${package4DTO}.${entityInsertDTO};
 #if(${generateUpdate})
 import ${basePackage}.${package4DTO}.${entityUpdateDTO};
 #end
+## ------默认导入 start----------
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+#if(${generateService})
+import ${package.Service}.${table.serviceName};
+#end
+import ${superServiceImplClassPackage};
 import org.springframework.stereotype.Service;
+## ------默认导入 end----------
 #if(${generateInsert}||${generateUpdate}||${generateImport}||${generateSelect})
 import org.springframework.beans.BeanUtils;
 #end
@@ -124,32 +123,49 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #end
     #if(${generateSelect})
 
+    private List<${entityVO}> voSelect(${entitySelectDTO} s, IPage<${entityVO}> page) {
+        return getBaseMapper().voSelectByXml(s, page);
+    }
+
     #if(${generateService})
     @Override
     #end
     public ${entityVO} voById(Serializable id) {
-        return getBaseMapper().voById(id);
+        ${entity} entity = new ${entity}();
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(${entity}.class);
+        tableInfo.setPropertyValue(entity, tableInfo.getKeyProperty(), id);
+        ${entitySelectDTO} s = new ${entitySelectDTO}();
+        BeanUtils.copyProperties(entity, s);
+        return voByDTO(s);
     }
 
     #if(${generateService})
     @Override
     #end
     public ${entityVO} voByDTO(${entitySelectDTO} s) {
-        return getBaseMapper().voByDTO(s);
+        List<${entityVO}> vs = voList(s);
+        if (vs == null || vs.isEmpty()) return null;
+        if (vs.size() > 1) throw new RuntimeException("error query => required 1 but found " + vs.size());
+        return vs.get(0);
     }
 
     #if(${generateService})
     @Override
     #end
     public List<${entityVO}> voList(${entitySelectDTO} s) {
-        return getBaseMapper().voList(s);
+        return voSelect(s, null);
     }
 
     #if(${generateService})
     @Override
     #end
     public IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size) {
-        return getBaseMapper().voPage(s, current, size);
+        if (current == null || current < 1) current = 1L;
+        if (size == null) size = 10L;
+        Page<${entityVO}> page = new Page<>(current, size);
+        List<${entityVO}> voList = voSelect(s, page);
+        page.setRecords(voList);
+        return page;
     }
     #end
     #if(${generateImport})
@@ -183,10 +199,14 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     #end
     public void excelExport(${entitySelectDTO} s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
-        List<${entityVO}> voList = getBaseMapper().voPage(s, current, size).getRecords();
-##        EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields))
-##            .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
-##            .sheet().doWrite(voList);
+        #if(${generateSelect})
+        List<${entityVO}> voList = voPage(s, current, size).getRecords();
+        #else
+        if (current == null || current < 1) current = 1L;
+        if (size == null) size = 10L;
+        Page<${entityVO}> page = new Page<>(current, size);
+        List<${entityVO}> voList = getBaseMapper().voSelectByXml(s, page);
+        #end
         EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).sheet().doWrite(voList);
     }
     #end

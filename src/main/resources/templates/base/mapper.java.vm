@@ -1,4 +1,5 @@
 package ${package.Mapper};
+
 ## ------参数设置----start
 #set($entityVO = "${entity}VO")
 #if(${selectDTO.classFullName})
@@ -8,17 +9,15 @@ import ${selectDTO.classFullName};
     #end
 #else
     #set($entitySelectDTO = "${entity}SelectDTO")
-    #if(${generateSelect}||${generateExport})
 import ${basePackage}.${package4DTO}.${entity}SelectDTO;
-    #end
 #end
 ## ------参数设置----end
 import com.baomidou.mybatisplus.core.metadata.IPage;
-#if(${generateSelect})
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
-import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-#end
+###if(${generateSelect})
+##import com.baomidou.mybatisplus.core.metadata.TableInfo;
+##import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
+##import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+###end
 import ${superMapperClassPackage};
 ##import org.apache.ibatis.annotations.Param;
 #if(${mapperAnnotationClass})
@@ -26,9 +25,9 @@ import ${mapperAnnotationClass.name};
 #end
 import ${basePackage}.${package4VO}.${entity}VO;
 import ${package.Entity}.${entity};
-#if(${generateSelect})
-import org.springframework.beans.BeanUtils;
-#end
+###if(${generateSelect})
+##import org.springframework.beans.BeanUtils;
+###end
 
 
 #if(${generateSelect})
@@ -51,37 +50,37 @@ interface ${table.mapperName} : ${superMapperClass}<${entity}>
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 
     List<${entityVO}> voSelectByXml(${entitySelectDTO} s, IPage<${entity}VO> page);
-    #if(${generateSelect})
-
-    default ${entityVO} voById(Serializable id) {
-        ${entity} entity = new ${entity}();
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(${entity}.class);
-        tableInfo.setPropertyValue(entity, tableInfo.getKeyProperty(), id);
-        ${entitySelectDTO} s = new ${entitySelectDTO}();
-        BeanUtils.copyProperties(entity, s);
-        return voByDTO(s);
-    }
-    
-    default ${entityVO} voByDTO(${entitySelectDTO} s) {
-        List<${entityVO}> vs = voList(s);
-        if (vs == null || vs.isEmpty()) return null;
-        if (vs.size() > 1) throw new RuntimeException("error query => required 1 but found " + vs.size());
-        return vs.get(0);
-    }
-
-    default List<${entityVO}> voList(${entitySelectDTO} s) {
-        return voSelectByXml(s, null);
-    }
-
-    default IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size) {
-        if (current == null || current < 1) current = 1L;
-        if (size == null) size = 10L;
-        Page<${entityVO}> page = new Page<>(current, size);
-        List<${entityVO}> voList = voSelectByXml(s, page);
-        page.setRecords(voList);
-        return page;
-    }
-    #end
+##    #if(${generateSelect})
+##
+##    default ${entityVO} voById(Serializable id) {
+##        ${entity} entity = new ${entity}();
+##        TableInfo tableInfo = TableInfoHelper.getTableInfo(${entity}.class);
+##        tableInfo.setPropertyValue(entity, tableInfo.getKeyProperty(), id);
+##        ${entitySelectDTO} s = new ${entitySelectDTO}();
+##        BeanUtils.copyProperties(entity, s);
+##        return voByDTO(s);
+##    }
+##
+##    default ${entityVO} voByDTO(${entitySelectDTO} s) {
+##        List<${entityVO}> vs = voList(s);
+##        if (vs == null || vs.isEmpty()) return null;
+##        if (vs.size() > 1) throw new RuntimeException("error query => required 1 but found " + vs.size());
+##        return vs.get(0);
+##    }
+##
+##    default List<${entityVO}> voList(${entitySelectDTO} s) {
+##        return voSelectByXml(s, null);
+##    }
+##
+##    default IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size) {
+##        if (current == null || current < 1) current = 1L;
+##        if (size == null) size = 10L;
+##        Page<${entityVO}> page = new Page<>(current, size);
+##        List<${entityVO}> voList = voSelectByXml(s, page);
+##        page.setRecords(voList);
+##        return page;
+##    }
+##    #end
 
 }
 #end

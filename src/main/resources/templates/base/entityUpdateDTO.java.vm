@@ -16,9 +16,6 @@ package ${basePackage}.${package4DTO};
     #end
 #end
 ## -----参数设置----end
-#foreach($pkg in ${importPackages4DTO})
-import ${pkg};
-#end
 #if(${springdoc})
 import io.swagger.v3.oas.annotations.media.Schema;
 #elseif(${swagger})
@@ -56,6 +53,9 @@ import ${javaApiPackage}.validation.constraints.NotNull;
     #if(${importNotBlank})
 import ${javaApiPackage}.validation.constraints.NotBlank;
     #end
+#end
+#foreach($pkg in ${importPackages4DTO})
+import ${pkg};
 #end
 
 /**
