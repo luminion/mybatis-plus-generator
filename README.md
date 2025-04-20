@@ -183,9 +183,6 @@ custom
 ### 代码生成(编码式)
 
 ```java
-
-```
-```java
 String url = "jdbc:postgresql://localhost:5432/test?useUnicode=true&characterEncoding=UTF-8";
 String username = "postgres";
 String password = "root";
