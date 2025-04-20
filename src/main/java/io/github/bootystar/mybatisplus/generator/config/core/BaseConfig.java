@@ -61,7 +61,7 @@ public abstract class BaseConfig {
     /**
      * 额外类链接注释
      */
-    protected boolean extraClassLinkComment;
+    protected boolean extraClassLinkComment = true;
 
     //------------------额外类相关配置----------------
 
