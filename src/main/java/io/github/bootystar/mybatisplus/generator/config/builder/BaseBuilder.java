@@ -136,8 +136,8 @@ public abstract class BaseBuilder<B extends BaseBuilder<B>> extends BaseConfig {
      *
      * @return this
      */
-    public B enableExtraClassLinkComment() {
-        this.extraClassLinkComment = true;
+    public B disableExtraClassLinkComment() {
+        this.extraClassLinkComment = false;
         return this.getBuilder();
     }
 

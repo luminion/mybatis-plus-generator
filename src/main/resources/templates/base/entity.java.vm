@@ -1,23 +1,48 @@
 package ${package.Entity};
 
-#foreach($pkg in ${importEntityFrameworkPackages})
+#foreach($pkg in ${table.importPackages})
 import ${pkg};
 #end
-
-#foreach($pkg in ${importEntityJavaPackages})
-import ${pkg};
+#if(${springdoc})
+import io.swagger.v3.oas.annotations.media.Schema;
+#elseif(${swagger})
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+#end
+#if(${entityLombokModel})
+import lombok.Data;
+#if(${chainModel})
+import lombok.experimental.Accessors;
+#end
 #end
 
 /**
- * <p>
  * $!{table.comment}
- * </p>
  *
  * @author ${author}
  * @since ${date}
+###if(${extraClassLinkComment})
+## * @see ${package.Mapper}.${table.mapperName}
+## * @see ${package.ServiceImpl}.${table.serviceImplName}
+###end
  */
-#foreach($an in ${entityClassAnnotations})
-${an.displayName}
+#if(${entityLombokModel})
+@Data
+  #if(${chainModel})
+@Accessors(chain = true)
+  #end
+#end
+#if(${table.convert})
+@TableName("${schemaName}${table.name}")
+#end
+#if(${swaggerModelWithAnnotation})
+#if(${springdoc})
+##@Schema(name = "${entity}", description = "$!{table.comment}")
+@Schema(name = "${entity}$!{swaggerUUID}", description = "$!{table.comment}")
+#elseif(${swagger})
+##@ApiModel(value = "${entity}对象", description = "$!{table.comment}")
+@ApiModel(value = "${entity}$!{swaggerUUID}", description = "$!{table.comment}")
+#end
 #end
 #if(${superEntityClass})
 public class ${entity} extends ${superEntityClass}#if(${activeRecord})<${entity}>#end {
@@ -30,9 +55,6 @@ public class ${entity} {
 #end
 #if(${entitySerialVersionUID})
 
-    #if(${entitySerialAnnotation})
-    @Serial
-    #end
     private static final long serialVersionUID = 1L;
 #end
 ## ----------  BEGIN 字段循环遍历  ----------
@@ -42,14 +64,43 @@ public class ${entity} {
 #set($keyPropertyName=${field.propertyName})
 #end
 #if("$!field.comment" != "")
-  #if(${entityFieldUseJavaDoc})
+  #if(${springdoc})
+    @Schema(description = "${field.comment}")
+  #elseif(${swagger})
+    @ApiModelProperty("${field.comment}")
+  #else
     /**
      * ${field.comment}
      */
   #end
 #end
-#foreach($an in ${field.annotationAttributesList})
-    ${an.displayName}
+#if(${field.keyFlag})
+## 主键
+  #if(${field.keyIdentityFlag})
+    @TableId(value = "${field.annotationColumnName}", type = IdType.AUTO)
+  #elseif(!$null.isNull(${idType}) && "$!idType" != "")
+    @TableId(value = "${field.annotationColumnName}", type = IdType.${idType})
+  #elseif(${field.convert})
+    @TableId("${field.annotationColumnName}")
+  #end
+## 普通字段
+#elseif(${field.fill})
+## -----   存在字段填充设置   -----
+  #if(${field.convert})
+    @TableField(value = "${field.annotationColumnName}", fill = FieldFill.${field.fill})
+  #else
+    @TableField(fill = FieldFill.${field.fill})
+  #end
+#elseif(${field.convert})
+    @TableField("${field.annotationColumnName}")
+#end
+## 乐观锁注解
+#if(${field.versionField})
+    @Version
+#end
+## 逻辑删除注解
+#if(${field.logicDeleteField})
+    @TableLogic
 #end
     private ${field.propertyType} ${field.propertyName};
 #end
@@ -97,7 +148,7 @@ public class ${entity} {
   #end
     }
 #end
-#if(!${entityLombokModel} && ${entityToString})
+#if(!${entityLombokModel})
 
     @Override
     public String toString() {
