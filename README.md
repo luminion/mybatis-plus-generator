@@ -108,7 +108,7 @@ GeneratorHelper
         .packageConfig(pkg -> {
         // 包配置(参考mybatis-plus官方文档)
         })
-        .strategy(strategy -> {
+        .strategyConfig(strategy -> {
         // 策略配置(参考mybatis-plus官方文档)
         })
         .execute("sys_user") // 要生成的表(不输入为全部)
