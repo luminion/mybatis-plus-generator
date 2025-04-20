@@ -132,7 +132,7 @@ public class CustomConfig extends BaseConfig {
             orderColumnMap.entrySet().stream()
                     .filter(e -> existColumnNames.contains(e.getKey()))
                     .map(e -> String.format("a.%s%s", e.getKey(), e.getValue() ? " DESC" : "" ))
-                    .reduce((e1, e2) -> e1 + " , " + e2)
+                    .reduce((e1, e2) -> e1 + ", " + e2)
                     .ifPresent(e -> this.orderBySql = e);
         }
 
