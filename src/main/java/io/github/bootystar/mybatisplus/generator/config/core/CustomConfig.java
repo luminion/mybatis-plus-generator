@@ -126,8 +126,8 @@ public class CustomConfig extends BaseConfig {
         );
 
         // 排序字段sql
-        List<TableField> sortfields = tableInfo.getFields();
-        List<String> existColumnNames = sortfields.stream().map(TableField::getColumnName).collect(Collectors.toList());
+        List<TableField> sortFields = tableInfo.getFields();
+        List<String> existColumnNames = sortFields.stream().map(TableField::getColumnName).collect(Collectors.toList());
         if (orderColumnMap != null && !orderColumnMap.isEmpty()) {
             orderColumnMap.entrySet().stream()
                     .filter(e -> existColumnNames.contains(e.getKey()))
