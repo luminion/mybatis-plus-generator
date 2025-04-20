@@ -1,8 +1,5 @@
 package ${package.Entity};
 
-#foreach($pkg in ${table.importPackages})
-import ${pkg};
-#end
 #if(${springdoc})
 import io.swagger.v3.oas.annotations.media.Schema;
 #elseif(${swagger})
@@ -14,6 +11,10 @@ import lombok.Data;
 #if(${chainModel})
 import lombok.experimental.Accessors;
 #end
+#end
+
+#foreach($pkg in ${table.importPackages})
+import ${pkg};
 #end
 
 /**

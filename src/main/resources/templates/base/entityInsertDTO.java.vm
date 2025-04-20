@@ -17,10 +17,6 @@ import lombok.experimental.Accessors;
     #end
 #end
 
-#foreach($pkg in ${importPackages4DTO})
-import ${pkg};
-#end
-
 #if(${validated})
 ## ---字段非空验证---
     #foreach($field in ${table.fields})
@@ -43,6 +39,9 @@ import ${javaApiPackage}.validation.constraints.Size;
             #break
         #end
     #end
+#end
+#foreach($pkg in ${importPackages4DTO})
+import ${pkg};
 #end
 
 /**
