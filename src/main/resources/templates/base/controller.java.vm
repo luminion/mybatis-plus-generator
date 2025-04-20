@@ -289,7 +289,7 @@ public class ${table.controllerName} {
     @ApiOperation(value = "分页查询")
         #else
     /**
-     * 分页查询(页码与大小均不传时采用默认值)
+     * 分页查询
      *
      * @param s 查询条件
      * @param current 页码
