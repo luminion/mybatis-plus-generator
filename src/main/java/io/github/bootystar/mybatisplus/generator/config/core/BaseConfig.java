@@ -127,7 +127,12 @@ public abstract class BaseConfig {
     /**
      * restful样式
      */
-    protected boolean restful = true;
+    protected boolean restful;
+    
+    /**
+     * 请求路径参数
+     */
+    protected boolean pathVariable;
 
     /**
      * controller是否使用@RequestBody注解
@@ -142,7 +147,7 @@ public abstract class BaseConfig {
     /**
      * 复杂查询使用post请求
      */
-    protected boolean postQuery;
+    protected boolean postQuery = true;
 
     // ------------------mapper相关配置----------------
 

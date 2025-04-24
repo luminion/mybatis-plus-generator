@@ -255,12 +255,12 @@ public abstract class BaseBuilder<B extends BaseBuilder<B>> extends BaseConfig {
     }
 
     /**
-     * 多条件复杂查询使用post请求(使用Get请求替代)
+     * 禁止复杂查询使用post请求(使用Get请求替代)
      *
      * @return this
      */
-    public B enablePostQuery() {
-        this.postQuery = true;
+    public B disablePostQuery() {
+        this.postQuery = false;
         return this.getBuilder();
     }
 
@@ -287,12 +287,22 @@ public abstract class BaseBuilder<B extends BaseBuilder<B>> extends BaseConfig {
     }
 
     /**
-     * 禁止基础增删查改使用restful风格
+     * 增删查改使用restful风格
      *
      * @return this
      */
-    public B disableRestful() {
-        this.restful = false;
+    public B enableRestful() {
+        this.restful = true;
+        return this.getBuilder();
+    }
+
+    /**
+     * 启用路径变量
+     *
+     * @return {@link B }
+     */
+    public B enablePathVariable() {
+        this.pathVariable = true;
         return this.getBuilder();
     }
 
