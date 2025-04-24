@@ -22,10 +22,10 @@ import ${pkg};
  *
  * @author ${author}
  * @since ${date}
-###if(${extraClassLinkComment})
-## * @see ${package.Mapper}.${table.mapperName}
-## * @see ${package.ServiceImpl}.${table.serviceImplName}
-###end
+#if(${extraClassLinkComment})
+ * @see ${package.Mapper}.${table.mapperName}
+ * @see ${package.ServiceImpl}.${table.serviceImplName}
+#end
  */
 #if(${entityLombokModel})
 @Data
