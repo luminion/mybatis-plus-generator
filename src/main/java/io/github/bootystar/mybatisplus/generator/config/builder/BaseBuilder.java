@@ -301,8 +301,8 @@ public abstract class BaseBuilder<B extends BaseBuilder<B>> extends BaseConfig {
      *
      * @return {@link B }
      */
-    public B disablePathVariable() {
-        this.pathVariable = false;
+    public B enablePathVariable() {
+        this.pathVariable = true;
         return this.getBuilder();
     }
 
