@@ -297,12 +297,12 @@ public abstract class BaseBuilder<B extends BaseBuilder<B>> extends BaseConfig {
     }
 
     /**
-     * 启用路径变量
+     * 禁用路径变量
      *
      * @return {@link B }
      */
-    public B enablePathVariable() {
-        this.pathVariable = true;
+    public B disablePathVariable() {
+        this.pathVariable = false;
         return this.getBuilder();
     }
 
