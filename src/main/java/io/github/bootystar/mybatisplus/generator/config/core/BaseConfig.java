@@ -132,7 +132,7 @@ public abstract class BaseConfig {
     /**
      * 请求路径参数
      */
-    protected boolean pathVariable;
+    protected boolean pathVariable = true;
 
     /**
      * controller是否使用@RequestBody注解
