@@ -13,7 +13,7 @@
 <dependency>
     <groupId>io.github.bootystar</groupId>
     <artifactId>mybatis-plus-generator</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 </dependency>
 ```
 
@@ -24,6 +24,29 @@
     <groupId>cn.idev.excel</groupId>
     <artifactId>FastExcel</artifactId>
     <version>1.1.0</version>
+</dependency>
+```
+### 新版本enhancer
+生成器依赖于`mybatis-plus-enhancer`, `mybatis-plus-enhancer`更新时可引入依赖覆盖
+* 生成器`1.2.X`对应`1.2.X`的enhancer
+```xml
+<dependency>
+    <groupId>io.github.bootystar</groupId>
+    <artifactId>mybatis-plus-generator</artifactId>
+    <version>1.2.1</version>
+</dependency>
+```
+示例:
+```xml
+<dependency>
+    <groupId>io.github.bootystar</groupId>
+    <artifactId>mybatis-plus-enhancer</artifactId>
+    <version>1.2.2</version>
+</dependency>
+<dependency>
+    <groupId>io.github.bootystar</groupId>
+    <artifactId>mybatis-plus-generator</artifactId>
+    <version>1.2.1</version>
 </dependency>
 ```
 
