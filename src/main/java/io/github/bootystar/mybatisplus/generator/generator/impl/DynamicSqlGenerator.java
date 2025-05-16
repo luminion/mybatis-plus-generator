@@ -15,12 +15,12 @@ public class DynamicSqlGenerator extends AbstractGenerator<DynamicSqlBuilder> {
     public DynamicSqlGenerator(String url, String username, String password) {
         super(url, username, password, new DynamicSqlBuilder());
         this.strategyConfigBuilder.serviceBuilder()
-                .serviceTemplate("/templates/dynamic/service.java" )
-                .serviceImplTemplate("/templates/dynamic/serviceImpl.java" )
+                .serviceTemplate("/bootystar/templates/vm/dynamic/service.java" )
+                .serviceImplTemplate("/bootystar/templates/vm/dynamic/serviceImpl.java" )
         ;
         this.strategyConfigBuilder.mapperBuilder()
-                .mapperTemplate("/templates/dynamic/mapper.java" )
-                .mapperXmlTemplate("/templates/dynamic/mapper.xml" )
+                .mapperTemplate("/bootystar/templates/vm/dynamic/mapper.java" )
+                .mapperXmlTemplate("/bootystar/templates/vm/dynamic/mapper.xml" )
         ;
         this.strategyConfigBuilder.serviceBuilder()
 //                .superServiceClass(DynamicService.class)

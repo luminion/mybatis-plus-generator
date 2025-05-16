@@ -45,19 +45,19 @@ public abstract class AbstractGenerator<B extends BaseBuilder<B>> implements Enh
                 .xml("mapper")
         ;
         this.strategyConfigBuilder.entityBuilder()
-                .javaTemplate("/templates/base/entity.java")
+                .javaTemplate("/bootystar/templates/vm/base/entity.java")
         ;
         this.strategyConfigBuilder.mapperBuilder()
                 .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
-                .mapperTemplate("/templates/base/mapper.java")
-                .mapperXmlTemplate("/templates/base/mapper.xml")
+                .mapperTemplate("/bootystar/templates/vm/base/mapper.java")
+                .mapperXmlTemplate("/bootystar/templates/vm/base/mapper.xml")
         ;
         this.strategyConfigBuilder.serviceBuilder()
-                .serviceTemplate("/templates/base/service.java")
-                .serviceImplTemplate("/templates/base/serviceImpl.java")
+                .serviceTemplate("/bootystar/templates/vm/base/service.java")
+                .serviceImplTemplate("/bootystar/templates/vm/base/serviceImpl.java")
         ;
         this.strategyConfigBuilder.controllerBuilder()
-                .template("/templates/base/controller.java")
+                .template("/bootystar/templates/vm/base/controller.java")
         ;
     }
 
