@@ -49,7 +49,7 @@ public class CustomConfig extends BaseConfig {
             CustomFile.Builder builder = new CustomFile.Builder()
                     .fileName(fileName)
                     .filePath(path)
-                    .templatePath("/templates/base/entityInsertDTO.java.vm" )
+                    .templatePath("/bootystar/templates/vm/base/entityInsertDTO.java.vm" )
                     .packageName(pathUnderParent4DTO);
             if (fileOverride) {
                 builder.enableFileOverride();
@@ -63,7 +63,7 @@ public class CustomConfig extends BaseConfig {
             CustomFile.Builder builder = new CustomFile.Builder()
                     .fileName(fileName)
                     .filePath(path)
-                    .templatePath("/templates/base/entityUpdateDTO.java.vm" )
+                    .templatePath("/bootystar/templates/vm/base/entityUpdateDTO.java.vm" )
                     .packageName(pathUnderParent4DTO);
             if (fileOverride) {
                 builder.enableFileOverride();
@@ -77,7 +77,7 @@ public class CustomConfig extends BaseConfig {
             CustomFile.Builder builder = new CustomFile.Builder()
                     .fileName(fileName)
                     .filePath(path)
-                    .templatePath("/templates/base/entitySelectDTO.java.vm" )
+                    .templatePath("/bootystar/templates/vm/base/entitySelectDTO.java.vm" )
                     .packageName(pathUnderParent4DTO);
             if (fileOverride) {
                 builder.enableFileOverride();
@@ -90,7 +90,7 @@ public class CustomConfig extends BaseConfig {
         CustomFile.Builder builder = new CustomFile.Builder()
                 .fileName(fileName)
                 .filePath(path)
-                .templatePath("/templates/base/entityVO.java.vm" )
+                .templatePath("/bootystar/templates/vm/base/entityVO.java.vm" )
                 .packageName(pathUnderParent4VO);
         if (fileOverride) {
             builder.enableFileOverride();
