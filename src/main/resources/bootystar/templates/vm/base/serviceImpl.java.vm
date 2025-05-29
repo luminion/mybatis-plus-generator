@@ -122,10 +122,10 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     }
     #end
     #if(${generateSelect})
-
-    private List<${entityVO}> voSelect(${entitySelectDTO} s, IPage<${entityVO}> page) {
-        return getBaseMapper().voSelectByXml(s, page);
-    }
+##
+##    private List<${entityVO}> voSelect(${entitySelectDTO} s, IPage<${entityVO}> page) {
+##        return getBaseMapper().voSelectByXml(s, page);
+##    }
 
     #if(${generateService})
     @Override
@@ -136,24 +136,28 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         tableInfo.setPropertyValue(entity, tableInfo.getKeyProperty(), id);
         ${entitySelectDTO} s = new ${entitySelectDTO}();
         BeanUtils.copyProperties(entity, s);
-        return voByDTO(s);
-    }
-
-    #if(${generateService})
-    @Override
-    #end
-    public ${entityVO} voByDTO(${entitySelectDTO} s) {
+##        return voByDTO(s);
         List<${entityVO}> vs = voList(s);
         if (vs == null || vs.isEmpty()) return null;
         if (vs.size() > 1) throw new RuntimeException("error query => required 1 but found " + vs.size());
         return vs.get(0);
     }
+##
+##    #if(${generateService})
+##    @Override
+##    #end
+##    public ${entityVO} voByDTO(${entitySelectDTO} s) {
+##        List<${entityVO}> vs = voList(s);
+##        if (vs == null || vs.isEmpty()) return null;
+##        if (vs.size() > 1) throw new RuntimeException("error query => required 1 but found " + vs.size());
+##        return vs.get(0);
+##    }
 
     #if(${generateService})
     @Override
     #end
     public List<${entityVO}> voList(${entitySelectDTO} s) {
-        return voSelect(s, null);
+        return getBaseMapper().voSelect(s, null);
     }
 
     #if(${generateService})
@@ -163,7 +167,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         if (current == null || current < 1) current = 1L;
         if (size == null) size = 10L;
         Page<${entityVO}> page = new Page<>(current, size);
-        List<${entityVO}> voList = voSelect(s, page);
+        List<${entityVO}> voList = getBaseMapper().voSelect(s, page);
         page.setRecords(voList);
         return page;
     }
@@ -204,8 +208,9 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         #else
         if (current == null || current < 1) current = 1L;
         if (size == null) size = 10L;
-        Page<${entityVO}> page = new Page<>(current, size);
-        List<${entityVO}> voList = getBaseMapper().voSelectByXml(s, page);
+##        Page<${entityVO}> page = new Page<>(current, size);
+##        List<${entityVO}> voList = getBaseMapper().voSelect(s, page);
+        List<${entityVO}> voList = getBaseMapper().voSelect(s, new Page<>(current, size));
         #end
         EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).sheet().doWrite(voList);
     }

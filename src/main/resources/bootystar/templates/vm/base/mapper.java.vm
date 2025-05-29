@@ -49,6 +49,11 @@ interface ${table.mapperName} : ${superMapperClass}<${entity}>
 #else
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 
+     default List<${entityVO}> voSelect(${entitySelectDTO} s, IPage<${entityVO}> page) {
+        List<${entityVO}> vos = voSelectByXml(s, page)
+        return vos;
+    }
+
     List<${entityVO}> voSelectByXml(${entitySelectDTO} s, IPage<${entity}VO> page);
 ##    #if(${generateSelect})
 ##
