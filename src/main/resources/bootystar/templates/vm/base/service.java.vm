@@ -72,8 +72,8 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
     #if(${generateSelect})
 
     ${entityVO} voById(Serializable id);
-
-    ${entityVO} voByDTO(${entitySelectDTO} s);
+##
+##    ${entityVO} voByDTO(${entitySelectDTO} s);
 
     List<${entityVO}> voList(${entitySelectDTO} s);
 
