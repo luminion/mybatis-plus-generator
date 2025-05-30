@@ -92,6 +92,38 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     }
 #end
 #if(${overrideMethods})
+    #if(${generateSelect})
+
+    @Override
+    public ${entityVO} voById(Serializable id) {
+        return ${superMehtod}.voById(id);
+    }
+
+    @Override
+    public List<${entityVO}> voList(Object s) {
+        return ${superMehtod}.voList(s);
+    }
+
+    @Override
+    public IPage<${entityVO}> voPage(Object s, Long current, Long size) {
+        return ${superMehtod}.voPage(s, current, size);
+    }
+    #end
+    #if(${generateExport})
+
+    @Override
+    public void excelExport(Object s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
+        ${superMehtod}.excelExport(s, os, clazz, current, size, includeFields);
+    }
+    #end
+    #if(${generateImport})
+
+    @Override
+    public int excelImport(InputStream is, Class<?> clazz) {
+//        List<${entityInsertDTO}> dataList = ExcelHelper.read(is).head(clazz).sheet().doReadSync();
+        return ${superMehtod}.excelImport(is, clazz);
+    }
+    #end
     #if(${generateInsert})
 
     @Override
@@ -113,46 +145,6 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     public boolean removeById(Serializable id) {
         return super.removeById(id);
-    }
-    #end
-##    @Override
-##    public List<${entityVO}> doSelectVO(Object s, IPage<${entityVO}> page) {
-####        #if(${entitySelectDTO})
-####//        ${entitySelectDTO} dto = (${entitySelectDTO}) s;
-####        #end
-##        return super.doSelectVO(s, page);
-##        #end
-##    }
-    #if(${generateSelect})
-
-    @Override
-    public ${entityVO} voById(Serializable id) {
-        return ${superMehtod}.voById(id);
-    }
-
-    @Override
-    public List<${entityVO}> voList(Object s) {
-        return ${superMehtod}.voList(s);
-    }
-
-    @Override
-    public IPage<${entityVO}> voPage(Object s, Long current, Long size) {
-        return ${superMehtod}.voPage(s, current, size);
-    }
-    #end
-    #if(${generateImport})
-
-    @Override
-    public int excelImport(InputStream is, Class<?> clazz) {
-//        List<${entityInsertDTO}> dataList = ExcelHelper.read(is).head(clazz).sheet().doReadSync();
-        return ${superMehtod}.excelImport(is, clazz);
-    }
-    #end
-    #if(${generateExport})
-
-    @Override
-    public void excelExport(Object s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
-        ${superMehtod}.excelExport(s, os, clazz, current, size, includeFields);
     }
     #end
 

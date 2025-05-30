@@ -7,19 +7,25 @@ package ${package.Service};
 ##        #break
 ##    #end
 ###end
-#set($entityInsertDTO = "${entity}InsertDTO")
-#set($entityUpdateDTO = "${entity}UpdateDTO")
+#set($actualType = ${actualType4ServiceMethodParam})
 #set($entityVO = "${entity}VO")
+#set($sourceEntityInsertDTO = "${entity}InsertDTO")
+#set($sourceEntityUpdateDTO = "${entity}UpdateDTO")
 #if(${selectDTO.classFullName})
-    #set($entitySelectDTO = ${selectDTO.clazz("${entity}")})
-    #if(${generateSelect}||${generateExport})
-import ${selectDTO.classFullName};
-    #end
+    #set($sourceEntitySelectDTO = ${selectDTO.clazz("${entity}")})
+    #set($importStr4SelectDTO="import ${selectDTO.classFullName};")
 #else
-    #set($entitySelectDTO = "${entity}SelectDTO")
-    #if(${generateSelect}||${generateExport})
-import ${basePackage}.${package4DTO}.${entity}SelectDTO;
-    #end
+    #set($sourceEntitySelectDTO = "${entity}SelectDTO")
+    #set($importStr4SelectDTO="import ${basePackage}.${package4DTO}.${entity}SelectDTO;")
+#end
+#if(${actualType})
+    #set($entityInsertDTO = "${sourceEntityInsertDTO}")
+    #set($entityUpdateDTO = "${sourceEntityUpdateDTO}")
+    #set($entitySelectDTO = "${sourceEntitySelectDTO}")
+#else
+    #set($entityInsertDTO = "Object")
+    #set($entityUpdateDTO = "Object")
+    #set($entitySelectDTO = "Object")
 #end
 ## ------参数设置----end
 #if(${generateSelect}||${generateExport})
@@ -30,13 +36,17 @@ import ${package.Entity}.${entity};
 #if(${generateSelect}||${generateExport})
 import ${basePackage}.${package4VO}.${entityVO};
 #end
-#if(${generateInsert}||${generateImport})
+#if(${actualType})
+    #if(${generateSelect}||${generateExport})
+${importStr4SelectDTO}
+    #end
+    #if(${generateInsert}||${generateImport})
 import ${basePackage}.${package4DTO}.${entityInsertDTO};
-#end
-#if(${generateUpdate})
+    #end
+    #if(${generateUpdate})
 import ${basePackage}.${package4DTO}.${entityUpdateDTO};
+    #end
 #end
-
 #if(${generateImport})
 import java.io.InputStream;
 #end
@@ -48,7 +58,6 @@ import java.io.Serializable;
 import java.util.List;
 #end
 
-
 /**
  * $!{table.comment}服务类
  *
@@ -59,25 +68,17 @@ import java.util.List;
 interface ${table.serviceName} : ${superServiceClass}<${entity}>
 #else
 public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
-    #if(${generateInsert})
-
-    Object insertByDTO(${entityInsertDTO} s);
-##    Object insertByDTO(Object s);
-    #end
-    #if(${generateUpdate})
-
-    boolean updateByDTO(${entityUpdateDTO} s);
-##    boolean updateByDTO(Object s);
-    #end
     #if(${generateSelect})
 
     ${entityVO} voById(Serializable id);
-##
-##    ${entityVO} voByDTO(${entitySelectDTO} s);
 
     List<${entityVO}> voList(${entitySelectDTO} s);
 
     IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size);
+    #end
+    #if(${generateExport})
+
+    void excelExport(${entitySelectDTO} s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields);
     #end
     #if(${generateImport})
 
@@ -85,10 +86,13 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
 
     int excelImport(InputStream is, Class<?> clazz);
     #end
-    #if(${generateExport})
+    #if(${generateInsert})
 
-    void excelExport(${entitySelectDTO} s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields);
-##    void excelExport(Object s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields);
+    Object insertByDTO(${entityInsertDTO} s);
+    #end
+    #if(${generateUpdate})
+
+    boolean updateByDTO(${entityUpdateDTO} s);
     #end
 
 

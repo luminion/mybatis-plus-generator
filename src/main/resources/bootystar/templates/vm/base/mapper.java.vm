@@ -2,38 +2,31 @@ package ${package.Mapper};
 
 ## ------参数设置----start
 #set($entityVO = "${entity}VO")
-#if(${selectDTO.classFullName})
-    #set($entitySelectDTO = ${selectDTO.clazz("${entity}")})
-    #if(${generateSelect}||${generateExport})
-import ${selectDTO.classFullName};
-    #end
-#else
-    #set($entitySelectDTO = "${entity}SelectDTO")
-import ${basePackage}.${package4DTO}.${entity}SelectDTO;
-#end
+###if(${selectDTO.classFullName})
+##    #set($sourceEntitySelectDTO = ${selectDTO.clazz("${entity}")})
+##    #set($importStr4SelectDTO="import ${selectDTO.classFullName};")
+###else
+##    #set($sourceEntitySelectDTO = "${entity}SelectDTO")
+##    #set($importStr4SelectDTO="import ${basePackage}.${package4DTO}.${entity}SelectDTO;")
+###end
 ## ------参数设置----end
 import com.baomidou.mybatisplus.core.metadata.IPage;
-###if(${generateSelect})
-##import com.baomidou.mybatisplus.core.metadata.TableInfo;
-##import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-##import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-###end
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ${superMapperClassPackage};
 ##import org.apache.ibatis.annotations.Param;
 #if(${mapperAnnotationClass})
 import ${mapperAnnotationClass.name};
 #end
+##${importStr4SelectDTO}
 import ${basePackage}.${package4VO}.${entity}VO;
 import ${package.Entity}.${entity};
-###if(${generateSelect})
-##import org.springframework.beans.BeanUtils;
-###end
-
 
 #if(${generateSelect})
 import java.io.Serializable;
 #end
 import java.util.List;
+import java.util.Map;
 
 /**
  * $!{table.comment}Mapper
@@ -49,43 +42,16 @@ interface ${table.mapperName} : ${superMapperClass}<${entity}>
 #else
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 
-     default List<${entityVO}> voSelect(${entitySelectDTO} s, IPage<${entityVO}> page) {
-        List<${entityVO}> vos = voSelectByXml(s, page)
-        return vos;
+     default List<${entityVO}> voSelect(Object obj, IPage<${entityVO}> page) {
+         if (obj != null && !(obj instanceof Map)){
+             ObjectMapper mapper = new ObjectMapper();
+             obj = mapper.convertValue(obj, new TypeReference<Map<String, Object>>() {});
+         }
+         List<${entityVO}> vos = voSelectByXml(obj, page);
+         return vos;
     }
 
-    List<${entityVO}> voSelectByXml(${entitySelectDTO} s, IPage<${entity}VO> page);
-##    #if(${generateSelect})
-##
-##    default ${entityVO} voById(Serializable id) {
-##        ${entity} entity = new ${entity}();
-##        TableInfo tableInfo = TableInfoHelper.getTableInfo(${entity}.class);
-##        tableInfo.setPropertyValue(entity, tableInfo.getKeyProperty(), id);
-##        ${entitySelectDTO} s = new ${entitySelectDTO}();
-##        BeanUtils.copyProperties(entity, s);
-##        return voByDTO(s);
-##    }
-##
-##    default ${entityVO} voByDTO(${entitySelectDTO} s) {
-##        List<${entityVO}> vs = voList(s);
-##        if (vs == null || vs.isEmpty()) return null;
-##        if (vs.size() > 1) throw new RuntimeException("error query => required 1 but found " + vs.size());
-##        return vs.get(0);
-##    }
-##
-##    default List<${entityVO}> voList(${entitySelectDTO} s) {
-##        return voSelectByXml(s, null);
-##    }
-##
-##    default IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size) {
-##        if (current == null || current < 1) current = 1L;
-##        if (size == null) size = 10L;
-##        Page<${entityVO}> page = new Page<>(current, size);
-##        List<${entityVO}> voList = voSelectByXml(s, page);
-##        page.setRecords(voList);
-##        return page;
-##    }
-##    #end
+    List<${entityVO}> voSelectByXml(Object s, IPage<${entity}VO> page);
 
 }
 #end

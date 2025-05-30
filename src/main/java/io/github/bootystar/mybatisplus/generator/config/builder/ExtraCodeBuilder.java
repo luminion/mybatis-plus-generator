@@ -22,5 +22,13 @@ public class ExtraCodeBuilder extends BaseEnhanceBuilder<ExtraCodeBuilder> {
         return super.extraFieldGenerateStrategy(strategy);
     }
 
+    @Override
+    public ExtraCodeBuilder enableActualType4ServiceMethodParam(){
+        return super.enableActualType4ServiceMethodParam();
+    }
 
+    @Override
+    public ExtraCodeBuilder withMapSelectDTO() {
+        return super.withMapSelectDTO();
+    }
 }

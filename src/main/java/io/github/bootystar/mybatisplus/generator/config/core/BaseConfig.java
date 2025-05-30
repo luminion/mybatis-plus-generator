@@ -226,4 +226,8 @@ public abstract class BaseConfig {
      */
     protected ExtraFieldGenerateStrategy extraFieldStrategy = new ExtraFieldStrategyAuto();
 
+    /**
+     * 实际类型参数
+     */
+    protected boolean actualType4ServiceMethodParam;
 }
