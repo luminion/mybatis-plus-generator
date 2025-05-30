@@ -102,8 +102,8 @@ public class ${entity}SelectDTO {
 
     public ${extraFieldType} get${field.capitalName}${key}() {
         if (${extraFieldName} == null || ${extraFieldName}.isEmpty()) return null;
-        if (!${extraFieldName}.startWith("%")) ${extraFieldName} = "%" + ${extraFieldName};
-        if (!${extraFieldName}.endWith("%")) ${extraFieldName} = ${extraFieldName} + "%";
+        if (!${extraFieldName}.startsWith("%")) ${extraFieldName} = "%" + ${extraFieldName};
+        if (!${extraFieldName}.endsWith("%")) ${extraFieldName} = ${extraFieldName} + "%";
         return ${extraFieldName};
     }
                 #end
