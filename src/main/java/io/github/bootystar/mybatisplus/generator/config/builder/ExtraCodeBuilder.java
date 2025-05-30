@@ -29,7 +29,7 @@ public class ExtraCodeBuilder extends BaseEnhanceBuilder<ExtraCodeBuilder> {
 
     /**
      * 使用Map作为查询方法入参DTO
-     * @deprecated 不建议, 使用该方式时, like查询需要值手动添加前后%, 否则会查询无效
+     * @deprecated 不建议, 使用该方式时, like后缀查询需要值手动添加前后%, 否则会等同于等于查询
      * @return {@link ExtraCodeBuilder }
      */
     @Override
