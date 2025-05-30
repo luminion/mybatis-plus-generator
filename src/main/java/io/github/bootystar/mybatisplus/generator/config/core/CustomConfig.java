@@ -150,6 +150,10 @@ public class CustomConfig extends BaseConfig {
             this.extraFieldSuffixMap = build;
         }
 
+        if (selectDTO!=null && Map.class.isAssignableFrom(selectDTO.getClazz())) {
+            this.useMapSelectDTO = true;
+        }
+        
         // 添加自定义配置字段信息
         HashMap<String, Object> data = new HashMap<>();
         try {

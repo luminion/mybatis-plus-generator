@@ -44,7 +44,7 @@ import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import ${basePackage}.${package4VO}.${entityVO};
 #end
 #if(${actualType})
-    #if(${generateSelect}||${generateExport})
+    #if(!${useMapSelectDTO} && (${generateSelect}||${generateExport}))
 ${importStr4SelectDTO}
     #end
     #if(${generateInsert}||${generateImport})

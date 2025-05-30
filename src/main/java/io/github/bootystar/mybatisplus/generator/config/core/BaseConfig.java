@@ -207,6 +207,11 @@ public abstract class BaseConfig {
     protected ClassInfo selectDTO;
 
     /**
+     * 使用map作为查询入参
+     */
+    protected boolean useMapSelectDTO;
+
+    /**
      * mapper入参dto
      */
     protected ClassInfo mapperDTO;

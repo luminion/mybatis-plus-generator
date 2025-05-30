@@ -37,7 +37,7 @@ import ${package.Entity}.${entity};
 import ${basePackage}.${package4VO}.${entityVO};
 #end
 #if(${actualType})
-    #if(${generateSelect}||${generateExport})
+    #if(!${useMapSelectDTO} && (${generateSelect}||${generateExport}))
 ${importStr4SelectDTO}
     #end
     #if(${generateInsert}||${generateImport})
@@ -56,6 +56,9 @@ import java.io.OutputStream;
 #if(${generateSelect}||${generateExport})
 import java.io.Serializable;
 import java.util.List;
+    #if(${useMapSelectDTO} && ${actualType} && (${generateSelect}||${generateExport}))
+${importStr4SelectDTO}
+    #end
 #end
 
 /**
