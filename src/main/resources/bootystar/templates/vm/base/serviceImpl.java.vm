@@ -7,19 +7,25 @@ package ${package.ServiceImpl};
 ##        #break
 ##    #end
 ###end
-#set($entityInsertDTO = "${entity}InsertDTO")
-#set($entityUpdateDTO = "${entity}UpdateDTO")
+#set($actualType = ${actualType4ServiceMethodParam})
 #set($entityVO = "${entity}VO")
+#set($sourceEntityInsertDTO = "${entity}InsertDTO")
+#set($sourceEntityUpdateDTO = "${entity}UpdateDTO")
 #if(${selectDTO.classFullName})
-    #set($entitySelectDTO = ${selectDTO.clazz("${entity}")})
-    #if(${generateSelect}||${generateExport})
-import ${selectDTO.classFullName};
-    #end
+    #set($sourceEntitySelectDTO = ${selectDTO.clazz("${entity}")})
+    #set($importStr4SelectDTO="import ${selectDTO.classFullName};")
 #else
-    #set($entitySelectDTO = "${entity}SelectDTO")
-    #if(${generateSelect}||${generateExport})
-import ${basePackage}.${package4DTO}.${entitySelectDTO};
-    #end
+    #set($sourceEntitySelectDTO = "${entity}SelectDTO")
+    #set($importStr4SelectDTO="import ${basePackage}.${package4DTO}.${entity}SelectDTO;")
+#end
+#if(${actualType})
+    #set($entityInsertDTO = "${sourceEntityInsertDTO}")
+    #set($entityUpdateDTO = "${sourceEntityUpdateDTO}")
+    #set($entitySelectDTO = "${sourceEntitySelectDTO}")
+#else
+    #set($entityInsertDTO = "Object")
+    #set($entityUpdateDTO = "Object")
+    #set($entitySelectDTO = "Object")
 #end
 ## ------参数设置----end
 #if(${generateImport}||${generateExport})
@@ -37,11 +43,16 @@ import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 #if(${generateSelect}||${generateExport})
 import ${basePackage}.${package4VO}.${entityVO};
 #end
-#if(${generateInsert}||${generateImport})
+#if(${actualType})
+    #if(${generateSelect}||${generateExport})
+${importStr4SelectDTO}
+    #end
+    #if(${generateInsert}||${generateImport})
 import ${basePackage}.${package4DTO}.${entityInsertDTO};
-#end
-#if(${generateUpdate})
+    #end
+    #if(${generateUpdate})
 import ${basePackage}.${package4DTO}.${entityUpdateDTO};
+    #end
 #end
 ## ------默认导入 start----------
 import ${package.Entity}.${entity};
@@ -50,9 +61,12 @@ import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
 #end
 import ${superServiceImplClassPackage};
+#if(${generateSelect})
+import org.apache.ibatis.exceptions.TooManyResultsException;
+#end
 import org.springframework.stereotype.Service;
 ## ------默认导入 end----------
-#if(${generateInsert}||${generateUpdate}||${generateImport}||${generateSelect})
+#if(${generateInsert}||${generateUpdate}||${generateImport})
 import org.springframework.beans.BeanUtils;
 #end
 
@@ -86,72 +100,20 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 }
 #else
 public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>#if(${generateService}) implements ${table.serviceName}#end {
-    #if(${generateInsert})
-
-    #if(${generateService})
-    @Override
-    #end
-    public Object insertByDTO(${entityInsertDTO} s) {
-##    public Object insertByDTO(Object s) {
-##//        ${entityInsertDTO} dto = (${entityInsertDTO}) s;
-        ${entity} entity = new ${entity}();
-        BeanUtils.copyProperties(s, entity);
-        super.save(entity);
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
-        return tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
-    }
-    #end
-    #if(${generateUpdate})
-
-    #if(${generateService})
-    @Override
-    #end
-    public boolean updateByDTO(${entityUpdateDTO} s) {
-##    public boolean updateByDTO(Object s) {
-##//        ${entityUpdateDTO} dto = (${entityUpdateDTO}) s;
-        ${entity} entity = new ${entity}();
-        BeanUtils.copyProperties(s, entity);
-        return super.updateById(entity);
-    }
-    #end
-    #if(${generateDelete})
-
-    @Override
-    public boolean removeById(Serializable id) {
-        return super.removeById(id);
-    }
-    #end
     #if(${generateSelect})
-##
-##    private List<${entityVO}> voSelect(${entitySelectDTO} s, IPage<${entityVO}> page) {
-##        return getBaseMapper().voSelectByXml(s, page);
-##    }
 
     #if(${generateService})
     @Override
     #end
     public ${entityVO} voById(Serializable id) {
-        ${entity} entity = new ${entity}();
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(${entity}.class);
-        tableInfo.setPropertyValue(entity, tableInfo.getKeyProperty(), id);
-        ${entitySelectDTO} s = new ${entitySelectDTO}();
-        BeanUtils.copyProperties(entity, s);
-##        return voByDTO(s);
-        List<${entityVO}> vs = voList(s);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(TableInfoHelper.getTableInfo(getEntityClass()).getKeyProperty(), id);
+        IPage<${entityVO}> page = new Page<>(1L, 1L);
+        List<${entityVO}> vs = getBaseMapper().voSelect(map, page);
         if (vs == null || vs.isEmpty()) return null;
-        if (vs.size() > 1) throw new RuntimeException("error query => required 1 but found " + vs.size());
+        if (page.getTotal() > 1) throw new TooManyResultsException("Expected one result (or null) to be returned by id, but found:" + page.getTotal());
         return vs.get(0);
     }
-##
-##    #if(${generateService})
-##    @Override
-##    #end
-##    public ${entityVO} voByDTO(${entitySelectDTO} s) {
-##        List<${entityVO}> vs = voList(s);
-##        if (vs == null || vs.isEmpty()) return null;
-##        if (vs.size() > 1) throw new RuntimeException("error query => required 1 but found " + vs.size());
-##        return vs.get(0);
-##    }
 
     #if(${generateService})
     @Override
@@ -172,31 +134,6 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         return page;
     }
     #end
-    #if(${generateImport})
-
-    #if(${generateService})
-    @Override
-    #end
-    public void excelTemplate(OutputStream os, Class<?> clazz) {
-##        EasyExcel.write(os, clazz).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(Collections.emptyList());
-        EasyExcel.write(os, clazz).sheet().doWrite(Collections.emptyList());
-    }
-
-    #if(${generateService})
-    @Override
-    #end
-    public int excelImport(InputStream is, Class<?> clazz) {
-//        List<${entityInsertDTO}> dataList = EasyExcel.read(is).head(clazz).sheet().doReadSync();
-        List<?> dataList = EasyExcel.read(is).head(clazz).sheet().doReadSync();
-        List<${entity}> entityList = dataList.stream().map(e -> {
-            ${entity} entity = new ${entity}();
-            BeanUtils.copyProperties(e, entity);
-            return entity;
-        }).collect(Collectors.toList());
-        super.saveBatch(entityList);
-        return entityList.size();
-    }
-    #end
     #if(${generateExport})
 
     #if(${generateService})
@@ -213,6 +150,67 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         List<${entityVO}> voList = getBaseMapper().voSelect(s, new Page<>(current, size));
         #end
         EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).sheet().doWrite(voList);
+    }
+    #end
+    #if(${generateImport})
+
+    #if(${generateService})
+    @Override
+    #end
+    public void excelTemplate(OutputStream os, Class<?> clazz) {
+        EasyExcel.write(os, clazz).sheet().doWrite(Collections.emptyList());
+    }
+
+    #if(${generateService})
+    @Override
+    #end
+    public int excelImport(InputStream is, Class<?> clazz) {
+        List<?> dataList = EasyExcel.read(is).head(clazz).sheet().doReadSync();
+        List<${entity}> entityList = dataList.stream().map(e -> {
+//            ${sourceEntityInsertDTO} dto = (${sourceEntityInsertDTO}) e;
+            ${entity} entity = new ${entity}();
+            BeanUtils.copyProperties(e, entity);
+            return entity;
+        }).collect(Collectors.toList());
+        super.saveBatch(entityList);
+        return entityList.size();
+    }
+    #end
+    #if(${generateInsert})
+
+    #if(${generateService})
+    @Override
+    #end
+    public Object insertByDTO(${entityInsertDTO} s) {
+        #if(!$actualType)
+//        ${sourceEntityInsertDTO} dto = (${sourceEntityInsertDTO}) s;
+        #end
+        ${entity} entity = new ${entity}();
+        BeanUtils.copyProperties(s, entity);
+        super.save(entity);
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
+        return tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
+    }
+    #end
+    #if(${generateUpdate})
+
+    #if(${generateService})
+    @Override
+    #end
+    public boolean updateByDTO(${entityUpdateDTO} s) {
+        #if(!$actualType)
+//        ${sourceEntityUpdateDTO} dto = (${sourceEntityUpdateDTO}) s;
+        #end
+        ${entity} entity = new ${entity}();
+        BeanUtils.copyProperties(s, entity);
+        return super.updateById(entity);
+    }
+    #end
+    #if(${generateDelete})
+
+    @Override
+    public boolean removeById(Serializable id) {
+        return super.removeById(id);
     }
     #end
 
