@@ -23,18 +23,13 @@ package ${package.Controller};
 #set($entityVO = "${entity}VO")
 #if(${selectDTO.classFullName})
         #set($entitySelectDTO = ${selectDTO.clazz("${entity}")})
-        #if(${generateSelect}||${generateExport})
-import ${selectDTO.classFullName};
-import ${package.Entity}.${entity};
-        #end
+        #set($importStr4SelectDTO="import ${selectDTO.classFullName};")
     #else
         #set($entitySelectDTO = "${entity}SelectDTO")
-        #if(${generateSelect}||${generateExport})
-import ${basePackage}.${package4DTO}.${entity}SelectDTO;
-        #end
+        #set($importStr4SelectDTO="import ${basePackage}.${package4DTO}.${entity}SelectDTO;")
 #end
-#if(${isMapSelectDTO} && (!${postQuery} || !${requestBody}))
-#set($entitySelectDTO = "@RequestParam ${entitySelectDTO}")
+#if(${useMapSelectDTO} && (!${postQuery} || !${requestBody}))
+    #set($entitySelectDTO = "@RequestParam ${entitySelectDTO}")
 #end
 #set($requestMethod4Select = "#if(${postQuery})@PostMapping#else@GetMapping#end")
 ##set($pagePathParams = "@PathVariable(value = ""current"", required = false) Long current, @PathVariable(value = ""size"", required = false) Long size")
@@ -59,6 +54,9 @@ import ${package.ServiceImpl}.${table.serviceImplName};
     #set($baseService = ${table.serviceImplName})
 #end
 ##------参数设置----end
+#if(!${useMapSelectDTO} && (${generateSelect}||${generateExport}))
+${importStr4SelectDTO}
+#end
 #if(${generateInsert}||${generateImport})
 import ${basePackage}.${package4DTO}.${entityInsertDTO};
 #end
@@ -116,6 +114,9 @@ import java.io.IOException;
 ###end
 #if(${generateSelect})
 import java.util.List;
+    #if(${useMapSelectDTO} && (${generateSelect}||${generateExport}))
+import java.util.Map;
+    #end
 #end
 
 /**
