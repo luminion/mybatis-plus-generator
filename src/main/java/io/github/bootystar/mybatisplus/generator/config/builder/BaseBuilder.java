@@ -200,6 +200,16 @@ public abstract class BaseBuilder<B extends BaseBuilder<B>> extends BaseConfig {
         this.editExcludeColumns = Arrays.asList(columns);
         return this.getBuilder();
     }
+    
+    public B useFastExcel(){
+        this.excelBasePackage = "cn.idev.excel";
+        return this.getBuilder();
+    }
+    
+    public B useEasyExcel(){
+        this.excelBasePackage = "com.alibaba.excel";
+        return this.getBuilder();
+    }
 
     // ------------------controller相关配置----------------
 

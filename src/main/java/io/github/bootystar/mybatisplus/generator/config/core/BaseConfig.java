@@ -90,6 +90,11 @@ public abstract class BaseConfig {
      */
     protected Collection<String> editExcludeColumns;
 
+    /**
+     * excel注解的包
+     */
+    protected String excelBasePackage = "cn.idev.excel";
+
     // ------------------controller相关配置----------------
 
     /**
