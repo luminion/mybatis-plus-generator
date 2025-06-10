@@ -1,8 +1,8 @@
 package ${basePackage}.${package4DTO};
 
 #if(${generateImport})
-import cn.idev.excel.annotation.ExcelIgnoreUnannotated;
-import cn.idev.excel.annotation.ExcelProperty;
+import ${excelBasePackage}.annotation.ExcelIgnoreUnannotated;
+import ${excelBasePackage}.annotation.ExcelProperty;
 #end
 #if(${springdoc})
 import io.swagger.v3.oas.annotations.media.Schema;
