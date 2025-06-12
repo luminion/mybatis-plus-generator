@@ -30,7 +30,7 @@ package ${package.ServiceImpl};
 ## ------参数设置----end
 #if(${generateImport}||${generateExport})
 import ${excelBasePackage}.EasyExcel;
-##import ${excelBasePackage}.write.style.column.LongestMatchColumnWidthStyleStrategy;
+import ${excelBasePackage}.write.style.column.LongestMatchColumnWidthStyleStrategy;
 #end
 #if(${generateSelect}||${generateExport})
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -149,7 +149,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 ##        List<${entityVO}> voList = getBaseMapper().voSelect(s, page);
         List<${entityVO}> voList = getBaseMapper().voSelect(s, new Page<>(current, size));
         #end
-        EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.  asList(includeFields)).sheet().doWrite(voList);
+        EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(voList);
     }
     #end
     #if(${generateImport})

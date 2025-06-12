@@ -13,7 +13,7 @@
 <dependency>
     <groupId>io.github.bootystar</groupId>
     <artifactId>mybatis-plus-generator</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.6</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@
 <dependency>
     <groupId>cn.idev.excel</groupId>
     <artifactId>FastExcel</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 ### 新版本enhancer
@@ -33,7 +33,7 @@
 <dependency>
     <groupId>io.github.bootystar</groupId>
     <artifactId>mybatis-plus-generator</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.6</version>
 </dependency>
 ```
 示例:
@@ -41,7 +41,7 @@
 <dependency>
     <groupId>io.github.bootystar</groupId>
     <artifactId>mybatis-plus-enhancer</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.4</version>
 </dependency>
 <dependency>
     <groupId>io.github.bootystar</groupId>
@@ -157,6 +157,8 @@ custom
     .disableSelect() // 不生成查询
     .disableImport() // 不生成导入
     .disableExport() // 不生成导出
+    .useEasyExcel() // 使用easyexcel处理excel
+    .useFastExcel() // 使用fastexcel处理excel
     .package4DTO("dto") // DTO的包名
     .path4DTO("C:/Project/test21/") // DTO的路径(全路径或相对路径)
     .package4VO("vo") // VO的包名

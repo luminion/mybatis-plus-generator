@@ -8,7 +8,7 @@
     <artifactId>mybatis-plus-generator</artifactId>
     <groupId>io.github.bootystar</groupId>
     <description>generator of mybatis-plus</description>
-    <version>1.2.5</version>
+    <version>1.2.6</version>
     
     <licenses>
         <license>
@@ -60,7 +60,8 @@
         <dependency>
             <groupId>io.github.bootystar</groupId>
             <artifactId>mybatis-plus-enhancer</artifactId>
-            <version>1.2.3</version>
+            <version>1.2.4</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
