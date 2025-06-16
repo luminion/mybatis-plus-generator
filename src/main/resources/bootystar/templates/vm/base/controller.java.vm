@@ -54,6 +54,7 @@ import ${package.ServiceImpl}.${table.serviceImplName};
     #set($baseService = ${table.serviceImplName})
 #end
 ##------参数设置----end
+import ${package.Entity}.${entity};
 #if(!${useMapSelectDTO} && (${generateSelect}||${generateExport}))
 ${importStr4SelectDTO}
 #end
