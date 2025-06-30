@@ -61,7 +61,6 @@
             <groupId>io.github.bootystar</groupId>
             <artifactId>mybatis-plus-enhancer</artifactId>
             <version>1.2.4</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
