@@ -11,6 +11,7 @@ import org.apache.ibatis.type.JdbcType;
 import java.util.*;
 
 /**
+ * 基础配置
  * @author bootystar
  */
 public abstract class BaseConfig {

@@ -7,6 +7,7 @@ import java.util.Collections;
 
 
 /**
+ * 类承载信息
  * @author bootystar
  */
 @Getter

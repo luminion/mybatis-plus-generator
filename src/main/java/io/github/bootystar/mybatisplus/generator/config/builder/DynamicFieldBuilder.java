@@ -11,6 +11,8 @@ import java.util.function.Consumer;
 
 
 /**
+ * 动态字段生成器
+ *
  * @author bootystar
  */
 @Getter
