@@ -42,15 +42,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <mybatisplus.version>3.5.11</mybatisplus.version>
-
-        <!-- project dependency plugin version -->
-        <apache-maven-plugins.groupId>org.apache.maven.plugins</apache-maven-plugins.groupId>
-        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
-        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
-        <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
-        <license-maven-plugin.version>5.0.0</license-maven-plugin.version>
-        <central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -92,20 +83,6 @@
         </dependency>
     </dependencies>
     
-    <repositories>
-        <repository>
-            <name>Central Portal Snapshots</name>
-            <id>central-portal-snapshots</id>
-            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    
     <build>
         <plugins>
             <!-- Compiler -->
@@ -140,6 +117,7 @@
                 <version>3.10.0</version>
                 <configuration>
                     <additionalJOptions>
+                        <!-- ignore warnings -->
                         <additionalJOption>-Xdoclint:none</additionalJOption>
                     </additionalJOptions>
                 </configuration>
@@ -157,10 +135,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>3.2.7</version>
-                <!--跳过GPG签名-->
-<!--                <configuration>-->
-<!--                    <skip>true</skip>-->
-<!--                </configuration>-->
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
