@@ -13,10 +13,6 @@
     <artifactId>mybatis-plus-generator</artifactId>
     <version>1.2.7</version>
 
-    <properties>
-        <mybatisplus.version>3.5.11</mybatisplus.version>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
