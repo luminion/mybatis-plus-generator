@@ -1,7 +1,5 @@
 package io.github.bootystar.mybatisplus.generator.generator.impl;
 
-import io.github.bootystar.mybatisplus.enhancer.core.DynamicMapper;
-import io.github.bootystar.mybatisplus.enhancer.core.DynamicService;
 import io.github.bootystar.mybatisplus.generator.config.builder.DynamicSqlBuilder;
 import io.github.bootystar.mybatisplus.generator.generator.core.AbstractGenerator;
 

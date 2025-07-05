@@ -8,9 +8,6 @@ import io.github.bootystar.mybatisplus.generator.generator.impl.DynamicFieldGene
 import io.github.bootystar.mybatisplus.generator.generator.impl.DynamicSqlGenerator;
 import io.github.bootystar.mybatisplus.generator.generator.impl.ExtraCodeGenerator;
 
-/**
- * @author bootystar
- */
 @SuppressWarnings("unused")
 public abstract class GeneratorHelper {
 

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * 额外字段配置
  * @author bootystar
  */
 public class ExtraFieldStrategyAuto implements ExtraFieldGenerateStrategy {

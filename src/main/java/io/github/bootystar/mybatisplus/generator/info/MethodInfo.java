@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 /**
+ * 方法承载信息
  * @author bootystar
  */
 @Getter

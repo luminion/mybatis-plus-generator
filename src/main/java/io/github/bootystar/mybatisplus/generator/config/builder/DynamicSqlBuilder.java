@@ -6,6 +6,8 @@ import io.github.bootystar.mybatisplus.generator.info.ClassInfo;
 import lombok.Getter;
 
 /**
+ * 动态sql生成器
+ *
  * @author bootystar
  */
 @Getter
