@@ -13,11 +13,11 @@
 <dependency>
     <groupId>io.github.bootystar</groupId>
     <artifactId>mybatis-plus-generator</artifactId>
-    <version>1.2.6</version>
+    <version>1.2.7</version>
 </dependency>
 ```
 
-### 如果需要使用Excel功能,请自行引入FastExcel依赖
+### 如果需要使用Excel功能,请自行引入FastExcel或EasyExcel依赖(任一)
 ```xml
 <!-- (可选)Excel导入导出 -->
 <dependency>
@@ -25,58 +25,17 @@
     <artifactId>FastExcel</artifactId>
     <version>1.2.0</version>
 </dependency>
-```
-### 新版本enhancer
-生成器依赖于`mybatis-plus-enhancer`, `mybatis-plus-enhancer`更新时可引入依赖覆盖
-* 生成器`1.2.X`对应`1.2.X`的enhancer
-```xml
+<!-- (可选)Excel导入导出 -->
 <dependency>
-    <groupId>io.github.bootystar</groupId>
-    <artifactId>mybatis-plus-generator</artifactId>
-    <version>1.2.6</version>
+    <groupId>com.alibaba</groupId>
+    <artifactId>easyexcel</artifactId>
+    <version>4.0.3</version>
 </dependency>
 ```
-示例:
-```xml
-<dependency>
-    <groupId>io.github.bootystar</groupId>
-    <artifactId>mybatis-plus-enhancer</artifactId>
-    <version>1.2.4</version>
-</dependency>
-<dependency>
-    <groupId>io.github.bootystar</groupId>
-    <artifactId>mybatis-plus-generator</artifactId>
-    <version>1.2.1</version>
-</dependency>
-```
-
-### 中央仓库地址
-拉取SNAPSHOT或镜像仓库尚未同步的RELEASE版本时可配置在`pom.xml`文件中
-```xml
-<repositories>
-    <repository>
-        <id>snapshot</id>
-        <name>snapshot</name>
-        <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-        <snapshots>
-            <enabled>true</enabled>
-        </snapshots>
-    </repository>
-    <repository>
-      <id>release</id>
-      <name>release</name>
-      <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>
-    </repository>
-</repositories>
-```
-#### 若使用阿里云镜像拉取SNAPSHOT版本, 需在maven的`settings.xml`文件中配置`!snapshots`
-```xml
-<mirror>
-  <id>aliyunmaven</id>
-  <mirrorOf>*,!snapshots</mirrorOf>
-  <name>aliyun</name>
-  <url>https://maven.aliyun.com/repository/public</url>
-</mirror>
+默认使用FastExcel, 若使用EasyExcel,需要在程序任意位置调用方法进行切换
+```java
+//io.github.bootystar.mybatisplus.enhancer.util.ExcelAdapter.userFastExcel();// 使用FastExcel(默认)
+io.github.bootystar.mybatisplus.enhancer.util.ExcelAdapter.userEasyExcel();// 使用EasyExcel
 ```
 ## 代码生成器
 
