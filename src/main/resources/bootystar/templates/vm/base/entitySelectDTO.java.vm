@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 #end
 #if(${entityLombokModel})
 import lombok.Data;
+import lombok.EqualsAndHashCode;
     #if(${chainModel})
 import lombok.experimental.Accessors;
     #end
@@ -31,6 +32,7 @@ import java.util.List;
  */
 #if(${entityLombokModel})
 @Data
+@EqualsAndHashCode(callSuper = true)
     #if(${chainModel})
 @Accessors(chain = true)
     #end
@@ -44,7 +46,7 @@ import java.util.List;
 @ApiModel(value = "${entity}SelectDTO$!{swaggerUUID}", description = "$!{table.comment}-查询DTO")
 #end
 #end
-public class ${entity}SelectDTO {
+public class ${entity}SelectDTO extends ${entity} {
 ###if(${entitySerialVersionUID})
 ##
 ##    private static final long serialVersionUID = 1L;

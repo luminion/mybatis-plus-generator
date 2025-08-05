@@ -44,21 +44,21 @@ public abstract class AbstractGenerator<B extends BaseBuilder<B>> implements Enh
                 .parent("io.github.bootystar")
                 .xml("mapper")
         ;
-        this.strategyConfigBuilder.entityBuilder()
-                .javaTemplate("/bootystar/templates/vm/base/entity.java")
-        ;
-        this.strategyConfigBuilder.mapperBuilder()
-                .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
-                .mapperTemplate("/bootystar/templates/vm/base/mapper.java")
-                .mapperXmlTemplate("/bootystar/templates/vm/base/mapper.xml")
-        ;
-        this.strategyConfigBuilder.serviceBuilder()
-                .serviceTemplate("/bootystar/templates/vm/base/service.java")
-                .serviceImplTemplate("/bootystar/templates/vm/base/serviceImpl.java")
-        ;
-        this.strategyConfigBuilder.controllerBuilder()
-                .template("/bootystar/templates/vm/base/controller.java")
-        ;
+//        this.strategyConfigBuilder.entityBuilder()
+//                .javaTemplate("/bootystar/templates/vm/base/entity.java")
+//        ;
+//        this.strategyConfigBuilder.mapperBuilder()
+//                .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
+//                .mapperTemplate("/bootystar/templates/vm/base/mapper.java")
+//                .mapperXmlTemplate("/bootystar/templates/vm/base/mapper.xml")
+//        ;
+//        this.strategyConfigBuilder.serviceBuilder()
+//                .serviceTemplate("/bootystar/templates/vm/base/service.java")
+//                .serviceImplTemplate("/bootystar/templates/vm/base/serviceImpl.java")
+//        ;
+//        this.strategyConfigBuilder.controllerBuilder()
+//                .template("/bootystar/templates/vm/base/controller.java")
+//        ;
     }
 
     private void execute() {
@@ -127,30 +127,6 @@ public abstract class AbstractGenerator<B extends BaseBuilder<B>> implements Enh
         return this;
     }
 
-//    @Override
-//    public EnhanceGenerator<B> entity(Consumer<Entity.Builder> consumer) {
-//        consumer.accept(strategyConfigBuilder.entityBuilder());
-//        return this;
-//    }
-//
-//    @Override
-//    public EnhanceGenerator<B> mapper(Consumer<Mapper.Builder> consumer) {
-//        consumer.accept(strategyConfigBuilder.mapperBuilder());
-//        return this;
-//    }
-//
-//    @Override
-//    public EnhanceGenerator<B> service(Consumer<Service.Builder> consumer) {
-//        consumer.accept(strategyConfigBuilder.serviceBuilder());
-//        return this;
-//    }
-//
-//    @Override
-//    public EnhanceGenerator<B> controller(Consumer<Controller.Builder> consumer) {
-//        consumer.accept(strategyConfigBuilder.controllerBuilder());
-//        return this;
-//    }
-
     @Override
     public EnhanceGenerator<B> injectionConfig(Consumer<InjectionConfig.Builder> consumer) {
         consumer.accept(injectionConfigBuilder);
@@ -189,16 +165,17 @@ public abstract class AbstractGenerator<B extends BaseBuilder<B>> implements Enh
         globalConfigBuilder
                 .disableOpenDir()
         ;
-        dataSourceConfigBuilder
-                .typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
-                    if (JdbcType.TINYINT == metaInfo.getJdbcType()) {
-                        return DbColumnType.INTEGER;
-                    }
-                    if (JdbcType.SMALLINT == metaInfo.getJdbcType()) {
-                        return DbColumnType.INTEGER;
-                    }
-                    return typeRegistry.getColumnType(metaInfo);
-                });
+//        dataSourceConfigBuilder
+//                .typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+//                    if (JdbcType.TINYINT == metaInfo.getJdbcType()) {
+//                        return DbColumnType.INTEGER;
+//                    }
+//                    if (JdbcType.SMALLINT == metaInfo.getJdbcType()) {
+//                        return DbColumnType.INTEGER;
+//                    }
+//                    return typeRegistry.getColumnType(metaInfo);
+//                })
+//        ;
         customConfigBuilder
                 .editExcludeColumns("create_time", "update_time", "create_by", "update_by", "created_by", "updated_by", "create_at", "update_at", "created_at", "updated_at")
                 .sortColumn("order", false)
@@ -217,7 +194,7 @@ public abstract class AbstractGenerator<B extends BaseBuilder<B>> implements Enh
                 .enableLombok()
         ;
         strategyConfigBuilder.mapperBuilder()
-//                .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
+                .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
         ;
         strategyConfigBuilder.serviceBuilder()
                 .formatServiceFileName("%sService")

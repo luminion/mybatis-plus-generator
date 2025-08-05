@@ -25,7 +25,7 @@
     #end
     </resultMap>
 
-    <resultMap id="BaseResultMap4VO" type="${basePackage}.${package4VO}.${entity}VO">
+    <resultMap id="ViewObjectResultMap" type="${basePackage}.${package4VO}.${entity}VO">
     #foreach($field in ${table.fields})##生成主键排在第一位
         #if(${field.keyFlag})
         <id column="${field.name}" property="${field.propertyName}" />
@@ -52,7 +52,37 @@
     </sql>
 #end
 
-    <select id="voSelectByXml"#if(${resultMapForVO}) resultMap="BaseResultMap4VO"#else resultType="${basePackage}.${package4VO}.${entity}VO"#end>
+    <select id="voSelectByXml"#if(${resultMapForVO}) resultMap="ViewObjectResultMap"#else resultType="${basePackage}.${package4VO}.${entity}VO"#end>
+        SELECT
+        a.*
+        FROM
+        ##         ${schemaName} ${table.name} a
+        ${table.name} a
+        <where>
+            <include refid="io.github.bootystar.mybatisplus.enhancer.EnhancedMapper.dynamicSelect"/>
+            #foreach($field in ${table.fields})
+                #if(${field.logicDeleteField})
+                    #if(${field.metaInfo.defaultValue})
+                        AND a.${field.columnName} = ${field.metaInfo.defaultValue}
+                    #elseif(${field.propertyType}=)
+                        AND a.${field.columnName} = 0
+                    #else
+                        AND a.${field.columnName} IS NULL
+                    #end
+                    #break
+                #end
+            #end
+        </where>
+        <trim prefix="ORDER BY" prefixOverrides=",">
+            <include refid="io.github.bootystar.mybatisplus.enhancer.EnhancedMapper.dynamicSort"/>
+            #if(${orderBySql})
+                , ${orderBySql}
+            #end
+        </trim>
+    </select>
+    
+    
+    <select id="voSelectByXml"#if(${resultMapForVO}) resultMap="ViewObjectResultMap"#else resultType="${basePackage}.${package4VO}.${entity}VO"#end>
         SELECT
         a.*
         FROM

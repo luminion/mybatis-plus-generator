@@ -1,9 +1,8 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
-import io.github.bootystar.mybatisplus.enhancer.builder.ExtraFieldSuffixBuilder;
 import io.github.bootystar.mybatisplus.generator.strategy.ExtraFieldGenerateStrategy;
 
-import java.util.function.Consumer;
+import java.util.Map;
 
 /**
  * 默认配置类
@@ -13,8 +12,8 @@ import java.util.function.Consumer;
 public class ExtraCodeBuilder extends BaseEnhanceBuilder<ExtraCodeBuilder> {
 
     @Override
-    public ExtraCodeBuilder extraFieldSuffixBuilder(Consumer<ExtraFieldSuffixBuilder> builderConsumer) {
-        return super.extraFieldSuffixBuilder(builderConsumer);
+    public ExtraCodeBuilder extraFieldSuffixMap(Map<String, String> extraFieldSuffixMap) {
+        return super.extraFieldSuffixMap(extraFieldSuffixMap);
     }
 
     @Override
