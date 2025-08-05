@@ -42,16 +42,16 @@ interface ${table.mapperName} : ${superMapperClass}<${entity}>
 #else
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 
-     default List<${entityVO}> voSelect(Object obj, IPage<${entityVO}> page) {
+     default List<${entityVO}> voQuery(Object obj, IPage<${entityVO}> page) {
          if (obj != null && !(obj instanceof Map)){
              ObjectMapper mapper = new ObjectMapper();
              obj = mapper.convertValue(obj, new TypeReference<Map<String, Object>>() {});
          }
-         List<${entityVO}> vos = voSelectByXml(obj, page);
+         List<${entityVO}> vos = voQueryByXml(obj, page);
          return vos;
     }
 
-    List<${entityVO}> voSelectByXml(Object s, IPage<${entity}VO> page);
+    List<${entityVO}> voQueryByXml(Object s, IPage<${entity}VO> page);
 
 }
 #end

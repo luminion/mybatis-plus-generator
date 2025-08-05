@@ -1,12 +1,10 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
-import io.github.bootystar.mybatisplus.enhancer.builder.ExtraFieldSuffixBuilder;
 import io.github.bootystar.mybatisplus.enhancer.helper.SqlHelper;
 import io.github.bootystar.mybatisplus.generator.strategy.ExtraFieldGenerateStrategy;
 import io.github.bootystar.mybatisplus.generator.info.ClassInfo;
 
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * 将非通用配置作为protected寄存
@@ -41,18 +39,19 @@ public abstract class BaseEnhanceBuilder<B extends BaseEnhanceBuilder<B>> extend
      * @return this
      */
     protected B withSqlHelperSelectDTO() {
-        this.selectDTO = new ClassInfo(SqlHelper.class);
+        // todo
+//        this.selectDTO = new ClassInfo(SqlHelper.class);
         return this.getBuilder();
     }
 
     /**
      * 额外字段后缀构造器
      *
-     * @param builderConsumer builder消费者
+     * @param extraFieldSuffixMap 后缀映射
      * @return this
      */
-    protected B extraFieldSuffixBuilder(Consumer<ExtraFieldSuffixBuilder> builderConsumer) {
-        builderConsumer.accept(this.extraFieldSuffixBuilder);
+    protected B extraFieldSuffixMap(Map<String,String> extraFieldSuffixMap) {
+        this.extraFieldSuffixMap = extraFieldSuffixMap;
         return this.getBuilder();
     }
 

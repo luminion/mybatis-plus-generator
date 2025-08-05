@@ -1,11 +1,9 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
-import io.github.bootystar.mybatisplus.enhancer.builder.ExtraFieldSuffixBuilder;
-import io.github.bootystar.mybatisplus.enhancer.enums.SqlExtraSuffix;
-import io.github.bootystar.mybatisplus.generator.strategy.ExtraFieldGenerateStrategy;
-import io.github.bootystar.mybatisplus.generator.strategy.support.ExtraFieldStrategyAuto;
 import io.github.bootystar.mybatisplus.generator.info.ClassInfo;
 import io.github.bootystar.mybatisplus.generator.info.MethodInfo;
+import io.github.bootystar.mybatisplus.generator.strategy.ExtraFieldGenerateStrategy;
+import io.github.bootystar.mybatisplus.generator.strategy.support.ExtraFieldStrategyAuto;
 import org.apache.ibatis.type.JdbcType;
 
 import java.util.*;
@@ -198,7 +196,7 @@ public abstract class BaseConfig {
     /**
      * 额外字段后缀映射
      */
-    protected Map<String, String> extraFieldSuffixMap = SqlExtraSuffix.DEFAULT_SIMPLE_MAP;
+    protected Map<String, String> extraFieldSuffixMap = new LinkedHashMap<>();
 
     // ------------------非通用相关----------------
 
@@ -226,11 +224,6 @@ public abstract class BaseConfig {
      * 动态服务类信息
      */
     protected ClassInfo dynamicServiceClassInfo;
-
-    /**
-     * 额外字段后缀构建器
-     */
-    protected ExtraFieldSuffixBuilder extraFieldSuffixBuilder = new ExtraFieldSuffixBuilder();
 
     /**
      * 额外字段策略

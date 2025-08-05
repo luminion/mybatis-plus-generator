@@ -5,9 +5,6 @@ import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.builder.CustomFile;
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import io.github.bootystar.mybatisplus.enhancer.enums.SqlExtraSuffix;
-import io.github.bootystar.mybatisplus.enhancer.util.MybatisPlusReflectHelper;
-import io.github.bootystar.mybatisplus.enhancer.util.ReflectHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.type.JdbcType;
 
@@ -142,13 +139,17 @@ public class CustomConfig extends BaseConfig {
         }
 
         // 额外字段后缀
-        LinkedHashMap<String, String> build = this.extraFieldSuffixBuilder.build();
-        if (build != null && !build.isEmpty()) {
-            if (!build.equals(SqlExtraSuffix.DEFAULT_COMPLETE_MAP)) {
-                this.overrideInitSuffixBuilder = true;
-            }
-            this.extraFieldSuffixMap = build;
+        if (this.extraFieldSuffixMap==null){
+            this.extraFieldSuffixMap = new LinkedHashMap<>();
         }
+//        todo 自定义
+//        LinkedHashMap<String, String> build = this.extraFieldSuffixBuilder.build();
+//        if (build != null && !build.isEmpty()) {
+//            if (!build.equals(SqlExtraSuffix.DEFAULT_COMPLETE_MAP)) {
+//                this.overrideInitSuffixBuilder = true;
+//            }
+//            this.extraFieldSuffixMap = build;
+//        }
 
         if (selectDTO!=null && Map.class.isAssignableFrom(selectDTO.getClazz())) {
             this.useMapSelectDTO = true;

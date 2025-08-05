@@ -109,7 +109,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         HashMap<String, Object> map = new HashMap<>();
         map.put(TableInfoHelper.getTableInfo(getEntityClass()).getKeyProperty(), id);
         IPage<${entityVO}> page = new Page<>(1L, 1L);
-        List<${entityVO}> vs = getBaseMapper().voSelect(map, page);
+        List<${entityVO}> vs = getBaseMapper().voQuery(map, page);
         if (vs == null || vs.isEmpty()) return null;
         if (page.getTotal() > 1) throw new TooManyResultsException("Expected one result (or null) to be returned by id, but found:" + page.getTotal());
         return vs.get(0);
@@ -119,7 +119,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     #end
     public List<${entityVO}> voList(${entitySelectDTO} s) {
-        return getBaseMapper().voSelect(s, null);
+        return getBaseMapper().voQuery(s, null);
     }
 
     #if(${generateService})
@@ -129,7 +129,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         if (current == null || current < 1) current = 1L;
         if (size == null) size = 10L;
         Page<${entityVO}> page = new Page<>(current, size);
-        List<${entityVO}> voList = getBaseMapper().voSelect(s, page);
+        List<${entityVO}> voList = getBaseMapper().voQuery(s, page);
         page.setRecords(voList);
         return page;
     }
@@ -146,8 +146,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         if (current == null || current < 1) current = 1L;
         if (size == null) size = 10L;
 ##        Page<${entityVO}> page = new Page<>(current, size);
-##        List<${entityVO}> voList = getBaseMapper().voSelect(s, page);
-        List<${entityVO}> voList = getBaseMapper().voSelect(s, new Page<>(current, size));
+##        List<${entityVO}> voList = getBaseMapper().voQuery(s, page);
+        List<${entityVO}> voList = getBaseMapper().voQuery(s, new Page<>(current, size));
         #end
         EasyExcel.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(voList);
     }
