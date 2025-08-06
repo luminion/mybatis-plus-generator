@@ -1,6 +1,7 @@
 package io.github.bootystar.mybatisplus.generator.generator.core;
 
 import com.baomidou.mybatisplus.generator.config.*;
+import io.github.bootystar.mybatisplus.generator.config.*;
 import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
 
 import java.util.function.Consumer;
@@ -19,7 +20,7 @@ public interface EnhanceGenerator<B extends BaseBuilder<B>> {
 
     EnhanceGenerator<B> packageConfig(Consumer<PackageConfig.Builder> consumer);
 
-    EnhanceGenerator<B> strategyConfig(Consumer<StrategyConfig.Builder> consumer);
+    EnhanceGenerator<B> strategyConfig(Consumer<com.baomidou.mybatisplus.generator.config.StrategyConfig.Builder> consumer);
 
     EnhanceGenerator<B> injectionConfig(Consumer<InjectionConfig.Builder> consumer);
 
@@ -39,5 +40,19 @@ public interface EnhanceGenerator<B extends BaseBuilder<B>> {
 
     EnhanceGenerator<B> enableGlobalFileOverwrite();
 
+    // 新增的配置方法
+    EnhanceGenerator<B> controllerConfig(Consumer<ControllerConfig.Builder> consumer);
+
+    EnhanceGenerator<B> serviceConfig(Consumer<ServiceConfig.Builder> consumer);
+
+    EnhanceGenerator<B> mapperConfig(Consumer<MapperConfig.Builder> consumer);
+
+    EnhanceGenerator<B> entityConfig(Consumer<EntityConfig.Builder> consumer);
+
+    EnhanceGenerator<B> dtoConfig(Consumer<DtoConfig.Builder> consumer);
+
+    EnhanceGenerator<B> voConfig(Consumer<VoConfig.Builder> consumer);
+
+    EnhanceGenerator<B> globalCustomConfig(Consumer<GlobalCustomConfig.Builder> consumer);
 
 }

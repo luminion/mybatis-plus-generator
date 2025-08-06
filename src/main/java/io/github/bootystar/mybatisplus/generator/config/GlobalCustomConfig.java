@@ -1,9 +1,13 @@
 package io.github.bootystar.mybatisplus.generator.config;
 
+import io.github.bootystar.mybatisplus.generator.info.ClassInfo;
+import io.github.bootystar.mybatisplus.generator.strategy.ExtraFieldGenerateStrategy;
+import io.github.bootystar.mybatisplus.generator.strategy.support.ExtraFieldStrategyAuto;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.ibatis.type.JdbcType;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,26 +16,34 @@ import java.util.Set;
 @Accessors(chain = true)
 public class GlobalCustomConfig {
 
-    private Map<String, Boolean> orderColumnMap;
+    // 从BaseConfig迁移的全局配置
+    private boolean swaggerModelWithAnnotation = false;
     private boolean swaggerAnnotationWithUUID = false;
     private String swaggerUUID;
-    private Map<String, String> extraFieldSuffixMap;
-    private boolean useMapSelectDTO = false;
+    private boolean extraClassLinkComment = true;
     private String nowTime;
     private List<JdbcType> jdbcTimeTypes;
-    private Set<String> importPackages4DTO;
-    private String orderBySql;
+    private boolean overrideInitSuffixBuilder = false;
+    private Map<String, String> extraFieldSuffixMap = new LinkedHashMap<>();
+
+    // 非通用相关配置
+    private boolean overrideMethods = true;
+    private ClassInfo mapperDTO;
+    private ClassInfo dynamicServiceClassInfo;
+    private ExtraFieldGenerateStrategy extraFieldStrategy = new ExtraFieldStrategyAuto();
+    private boolean actualType4ServiceMethodParam = false;
 
     public static class Builder {
         private final GlobalCustomConfig globalCustomConfig = new GlobalCustomConfig();
 
-        public Builder orderColumnMap(Map<String, Boolean> orderColumnMap) {
-            globalCustomConfig.setOrderColumnMap(orderColumnMap);
+        // 从BaseBuilder迁移的方法
+        public Builder enableSwaggerModelWithAnnotation() {
+            globalCustomConfig.setSwaggerModelWithAnnotation(true);
             return this;
         }
 
-        public Builder swaggerAnnotationWithUUID(boolean swaggerAnnotationWithUUID) {
-            globalCustomConfig.setSwaggerAnnotationWithUUID(swaggerAnnotationWithUUID);
+        public Builder enableSwaggerAnnotationWithUUID() {
+            globalCustomConfig.setSwaggerAnnotationWithUUID(true);
             return this;
         }
 
@@ -40,13 +52,8 @@ public class GlobalCustomConfig {
             return this;
         }
 
-        public Builder extraFieldSuffixMap(Map<String, String> extraFieldSuffixMap) {
-            globalCustomConfig.setExtraFieldSuffixMap(extraFieldSuffixMap);
-            return this;
-        }
-
-        public Builder useMapSelectDTO(boolean useMapSelectDTO) {
-            globalCustomConfig.setUseMapSelectDTO(useMapSelectDTO);
+        public Builder disableExtraClassLinkComment() {
+            globalCustomConfig.setExtraClassLinkComment(false);
             return this;
         }
 
@@ -60,18 +67,42 @@ public class GlobalCustomConfig {
             return this;
         }
 
-        public Builder importPackages4DTO(Set<String> importPackages4DTO) {
-            globalCustomConfig.setImportPackages4DTO(importPackages4DTO);
+        public Builder extraFieldSuffixMap(Map<String, String> extraFieldSuffixMap) {
+            globalCustomConfig.setExtraFieldSuffixMap(extraFieldSuffixMap);
             return this;
         }
 
-        public Builder orderBySql(String orderBySql) {
-            globalCustomConfig.setOrderBySql(orderBySql);
+        public Builder disableOverrideMethods() {
+            globalCustomConfig.setOverrideMethods(false);
+            return this;
+        }
+
+        public Builder mapperDTO(ClassInfo mapperDTO) {
+            globalCustomConfig.setMapperDTO(mapperDTO);
+            return this;
+        }
+
+        public Builder dynamicServiceClassInfo(ClassInfo dynamicServiceClassInfo) {
+            globalCustomConfig.setDynamicServiceClassInfo(dynamicServiceClassInfo);
+            return this;
+        }
+
+        public Builder extraFieldStrategy(ExtraFieldGenerateStrategy extraFieldStrategy) {
+            globalCustomConfig.setExtraFieldStrategy(extraFieldStrategy);
+            return this;
+        }
+
+        public Builder actualType4ServiceMethodParam(boolean actualType4ServiceMethodParam) {
+            globalCustomConfig.setActualType4ServiceMethodParam(actualType4ServiceMethodParam);
             return this;
         }
 
         public GlobalCustomConfig build() {
             return this.globalCustomConfig;
         }
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 }

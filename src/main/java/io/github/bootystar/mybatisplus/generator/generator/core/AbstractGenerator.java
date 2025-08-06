@@ -5,9 +5,8 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.builder.*;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
-import io.github.bootystar.mybatisplus.generator.config.DtoConfig;
-import io.github.bootystar.mybatisplus.generator.config.GlobalCustomConfig;
-import io.github.bootystar.mybatisplus.generator.config.VoConfig;
+import io.github.bootystar.mybatisplus.generator.config.*;
+import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
 import io.github.bootystar.mybatisplus.generator.engine.EnhanceVelocityTemplateEngine;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +25,22 @@ import java.util.function.Consumer;
 @Getter
 @Slf4j
 @SuppressWarnings("unused")
-public abstract class AbstractGenerator implements EnhanceGenerator {
+public abstract class AbstractGenerator<B extends BaseBuilder<B>> implements EnhanceGenerator<B> {
+
+    protected B customConfigBuilder;
     protected DataSourceConfig.Builder dataSourceConfigBuilder;
     protected GlobalConfig.Builder globalConfigBuilder = new GlobalConfig.Builder();
     protected PackageConfig.Builder packageConfigBuilder = new PackageConfig.Builder();
-    protected StrategyConfig.Builder strategyConfigBuilder = new StrategyConfig.Builder();
+    protected com.baomidou.mybatisplus.generator.config.StrategyConfig.Builder strategyConfigBuilder = new com.baomidou.mybatisplus.generator.config.StrategyConfig.Builder();
     protected DtoConfig.Builder dtoConfigBuilder = new DtoConfig.Builder();
     protected VoConfig.Builder voConfigBuilder = new VoConfig.Builder();
     protected GlobalCustomConfig.Builder globalCustomConfigBuilder = new GlobalCustomConfig.Builder();
+
+    // 新增的配置Builder
+    protected ControllerConfig.Builder controllerConfigBuilder = new ControllerConfig.Builder();
+    protected ServiceConfig.Builder serviceConfigBuilder = new ServiceConfig.Builder();
+    protected MapperConfig.Builder mapperConfigBuilder = new MapperConfig.Builder();
+    protected EntityConfig.Builder entityConfigBuilder = new EntityConfig.Builder();
 
     public AbstractGenerator(String url, String username, String password) {
         this.dataSourceConfigBuilder = new DataSourceConfig.Builder(url, username, password);
@@ -46,30 +53,27 @@ public abstract class AbstractGenerator implements EnhanceGenerator {
                 .parent("io.github.bootystar")
                 .xml("mapper")
         ;
-//        this.strategyConfigBuilder.entityBuilder()
-//                .javaTemplate("/bootystar/templates/vm/base/entity.java")
-//        ;
-//        this.strategyConfigBuilder.mapperBuilder()
-//                .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
-//                .mapperTemplate("/bootystar/templates/vm/base/mapper.java")
-//                .mapperXmlTemplate("/bootystar/templates/vm/base/mapper.xml")
-//        ;
-//        this.strategyConfigBuilder.serviceBuilder()
-//                .serviceTemplate("/bootystar/templates/vm/base/service.java")
-//                .serviceImplTemplate("/bootystar/templates/vm/base/serviceImpl.java")
-//        ;
-//        this.strategyConfigBuilder.controllerBuilder()
-//                .template("/bootystar/templates/vm/base/controller.java")
-//        ;
+    }
+
+    public AbstractGenerator(String url, String username, String password, B customConfigBuilder) {
+        this(url, username, password);
+        this.customConfigBuilder = customConfigBuilder;
+    }
+
+    /**
+     * 构建StrategyConfig，整合所有配置
+     */
+    private com.baomidou.mybatisplus.generator.config.StrategyConfig buildStrategyConfig() {
+        return strategyConfigBuilder.build();
     }
 
     private void execute() {
         log.debug("==========================准备生成文件...==========================");
         // 初始化配置
-        ConfigBuilder config = new ConfigBuilder(
+        io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder config = new io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder(
                 this.packageConfigBuilder.build(),
                 this.dataSourceConfigBuilder.build(),
-                this.strategyConfigBuilder.build(),
+                this.buildStrategyConfig(),
                 this.globalConfigBuilder.build(),
                 this.dtoConfigBuilder.build(),
                 this.voConfigBuilder.build(),
@@ -88,7 +92,7 @@ public abstract class AbstractGenerator implements EnhanceGenerator {
                 "`------'`------'`------'`------'`------'`------'`------'`------'`------'\n";
         System.out.println(banner);
         System.out.println("execute success! check files in following folder:");
-        String path = config.getPathInfo().get(OutputFile.parent);
+        String path = config.getPathInfo().get(io.github.bootystar.mybatisplus.generator.config.OutputFile.parent);
         System.out.println(new File(path).getAbsolutePath());
     }
 
@@ -106,38 +110,80 @@ public abstract class AbstractGenerator implements EnhanceGenerator {
     }
 
     @Override
-    public EnhanceGenerator dataSourceConfig(Consumer<DataSourceConfig.Builder> consumer) {
+    public EnhanceGenerator<B> dataSourceConfig(Consumer<DataSourceConfig.Builder> consumer) {
         consumer.accept(dataSourceConfigBuilder);
         return this;
     }
 
-    public EnhanceGenerator globalConfig(Consumer<GlobalConfig.Builder> consumer) {
+    public EnhanceGenerator<B> globalConfig(Consumer<GlobalConfig.Builder> consumer) {
         consumer.accept(globalConfigBuilder);
         return this;
     }
 
-    public EnhanceGenerator packageConfig(Consumer<PackageConfig.Builder> consumer) {
+    public EnhanceGenerator<B> packageConfig(Consumer<PackageConfig.Builder> consumer) {
         consumer.accept(packageConfigBuilder);
         return this;
     }
 
-    public EnhanceGenerator strategyConfig(Consumer<StrategyConfig.Builder> consumer) {
+    public EnhanceGenerator<B> strategyConfig(Consumer<com.baomidou.mybatisplus.generator.config.StrategyConfig.Builder> consumer) {
         consumer.accept(strategyConfigBuilder);
         return this;
     }
 
-    public EnhanceGenerator dtoConfig(Consumer<DtoConfig.Builder> consumer) {
+    @Override
+    public EnhanceGenerator<B> dtoConfig(Consumer<DtoConfig.Builder> consumer) {
         consumer.accept(dtoConfigBuilder);
         return this;
     }
 
-    public EnhanceGenerator voConfig(Consumer<VoConfig.Builder> consumer) {
+    @Override
+    public EnhanceGenerator<B> voConfig(Consumer<VoConfig.Builder> consumer) {
         consumer.accept(voConfigBuilder);
         return this;
     }
 
-    public EnhanceGenerator globalCustomConfig(Consumer<GlobalCustomConfig.Builder> consumer) {
+    @Override
+    public EnhanceGenerator<B> globalCustomConfig(Consumer<GlobalCustomConfig.Builder> consumer) {
         consumer.accept(globalCustomConfigBuilder);
+        return this;
+    }
+
+    // 新增的配置方法
+    @Override
+    public EnhanceGenerator<B> controllerConfig(Consumer<ControllerConfig.Builder> consumer) {
+        consumer.accept(controllerConfigBuilder);
+        return this;
+    }
+
+    @Override
+    public EnhanceGenerator<B> serviceConfig(Consumer<ServiceConfig.Builder> consumer) {
+        consumer.accept(serviceConfigBuilder);
+        return this;
+    }
+
+    @Override
+    public EnhanceGenerator<B> mapperConfig(Consumer<MapperConfig.Builder> consumer) {
+        consumer.accept(mapperConfigBuilder);
+        return this;
+    }
+
+    @Override
+    public EnhanceGenerator<B> entityConfig(Consumer<EntityConfig.Builder> consumer) {
+        consumer.accept(entityConfigBuilder);
+        return this;
+    }
+
+    @Override
+    public EnhanceGenerator<B> customConfig(Consumer<B> consumer) {
+        if (customConfigBuilder != null) {
+            consumer.accept(customConfigBuilder);
+        }
+        return this;
+    }
+
+    @Override
+    public EnhanceGenerator<B> injectionConfig(Consumer<InjectionConfig.Builder> consumer) {
+        // 暂时不实现，保持接口兼容性
         return this;
     }
 
@@ -153,7 +199,7 @@ public abstract class AbstractGenerator implements EnhanceGenerator {
         if (path.startsWith("/")) {
             path = path.substring(1);
         }
-        packageConfigBuilder.pathInfo(Collections.singletonMap(OutputFile.mapper, projectPath + "/src/main/resources/" + path));
+        packageConfigBuilder.pathInfo(Collections.singletonMap(io.github.bootystar.mybatisplus.generator.config.OutputFile.mapperXml, projectPath + "/src/main/resources/" + path));
         return this;
     }
 
@@ -178,8 +224,11 @@ public abstract class AbstractGenerator implements EnhanceGenerator {
 //                    return typeRegistry.getColumnType(metaInfo);
 //                })
 //        ;
-        customConfigBuilder
+        // 使用新的配置结构
+        dtoConfigBuilder
                 .editExcludeColumns("create_time", "update_time", "create_by", "update_by", "created_by", "updated_by", "create_at", "update_at", "created_at", "updated_at")
+        ;
+        mapperConfigBuilder
                 .sortColumn("order", false)
                 .sortColumn("rank", false)
                 .sortColumn("sort", false)
@@ -187,7 +236,24 @@ public abstract class AbstractGenerator implements EnhanceGenerator {
                 .sortColumn("sequence", false)
                 .sortColumn("create_time", true)
                 .sortColumn("id", true)
+                .enableMapperAnnotation()
         ;
+        entityConfigBuilder
+                .idType(IdType.ASSIGN_ID)
+                .logicDeleteColumnName("deleted")
+                .versionColumnName("version")
+                .disableSerialVersionUID()
+                .enableLombok()
+        ;
+        serviceConfigBuilder
+                .formatServiceFileName("%sService")
+        ;
+        controllerConfigBuilder
+                .enableHyphenStyle()
+                .enableRestStyle()
+        ;
+
+        // 同时配置官方的StrategyConfig
         strategyConfigBuilder.entityBuilder()
                 .idType(IdType.ASSIGN_ID)
                 .logicDeleteColumnName("deleted")
@@ -196,7 +262,7 @@ public abstract class AbstractGenerator implements EnhanceGenerator {
                 .enableLombok()
         ;
         strategyConfigBuilder.mapperBuilder()
-                .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
+                .enableMapperAnnotation()
         ;
         strategyConfigBuilder.serviceBuilder()
                 .formatServiceFileName("%sService")
@@ -216,21 +282,12 @@ public abstract class AbstractGenerator implements EnhanceGenerator {
      */
     @Override
     public EnhanceGenerator<B> enableGlobalFileOverwrite() {
-        customConfigBuilder
-                .enableFileOverride()
-        ;
-        strategyConfigBuilder.entityBuilder()
-                .enableFileOverride()
-        ;
-        strategyConfigBuilder.mapperBuilder()
-                .enableFileOverride()
-        ;
-        strategyConfigBuilder.serviceBuilder()
-                .enableFileOverride()
-        ;
-        strategyConfigBuilder.controllerBuilder()
-                .enableFileOverride()
-        ;
+        dtoConfigBuilder.enableFileOverride();
+        voConfigBuilder.enableFileOverride();
+        entityConfigBuilder.enableFileOverride();
+        mapperConfigBuilder.enableFileOverride();
+        serviceConfigBuilder.enableFileOverride();
+        controllerConfigBuilder.enableFileOverride();
         return this;
     }
 }
