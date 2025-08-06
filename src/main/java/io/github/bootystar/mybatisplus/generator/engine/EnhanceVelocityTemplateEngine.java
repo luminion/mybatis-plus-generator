@@ -2,14 +2,13 @@ package io.github.bootystar.mybatisplus.generator.engine;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.config.ConstVal;
-import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
-import io.github.bootystar.mybatisplus.generator.config.DtoConfig;
-import io.github.bootystar.mybatisplus.generator.config.VoConfig;
+import io.github.bootystar.mybatisplus.generator.config.*;
+import io.github.bootystar.mybatisplus.generator.config.OutputFile;
 
 import java.io.File;
 import java.util.List;
@@ -72,8 +71,8 @@ public class EnhanceVelocityTemplateEngine {
 
     private void outputCustomFile(TableInfo tableInfo, Map<String, Object> objectMap) {
         String entityName = tableInfo.getEntityName();
-        Map<com.baomidou.mybatisplus.generator.config.OutputFile, String> pathInfo = configBuilder.getPathInfo();
-        String parentPath = pathInfo.get(com.baomidou.mybatisplus.generator.config.OutputFile.valueOf("parent"));
+        Map<OutputFile, String> pathInfo = configBuilder.getPathInfo();
+        String parentPath = pathInfo.get(OutputFile.parent);
 
         DtoConfig dtoConfig = configBuilder.getDtoConfig();
         String pathUnderParent4DTO = dtoConfig.getPackage4DTO().replaceAll("\\.", "\\" + File.separator);
@@ -82,19 +81,26 @@ public class EnhanceVelocityTemplateEngine {
             dtoPath = parentPath + File.separator + pathUnderParent4DTO + File.separator;
         }
 
+        // 使用新的OutputFile枚举和模板路径
         if (dtoConfig.isGenerateInsert() || dtoConfig.isGenerateImport()) {
-            String fileName = dtoPath + entityName + "InsertDTO.java";
-            outputFile(new File(fileName), objectMap, "/bootystar/templates/vm/base/entityInsertDTO.java.vm");
+            String fileName = dtoPath + entityName + OutputFile.dto_insert.getFileSuffix();
+            String templatePath = dtoConfig.getInsertDtoTemplate() != null ?
+                dtoConfig.getInsertDtoTemplate() : OutputFile.dto_insert.getTemplatePath();
+            outputFile(new File(fileName), objectMap, templatePath);
         }
 
         if (dtoConfig.isGenerateUpdate()) {
-            String fileName = dtoPath + entityName + "UpdateDTO.java";
-            outputFile(new File(fileName), objectMap, "/bootystar/templates/vm/base/entityUpdateDTO.java.vm");
+            String fileName = dtoPath + entityName + OutputFile.dto_update.getFileSuffix();
+            String templatePath = dtoConfig.getUpdateDtoTemplate() != null ?
+                dtoConfig.getUpdateDtoTemplate() : OutputFile.dto_update.getTemplatePath();
+            outputFile(new File(fileName), objectMap, templatePath);
         }
 
-        if (dtoConfig.getSelectDTO() == null) {
-            String fileName = dtoPath + entityName + "SelectDTO.java";
-            outputFile(new File(fileName), objectMap, "/bootystar/templates/vm/base/entitySelectDTO.java.vm");
+        if (dtoConfig.getSelectDTO() == null && dtoConfig.isGenerateSelect()) {
+            String fileName = dtoPath + entityName + OutputFile.dto_select.getFileSuffix();
+            String templatePath = dtoConfig.getSelectDtoTemplate() != null ?
+                dtoConfig.getSelectDtoTemplate() : OutputFile.dto_select.getTemplatePath();
+            outputFile(new File(fileName), objectMap, templatePath);
         }
 
         VoConfig voConfig = configBuilder.getVoConfig();
@@ -103,8 +109,13 @@ public class EnhanceVelocityTemplateEngine {
         if (StringUtils.isBlank(voPath)) {
             voPath = parentPath + File.separator + pathUnderParent4VO + File.separator;
         }
-        String fileName = voPath + entityName + "VO.java";
-        outputFile(new File(fileName), objectMap, "/bootystar/templates/vm/base/entityVO.java.vm");
+
+        if (voConfig.isGenerateExport()) {
+            String fileName = voPath + entityName + OutputFile.vo.getFileSuffix();
+            String templatePath = voConfig.getVoTemplate() != null ?
+                voConfig.getVoTemplate() : OutputFile.vo.getTemplatePath();
+            outputFile(new File(fileName), objectMap, templatePath);
+        }
     }
 
     private void outputFile(File file, Map<String, Object> objectMap, String templatePath) {

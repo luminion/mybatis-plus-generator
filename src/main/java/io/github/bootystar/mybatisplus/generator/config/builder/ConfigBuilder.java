@@ -24,7 +24,7 @@ public class ConfigBuilder {
     private final VoConfig voConfig;
     private final GlobalCustomConfig globalCustomConfig;
     
-    private Map<com.baomidou.mybatisplus.generator.config.OutputFile, String> pathInfo;
+    private Map<OutputFile, String> pathInfo;
     private List<com.baomidou.mybatisplus.generator.config.po.TableInfo> tableInfoList;
     
     public ConfigBuilder(
@@ -72,11 +72,11 @@ public class ConfigBuilder {
         return globalCustomConfig;
     }
     
-    public Map<com.baomidou.mybatisplus.generator.config.OutputFile, String> getPathInfo() {
+    public Map<OutputFile, String> getPathInfo() {
         return pathInfo;
     }
-    
-    public void setPathInfo(Map<com.baomidou.mybatisplus.generator.config.OutputFile, String> pathInfo) {
+
+    public void setPathInfo(Map<OutputFile, String> pathInfo) {
         this.pathInfo = pathInfo;
     }
 

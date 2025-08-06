@@ -1,6 +1,5 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
-import io.github.bootystar.mybatisplus.enhancer.helper.SqlHelper;
 import io.github.bootystar.mybatisplus.generator.strategy.ExtraFieldGenerateStrategy;
 import io.github.bootystar.mybatisplus.generator.info.ClassInfo;
 
