@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.builder.*;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
-import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
+import io.github.bootystar.mybatisplus.generator.config.DtoConfig;
+import io.github.bootystar.mybatisplus.generator.config.GlobalCustomConfig;
+import io.github.bootystar.mybatisplus.generator.config.VoConfig;
 import io.github.bootystar.mybatisplus.generator.engine.EnhanceVelocityTemplateEngine;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -24,17 +26,17 @@ import java.util.function.Consumer;
 @Getter
 @Slf4j
 @SuppressWarnings("unused")
-public abstract class AbstractGenerator<B extends BaseBuilder<B>> implements EnhanceGenerator<B> {
+public abstract class AbstractGenerator implements EnhanceGenerator {
     protected DataSourceConfig.Builder dataSourceConfigBuilder;
     protected GlobalConfig.Builder globalConfigBuilder = new GlobalConfig.Builder();
     protected PackageConfig.Builder packageConfigBuilder = new PackageConfig.Builder();
     protected StrategyConfig.Builder strategyConfigBuilder = new StrategyConfig.Builder();
-    protected InjectionConfig.Builder injectionConfigBuilder = new InjectionConfig.Builder();
-    protected B customConfigBuilder;
+    protected DtoConfig.Builder dtoConfigBuilder = new DtoConfig.Builder();
+    protected VoConfig.Builder voConfigBuilder = new VoConfig.Builder();
+    protected GlobalCustomConfig.Builder globalCustomConfigBuilder = new GlobalCustomConfig.Builder();
 
-    public AbstractGenerator(String url, String username, String password, B customConfigBuilder) {
+    public AbstractGenerator(String url, String username, String password) {
         this.dataSourceConfigBuilder = new DataSourceConfig.Builder(url, username, password);
-        this.customConfigBuilder = customConfigBuilder;
         this.globalConfigBuilder
                 .dateType(DateType.TIME_PACK)
                 .author("bootystar")
@@ -68,14 +70,14 @@ public abstract class AbstractGenerator<B extends BaseBuilder<B>> implements Enh
                 this.packageConfigBuilder.build(),
                 this.dataSourceConfigBuilder.build(),
                 this.strategyConfigBuilder.build(),
-                null,
                 this.globalConfigBuilder.build(),
-                this.injectionConfigBuilder.build()
+                this.dtoConfigBuilder.build(),
+                this.voConfigBuilder.build(),
+                this.globalCustomConfigBuilder.build()
         );
-        EnhanceVelocityTemplateEngine templateEngine = new EnhanceVelocityTemplateEngine(this.customConfigBuilder.build());
-        templateEngine.setConfigBuilder(config);
+        EnhanceVelocityTemplateEngine templateEngine = new EnhanceVelocityTemplateEngine(config);
         // 模板引擎初始化执行文件输出
-        templateEngine.init(config).batchOutput().open();
+        templateEngine.batchOutput();
         log.debug("==========================文件生成完成！！！==========================");
         String banner = "\n" +
                 ".------..------..------..------..------..------..------..------..------.\n" +
@@ -104,38 +106,38 @@ public abstract class AbstractGenerator<B extends BaseBuilder<B>> implements Enh
     }
 
     @Override
-    public EnhanceGenerator<B> dataSourceConfig(Consumer<DataSourceConfig.Builder> consumer) {
+    public EnhanceGenerator dataSourceConfig(Consumer<DataSourceConfig.Builder> consumer) {
         consumer.accept(dataSourceConfigBuilder);
         return this;
     }
 
-    @Override
-    public EnhanceGenerator<B> globalConfig(Consumer<GlobalConfig.Builder> consumer) {
+    public EnhanceGenerator globalConfig(Consumer<GlobalConfig.Builder> consumer) {
         consumer.accept(globalConfigBuilder);
         return this;
     }
 
-    @Override
-    public EnhanceGenerator<B> packageConfig(Consumer<PackageConfig.Builder> consumer) {
+    public EnhanceGenerator packageConfig(Consumer<PackageConfig.Builder> consumer) {
         consumer.accept(packageConfigBuilder);
         return this;
     }
 
-    @Override
-    public EnhanceGenerator<B> strategyConfig(Consumer<StrategyConfig.Builder> consumer) {
+    public EnhanceGenerator strategyConfig(Consumer<StrategyConfig.Builder> consumer) {
         consumer.accept(strategyConfigBuilder);
         return this;
     }
 
-    @Override
-    public EnhanceGenerator<B> injectionConfig(Consumer<InjectionConfig.Builder> consumer) {
-        consumer.accept(injectionConfigBuilder);
+    public EnhanceGenerator dtoConfig(Consumer<DtoConfig.Builder> consumer) {
+        consumer.accept(dtoConfigBuilder);
         return this;
     }
 
-    @Override
-    public EnhanceGenerator<B> customConfig(Consumer<B> consumer) {
-        consumer.accept(customConfigBuilder);
+    public EnhanceGenerator voConfig(Consumer<VoConfig.Builder> consumer) {
+        consumer.accept(voConfigBuilder);
+        return this;
+    }
+
+    public EnhanceGenerator globalCustomConfig(Consumer<GlobalCustomConfig.Builder> consumer) {
+        consumer.accept(globalCustomConfigBuilder);
         return this;
     }
 

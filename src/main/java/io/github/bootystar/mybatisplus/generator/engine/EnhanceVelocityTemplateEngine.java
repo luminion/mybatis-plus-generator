@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.config.ConstVal;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
-import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
-import com.baomidou.mybatisplus.generator.config.builder.CustomFile;
+import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
-import io.github.bootystar.mybatisplus.generator.config.core.CustomConfig;
+import io.github.bootystar.mybatisplus.generator.config.DtoConfig;
+import io.github.bootystar.mybatisplus.generator.config.VoConfig;
 
 import java.io.File;
 import java.util.List;
@@ -21,137 +21,105 @@ import java.util.Optional;
  *
  * @author bootystar
  */
-public class EnhanceVelocityTemplateEngine extends VelocityTemplateEngine {
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 
-    private final CustomConfig customConfig;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
-    public EnhanceVelocityTemplateEngine(CustomConfig customConfig) {
-        this.customConfig = customConfig;
+public class EnhanceVelocityTemplateEngine {
+
+    private final ConfigBuilder configBuilder;
+    private final VelocityEngine velocityEngine;
+
+    public EnhanceVelocityTemplateEngine(ConfigBuilder configBuilder) {
+        this.configBuilder = configBuilder;
+        Properties p = new Properties();
+        p.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        p.setProperty("file.resource.loader.path", ".");
+        p.setProperty("UTF-8", "UTF-8");
+        this.velocityEngine = new VelocityEngine(p);
     }
 
-//    @Override
-//    protected void outputCustomFile(List<CustomFile> customFiles, TableInfo tableInfo, Map<String, Object> objectMap) {
-//        if (customFiles == null || customFiles.isEmpty()) {
-//            return;
-//        }
-//        customFiles.forEach(file -> {
-//            outputFile(new File(file.getFilePath()), objectMap, file.getTemplatePath(), file.isFileOverride());
-//        });
-//    }
+    public void batchOutput() {
+        List<TableInfo> tableInfoList = configBuilder.getTableInfoList();
+        for (TableInfo tableInfo : tableInfoList) {
+            Map<String, Object> objectMap = getObjectMap(tableInfo);
+            
+            // ... 此处将添加各种文件的输出逻辑 ...
 
-    @Override
-    public Map<String, Object> getObjectMap(ConfigBuilder config, TableInfo tableInfo) {
-        Map<String, Object> objectMap = super.getObjectMap(config, tableInfo);
-        if (customConfig != null) {
-            Map<String, Object> customData = customConfig.renderData(tableInfo);
-            if (customData != null) {
-                objectMap.putAll(customData);
-            }
+            // 自定义文件
+            outputCustomFile(tableInfo, objectMap);
         }
-        objectMap.put("basePackage", config.getPackageConfig().getParent());
+    }
+
+    private Map<String, Object> getObjectMap(TableInfo tableInfo) {
+        Map<String, Object> objectMap = new HashMap<>();
+        objectMap.put("table", tableInfo);
+        objectMap.put("package", configBuilder.getPackageConfig());
+        objectMap.put("strategy", configBuilder.getStrategyConfig());
+        objectMap.put("global", configBuilder.getGlobalConfig());
+        objectMap.put("dto", configBuilder.getDtoConfig());
+        objectMap.put("vo", configBuilder.getVoConfig());
+        objectMap.put("globalCustom", configBuilder.getGlobalCustomConfig());
         return objectMap;
     }
 
-
-    @Override
-    public AbstractTemplateEngine batchOutput() {
-        ConfigBuilder config = this.getConfigBuilder();
-        List<TableInfo> tableInfoList = config.getTableInfoList();
-        tableInfoList.forEach(tableInfo -> {
-            Map<String, Object> objectMap = this.getObjectMap(config, tableInfo);
-            Optional.ofNullable(config.getInjectionConfig()).ifPresent(t -> {
-                // 添加自定义属性
-                t.beforeOutputFile(tableInfo, objectMap);
-                // 输出自定义文件
-                outputCustomFile(t.getCustomFile(), tableInfo, objectMap);
-            });
-            // entity
-            outputEntity(tableInfo, objectMap);
-            // mapper and xml
-            outputMapper(tableInfo, objectMap);
-            // service
-            outputService(tableInfo, objectMap);
-            // controller
-            outputController(tableInfo, objectMap);
-            // 自定义文件
-            Optional.ofNullable(customConfig).ifPresent(t -> {
-                // 输出自定义文件
-//                String parentPath = getPathInfo(OutputFile.parent);
-                outputCustomFile(customConfig.customFiles(config, tableInfo), tableInfo, objectMap);
-            });
-        });
-        return this;
-    }
-
-    protected void outputEntity(TableInfo tableInfo, Map<String, Object> objectMap) {
+    private void outputCustomFile(TableInfo tableInfo, Map<String, Object> objectMap) {
         String entityName = tableInfo.getEntityName();
-        String entityPath = getPathInfo(OutputFile.entity);
-        if (StringUtils.isNotBlank(entityName) && StringUtils.isNotBlank(entityPath)) {
-            getTemplateFilePath(template -> template.getEntity(getConfigBuilder().getGlobalConfig().isKotlin())).ifPresent((entity) -> {
-                String entityFile = String.format((entityPath + File.separator + "%s" + suffixJavaOrKt()), entityName);
-                outputFile(new File(entityFile), objectMap, entity);
-            });
+        Map<com.baomidou.mybatisplus.generator.config.OutputFile, String> pathInfo = configBuilder.getPathInfo();
+        String parentPath = pathInfo.get(com.baomidou.mybatisplus.generator.config.OutputFile.valueOf("parent"));
+
+        DtoConfig dtoConfig = configBuilder.getDtoConfig();
+        String pathUnderParent4DTO = dtoConfig.getPackage4DTO().replaceAll("\\.", "\\" + File.separator);
+        String dtoPath = dtoConfig.getPath4DTO();
+        if (StringUtils.isBlank(dtoPath)) {
+            dtoPath = parentPath + File.separator + pathUnderParent4DTO + File.separator;
         }
+
+        if (dtoConfig.isGenerateInsert() || dtoConfig.isGenerateImport()) {
+            String fileName = dtoPath + entityName + "InsertDTO.java";
+            outputFile(new File(fileName), objectMap, "/bootystar/templates/vm/base/entityInsertDTO.java.vm");
+        }
+
+        if (dtoConfig.isGenerateUpdate()) {
+            String fileName = dtoPath + entityName + "UpdateDTO.java";
+            outputFile(new File(fileName), objectMap, "/bootystar/templates/vm/base/entityUpdateDTO.java.vm");
+        }
+
+        if (dtoConfig.getSelectDTO() == null) {
+            String fileName = dtoPath + entityName + "SelectDTO.java";
+            outputFile(new File(fileName), objectMap, "/bootystar/templates/vm/base/entitySelectDTO.java.vm");
+        }
+
+        VoConfig voConfig = configBuilder.getVoConfig();
+        String pathUnderParent4VO = voConfig.getPackage4VO().replaceAll("\\.", "\\" + File.separator);
+        String voPath = voConfig.getPath4VO();
+        if (StringUtils.isBlank(voPath)) {
+            voPath = parentPath + File.separator + pathUnderParent4VO + File.separator;
+        }
+        String fileName = voPath + entityName + "VO.java";
+        outputFile(new File(fileName), objectMap, "/bootystar/templates/vm/base/entityVO.java.vm");
     }
 
-    protected void outputMapper(TableInfo tableInfo, Map<String, Object> objectMap) {
-        // MpMapper.java
-        String entityName = tableInfo.getEntityName();
-        String mapperPath = getPathInfo(OutputFile.mapper);
-        if (StringUtils.isNotBlank(tableInfo.getMapperName()) && StringUtils.isNotBlank(mapperPath)) {
-            getTemplateFilePath(TemplateConfig::getMapper).ifPresent(mapper -> {
-                String mapperFile = String.format((mapperPath + File.separator + tableInfo.getMapperName() + suffixJavaOrKt()), entityName);
-                outputFile(new File(mapperFile), objectMap, mapper);
-            });
+    private void outputFile(File file, Map<String, Object> objectMap, String templatePath) {
+        try {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            Template template = velocityEngine.getTemplate(templatePath, "UTF-8");
+            try (FileOutputStream fos = new FileOutputStream(file);
+                 OutputStreamWriter ow = new OutputStreamWriter(fos, "UTF-8");
+                 BufferedWriter writer = new BufferedWriter(ow)) {
+                template.merge(new VelocityContext(objectMap), writer);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("渲染模板失败，表名：" + objectMap.get("table"), e);
         }
-        // MpMapper.xml
-        String xmlPath = getPathInfo(OutputFile.mapperXml);
-        if (StringUtils.isNotBlank(tableInfo.getXmlName()) && StringUtils.isNotBlank(xmlPath)) {
-            getTemplateFilePath(TemplateConfig::getXml).ifPresent(xml -> {
-                String xmlFile = String.format((xmlPath + File.separator + tableInfo.getXmlName() + ConstVal.XML_SUFFIX), entityName);
-                outputFile(new File(xmlFile), objectMap, xml);
-            });
-        }
-    }
-
-    protected void outputService(TableInfo tableInfo, Map<String, Object> objectMap) {
-        // IMpService.java
-        String entityName = tableInfo.getEntityName();
-        String servicePath = getPathInfo(OutputFile.service);
-        if (StringUtils.isNotBlank(tableInfo.getServiceName()) && StringUtils.isNotBlank(servicePath)) {
-            getTemplateFilePath(TemplateConfig::getService).ifPresent(service -> {
-                String serviceFile = String.format((servicePath + File.separator + tableInfo.getServiceName() + suffixJavaOrKt()), entityName);
-                outputFile(new File(serviceFile), objectMap, service);
-            });
-        }
-        // MpServiceImpl.java
-        String serviceImplPath = getPathInfo(OutputFile.serviceImpl);
-        if (StringUtils.isNotBlank(tableInfo.getServiceImplName()) && StringUtils.isNotBlank(serviceImplPath)) {
-            getTemplateFilePath(TemplateConfig::getServiceImpl).ifPresent(serviceImpl -> {
-                String implFile = String.format((serviceImplPath + File.separator + tableInfo.getServiceImplName() + suffixJavaOrKt()), entityName);
-                outputFile(new File(implFile), objectMap, serviceImpl);
-            });
-        }
-    }
-
-    protected void outputController(TableInfo tableInfo, Map<String, Object> objectMap) {
-        // MpController.java
-        String controllerPath = getPathInfo(OutputFile.controller);
-        if (StringUtils.isNotBlank(tableInfo.getControllerName()) && StringUtils.isNotBlank(controllerPath)) {
-            getTemplateFilePath(TemplateConfig::getController).ifPresent(controller -> {
-                String entityName = tableInfo.getEntityName();
-                String controllerFile = String.format((controllerPath + File.separator + tableInfo.getControllerName() + suffixJavaOrKt()), entityName);
-                outputFile(new File(controllerFile), objectMap, controller);
-            });
-        }
-    }
-
-    protected void outputCustomFile(Map<String, String> customFile, TableInfo tableInfo, Map<String, Object> objectMap) {
-        String entityName = tableInfo.getEntityName();
-        String otherPath = getPathInfo(OutputFile.other);
-        customFile.forEach((key, value) -> {
-            String fileName = String.format((otherPath + File.separator + entityName + File.separator + "%s"), key);
-            outputFile(new File(fileName), objectMap, value);
-        });
     }
 }
