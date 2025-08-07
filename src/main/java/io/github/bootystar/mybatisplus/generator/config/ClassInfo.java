@@ -1,4 +1,4 @@
-package io.github.bootystar.mybatisplus.generator.info;
+package io.github.bootystar.mybatisplus.generator.config;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
