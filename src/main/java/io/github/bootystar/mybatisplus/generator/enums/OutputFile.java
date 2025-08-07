@@ -1,4 +1,4 @@
-package io.github.bootystar.mybatisplus.generator.config;
+package io.github.bootystar.mybatisplus.generator.enums;
 
 /**
  * 输出文件枚举

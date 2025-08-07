@@ -1,8 +1,5 @@
 package io.github.bootystar.mybatisplus.generator;
 
-import io.github.bootystar.mybatisplus.generator.config.DtoConfig;
-import io.github.bootystar.mybatisplus.generator.config.GlobalCustomConfig;
-import io.github.bootystar.mybatisplus.generator.config.VoConfig;
 import io.github.bootystar.mybatisplus.generator.generator.core.EnhanceGenerator;
 import io.github.bootystar.mybatisplus.generator.generator.impl.ExtraCodeGenerator;
 import io.github.bootystar.mybatisplus.generator.generator.impl.DynamicFieldGenerator;

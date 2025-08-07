@@ -1,7 +1,7 @@
 package io.github.bootystar.mybatisplus.generator.util;
 
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import io.github.bootystar.mybatisplus.generator.info.MethodInfo;
+import io.github.bootystar.mybatisplus.generator.config.MethodInfo;
 
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Constructor;
