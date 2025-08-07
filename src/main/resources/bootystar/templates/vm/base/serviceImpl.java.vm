@@ -33,12 +33,12 @@ import ${excelBasePackage}.EasyExcel;
 import ${excelBasePackage}.write.style.column.LongestMatchColumnWidthStyleStrategy;
 #end
 #if(${generateSelect}||${generateExport})
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.github.bootystar.mybatisplus.core.metadata.IPage;
+import io.github.bootystar.mybatisplus.extension.plugins.pagination.Page;
 #end
 #if(${generateInsert}||${generateSelect})
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
-import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
+import io.github.bootystar.mybatisplus.core.metadata.TableInfo;
+import io.github.bootystar.mybatisplus.core.metadata.TableInfoHelper;
 #end
 #if(${generateSelect}||${generateExport})
 import ${basePackage}.${package4VO}.${entityVO};

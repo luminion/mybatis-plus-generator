@@ -10,7 +10,7 @@ package ${package.Mapper};
 ##    #set($importStr4SelectDTO="import ${basePackage}.${package4DTO}.${entity}SelectDTO;")
 ###end
 ## ------参数设置----end
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.bootystar.mybatisplus.core.metadata.IPage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ${superMapperClassPackage};

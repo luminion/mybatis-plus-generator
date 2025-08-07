@@ -11,7 +11,7 @@ package ${package.ServiceImpl};
 #end
 ## ------参数设置----end
 #if(${overrideMethods}&&${generateSelect})
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.bootystar.mybatisplus.core.metadata.IPage;
 #end
 #if(!${generateService}||${overrideMethods})
 import ${basePackage}.${package4VO}.${entityVO};
