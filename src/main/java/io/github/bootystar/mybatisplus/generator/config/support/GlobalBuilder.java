@@ -13,75 +13,67 @@ import java.util.function.Supplier;
  * @see com.baomidou.mybatisplus.generator.config.GlobalConfig.Builder
  * @author bootystar
  */
-public class GlobalConfigBuilder implements IConfigBuilder<GlobalConfig> {
-    private final GlobalConfig globalConfig = new GlobalConfig();
+public class GlobalBuilder implements IConfigBuilder<Global> {
+    private final Global global = new Global();
     
     @Override
-    public GlobalConfig build() {
-        return globalConfig;
+    public Global build() {
+        return global;
     }
 
     /**
      * 禁止打开输出目录
      */
-    public GlobalConfigBuilder disableOpenDir() {
-        this.globalConfig.open = false;
+    public GlobalBuilder disableOpenDir() {
+        this.global.open = false;
         return this;
     }
 
     /**
      * 输出目录
      */
-    public GlobalConfigBuilder outputDir(String outputDir) {
-        this.globalConfig.outputDir = outputDir;
+    public GlobalBuilder outputDir(String outputDir) {
+        this.global.outputDir = outputDir;
         return this;
     }
 
     /**
      * 作者
      */
-    public GlobalConfigBuilder author(String author) {
-        this.globalConfig.author = author;
+    public GlobalBuilder author(String author) {
+        this.global.author = author;
         return this;
     }
 
     /**
      * 开启 kotlin 模式
      */
-    public GlobalConfigBuilder enableKotlin() {
-        this.globalConfig.kotlin = true;
+    public GlobalBuilder enableKotlin() {
+        this.global.kotlin = true;
         return this;
     }
 
     /**
      * 开启 swagger 模式
      */
-    public GlobalConfigBuilder enableSwagger() {
-        this.globalConfig.swagger = true;
+    public GlobalBuilder enableSwagger() {
+        this.global.swagger = true;
         return this;
     }
 
     /**
      * 开启 springdoc 模式
      */
-    public GlobalConfigBuilder enableSpringdoc() {
-        this.globalConfig.springdoc = true;
-        return this;
-    }
-
-    /**
-     * 不生成service接口
-     */
-    public GlobalConfigBuilder disableServiceInterface() {
-        this.globalConfig.serviceInterface = false;
+    public GlobalBuilder enableSpringdoc() {
+        this.global.springdoc = true;
         return this;
     }
 
     /**
      * 时间类型对应策略
      */
-    public GlobalConfigBuilder dateType(DateType dateType) {
-        this.globalConfig.dateType = dateType;
+    public GlobalBuilder dateType(DateType dateType) {
+        this.global.dateType = dateType;
         return this;
     }
 
@@ -93,8 +85,8 @@ public class GlobalConfigBuilder implements IConfigBuilder<GlobalConfig> {
      * @return this
      * @since 3.5.0
      */
-    public GlobalConfigBuilder commentDate(Supplier<String> commentDate) {
-        this.globalConfig.commentDate = commentDate;
+    public GlobalBuilder commentDate(Supplier<String> commentDate) {
+        this.global.commentDate = commentDate;
         return this;
     }
 
@@ -105,7 +97,7 @@ public class GlobalConfigBuilder implements IConfigBuilder<GlobalConfig> {
      * @return this
      * @since 3.5.0
      */
-    public GlobalConfigBuilder commentDate(String pattern) {
+    public GlobalBuilder commentDate(String pattern) {
         return commentDate(() -> new SimpleDateFormat(pattern).format(new Date()));
     }
     

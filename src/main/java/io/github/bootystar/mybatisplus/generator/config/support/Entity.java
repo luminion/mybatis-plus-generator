@@ -3,23 +3,17 @@ package io.github.bootystar.mybatisplus.generator.config.support;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.core.handlers.AnnotationHandler;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.generator.*;
+import com.baomidou.mybatisplus.generator.IFill;
 import com.baomidou.mybatisplus.generator.config.ConstVal;
 import com.baomidou.mybatisplus.generator.config.INameConvert;
-import com.baomidou.mybatisplus.generator.config.builder.Entity;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.function.ConverterFileName;
-import com.baomidou.mybatisplus.generator.model.AnnotationAttributes;
-import com.baomidou.mybatisplus.generator.model.ClassAnnotationAttributes;
 import com.baomidou.mybatisplus.generator.util.ClassUtils;
 import io.github.bootystar.mybatisplus.generator.config.IReflectiveTemplate;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -32,12 +26,7 @@ import java.util.stream.Collectors;
  * @see com.baomidou.mybatisplus.generator.config.builder.Entity
  * @author bootystar
  */
-public class EntityConfig implements IReflectiveTemplate {
-
-    protected final AnnotationHandler annotationHandler = new AnnotationHandler() {
-    };
-
-    protected static final Logger LOGGER = LoggerFactory.getLogger(Entity.class);
+public class Entity implements IReflectiveTemplate {
 
     /**
      * Java模板默认路径
@@ -209,26 +198,6 @@ public class EntityConfig implements IReflectiveTemplate {
     protected boolean generate = true;
 
     /**
-     * 默认lombok(低版本属性默认只有Getter和Setter)
-     * <p>当升级至3.5.10后,默认启用@ToString,如果不需要,可通过{@link Entity.Builder#toString(boolean)}关闭</p>
-     * 
-     * @since 3.5.10
-     */
-    @Getter
-    protected boolean defaultLombok = true;
-
-    /**
-     * 是否生成ToString
-     * <p>低版本下,lombok没有处理ToString逻辑,现在处理生成@ToString</p>
-     * <p>支持控制toString方法是否生成</p>
-     *
-     * @since 3.5.10
-     */
-    @Getter
-    protected boolean toString = true;
-
-
-    /**
      * 启用字段文档注释 (当注释字段注释不为空才生效)
      * <p>低版本下,如果是启用swagger或者springdoc时,不会生成,现在统一修改为生成文档注释</p>
      *
@@ -236,42 +205,12 @@ public class EntityConfig implements IReflectiveTemplate {
      */
     @Getter
     protected boolean fieldUseJavaDoc = true;
-
-    /**
-     * 实体类注解
-     *
-     * @since 3.5.10
-     */
-    @Getter
-    protected final List<ClassAnnotationAttributes> classAnnotations = new ArrayList<>();
-
-    /**
-     * 表注解处理器
-     *
-     * @since 3.5.10
-     */
-    protected ITableAnnotationHandler tableAnnotationHandler = new DefaultTableAnnotationHandler();
-
-    /**
-     * 字段注解处理器
-     *
-     * @since 3.5.10
-     */
-    protected ITableFieldAnnotationHandler tableFieldAnnotationHandler = new DefaultTableFieldAnnotationHandler();
-
     /**
      * 导包处理方法
      *
      * @since 3.5.11
      */
     protected Function<Set<String>, List<String>> importPackageFunction;
-
-    /**
-     * 处理类注解方法 (含类与字段)
-     *
-     * @since 3.5.11
-     */
-    protected Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction;
 
 
     /**
@@ -282,13 +221,13 @@ public class EntityConfig implements IReflectiveTemplate {
      * @param clazz 实体父类 Class
      */
     public void convertSuperEntityColumns(Class<?> clazz) {
-        List<Field> fields = TableInfoHelper.getAllFields(clazz, annotationHandler);
+        List<Field> fields = TableInfoHelper.getAllFields(clazz);
         this.superEntityColumns.addAll(fields.stream().map(field -> {
-            TableId tableId = annotationHandler.getAnnotation(field, TableId.class);
+            TableId tableId = field.getAnnotation(TableId.class);
             if (tableId != null && StringUtils.isNotBlank(tableId.value())) {
                 return tableId.value();
             }
-            TableField tableField = annotationHandler.getAnnotation(field, TableField.class);
+            TableField tableField = field.getAnnotation(TableField.class);
             if (tableField != null && StringUtils.isNotBlank(tableField.value())) {
                 return tableField.value();
             }
@@ -332,47 +271,12 @@ public class EntityConfig implements IReflectiveTemplate {
         data.put("versionFieldName", this.versionColumnName);
         data.put("activeRecord", this.activeRecord);
         data.put("entitySerialVersionUID", this.serialVersionUID);
-        data.put("entitySerialAnnotation", this.serialAnnotation);
         data.put("entityColumnConstant", this.columnConstant);
         data.put("entityBuilderModel", this.chain);
         data.put("chainModel", this.chain);
         data.put("entityLombokModel", this.lombok);
         data.put("entityBooleanColumnRemoveIsPrefix", this.booleanColumnRemoveIsPrefix);
         data.put("superEntityClass", ClassUtils.getSimpleName(this.superClass));
-        Set<String> importPackages = new HashSet<>(tableInfo.getImportPackages());
-        List<ClassAnnotationAttributes> classAnnotationAttributes = new ArrayList<>(this.getClassAnnotations());
-        if (tableAnnotationHandler != null) {
-            // todo 类注解处理器
-//            List<ClassAnnotationAttributes> classAnnotationAttributesList = tableAnnotationHandler.handle(tableInfo, this);
-//            if (classAnnotationAttributesList != null && !classAnnotationAttributesList.isEmpty()) {
-//                classAnnotationAttributes.addAll(classAnnotationAttributesList);
-//            }
-        }
-        classAnnotationAttributes.forEach(attributes -> {
-            attributes.handleDisplayName(tableInfo);
-            importPackages.addAll(attributes.getImportPackages());
-        });
-        if (tableFieldAnnotationHandler != null) {
-            tableInfo.getFields().forEach(tableField -> {
-                List<AnnotationAttributes> annotationAttributes = tableFieldAnnotationHandler.handle(tableInfo, tableField);
-                if (annotationAttributes != null && !annotationAttributes.isEmpty()) {
-                    tableField.addAnnotationAttributesList(annotationAttributes, annotationAttributesFunction);
-                    annotationAttributes.forEach(attributes -> importPackages.addAll(attributes.getImportPackages()));
-                }
-            });
-        }
-        data.put("entityFieldUseJavaDoc", fieldUseJavaDoc);
-        data.put("entityClassAnnotations", annotationAttributesFunction != null ? annotationAttributesFunction.apply(classAnnotationAttributes) :
-                classAnnotationAttributes.stream().sorted(Comparator.comparingInt(s -> s.getDisplayName().length())).collect(Collectors.toList()));
-        data.put("importEntityPackages", importPackageFunction != null ? importPackageFunction.apply(importPackages) :
-                importPackages.stream().sorted().collect(Collectors.toList()));
-        Set<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toSet());
-        data.put("importEntityJavaPackages", importPackageFunction != null ? importPackageFunction.apply(javaPackages) :
-                javaPackages.stream().sorted().collect(Collectors.toList()));
-        Set<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toSet());
-        data.put("importEntityFrameworkPackages", importPackageFunction != null ? importPackageFunction.apply(frameworkPackages) :
-                frameworkPackages.stream().sorted().collect(Collectors.toList()));
-        data.put("entityToString", this.toString);
         return data;
     }
 

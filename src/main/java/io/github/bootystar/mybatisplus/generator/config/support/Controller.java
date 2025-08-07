@@ -19,7 +19,7 @@ import java.util.Map;
  * @author bootystar
  */
 @Getter
-public class ControllerConfig implements IReflectiveTemplate {
+public class Controller implements IReflectiveTemplate {
 
     /**
      * 生成 <code>@RestController</code> 控制器（默认 true）

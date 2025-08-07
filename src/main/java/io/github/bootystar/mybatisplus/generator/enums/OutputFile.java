@@ -8,7 +8,6 @@ package io.github.bootystar.mybatisplus.generator.enums;
  */
 public enum OutputFile {
     
-    // MyBatis-Plus官方文件类型
     entity("/templates/entity.java"),
     mapper("/templates/mapper.java"),
     mapperXml("/templates/mapper.xml"),
@@ -16,7 +15,6 @@ public enum OutputFile {
     serviceImpl("/templates/serviceImpl.java"),
     controller("/templates/controller.java"),
     
-    // 自定义DTO文件类型
     dto_insert("/bootystar/templates/vm/base/entityInsertDTO.java.vm"),
     dto_update("/bootystar/templates/vm/base/entityUpdateDTO.java.vm"),
     dto_select("/bootystar/templates/vm/base/entitySelectDTO.java.vm"),

@@ -2,7 +2,7 @@
 //
 //import com.baomidou.mybatisplus.generator.config.*;
 //import io.github.bootystar.mybatisplus.generator.config.*;
-//import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
+//import io.github.bootystar.mybatisplus.generator.config.support.Global;
 //import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
 //
 //import java.util.function.Consumer;
@@ -17,11 +17,11 @@
 //
 //    EnhanceGenerator<B> dataSourceConfig(Consumer<DataSourceConfig.Builder> consumer);
 //
-//    EnhanceGenerator<B> globalConfig(Consumer<com.baomidou.mybatisplus.generator.config.GlobalConfig.Builder> consumer);
+//    EnhanceGenerator<B> globalConfig(Consumer<com.baomidou.mybatisplus.generator.config.Global.Builder> consumer);
 //
 //    EnhanceGenerator<B> packageConfig(Consumer<PackageConfig.Builder> consumer);
 //
-//    EnhanceGenerator<B> strategyConfig(Consumer<com.baomidou.mybatisplus.generator.config.StrategyConfig.Builder> consumer);
+//    EnhanceGenerator<B> strategyConfig(Consumer<com.baomidou.mybatisplus.generator.config.Strategy.Builder> consumer);
 //
 //    EnhanceGenerator<B> injectionConfig(Consumer<InjectionConfig.Builder> consumer);
 //
@@ -42,18 +42,18 @@
 //    EnhanceGenerator<B> enableGlobalFileOverwrite();
 //
 //    // 新增的配置方法
-//    EnhanceGenerator<B> controllerConfig(Consumer<ControllerConfig.Builder> consumer);
+//    EnhanceGenerator<B> controllerConfig(Consumer<Controller.Builder> consumer);
 //
-//    EnhanceGenerator<B> serviceConfig(Consumer<ServiceConfig.Builder> consumer);
+//    EnhanceGenerator<B> serviceConfig(Consumer<Service.Builder> consumer);
 //
-//    EnhanceGenerator<B> mapperConfig(Consumer<MapperConfig.Builder> consumer);
+//    EnhanceGenerator<B> mapperConfig(Consumer<Mapper.Builder> consumer);
 //
-//    EnhanceGenerator<B> entityConfig(Consumer<EntityConfig.Builder> consumer);
+//    EnhanceGenerator<B> entityConfig(Consumer<Entity.Builder> consumer);
 //
 //    EnhanceGenerator<B> dtoConfig(Consumer<DtoConfig.Builder> consumer);
 //
 //    EnhanceGenerator<B> voConfig(Consumer<VoConfig.Builder> consumer);
 //
-//    EnhanceGenerator<B> globalCustomConfig(Consumer<GlobalConfig.Builder> consumer);
+//    EnhanceGenerator<B> globalCustomConfig(Consumer<Global.Builder> consumer);
 //
 //}
