@@ -1,9 +1,15 @@
 package io.github.bootystar.mybatisplus.generator.engine;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
+import com.baomidou.mybatisplus.generator.config.ConstVal;
+import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import io.github.bootystar.mybatisplus.generator.config.support.VoConfig;
+import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
+import io.github.bootystar.mybatisplus.generator.config.support.Package;
+import io.github.bootystar.mybatisplus.generator.config.support.PackageBuilder;
+import io.github.bootystar.mybatisplus.generator.config.support.StrategyBuilder;
 import io.github.bootystar.mybatisplus.generator.enums.OutputFile;
 
 import java.io.File;
@@ -17,6 +23,7 @@ import java.util.Map;
  */
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 
 import java.io.BufferedWriter;
@@ -25,21 +32,34 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Properties;
 
-public class EnhanceVelocityTemplateEngine {
+public class EnhanceVelocityTemplateEngine extends VelocityTemplateEngine {
 
-    private final ConfigBuilder configBuilder;
     private final VelocityEngine velocityEngine;
+   
+    private DataSourceConfig.Builder dataSourceBuilder;
+    private PackageBuilder packageBuilder;
+    private StrategyBuilder  strategyBuilder;
 
-    public EnhanceVelocityTemplateEngine(ConfigBuilder configBuilder) {
-        this.configBuilder = configBuilder;
+    public EnhanceVelocityTemplateEngine() {
         Properties p = new Properties();
-        p.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-        p.setProperty("file.resource.loader.path", ".");
-        p.setProperty("UTF-8", "UTF-8");
-        this.velocityEngine = new VelocityEngine(p);
+        p.setProperty(ConstVal.VM_LOAD_PATH_KEY, ConstVal.VM_LOAD_PATH_VALUE);
+        p.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, StringPool.EMPTY);
+        p.setProperty(Velocity.ENCODING_DEFAULT, ConstVal.UTF8);
+        p.setProperty(Velocity.INPUT_ENCODING, ConstVal.UTF8);
+        p.setProperty("file.resource.loader.unicode", StringPool.TRUE);
+        velocityEngine = new VelocityEngine(p);
     }
 
     public void batchOutput() {
+        
+        ConfigBuilder config = new ConfigBuilder(
+                this.packageConfigBuilder.build(),
+                this.dataSourceConfigBuilder.build(),
+                this.strategyConfigBuilder.build(),
+                null,
+                this.globalConfigBuilder.build(),
+                this.injectionConfigBuilder.build()
+        );
         List<TableInfo> tableInfoList = configBuilder.getTableInfoList();
         for (TableInfo tableInfo : tableInfoList) {
             Map<String, Object> objectMap = getObjectMap(tableInfo);

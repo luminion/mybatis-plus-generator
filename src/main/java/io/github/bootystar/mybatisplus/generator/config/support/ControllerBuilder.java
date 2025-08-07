@@ -1,7 +1,6 @@
 package io.github.bootystar.mybatisplus.generator.config.support;
 
 import com.baomidou.mybatisplus.generator.config.IConfigBuilder;
-import com.baomidou.mybatisplus.generator.config.builder.Controller;
 import com.baomidou.mybatisplus.generator.function.ConverterFileName;
 
 /**
@@ -10,11 +9,11 @@ import com.baomidou.mybatisplus.generator.function.ConverterFileName;
  * @author bootystar
  * @see com.baomidou.mybatisplus.generator.config.builder.Controller.Builder
  */
-public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig> {
-    private final ControllerConfig controller = new ControllerConfig();
+public class ControllerBuilder implements IConfigBuilder<Controller> {
+    private final Controller controller = new Controller();
 
     @Override
-    public ControllerConfig build() {
+    public Controller build() {
         return controller;
     }
 
@@ -24,7 +23,7 @@ public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig>
      * @param clazz 父类控制器
      * @return this
      */
-    public ControllerConfigBuilder superClass(Class<?> clazz) {
+    public ControllerBuilder superClass(Class<?> clazz) {
         return superClass(clazz.getName());
     }
 
@@ -34,7 +33,7 @@ public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig>
      * @param superClass 父类控制器类名
      * @return this
      */
-    public ControllerConfigBuilder superClass(String superClass) {
+    public ControllerBuilder superClass(String superClass) {
         this.controller.superClass = superClass;
         return this;
     }
@@ -43,10 +42,10 @@ public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig>
      * 关闭驼峰转连字符
      *
      * @return this
-     * @see Controller.Builder#enableHyphenStyle()
+     * @see com.baomidou.mybatisplus.generator.config.builder.Controller.Builder#enableHyphenStyle()
      * @since 3.5.0
      */
-    public ControllerConfigBuilder disableHyphenStyle() {
+    public ControllerBuilder disableHyphenStyle() {
         this.controller.hyphenStyle = false;
         return this;
     }
@@ -55,10 +54,10 @@ public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig>
      * 关闭@RestController控制器, 使用@Controller
      *
      * @return this
-     * @see Controller.Builder#enableRestStyle()
+     * @see com.baomidou.mybatisplus.generator.config.builder.Controller.Builder#enableRestStyle()
      * @since 3.5.0
      */
-    public ControllerConfigBuilder disableRestStyle() {
+    public ControllerBuilder disableRestStyle() {
         this.controller.restStyle = false;
         return this;
     }
@@ -70,7 +69,7 @@ public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig>
      * @return this
      * @since 3.5.0
      */
-    public ControllerConfigBuilder convertFileName(ConverterFileName converter) {
+    public ControllerBuilder convertFileName(ConverterFileName converter) {
         this.controller.converterFileName = converter;
         return this;
     }
@@ -82,7 +81,7 @@ public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig>
      * @return this
      * @since 3.5.0
      */
-    public ControllerConfigBuilder formatFileName(String format) {
+    public ControllerBuilder formatFileName(String format) {
         return convertFileName((entityName) -> String.format(format, entityName));
     }
 
@@ -91,7 +90,7 @@ public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig>
      *
      * @since 3.5.3
      */
-    public ControllerConfigBuilder enableFileOverride() {
+    public ControllerBuilder enableFileOverride() {
         this.controller.fileOverride = true;
         return this;
     }
@@ -102,7 +101,7 @@ public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig>
      * @return this
      * @since 3.5.6
      */
-    public ControllerConfigBuilder disable() {
+    public ControllerBuilder disable() {
         this.controller.generate = false;
         return this;
     }
@@ -114,7 +113,7 @@ public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig>
      * @return this
      * @since 3.5.6
      */
-    public ControllerConfigBuilder template(String template) {
+    public ControllerBuilder template(String template) {
         this.controller.templatePath = template;
         return this;
     }

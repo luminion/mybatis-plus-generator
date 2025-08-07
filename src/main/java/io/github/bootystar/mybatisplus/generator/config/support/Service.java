@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.function.ConverterFileName;
 import com.baomidou.mybatisplus.generator.util.ClassUtils;
 import io.github.bootystar.mybatisplus.generator.config.IReflectiveTemplate;
-import lombok.Data;
 import lombok.Getter;
-import lombok.experimental.Accessors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +16,7 @@ import java.util.Map;
  * @see com.baomidou.mybatisplus.generator.config.builder.Service
  * @author bootystar
  */
-public class ServiceConfig implements IReflectiveTemplate {
+public class Service implements IReflectiveTemplate {
 
     /**
      * 是否生成serviceImpl

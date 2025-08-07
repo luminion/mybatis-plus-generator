@@ -1,7 +1,6 @@
 package io.github.bootystar.mybatisplus.generator.config.support;
 
 import com.baomidou.mybatisplus.generator.config.IConfigBuilder;
-import com.baomidou.mybatisplus.generator.config.builder.Service;
 import com.baomidou.mybatisplus.generator.function.ConverterFileName;
 
 /**
@@ -10,10 +9,10 @@ import com.baomidou.mybatisplus.generator.function.ConverterFileName;
  * @see com.baomidou.mybatisplus.generator.config.builder.Service.Builder
  * @author bootystar
  */
-public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
-    private final ServiceConfig service = new ServiceConfig();
+public class ServiceBuilder implements IConfigBuilder<Service> {
+    private final Service service = new Service();
     @Override
-    public ServiceConfig build() {
+    public Service build() {
         return service;
     }
 
@@ -23,7 +22,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @param clazz 类
      * @return this
      */
-    public ServiceConfigBuilder superServiceClass(Class<?> clazz) {
+    public ServiceBuilder superServiceClass(Class<?> clazz) {
         return superServiceClass(clazz.getName());
     }
 
@@ -33,7 +32,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @param superServiceClass 类名
      * @return this
      */
-    public ServiceConfigBuilder superServiceClass(String superServiceClass) {
+    public ServiceBuilder superServiceClass(String superServiceClass) {
         this.service.superServiceClass = superServiceClass;
         return this;
     }
@@ -44,7 +43,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @param clazz 类
      * @return this
      */
-    public ServiceConfigBuilder superServiceImplClass(Class<?> clazz) {
+    public ServiceBuilder superServiceImplClass(Class<?> clazz) {
         return superServiceImplClass(clazz.getName());
     }
 
@@ -54,7 +53,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @param superServiceImplClass 类名
      * @return this
      */
-    public ServiceConfigBuilder superServiceImplClass(String superServiceImplClass) {
+    public ServiceBuilder superServiceImplClass(String superServiceImplClass) {
         this.service.superServiceImplClass = superServiceImplClass;
         return this;
     }
@@ -66,7 +65,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @return this
      * @since 3.5.0
      */
-    public ServiceConfigBuilder convertServiceFileName(ConverterFileName converter) {
+    public ServiceBuilder convertServiceFileName(ConverterFileName converter) {
         this.service.converterServiceFileName = converter;
         return this;
     }
@@ -78,7 +77,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @return this
      * @since 3.5.0
      */
-    public ServiceConfigBuilder convertServiceImplFileName(ConverterFileName converter) {
+    public ServiceBuilder convertServiceImplFileName(ConverterFileName converter) {
         this.service.converterServiceImplFileName = converter;
         return this;
     }
@@ -90,7 +89,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @return this
      * @since 3.5.0
      */
-    public ServiceConfigBuilder formatServiceFileName(String format) {
+    public ServiceBuilder formatServiceFileName(String format) {
         return convertServiceFileName((entityName) -> String.format(format, entityName));
     }
 
@@ -101,7 +100,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @return this
      * @since 3.5.0
      */
-    public ServiceConfigBuilder formatServiceImplFileName(String format) {
+    public ServiceBuilder formatServiceImplFileName(String format) {
         return convertServiceImplFileName((entityName) -> String.format(format, entityName));
     }
 
@@ -111,7 +110,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @see #enableFileOverride()
      */
     @Deprecated
-    public ServiceConfigBuilder fileOverride() {
+    public ServiceBuilder fileOverride() {
 //        LOGGER.warn("fileOverride方法后续会删除，替代方法为enableFileOverride方法");
         this.service.fileOverride = true;
         return this;
@@ -120,7 +119,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
     /**
      * 覆盖已有文件
      */
-    public ServiceConfigBuilder enableFileOverride() {
+    public ServiceBuilder enableFileOverride() {
         this.service.fileOverride = true;
         return this;
     }
@@ -131,7 +130,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @return this
      * @since 3.5.6
      */
-    public ServiceConfigBuilder disable() {
+    public ServiceBuilder disable() {
         this.service.generateService = false;
         this.service.generateServiceImpl = false;
         return this;
@@ -143,7 +142,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @return this
      * @since 3.5.6
      */
-    public ServiceConfigBuilder disableService() {
+    public ServiceBuilder disableService() {
         this.service.generateService = false;
         return this;
     }
@@ -154,7 +153,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @return this
      * @since 3.5.6
      */
-    public ServiceConfigBuilder disableServiceImpl() {
+    public ServiceBuilder disableServiceImpl() {
         this.service.generateServiceImpl = false;
         return this;
     }
@@ -165,7 +164,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @return this
      * @since 3.5.6
      */
-    public ServiceConfigBuilder serviceTemplate(String template) {
+    public ServiceBuilder serviceTemplate(String template) {
         this.service.serviceTemplate = template;
         return this;
     }
@@ -176,7 +175,7 @@ public class ServiceConfigBuilder implements IConfigBuilder<ServiceConfig> {
      * @return this
      * @since 3.5.6
      */
-    public ServiceConfigBuilder serviceImplTemplate(String template) {
+    public ServiceBuilder serviceImplTemplate(String template) {
         this.service.serviceImplTemplate = template;
         return this;
     }

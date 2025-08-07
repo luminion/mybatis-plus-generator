@@ -1,15 +1,9 @@
 package io.github.bootystar.mybatisplus.generator.config.support;
 
-import com.baomidou.mybatisplus.generator.config.IOutputFile;
-import com.baomidou.mybatisplus.generator.config.builder.Controller;
-import com.baomidou.mybatisplus.generator.config.builder.Entity;
-import com.baomidou.mybatisplus.generator.config.builder.Mapper;
-import com.baomidou.mybatisplus.generator.config.builder.Service;
 import com.baomidou.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.IReflectiveTemplate;
 import lombok.Getter;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +13,7 @@ import java.util.Set;
  * @see com.baomidou.mybatisplus.generator.config.StrategyConfig
  * @author bootystar
  */
-public class StrategyConfig implements IReflectiveTemplate {
+public class Strategy implements IReflectiveTemplate {
     /**
      * 是否大写命名（默认 false）
      */
@@ -102,8 +96,6 @@ public class StrategyConfig implements IReflectiveTemplate {
      */
     protected LikeTable notLikeTable;
     
-
-    protected IOutputFile outputFile = (path, ot) -> new File(path);
     
  
 }

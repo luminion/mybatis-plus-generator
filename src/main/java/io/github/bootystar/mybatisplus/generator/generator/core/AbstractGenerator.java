@@ -4,7 +4,7 @@
 //import com.baomidou.mybatisplus.generator.config.*;
 //import com.baomidou.mybatisplus.generator.config.rules.DateType;
 //import io.github.bootystar.mybatisplus.generator.config.*;
-//import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
+//import io.github.bootystar.mybatisplus.generator.config.support.Global;
 //import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
 //import io.github.bootystar.mybatisplus.generator.config.enums.OutputFile;
 //import io.github.bootystar.mybatisplus.generator.engine.EnhanceVelocityTemplateEngine;
@@ -28,18 +28,18 @@
 //
 //    protected B customConfigBuilder;
 //    protected DataSourceConfig.Builder dataSourceConfigBuilder;
-//    protected com.baomidou.mybatisplus.generator.config.GlobalConfig.Builder globalConfigBuilder = new com.baomidou.mybatisplus.generator.config.GlobalConfig.Builder();
+//    protected com.baomidou.mybatisplus.generator.config.Global.Builder globalConfigBuilder = new com.baomidou.mybatisplus.generator.config.Global.Builder();
 //    protected PackageConfig.Builder packageConfigBuilder = new PackageConfig.Builder();
-//    protected com.baomidou.mybatisplus.generator.config.StrategyConfig.Builder strategyConfigBuilder = new com.baomidou.mybatisplus.generator.config.StrategyConfig.Builder();
+//    protected com.baomidou.mybatisplus.generator.config.Strategy.Builder strategyConfigBuilder = new com.baomidou.mybatisplus.generator.config.Strategy.Builder();
 //    protected DtoConfig.Builder dtoConfigBuilder = new DtoConfig.Builder();
 //    protected VoConfig.Builder voConfigBuilder = new VoConfig.Builder();
-//    protected GlobalConfig.Builder globalCustomConfigBuilder = new GlobalConfig.Builder();
+//    protected Global.Builder globalCustomConfigBuilder = new Global.Builder();
 //
 //    // 新增的配置Builder
-//    protected ControllerConfig.Builder controllerConfigBuilder = new ControllerConfig.Builder();
-//    protected ServiceConfig.Builder serviceConfigBuilder = new ServiceConfig.Builder();
-//    protected MapperConfig.Builder mapperConfigBuilder = new MapperConfig.Builder();
-//    protected EntityConfig.Builder entityConfigBuilder = new EntityConfig.Builder();
+//    protected Controller.Builder controllerConfigBuilder = new Controller.Builder();
+//    protected Service.Builder serviceConfigBuilder = new Service.Builder();
+//    protected Mapper.Builder mapperConfigBuilder = new Mapper.Builder();
+//    protected Entity.Builder entityConfigBuilder = new Entity.Builder();
 //
 //    public AbstractGenerator(String url, String username, String password) {
 //        this.dataSourceConfigBuilder = new DataSourceConfig.Builder(url, username, password);
@@ -62,7 +62,7 @@
 //    /**
 //     * 构建StrategyConfig，整合所有配置
 //     */
-//    private com.baomidou.mybatisplus.generator.config.StrategyConfig buildStrategyConfig() {
+//    private com.baomidou.mybatisplus.generator.config.Strategy buildStrategyConfig() {
 //        return strategyConfigBuilder.build();
 //    }
 //
@@ -114,7 +114,7 @@
 //        return this;
 //    }
 //
-//    public EnhanceGenerator<B> globalConfig(Consumer<com.baomidou.mybatisplus.generator.config.GlobalConfig.Builder> consumer) {
+//    public EnhanceGenerator<B> globalConfig(Consumer<com.baomidou.mybatisplus.generator.config.Global.Builder> consumer) {
 //        consumer.accept(globalConfigBuilder);
 //        return this;
 //    }
@@ -124,7 +124,7 @@
 //        return this;
 //    }
 //
-//    public EnhanceGenerator<B> strategyConfig(Consumer<com.baomidou.mybatisplus.generator.config.StrategyConfig.Builder> consumer) {
+//    public EnhanceGenerator<B> strategyConfig(Consumer<com.baomidou.mybatisplus.generator.config.Strategy.Builder> consumer) {
 //        consumer.accept(strategyConfigBuilder);
 //        return this;
 //    }
@@ -142,32 +142,32 @@
 //    }
 //
 //    @Override
-//    public EnhanceGenerator<B> globalCustomConfig(Consumer<GlobalConfig.Builder> consumer) {
+//    public EnhanceGenerator<B> globalCustomConfig(Consumer<Global.Builder> consumer) {
 //        consumer.accept(globalCustomConfigBuilder);
 //        return this;
 //    }
 //
 //    // 新增的配置方法
 //    @Override
-//    public EnhanceGenerator<B> controllerConfig(Consumer<ControllerConfig.Builder> consumer) {
+//    public EnhanceGenerator<B> controllerConfig(Consumer<Controller.Builder> consumer) {
 //        consumer.accept(controllerConfigBuilder);
 //        return this;
 //    }
 //
 //    @Override
-//    public EnhanceGenerator<B> serviceConfig(Consumer<ServiceConfig.Builder> consumer) {
+//    public EnhanceGenerator<B> serviceConfig(Consumer<Service.Builder> consumer) {
 //        consumer.accept(serviceConfigBuilder);
 //        return this;
 //    }
 //
 //    @Override
-//    public EnhanceGenerator<B> mapperConfig(Consumer<MapperConfig.Builder> consumer) {
+//    public EnhanceGenerator<B> mapperConfig(Consumer<Mapper.Builder> consumer) {
 //        consumer.accept(mapperConfigBuilder);
 //        return this;
 //    }
 //
 //    @Override
-//    public EnhanceGenerator<B> entityConfig(Consumer<EntityConfig.Builder> consumer) {
+//    public EnhanceGenerator<B> entityConfig(Consumer<Entity.Builder> consumer) {
 //        consumer.accept(entityConfigBuilder);
 //        return this;
 //    }
