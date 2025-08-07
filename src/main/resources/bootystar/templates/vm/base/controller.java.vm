@@ -74,7 +74,7 @@ import ${returnMethod.classFullName};
 #if(${pageMethod.classFullName})
 import ${pageMethod.classFullName};
     #else
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.bootystar.mybatisplus.core.metadata.IPage;
 #end
 #end
 #if(${superControllerClassPackage})

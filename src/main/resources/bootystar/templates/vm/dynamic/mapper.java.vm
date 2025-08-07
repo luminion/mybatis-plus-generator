@@ -5,7 +5,7 @@ import ${mapperAnnotationClass.name};
 #end
 #if(${overrideMethods})
 ##import org.apache.ibatis.annotations.Param;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.bootystar.mybatisplus.core.metadata.IPage;
 #end
 import ${superMapperClassPackage};
 import ${package.Entity}.${entity};

@@ -1,6 +1,6 @@
 //package io.github.bootystar.mybatisplus.generator;
 //
-//import com.baomidou.mybatisplus.annotation.IdType;
+//import io.github.bootystar.mybatisplus.annotation.IdType;
 //import io.github.bootystar.mybatisplus.generator.generator.core.EnhanceGenerator;
 //
 ///**
@@ -30,11 +30,11 @@
 //                            .baseUrl("/api/v1")
 //                    )
 //                    .serviceConfig(e -> e
-//                            .superServiceClass("com.baomidou.mybatisplus.extension.service.IService")
+//                            .superServiceClass("io.github.bootystar.mybatisplus.extension.service.IService")
 //                            .enableServiceInterface()
 //                    )
 //                    .mapperConfig(e -> e
-//                            .superClass("com.baomidou.mybatisplus.core.mapper.BaseMapper")
+//                            .superClass("io.github.bootystar.mybatisplus.core.mapper.BaseMapper")
 //                            .enableMapperAnnotation()
 //                    )
 //                    .entityConfig(e -> e

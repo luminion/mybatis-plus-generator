@@ -28,7 +28,7 @@
 //            // 测试ServiceConfig
 //            io.github.bootystar.mybatisplus.generator.config.support.Service serviceConfig = 
 //                io.github.bootystar.mybatisplus.generator.config.support.Service.builder()
-//                    .superServiceClass("com.baomidou.mybatisplus.extension.service.IService")
+//                    .superServiceClass("io.github.bootystar.mybatisplus.extension.service.IService")
 //                    .enableServiceInterface()
 //                    .build();
 //            System.out.println("✓ ServiceConfig创建成功");
@@ -36,7 +36,7 @@
 //            // 测试MapperConfig
 //            io.github.bootystar.mybatisplus.generator.config.support.Mapper mapperConfig = 
 //                io.github.bootystar.mybatisplus.generator.config.support.Mapper.builder()
-//                    .superClass("com.baomidou.mybatisplus.core.mapper.BaseMapper")
+//                    .superClass("io.github.bootystar.mybatisplus.core.mapper.BaseMapper")
 //                    .enableMapperAnnotation()
 //                    .build();
 //            System.out.println("✓ MapperConfig创建成功");
@@ -84,7 +84,7 @@
 //            }
 //            
 //            // 验证ServiceConfig属性
-//            if ("com.baomidou.mybatisplus.extension.service.IService".equals(serviceConfig.getSuperServiceClass())) {
+//            if ("io.github.bootystar.mybatisplus.extension.service.IService".equals(serviceConfig.getSuperServiceClass())) {
 //                System.out.println("✓ Service.superServiceClass设置正确");
 //            }
 //            if (serviceConfig.isServiceInterface()) {
@@ -92,7 +92,7 @@
 //            }
 //            
 //            // 验证MapperConfig属性
-//            if ("com.baomidou.mybatisplus.core.mapper.BaseMapper".equals(mapperConfig.getSuperClass())) {
+//            if ("io.github.bootystar.mybatisplus.core.mapper.BaseMapper".equals(mapperConfig.getSuperClass())) {
 //                System.out.println("✓ Mapper.superClass设置正确");
 //            }
 //            if (mapperConfig.isEnableMapperAnnotation()) {

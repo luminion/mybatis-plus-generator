@@ -29,7 +29,7 @@ package ${package.Service};
 #end
 ## ------参数设置----end
 #if(${generateSelect}||${generateExport})
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.bootystar.mybatisplus.core.metadata.IPage;
 #end
 import ${superServiceClassPackage};
 import ${package.Entity}.${entity};
