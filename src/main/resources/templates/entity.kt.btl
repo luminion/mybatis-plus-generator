@@ -1,0 +1,88 @@
+package ${package.Entity}
+
+<% for(pkg in importEntityFrameworkPackages){ %>
+import ${pkg}
+<% } %>
+
+<% for(pkg in importEntityJavaPackages){ %>
+import ${pkg}
+<% } %>
+
+/**
+ * <p>
+ * ${table.comment!}
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+<% for(an in entityClassAnnotations){ %>
+${an.displayName}
+<% } %>
+<% if(isNotEmpty(superEntityClass)){ %>
+class ${entity} : ${superEntityClass}<% if(activeRecord){ %><${entity}><%}%>() {
+<% }else if(activeRecord){ %>
+class ${entity} : Model<${entity}>() {
+<% }else if(entitySerialVersionUID){ %>
+class ${entity} : Serializable {
+<% }else{ %>
+class ${entity} {
+<% } %>
+
+<% /** -----------BEGIN 字段循环遍历----------- **/ %>
+<% for(field in table.fields){ %>
+    <%
+    if(field.keyFlag){
+        var keyPropertyName = field.propertyName;
+    }
+    %>
+    <% if(isNotEmpty(field.comment)){ %>
+        <% if(entityFieldUseJavaDoc){ %>
+    /**
+     * ${field.comment}
+     */
+        <% } %>
+    <% } %>
+    <% for(an in field.annotationAttributesList){ %>
+    ${an.displayName}
+    <% } %>
+    <% if(field.propertyType == 'Integer'){ %>
+    var ${field.propertyName}: Int? = null
+    <% }else{ %>
+    var ${field.propertyName}: ${field.propertyType}? = null
+    <% } %>
+
+<% } %>
+<% /** -----------END 字段循环遍历----------- **/ %>
+<% if(entityColumnConstant){ %>
+    companion object {
+   <% for(field in table.fields){ %>
+    const val ${strutil.toUpperCase(field.name)} : String = "${field.name}"
+   <% } %>
+    }
+<% } %>
+<% if(activeRecord){ %>
+    @Override
+    override fun pkVal(): Serializable? {
+    <% if(isNotEmpty(keyPropertyName)){ %>
+        return this.${keyPropertyName}
+    <% }else{ %>
+        return null;
+    <% } %>
+    }
+
+<% } %>
+<% if(entityToString){ %>
+    override fun toString(): String {
+        return "${entity}{" +
+    <% for(field in table.fields){ %>
+       <% if(fieldLP.dataIndex==0){ %>
+        "${field.propertyName}=" + ${field.propertyName} +
+       <% }else{ %>
+        ", ${field.propertyName}=" + ${field.propertyName} +
+       <% } %>
+    <% } %>
+        "}"
+    }
+<% } %>
+}

@@ -1,0 +1,40 @@
+package #(package.Mapper);
+
+#for(pkg : importMapperFrameworkPackages)
+import #(pkg);
+#end
+#if(!importMapperJavaPackages.isEmpty())
+
+#for(pkg : importMapperJavaPackages)
+import #(pkg);
+#end
+#end
+
+/**
+ * <p>
+ * #(table.comment) Mapper 接口
+ * </p>
+ *
+ * @author #(author)
+ * @since #(date)
+ */
+#if(mapperAnnotationClass)
+@#(mapperAnnotationClass.simpleName)
+#end
+#if(kotlin)
+interface #(table.mapperName) : #(superMapperClass)<#(entity)> {
+#else
+public interface #(table.mapperName) extends #(superMapperClass)<#(entity)> {
+#end
+
+#for(m : mapperMethodList)
+    /**
+     * generate by #(m.indexName)
+     *
+     #for(f : m.tableFieldList)
+     * @param #(f.propertyName) #(f.comment)
+     #end
+     */
+    #(m.method)
+#end
+}
