@@ -1,0 +1,88 @@
+package #(package.Entity);
+
+#for(pkg : importEntityFrameworkPackages)
+import #(pkg)
+#end
+
+#for(pkg : importEntityJavaPackages)
+import #(pkg)
+#end
+
+/**
+ * <p>
+ * #(table.comment)
+ * </p>
+ *
+ * @author #(author)
+ * @since #(date)
+ */
+#for(an : entityClassAnnotations)
+#(an.displayName)
+#end
+#if(superEntityClass)
+class #(entity) : #(superEntityClass)#if(activeRecord)<#(entity)>#end() {
+#elseif(activeRecord)
+class #(entity) : Model<#(entity)>() {
+#elseif(entitySerialVersionUID)
+class #(entity) : Serializable {
+#else
+class #(entity) {
+#end
+
+### ----------  BEGIN 字段循环遍历  ----------
+#for(field : table.fields)
+#if(field.isKeyFlag())
+#set(keyPropertyName = field.propertyName)
+#end
+#if(field.comment != null)
+    #if(entityFieldUseJavaDoc)
+    /**
+     * #(field.comment)
+     */
+    #end
+#end
+#for(an : field.annotationAttributesList)
+    #(an.displayName)
+#end
+    #if(field.propertyType == "Integer")
+    var #(field.propertyName): Int? = null
+    #else
+    var #(field.propertyName): #(field.propertyType)? = null
+    #end
+
+#end
+### ----------  END 字段循环遍历  ----------
+#if(entityColumnConstant)
+    companion object {
+#for(field : table.fields)
+
+        const val #(field.name.toUpperCase()) : String = "#(field.name)"
+
+#end
+    }
+
+#end
+#if(activeRecord)
+    override fun pkVal(): Serializable? {
+#if(keyPropertyName)
+        return #(keyPropertyName)
+#else
+        return null
+#end
+    }
+
+#end
+#if(entityToString)
+    override fun toString(): String {
+        return "#(entity){" +
+#for(field : table.fields)
+#if(for.index == 0)
+        "#(field.propertyName)=" + #(field.propertyName) +
+#else
+        ", #(field.propertyName)=" + #(field.propertyName) +
+#end
+#end
+        "}"
+    }
+#end
+}
