@@ -18,7 +18,7 @@ package io.github.bootystar.mybatisplus.generator.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -48,11 +48,11 @@ public class AnnotationAttributes {
     public AnnotationAttributes() {
     }
 
-    public AnnotationAttributes(@NotNull Class<?> annotationClass) {
+    public AnnotationAttributes(Class<?> annotationClass) {
         this.displayName = "@" + annotationClass.getSimpleName();
         this.importPackages.add(annotationClass.getName());
     }
-    public AnnotationAttributes(@NotNull Class<?> annotationClass, @NotNull String displayName, String... extraPkg) {
+    public AnnotationAttributes(Class<?> annotationClass, String displayName, String... extraPkg) {
         this.displayName = displayName;
         this.importPackages.add(annotationClass.getName());
         if (extraPkg != null && extraPkg.length > 0) {
@@ -60,7 +60,7 @@ public class AnnotationAttributes {
         }
     }
 
-    public AnnotationAttributes(@NotNull String displayName, @NotNull String... importPackages) {
+    public AnnotationAttributes(String displayName, String... importPackages) {
         this.displayName = displayName;
         this.importPackages.addAll(Arrays.asList(importPackages));
     }
@@ -70,7 +70,7 @@ public class AnnotationAttributes {
      *
      * @param importPackage 包路径
      */
-    public void addImportPackage(@NotNull String importPackage) {
+    public void addImportPackage(String importPackage) {
         this.importPackages.add(importPackage);
     }
 

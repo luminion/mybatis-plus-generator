@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config;
+package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.toolkit.ClassUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
+import io.github.bootystar.mybatisplus.generator.config.IDbQuery;
+import io.github.bootystar.mybatisplus.generator.config.IKeyWordsHandler;
+import io.github.bootystar.mybatisplus.generator.config.ITypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.converts.TypeConverts;
 import io.github.bootystar.mybatisplus.generator.config.querys.DbQueryDecorator;
@@ -27,8 +31,7 @@ import io.github.bootystar.mybatisplus.generator.query.DefaultQuery;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
 import io.github.bootystar.mybatisplus.generator.query.SQLQuery;
 import io.github.bootystar.mybatisplus.generator.type.ITypeConvertHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,7 +141,6 @@ public class DataSourceConfig {
     /**
      * 获取数据库查询
      */
-    @NotNull
     public IDbQuery getDbQuery() {
         if (null == dbQuery) {
             DbType dbType = getDbType();
@@ -154,7 +156,6 @@ public class DataSourceConfig {
      *
      * @return 类型枚举值
      */
-    @NotNull
     public DbType getDbType() {
         return this.getDbType(this.url.toLowerCase());
     }
@@ -165,8 +166,7 @@ public class DataSourceConfig {
      * @param str url
      * @return 类型枚举值，如果没找到，则返回 null
      */
-    @NotNull
-    private DbType getDbType(@NotNull String str) {
+    private DbType getDbType(String str) {
         if (str.contains(":mysql:") || str.contains(":cobar:")) {
             return DbType.MYSQL;
         } else if (str.contains(":oracle:")) {
@@ -209,7 +209,6 @@ public class DataSourceConfig {
     /**
      * 获取数据库字段类型转换
      */
-    @NotNull
     public ITypeConvert getTypeConvert() {
         if (null == typeConvert) {
             DbType dbType = getDbType();
@@ -229,7 +228,6 @@ public class DataSourceConfig {
      * @return Connection
      * @see DbQueryDecorator#getConnection()
      */
-    @NotNull
     public Connection getConn() {
         try {
             if (connection != null && !connection.isClosed()) {
@@ -283,7 +281,6 @@ public class DataSourceConfig {
      * @return 默认schema
      * @since 3.5.0
      */
-    @Nullable
     protected String getDefaultSchema() {
         DbType dbType = getDbType();
         String schema = null;
@@ -303,42 +300,34 @@ public class DataSourceConfig {
         return schema;
     }
 
-    @Nullable
     public String getSchemaName() {
         return schemaName;
     }
 
-    @Nullable
     public IKeyWordsHandler getKeyWordsHandler() {
         return keyWordsHandler;
     }
 
-    @NotNull
     public String getUrl() {
         return url;
     }
 
-    @Nullable
     public String getUsername() {
         return username;
     }
 
-    @Nullable
     public String getPassword() {
         return password;
     }
 
-    @NotNull
     public Class<? extends IDatabaseQuery> getDatabaseQueryClass() {
         return databaseQueryClass;
     }
 
-    @Nullable
     public ITypeConvertHandler getTypeConvertHandler() {
         return typeConvertHandler;
     }
 
-    @Nullable
     public String getDriverClassName() {
         return driverClassName;
     }
@@ -364,7 +353,7 @@ public class DataSourceConfig {
          * @param username 数据库账号
          * @param password 数据库密码
          */
-        public Builder(@NotNull String url, String username, String password) {
+        public Builder(String url, String username, String password) {
             this();
             if (StringUtils.isBlank(url)) {
                 throw new RuntimeException("无法创建文件，请正确输入 url 配置信息！");
@@ -379,7 +368,7 @@ public class DataSourceConfig {
          *
          * @param dataSource 外部数据源实例
          */
-        public Builder(@NotNull DataSource dataSource) {
+        public Builder(DataSource dataSource) {
             this();
             this.dataSourceConfig.dataSource = dataSource;
             try {
@@ -403,7 +392,7 @@ public class DataSourceConfig {
          * @param dbQuery 数据库查询实现
          * @return this
          */
-        public Builder dbQuery(@NotNull IDbQuery dbQuery) {
+        public Builder dbQuery(IDbQuery dbQuery) {
             this.dataSourceConfig.dbQuery = dbQuery;
             return this;
         }
@@ -414,7 +403,7 @@ public class DataSourceConfig {
          * @param schemaName 数据库schema
          * @return this
          */
-        public Builder schema(@NotNull String schemaName) {
+        public Builder schema(String schemaName) {
             this.dataSourceConfig.schemaName = schemaName;
             return this;
         }
@@ -425,7 +414,7 @@ public class DataSourceConfig {
          * @param typeConvert 类型转换器
          * @return this
          */
-        public Builder typeConvert(@NotNull ITypeConvert typeConvert) {
+        public Builder typeConvert(ITypeConvert typeConvert) {
             this.dataSourceConfig.typeConvert = typeConvert;
             return this;
         }
@@ -436,7 +425,7 @@ public class DataSourceConfig {
          * @param keyWordsHandler 关键字处理器
          * @return this
          */
-        public Builder keyWordsHandler(@NotNull IKeyWordsHandler keyWordsHandler) {
+        public Builder keyWordsHandler(IKeyWordsHandler keyWordsHandler) {
             this.dataSourceConfig.keyWordsHandler = keyWordsHandler;
             return this;
         }
@@ -448,7 +437,7 @@ public class DataSourceConfig {
          * @return this
          * @since 3.5.3
          */
-        public Builder databaseQueryClass(@NotNull Class<? extends AbstractDatabaseQuery> databaseQueryClass) {
+        public Builder databaseQueryClass(Class<? extends AbstractDatabaseQuery> databaseQueryClass) {
             this.dataSourceConfig.databaseQueryClass = databaseQueryClass;
             return this;
         }
@@ -460,7 +449,7 @@ public class DataSourceConfig {
          * @return this
          * @since 3.5.3
          */
-        public Builder typeConvertHandler(@NotNull ITypeConvertHandler typeConvertHandler) {
+        public Builder typeConvertHandler(ITypeConvertHandler typeConvertHandler) {
             this.dataSourceConfig.typeConvertHandler = typeConvertHandler;
             return this;
         }
@@ -473,7 +462,7 @@ public class DataSourceConfig {
          * @return this
          * @since 3.5.3
          */
-        public Builder addConnectionProperty(@NotNull String key, @NotNull String value) {
+        public Builder addConnectionProperty(String key, String value) {
             this.dataSourceConfig.connectionProperties.put(key, value);
             return this;
         }
@@ -486,7 +475,7 @@ public class DataSourceConfig {
          * @return this
          * @since 3.5.8
          */
-        public Builder driverClassName(@NotNull String className) {
+        public Builder driverClassName(String className) {
             ClassUtils.toClassConfident(className);
             this.dataSourceConfig.driverClassName = className;
             return this;

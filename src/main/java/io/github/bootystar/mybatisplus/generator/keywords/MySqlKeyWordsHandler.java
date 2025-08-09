@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.keywords;
 
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.*;
 
@@ -787,17 +787,17 @@ public class MySqlKeyWordsHandler extends BaseKeyWordsHandler {
         super(new HashSet<>(KEY_WORDS));
     }
 
-    public MySqlKeyWordsHandler(@NotNull List<String> keyWords) {
+    public MySqlKeyWordsHandler(List<String> keyWords) {
         super(new HashSet<>(keyWords));
     }
 
-    public MySqlKeyWordsHandler(@NotNull Set<String> keyWords) {
+    public MySqlKeyWordsHandler(Set<String> keyWords) {
         super(keyWords);
     }
 
 
     @Override
-    public @NotNull String formatStyle() {
+    public String formatStyle() {
         return "`%s`";
     }
 

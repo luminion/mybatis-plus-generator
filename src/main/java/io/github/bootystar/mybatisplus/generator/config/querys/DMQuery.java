@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.querys;
 
-import io.github.bootystar.mybatisplus.generator.config.DataSourceConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
 
 /**
  * DM 表数据查询

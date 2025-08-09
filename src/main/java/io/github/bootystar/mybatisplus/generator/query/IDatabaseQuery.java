@@ -16,7 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.query;
 
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.List;
 
@@ -31,7 +31,6 @@ public interface IDatabaseQuery {
      *
      * @return 表信息
      */
-    @NotNull
     List<TableInfo> queryTables();
 
 }

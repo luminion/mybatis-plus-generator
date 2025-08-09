@@ -16,12 +16,12 @@
 package io.github.bootystar.mybatisplus.generator.query;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import io.github.bootystar.mybatisplus.generator.config.DataSourceConfig;
-import io.github.bootystar.mybatisplus.generator.config.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.StrategyConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
-import org.jetbrains.annotations.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,19 +49,17 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
     protected final GlobalConfig globalConfig;
 
 
-    public AbstractDatabaseQuery(@NotNull ConfigBuilder configBuilder) {
+    public AbstractDatabaseQuery(ConfigBuilder configBuilder) {
         this.configBuilder = configBuilder;
         this.dataSourceConfig = configBuilder.getDataSourceConfig();
         this.strategyConfig = configBuilder.getStrategyConfig();
         this.globalConfig = configBuilder.getGlobalConfig();
     }
 
-    @NotNull
     public ConfigBuilder getConfigBuilder() {
         return configBuilder;
     }
 
-    @NotNull
     public DataSourceConfig getDataSourceConfig() {
         return dataSourceConfig;
     }

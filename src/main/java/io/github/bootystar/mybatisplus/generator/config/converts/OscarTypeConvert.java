@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.converts;
 
-import io.github.bootystar.mybatisplus.generator.config.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.ITypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 import io.github.bootystar.mybatisplus.generator.config.rules.DbColumnType;

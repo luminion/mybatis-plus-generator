@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.builder;
+package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.StrategyConfig;
+import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,9 +35,9 @@ import java.util.Map;
  * @author nieqiurong 2020/10/11.
  * @since 3.5.0
  */
+@Slf4j
 public class Controller implements ITemplate {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
     private Controller() {
     }
@@ -72,6 +70,7 @@ public class Controller implements ITemplate {
      *
      * @since 3.5.0
      */
+    @Getter
     private ConverterFileName converterFileName = (entityName -> entityName + ConstVal.CONTROLLER);
 
     /**
@@ -97,19 +96,12 @@ public class Controller implements ITemplate {
     @Getter
     private String templatePath = ConstVal.TEMPLATE_CONTROLLER;
 
-    @Nullable
     public String getSuperClass() {
         return superClass;
     }
 
-    @NotNull
-    public ConverterFileName getConverterFileName() {
-        return converterFileName;
-    }
-
     @Override
-    @NotNull
-    public Map<String, Object> renderData(@NotNull TableInfo tableInfo) {
+    public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> data = new HashMap<>(5);
         data.put("controllerMappingHyphen", StringUtils.camelToHyphen(tableInfo.getEntityPath()));
         data.put("controllerMappingHyphenStyle", this.hyphenStyle);
@@ -123,7 +115,7 @@ public class Controller implements ITemplate {
 
         private final Controller controller = new Controller();
 
-        public Builder(@NotNull StrategyConfig strategyConfig) {
+        public Builder(StrategyConfig strategyConfig) {
             super(strategyConfig);
         }
 
@@ -133,7 +125,7 @@ public class Controller implements ITemplate {
          * @param clazz 父类控制器
          * @return this
          */
-        public Builder superClass(@NotNull Class<?> clazz) {
+        public Builder superClass(Class<?> clazz) {
             return superClass(clazz.getName());
         }
 
@@ -143,7 +135,7 @@ public class Controller implements ITemplate {
          * @param superClass 父类控制器类名
          * @return this
          */
-        public Builder superClass(@NotNull String superClass) {
+        public Builder superClass(String superClass) {
             this.controller.superClass = superClass;
             return this;
         }
@@ -177,7 +169,7 @@ public class Controller implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder convertFileName(@NotNull ConverterFileName converter) {
+        public Builder convertFileName(ConverterFileName converter) {
             this.controller.converterFileName = converter;
             return this;
         }
@@ -189,7 +181,7 @@ public class Controller implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder formatFileName(@NotNull String format) {
+        public Builder formatFileName(String format) {
             return convertFileName((entityName) -> String.format(format, entityName));
         }
 
@@ -233,13 +225,12 @@ public class Controller implements ITemplate {
          * @return this
          * @since 3.5.6
          */
-        public Builder template(@NotNull String template) {
+        public Builder template(String template) {
             this.controller.templatePath = template;
             return this;
         }
 
-        @NotNull
-        public Controller get() {
+            public Controller get() {
             return this.controller;
         }
     }

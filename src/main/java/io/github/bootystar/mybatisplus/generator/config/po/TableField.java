@@ -17,11 +17,11 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.DataSourceConfig;
-import io.github.bootystar.mybatisplus.generator.config.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.IKeyWordsHandler;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.builder.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.Entity;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.Column;
@@ -29,7 +29,7 @@ import io.github.bootystar.mybatisplus.generator.fill.Property;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import io.github.bootystar.mybatisplus.generator.model.AnnotationAttributes;
 import org.apache.ibatis.type.JdbcType;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -154,7 +154,7 @@ public class TableField {
      * @param name          数据库字段名称
      * @since 3.5.0
      */
-    public TableField(@NotNull ConfigBuilder configBuilder, @NotNull String name) {
+    public TableField(ConfigBuilder configBuilder, String name) {
         this.name = name;
         this.columnName = name;
         this.entity = configBuilder.getStrategyConfig().entity();
@@ -170,7 +170,7 @@ public class TableField {
      * @return this
      * @since 3.5.0
      */
-    public TableField setPropertyName(@NotNull String propertyName, @NotNull IColumnType columnType) {
+    public TableField setPropertyName(String propertyName, IColumnType columnType) {
         this.columnType = columnType;
         if (entity.isBooleanColumnRemoveIsPrefix()
             && "boolean".equalsIgnoreCase(this.getPropertyType()) && propertyName.startsWith("is")) {
@@ -387,7 +387,7 @@ public class TableField {
      * @param annotationAttributesList 注解属性集合
      * @since 3.5.10
      */
-    public void addAnnotationAttributesList(@NotNull List<AnnotationAttributes> annotationAttributesList) {
+    public void addAnnotationAttributesList(List<AnnotationAttributes> annotationAttributesList) {
         this.addAnnotationAttributesList(annotationAttributesList, null);
     }
 
@@ -395,7 +395,7 @@ public class TableField {
      * @param annotationAttributesList 注解属性集合
      * @since 3.5.11
      */
-    public void addAnnotationAttributesList(@NotNull List<AnnotationAttributes> annotationAttributesList, Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction) {
+    public void addAnnotationAttributesList(List<AnnotationAttributes> annotationAttributesList, Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction) {
         this.annotationAttributesList.addAll(annotationAttributesList);
         this.annotationAttributesFunction = annotationAttributesFunction;
     }
@@ -406,7 +406,7 @@ public class TableField {
      * @param annotationAttributes 注解属性
      * @since 3.5.10
      */
-    public void addAnnotationAttributesList(@NotNull AnnotationAttributes annotationAttributes) {
+    public void addAnnotationAttributesList(AnnotationAttributes annotationAttributes) {
         this.annotationAttributesList.add(annotationAttributes);
     }
 

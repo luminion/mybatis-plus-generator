@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.builder;
+package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.core.handlers.AnnotationHandler;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.*;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
 import io.github.bootystar.mybatisplus.generator.config.INameConvert;
-import io.github.bootystar.mybatisplus.generator.config.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
@@ -33,8 +31,7 @@ import io.github.bootystar.mybatisplus.generator.model.AnnotationAttributes;
 import io.github.bootystar.mybatisplus.generator.model.ClassAnnotationAttributes;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,9 +47,6 @@ import java.util.stream.Collectors;
  * @since 3.5.0
  */
 public class Entity implements ITemplate {
-
-    private final AnnotationHandler annotationHandler = new AnnotationHandler() {
-    };
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Entity.class);
 
@@ -319,7 +313,6 @@ public class Entity implements ITemplate {
         }).collect(Collectors.toSet()));
     }
 
-    @NotNull
     public NamingStrategy getColumnNaming() {
         // 未指定以 naming 策略为准
         return Optional.ofNullable(columnNaming).orElse(naming);
@@ -348,59 +341,48 @@ public class Entity implements ITemplate {
         return ignoreColumns.stream().anyMatch(e -> e.equalsIgnoreCase(fieldName));
     }
 
-    @NotNull
     public INameConvert getNameConvert() {
         return nameConvert;
     }
 
-    @Nullable
     public String getSuperClass() {
         return superClass;
     }
 
-    @Nullable
     public String getVersionColumnName() {
         return versionColumnName;
     }
 
-    @Nullable
     public String getVersionPropertyName() {
         return versionPropertyName;
     }
 
-    @Nullable
     public String getLogicDeleteColumnName() {
         return logicDeleteColumnName;
     }
 
-    @Nullable
     public String getLogicDeletePropertyName() {
         return logicDeletePropertyName;
     }
 
-    @NotNull
     public List<IFill> getTableFillList() {
         return tableFillList;
     }
 
-    @NotNull
     public NamingStrategy getNaming() {
         return naming;
     }
 
-    @Nullable
     public IdType getIdType() {
         return idType;
     }
 
-    @NotNull
     public ConverterFileName getConverterFileName() {
         return converterFileName;
     }
 
     @Override
-    @NotNull
-    public Map<String, Object> renderData(@NotNull TableInfo tableInfo) {
+    public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> data = new HashMap<>();
         data.put("idType", idType == null ? null : idType.toString());
         data.put("logicDeleteFieldName", this.logicDeleteColumnName);
@@ -476,7 +458,7 @@ public class Entity implements ITemplate {
          * @param clazz 类
          * @return this
          */
-        public Builder superClass(@NotNull Class<?> clazz) {
+        public Builder superClass(Class<?> clazz) {
             return superClass(clazz.getName());
         }
 
@@ -558,7 +540,7 @@ public class Entity implements ITemplate {
          * @return this
          * @since 3.5.10
          */
-        public Builder enableLombok(@NotNull ClassAnnotationAttributes... attributes) {
+        public Builder enableLombok(ClassAnnotationAttributes... attributes) {
             this.entity.lombok = true;
             this.entity.defaultLombok = false;
             for (ClassAnnotationAttributes attribute : attributes) {
@@ -673,11 +655,11 @@ public class Entity implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder addSuperEntityColumns(@NotNull String... superEntityColumns) {
+        public Builder addSuperEntityColumns(String... superEntityColumns) {
             return addSuperEntityColumns(Arrays.asList(superEntityColumns));
         }
 
-        public Builder addSuperEntityColumns(@NotNull List<String> superEntityColumnList) {
+        public Builder addSuperEntityColumns(List<String> superEntityColumnList) {
             this.entity.superEntityColumns.addAll(superEntityColumnList);
             return this;
         }
@@ -689,11 +671,11 @@ public class Entity implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder addIgnoreColumns(@NotNull String... ignoreColumns) {
+        public Builder addIgnoreColumns(String... ignoreColumns) {
             return addIgnoreColumns(Arrays.asList(ignoreColumns));
         }
 
-        public Builder addIgnoreColumns(@NotNull List<String> ignoreColumnList) {
+        public Builder addIgnoreColumns(List<String> ignoreColumnList) {
             this.entity.ignoreColumns.addAll(ignoreColumnList);
             return this;
         }
@@ -705,7 +687,7 @@ public class Entity implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder addTableFills(@NotNull IFill... tableFills) {
+        public Builder addTableFills(IFill... tableFills) {
             return addTableFills(Arrays.asList(tableFills));
         }
 
@@ -716,7 +698,7 @@ public class Entity implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder addTableFills(@NotNull List<IFill> tableFillList) {
+        public Builder addTableFills(List<IFill> tableFillList) {
             this.entity.tableFillList.addAll(tableFillList);
             return this;
         }
@@ -740,7 +722,7 @@ public class Entity implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder convertFileName(@NotNull ConverterFileName converter) {
+        public Builder convertFileName(ConverterFileName converter) {
             this.entity.converterFileName = converter;
             return this;
         }
@@ -820,7 +802,7 @@ public class Entity implements ITemplate {
          * @return this
          * @since 3.5.10
          */
-        public Builder addClassAnnotation(@NotNull ClassAnnotationAttributes attributes) {
+        public Builder addClassAnnotation(ClassAnnotationAttributes attributes) {
             this.entity.classAnnotations.add(attributes);
             return this;
         }
@@ -832,7 +814,7 @@ public class Entity implements ITemplate {
          * @return this
          * @since 3.5.10
          */
-        public Builder tableFieldAnnotationHandler(@NotNull ITableFieldAnnotationHandler tableFieldAnnotationHandler) {
+        public Builder tableFieldAnnotationHandler(ITableFieldAnnotationHandler tableFieldAnnotationHandler) {
             this.entity.tableFieldAnnotationHandler = tableFieldAnnotationHandler;
             return this;
         }
@@ -843,7 +825,7 @@ public class Entity implements ITemplate {
          * @since 3.5.10
          * @return this
          */
-        public Builder tableAnnotationHandler(@NotNull ITableAnnotationHandler tableAnnotationHandler){
+        public Builder tableAnnotationHandler(ITableAnnotationHandler tableAnnotationHandler){
             this.entity.tableAnnotationHandler = tableAnnotationHandler;
             return this;
         }

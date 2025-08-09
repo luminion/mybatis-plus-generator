@@ -20,7 +20,7 @@ import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,7 +38,7 @@ public class FreemarkerTemplateEngine extends AbstractTemplateEngine {
     private Configuration configuration;
 
     @Override
-    public @NotNull FreemarkerTemplateEngine init(@NotNull ConfigBuilder configBuilder) {
+    public FreemarkerTemplateEngine init(ConfigBuilder configBuilder) {
         configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         configuration.setDefaultEncoding(ConstVal.UTF8);
         configuration.setClassForTemplateLoading(FreemarkerTemplateEngine.class, StringPool.SLASH);
@@ -46,7 +46,7 @@ public class FreemarkerTemplateEngine extends AbstractTemplateEngine {
     }
 
     @Override
-    public String writer(@NotNull Map<String, Object> objectMap, @NotNull String templateName, @NotNull String templateString) throws Exception {
+    public String writer(Map<String, Object> objectMap, String templateName, String templateString) throws Exception {
         Template template = new Template(templateName, templateString, configuration);
         StringWriter writer = new StringWriter();
         template.process(objectMap, writer);
@@ -54,7 +54,7 @@ public class FreemarkerTemplateEngine extends AbstractTemplateEngine {
     }
 
     @Override
-    public void writer(@NotNull Map<String, Object> objectMap, @NotNull String templatePath, @NotNull File outputFile) throws Exception {
+    public void writer(Map<String, Object> objectMap, String templatePath, File outputFile) throws Exception {
         Template template = configuration.getTemplate(templatePath);
         try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
             template.process(objectMap, new OutputStreamWriter(fileOutputStream, ConstVal.UTF8));
@@ -64,7 +64,7 @@ public class FreemarkerTemplateEngine extends AbstractTemplateEngine {
 
 
     @Override
-    public @NotNull String templateFilePath(@NotNull String filePath) {
+    public String templateFilePath(String filePath) {
         return filePath + ".ftl";
     }
 }

@@ -16,7 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.function;
 
 
-import org.jetbrains.annotations.NotNull;
+
 
 /**
  * 转换输出文件名称
@@ -27,6 +27,5 @@ import org.jetbrains.annotations.NotNull;
 @FunctionalInterface
 public interface ConverterFileName {
 
-    @NotNull
     String convert(String entityName);
 }

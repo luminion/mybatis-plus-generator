@@ -17,8 +17,7 @@ package io.github.bootystar.mybatisplus.generator.model;
 
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Unmodifiable;
+
 
 import java.util.*;
 
@@ -32,43 +31,39 @@ public class MapperMethod {
      * 索引名称
      */
     @Getter
-    @NotNull
     private final String indexName;
 
     /**
      * 方法体
      */
     @Getter
-    @NotNull
     private final String method;
 
     /**
      * 索引字段信息
      */
-    @NotNull
     private final List<TableField> tableFieldList = new ArrayList<>();
 
     /**
      * 扩展参数
      */
-    @NotNull
     private final Map<String, Object> extendData = new HashMap<>();
 
-    public MapperMethod(@NotNull String indexName, @NotNull String method, @NotNull List<TableField> tableFieldList) {
+    public MapperMethod(String indexName, String method, List<TableField> tableFieldList) {
         this.indexName = indexName;
         this.method = method;
         this.tableFieldList.addAll(tableFieldList);
     }
 
-    public void addExtendData(@NotNull String key, @NotNull Object data) {
+    public void addExtendData(String key, Object data) {
         this.extendData.put(key, data);
     }
 
-    public @Unmodifiable @NotNull Map<String, Object> getExtendData() {
+    public Map<String, Object> getExtendData() {
         return Collections.unmodifiableMap(this.extendData);
     }
 
-    public @Unmodifiable @NotNull List<TableField> getTableFieldList() {
+    public List<TableField> getTableFieldList() {
         return Collections.unmodifiableList(this.tableFieldList);
     }
 

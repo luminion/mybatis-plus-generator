@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config;
+package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import io.github.bootystar.mybatisplus.generator.config.ConstVal;
+import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
+import io.github.bootystar.mybatisplus.generator.config.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.builder.CustomFile;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -100,7 +103,6 @@ public class PackageConfig {
     /**
      * 父包名
      */
-    @NotNull
     public String getParent() {
         if (StringUtils.isNotBlank(moduleName)) {
             return parent + StringPool.DOT + moduleName;
@@ -114,7 +116,6 @@ public class PackageConfig {
      * @param subPackage 子包名
      * @return 连接后的包名
      */
-    @NotNull
     public String joinPackage(String subPackage) {
         String parent = getParent();
         return StringUtils.isBlank(parent) ? subPackage : (parent + StringPool.DOT + subPackage);
@@ -128,7 +129,6 @@ public class PackageConfig {
      * @since 3.5.0
      * @deprecated 3.5.10
      */
-    @NotNull
     @Deprecated
     public Map<String, String> getPackageInfo() {
         return getPackageInfo((InjectionConfig) null);
@@ -141,7 +141,6 @@ public class PackageConfig {
      * @return 包配置信息
      * @since 3.5.10
      */
-    @NotNull
     public Map<String, String> getPackageInfo(InjectionConfig injectionConfig) {
         if (packageInfo.isEmpty()) {
             packageInfo.put(ConstVal.MODULE_NAME, this.getModuleName());
@@ -207,7 +206,7 @@ public class PackageConfig {
             this.packageConfig = new PackageConfig();
         }
 
-        public Builder(@NotNull String parent, @NotNull String moduleName) {
+        public Builder(String parent, String moduleName) {
             this();
             this.packageConfig.parent = parent;
             this.packageConfig.moduleName = moduleName;
@@ -219,7 +218,7 @@ public class PackageConfig {
          * @param parent 父包名
          * @return this
          */
-        public Builder parent(@NotNull String parent) {
+        public Builder parent(String parent) {
             this.packageConfig.parent = parent;
             return this;
         }
@@ -230,7 +229,7 @@ public class PackageConfig {
          * @param moduleName 模块名
          * @return this
          */
-        public Builder moduleName(@NotNull String moduleName) {
+        public Builder moduleName(String moduleName) {
             this.packageConfig.moduleName = moduleName;
             return this;
         }
@@ -241,7 +240,7 @@ public class PackageConfig {
          * @param entity 实体包名
          * @return this
          */
-        public Builder entity(@NotNull String entity) {
+        public Builder entity(String entity) {
             this.packageConfig.entity = entity;
             return this;
         }
@@ -252,7 +251,7 @@ public class PackageConfig {
          * @param service service包名
          * @return this
          */
-        public Builder service(@NotNull String service) {
+        public Builder service(String service) {
             this.packageConfig.service = service;
             return this;
         }
@@ -263,7 +262,7 @@ public class PackageConfig {
          * @param serviceImpl service实现类包名
          * @return this
          */
-        public Builder serviceImpl(@NotNull String serviceImpl) {
+        public Builder serviceImpl(String serviceImpl) {
             this.packageConfig.serviceImpl = serviceImpl;
             return this;
         }
@@ -274,7 +273,7 @@ public class PackageConfig {
          * @param mapper mapper包名
          * @return this
          */
-        public Builder mapper(@NotNull String mapper) {
+        public Builder mapper(String mapper) {
             this.packageConfig.mapper = mapper;
             return this;
         }
@@ -285,7 +284,7 @@ public class PackageConfig {
          * @param xml xml包名
          * @return this
          */
-        public Builder xml(@NotNull String xml) {
+        public Builder xml(String xml) {
             this.packageConfig.xml = xml;
             return this;
         }
@@ -296,7 +295,7 @@ public class PackageConfig {
          * @param controller 控制器包名
          * @return this
          */
-        public Builder controller(@NotNull String controller) {
+        public Builder controller(String controller) {
             this.packageConfig.controller = controller;
             return this;
         }
@@ -307,7 +306,7 @@ public class PackageConfig {
          * @param pathInfo 路径配置信息
          * @return this
          */
-        public Builder pathInfo(@NotNull Map<OutputFile, String> pathInfo) {
+        public Builder pathInfo(Map<OutputFile, String> pathInfo) {
             this.packageConfig.pathInfo = pathInfo;
             return this;
         }
@@ -318,8 +317,7 @@ public class PackageConfig {
          * @param subPackage 子包名
          * @return 连接后的包名
          */
-        @NotNull
-        public String joinPackage(@NotNull String subPackage) {
+            public String joinPackage(String subPackage) {
             return this.packageConfig.joinPackage(subPackage);
         }
 

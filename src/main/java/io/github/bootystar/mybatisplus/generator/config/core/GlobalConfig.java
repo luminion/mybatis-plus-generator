@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config;
+package io.github.bootystar.mybatisplus.generator.config.core;
 
-import io.github.bootystar.mybatisplus.generator.config.builder.Service;
+import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 import lombok.Getter;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,12 +103,10 @@ public class GlobalConfig {
         return !springdoc && swagger;
     }
 
-    @NotNull
     public DateType getDateType() {
         return dateType;
     }
 
-    @NotNull
     public String getCommentDate() {
         return commentDate.get();
     }
@@ -139,7 +137,7 @@ public class GlobalConfig {
         /**
          * 输出目录
          */
-        public Builder outputDir(@NotNull String outputDir) {
+        public Builder outputDir(String outputDir) {
             this.globalConfig.outputDir = outputDir;
             return this;
         }
@@ -147,7 +145,7 @@ public class GlobalConfig {
         /**
          * 作者
          */
-        public Builder author(@NotNull String author) {
+        public Builder author(String author) {
             this.globalConfig.author = author;
             return this;
         }
@@ -187,7 +185,7 @@ public class GlobalConfig {
         /**
          * 时间类型对应策略
          */
-        public Builder dateType(@NotNull DateType dateType) {
+        public Builder dateType(DateType dateType) {
             this.globalConfig.dateType = dateType;
             return this;
         }
@@ -200,7 +198,7 @@ public class GlobalConfig {
          * @return this
          * @since 3.5.0
          */
-        public Builder commentDate(@NotNull Supplier<String> commentDate) {
+        public Builder commentDate(Supplier<String> commentDate) {
             this.globalConfig.commentDate = commentDate;
             return this;
         }
@@ -212,7 +210,7 @@ public class GlobalConfig {
          * @return this
          * @since 3.5.0
          */
-        public Builder commentDate(@NotNull String pattern) {
+        public Builder commentDate(String pattern) {
             return commentDate(() -> new SimpleDateFormat(pattern).format(new Date()));
         }
 

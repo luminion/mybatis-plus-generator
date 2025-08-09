@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.config;
 
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.Collection;
 
@@ -32,7 +32,6 @@ public interface IKeyWordsHandler {
      *
      * @return 关键字集合
      */
-    @NotNull
     Collection<String> getKeyWords();
 
     /**
@@ -40,7 +39,6 @@ public interface IKeyWordsHandler {
      *
      * @return 格式
      */
-    @NotNull
     String formatStyle();
 
     /**
@@ -49,7 +47,7 @@ public interface IKeyWordsHandler {
      * @param columnName 字段名称
      * @return 是否为关键字
      */
-    boolean isKeyWords(@NotNull String columnName);
+    boolean isKeyWords(String columnName);
 
     /**
      * 格式化字段
@@ -57,8 +55,7 @@ public interface IKeyWordsHandler {
      * @param columnName 字段名称
      * @return 格式化字段
      */
-    @NotNull
-    default String formatColumn(@NotNull String columnName) {
+    default String formatColumn(String columnName) {
         return String.format(formatStyle(), columnName);
     }
 

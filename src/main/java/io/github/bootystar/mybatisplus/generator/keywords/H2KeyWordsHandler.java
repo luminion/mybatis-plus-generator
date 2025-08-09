@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.keywords;
 
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.*;
 
@@ -114,16 +114,16 @@ public class H2KeyWordsHandler extends BaseKeyWordsHandler {
         super(new HashSet<>(KEY_WORDS));
     }
 
-    public H2KeyWordsHandler(@NotNull List<String> keyWords) {
+    public H2KeyWordsHandler(List<String> keyWords) {
         super(new HashSet<>(keyWords));
     }
 
-    public H2KeyWordsHandler(@NotNull Set<String> keyWords) {
+    public H2KeyWordsHandler(Set<String> keyWords) {
         super(keyWords);
     }
 
     @Override
-    public @NotNull String formatStyle() {
+    public String formatStyle() {
         return "\"%s\"";
     }
 

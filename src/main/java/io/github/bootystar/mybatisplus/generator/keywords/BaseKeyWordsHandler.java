@@ -16,7 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.keywords;
 
 import io.github.bootystar.mybatisplus.generator.config.IKeyWordsHandler;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.*;
 
@@ -30,21 +30,21 @@ public abstract class BaseKeyWordsHandler implements IKeyWordsHandler {
 
     public final Set<String> keyWords;
 
-    public BaseKeyWordsHandler(@NotNull List<String> keyWords) {
+    public BaseKeyWordsHandler(List<String> keyWords) {
         this.keyWords = new HashSet<>(keyWords);
     }
 
-    public BaseKeyWordsHandler(@NotNull Set<String> keyWords) {
+    public BaseKeyWordsHandler(Set<String> keyWords) {
         this.keyWords = keyWords;
     }
 
     @Override
-    public @NotNull Collection<String> getKeyWords() {
+    public Collection<String> getKeyWords() {
         return keyWords;
     }
 
     @Override
-    public boolean isKeyWords(@NotNull String columnName) {
+    public boolean isKeyWords(String columnName) {
         return getKeyWords().contains(columnName.toUpperCase(Locale.ENGLISH));
     }
 

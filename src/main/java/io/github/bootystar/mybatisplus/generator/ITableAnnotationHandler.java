@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator;
 
-import io.github.bootystar.mybatisplus.generator.config.builder.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.Entity;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.model.ClassAnnotationAttributes;
 

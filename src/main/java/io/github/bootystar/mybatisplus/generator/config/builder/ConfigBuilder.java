@@ -16,12 +16,12 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import io.github.bootystar.mybatisplus.generator.config.*;
+import io.github.bootystar.mybatisplus.generator.config.core.*;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
 import lombok.Getter;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -35,13 +35,6 @@ import java.util.regex.Pattern;
  */
 public class ConfigBuilder {
 
-    /**
-     * 模板路径配置信息
-     *
-     * @deprecated 3.5.6
-     */
-    @Deprecated
-    private final TemplateConfig templateConfig;
 
     /**
      * 数据库表信息
@@ -103,16 +96,16 @@ public class ConfigBuilder {
      * @param packageConfig    包配置
      * @param dataSourceConfig 数据源配置
      * @param strategyConfig   表配置
-     * @param templateConfig   模板配置
      * @param globalConfig     全局配置
      */
-    public ConfigBuilder(@Nullable PackageConfig packageConfig, @NotNull DataSourceConfig dataSourceConfig,
-                         @Nullable StrategyConfig strategyConfig, @Nullable TemplateConfig templateConfig,
-                         @Nullable GlobalConfig globalConfig, @Nullable InjectionConfig injectionConfig) {
+    public ConfigBuilder(PackageConfig packageConfig,
+                         DataSourceConfig dataSourceConfig,
+                         StrategyConfig strategyConfig, 
+                         GlobalConfig globalConfig,
+                         InjectionConfig injectionConfig) {
         this.dataSourceConfig = dataSourceConfig;
         this.strategyConfig = Optional.ofNullable(strategyConfig).orElseGet(GeneratorBuilder::strategyConfig);
         this.globalConfig = Optional.ofNullable(globalConfig).orElseGet(GeneratorBuilder::globalConfig);
-        this.templateConfig = Optional.ofNullable(templateConfig).orElseGet(GeneratorBuilder::templateConfig);
         this.packageConfig = Optional.ofNullable(packageConfig).orElseGet(GeneratorBuilder::packageConfig);
         this.injectionConfig = Optional.ofNullable(injectionConfig).orElseGet(GeneratorBuilder::injectionConfig);
         this.pathInfo.putAll(new PathInfoHandler(this.injectionConfig, this.globalConfig, this.strategyConfig, this.packageConfig).getPathInfo());
@@ -132,41 +125,26 @@ public class ConfigBuilder {
      * @return 是否正则
      * @since 3.5.0
      */
-    public static boolean matcherRegTable(@NotNull String tableName) {
+    public static boolean matcherRegTable(String tableName) {
         return REGX.matcher(tableName).find();
     }
 
-    @NotNull
-    public ConfigBuilder setStrategyConfig(@NotNull StrategyConfig strategyConfig) {
+    public ConfigBuilder setStrategyConfig(StrategyConfig strategyConfig) {
         this.strategyConfig = strategyConfig;
         return this;
     }
 
-    @NotNull
-    public ConfigBuilder setGlobalConfig(@NotNull GlobalConfig globalConfig) {
+    public ConfigBuilder setGlobalConfig(GlobalConfig globalConfig) {
         this.globalConfig = globalConfig;
         return this;
     }
 
-    @NotNull
-    public ConfigBuilder setInjectionConfig(@NotNull InjectionConfig injectionConfig) {
+    public ConfigBuilder setInjectionConfig(InjectionConfig injectionConfig) {
         this.injectionConfig = injectionConfig;
         return this;
     }
 
-    /**
-     * 获取模板配置
-     *
-     * @return 模板配置
-     * @deprecated 3.5.6 {@link #strategyConfig}
-     */
-    @NotNull
-    @Deprecated
-    public TemplateConfig getTemplateConfig() {
-        return templateConfig;
-    }
 
-    @NotNull
     public List<TableInfo> getTableInfoList() {
         if (tableInfoList.isEmpty()) {
             List<TableInfo> tableInfos = this.databaseQuery.queryTables();
@@ -177,32 +155,26 @@ public class ConfigBuilder {
         return tableInfoList;
     }
 
-    @NotNull
     public Map<OutputFile, String> getPathInfo() {
         return pathInfo;
     }
 
-    @NotNull
     public StrategyConfig getStrategyConfig() {
         return strategyConfig;
     }
 
-    @NotNull
     public GlobalConfig getGlobalConfig() {
         return globalConfig;
     }
 
-    @Nullable
     public InjectionConfig getInjectionConfig() {
         return injectionConfig;
     }
 
-    @NotNull
     public PackageConfig getPackageConfig() {
         return packageConfig;
     }
 
-    @NotNull
     public DataSourceConfig getDataSourceConfig() {
         return dataSourceConfig;
     }

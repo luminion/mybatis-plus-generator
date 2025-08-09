@@ -17,7 +17,7 @@ package io.github.bootystar.mybatisplus.generator.fill;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import io.github.bootystar.mybatisplus.generator.IFill;
-import org.jetbrains.annotations.NotNull;
+
 
 /**
  * 字段填充
@@ -31,7 +31,7 @@ public class Column implements IFill {
 
     private final FieldFill fieldFill;
 
-    public Column(@NotNull String columnName, @NotNull FieldFill fieldFill) {
+    public Column(String columnName, FieldFill fieldFill) {
         this.columnName = columnName;
         this.fieldFill = fieldFill;
     }
@@ -42,12 +42,12 @@ public class Column implements IFill {
     }
 
     @Override
-    public @NotNull String getName() {
+    public String getName() {
         return this.columnName;
     }
 
     @Override
-    public @NotNull FieldFill getFieldFill() {
+    public FieldFill getFieldFill() {
         return this.fieldFill;
     }
 }
