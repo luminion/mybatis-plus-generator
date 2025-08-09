@@ -16,10 +16,11 @@
 package io.github.bootystar.mybatisplus.generator.config;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.Set;
 
@@ -36,16 +37,14 @@ public interface INameConvert {
      *
      * @param tableInfo 表信息对象
      */
-    @NotNull
-    String entityNameConvert(@NotNull TableInfo tableInfo);
+    String entityNameConvert(TableInfo tableInfo);
 
     /**
      * 执行属性名称转换
      *
      * @param field 表字段对象，如果属性表字段命名不一致注意 convert 属性的设置
      */
-    @NotNull
-    String propertyNameConvert(@NotNull TableField field);
+    String propertyNameConvert(TableField field);
 
     /**
      * 默认名称转换接口类
@@ -62,12 +61,12 @@ public interface INameConvert {
         }
 
         @Override
-        public @NotNull String entityNameConvert(@NotNull TableInfo tableInfo) {
+        public String entityNameConvert(TableInfo tableInfo) {
             return NamingStrategy.capitalFirst(processName(tableInfo.getName(), strategyConfig.entity().getNaming(), strategyConfig.getTablePrefix(), strategyConfig.getTableSuffix()));
         }
 
         @Override
-        public @NotNull String propertyNameConvert(@NotNull TableField field) {
+        public String propertyNameConvert(TableField field) {
             return processName(field.getName(), strategyConfig.entity().getColumnNaming(), strategyConfig.getFieldPrefix(), strategyConfig.getFieldSuffix());
         }
 

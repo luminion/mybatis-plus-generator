@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.keywords;
 
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.*;
 
@@ -134,16 +134,16 @@ public class PostgreSqlKeyWordsHandler extends BaseKeyWordsHandler {
         super(new HashSet<>(KEY_WORDS));
     }
 
-    public PostgreSqlKeyWordsHandler(@NotNull List<String> keyWords) {
+    public PostgreSqlKeyWordsHandler(List<String> keyWords) {
         super(new HashSet<>(keyWords));
     }
 
-    public PostgreSqlKeyWordsHandler(@NotNull Set<String> keyWords) {
+    public PostgreSqlKeyWordsHandler(Set<String> keyWords) {
         super(keyWords);
     }
 
     @Override
-    public @NotNull String formatStyle() {
+    public String formatStyle() {
         return "\"%s\"";
     }
 

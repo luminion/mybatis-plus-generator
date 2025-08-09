@@ -15,11 +15,11 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.converts;
 
-import io.github.bootystar.mybatisplus.generator.config.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.ITypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.rules.DbColumnType;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
-import org.jetbrains.annotations.NotNull;
+
 
 import static io.github.bootystar.mybatisplus.generator.config.converts.TypeConverts.contains;
 import static io.github.bootystar.mybatisplus.generator.config.converts.TypeConverts.containsAny;
@@ -60,7 +60,7 @@ public class ClickHouseTypeConvert implements ITypeConvert {
 
 
     @Override
-    public IColumnType processTypeConvert(@NotNull GlobalConfig globalConfig, @NotNull String fieldType) {
+    public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
         return TypeConverts.use(fieldType)
             .test(containsAny(INTEGER_TYPE).then(INTEGER))
             .test(containsAny(BIGINTEGER_TYPE).then(BIG_INTEGER))

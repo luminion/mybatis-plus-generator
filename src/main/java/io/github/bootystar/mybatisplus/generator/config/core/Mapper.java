@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.builder;
+package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.IGenerateMapperMethodHandler;
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.PackageConfig;
-import io.github.bootystar.mybatisplus.generator.config.StrategyConfig;
+import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.model.MapperMethod;
@@ -29,7 +28,7 @@ import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.cache.decorators.LoggingCache;
-import org.jetbrains.annotations.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -152,7 +151,6 @@ public class Mapper implements ITemplate {
     @Getter
     private String mapperXmlTemplatePath = ConstVal.TEMPLATE_XML;
 
-    @NotNull
     public String getSuperClass() {
         return superClass;
     }
@@ -182,8 +180,7 @@ public class Mapper implements ITemplate {
 
 
     @Override
-    @NotNull
-    public Map<String, Object> renderData(@NotNull TableInfo tableInfo) {
+    public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> data = new HashMap<>();
         boolean enableCache = this.cache != null;
         data.put("enableCache", enableCache);
@@ -238,7 +235,7 @@ public class Mapper implements ITemplate {
          * @param superClass 类名
          * @return this
          */
-        public Builder superClass(@NotNull String superClass) {
+        public Builder superClass(String superClass) {
             this.mapper.superClass = superClass;
             return this;
         }
@@ -250,7 +247,7 @@ public class Mapper implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder superClass(@NotNull Class<?> superClass) {
+        public Builder superClass(Class<?> superClass) {
             return superClass(superClass.getName());
         }
 
@@ -311,7 +308,7 @@ public class Mapper implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder cache(@NotNull Class<? extends Cache> cache) {
+        public Builder cache(Class<? extends Cache> cache) {
             this.mapper.cache = cache;
             return this;
         }
@@ -323,7 +320,7 @@ public class Mapper implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder convertMapperFileName(@NotNull ConverterFileName converter) {
+        public Builder convertMapperFileName(ConverterFileName converter) {
             this.mapper.converterMapperFileName = converter;
             return this;
         }
@@ -335,7 +332,7 @@ public class Mapper implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder convertXmlFileName(@NotNull ConverterFileName converter) {
+        public Builder convertXmlFileName(ConverterFileName converter) {
             this.mapper.converterXmlFileName = converter;
             return this;
         }
@@ -347,7 +344,7 @@ public class Mapper implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder formatMapperFileName(@NotNull String format) {
+        public Builder formatMapperFileName(String format) {
             return convertMapperFileName((entityName) -> String.format(format, entityName));
         }
 
@@ -358,7 +355,7 @@ public class Mapper implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder formatXmlFileName(@NotNull String format) {
+        public Builder formatXmlFileName(String format) {
             return convertXmlFileName((entityName) -> String.format(format, entityName));
         }
 
@@ -388,7 +385,7 @@ public class Mapper implements ITemplate {
          * @return this
          * @since 3.5.6
          */
-        public Builder mapperTemplate(@NotNull String template) {
+        public Builder mapperTemplate(String template) {
             this.mapper.mapperTemplatePath = template;
             return this;
         }
@@ -399,7 +396,7 @@ public class Mapper implements ITemplate {
          * @return this
          * @since 3.5.6
          */
-        public Builder mapperXmlTemplate(@NotNull String template) {
+        public Builder mapperXmlTemplate(String template) {
             this.mapper.mapperXmlTemplatePath = template;
             return this;
         }
@@ -464,8 +461,7 @@ public class Mapper implements ITemplate {
         }
 
 
-        @NotNull
-        public Mapper get() {
+            public Mapper get() {
             return this.mapper;
         }
     }

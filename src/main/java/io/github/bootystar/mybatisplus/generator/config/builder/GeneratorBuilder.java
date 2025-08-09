@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
-import io.github.bootystar.mybatisplus.generator.config.*;
+import io.github.bootystar.mybatisplus.generator.config.core.*;
 
 /**
  * 生成器 Builder
@@ -79,27 +79,6 @@ public class GeneratorBuilder {
         return new StrategyConfig.Builder();
     }
 
-    /**
-     * 模板路径配置项
-     *
-     * @return TemplateConfig
-     * @deprecated 3.5.6 {@link #strategyConfig()}
-     */
-    @Deprecated
-    public static TemplateConfig templateConfig() {
-        return new TemplateConfig.Builder().build();
-    }
-
-    /**
-     * 模板路径配置项 Builder
-     *
-     * @return TemplateConfig.Builder
-     * @deprecated 3.5.6 {@link #strategyConfigBuilder()}
-     */
-    @Deprecated
-    public static TemplateConfig.Builder templateConfigBuilder() {
-        return new TemplateConfig.Builder();
-    }
 
     /**
      * 注入配置项

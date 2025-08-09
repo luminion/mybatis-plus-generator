@@ -17,17 +17,17 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.PackageConfig;
-import io.github.bootystar.mybatisplus.generator.config.StrategyConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.PackageConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.builder.Entity;
-import io.github.bootystar.mybatisplus.generator.config.builder.Service;
+import io.github.bootystar.mybatisplus.generator.config.core.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.Service;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import lombok.Getter;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.io.Serializable;
 import java.util.*;
@@ -176,7 +176,7 @@ public class TableInfo {
      * @param name          表名
      * @since 3.5.0
      */
-    public TableInfo(@NotNull ConfigBuilder configBuilder, @NotNull String name) {
+    public TableInfo(ConfigBuilder configBuilder, String name) {
         this.strategyConfig = configBuilder.getStrategyConfig();
         this.globalConfig = configBuilder.getGlobalConfig();
         this.entity = configBuilder.getStrategyConfig().entity();
@@ -204,7 +204,7 @@ public class TableInfo {
      * @param entityName 实体名称
      * @return this
      */
-    public TableInfo setEntityName(@NotNull String entityName) {
+    public TableInfo setEntityName(String entityName) {
         this.entityName = entityName;
         setConvert();
         return this;
@@ -216,7 +216,7 @@ public class TableInfo {
      * @param field 字段
      * @since 3.5.0
      */
-    public void addField(@NotNull TableField field) {
+    public void addField(TableField field) {
         if (entity.matchIgnoreColumns(field.getColumnName())) {
             // 忽略字段不在处理
             return;
@@ -234,11 +234,11 @@ public class TableInfo {
      * @return this
      * @since 3.5.0
      */
-    public TableInfo addImportPackages(@NotNull String... pkgs) {
+    public TableInfo addImportPackages(String... pkgs) {
         return addImportPackages(Arrays.asList(pkgs));
     }
 
-    public TableInfo addImportPackages(@NotNull List<String> pkgList) {
+    public TableInfo addImportPackages(List<String> pkgList) {
         importPackages.addAll(pkgList);
         return this;
     }
@@ -345,7 +345,6 @@ public class TableInfo {
         return this;
     }
 
-    @NotNull
     public Set<String> getImportPackages() {
         return importPackages;
     }
@@ -355,12 +354,10 @@ public class TableInfo {
         return this;
     }
 
-    @NotNull
     public List<TableField> getFields() {
         return fields;
     }
 
-    @NotNull
     public List<TableField> getCommonFields() {
         return commonFields;
     }

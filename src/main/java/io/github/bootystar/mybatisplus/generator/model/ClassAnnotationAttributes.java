@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.Arrays;
 import java.util.Set;
@@ -44,11 +44,11 @@ public class ClassAnnotationAttributes extends AnnotationAttributes {
      */
     private Function<TableInfo, String> displayNameFunction;
 
-    public ClassAnnotationAttributes(@NotNull Class<?> annotationClass) {
+    public ClassAnnotationAttributes(Class<?> annotationClass) {
         super(annotationClass);
     }
 
-    public ClassAnnotationAttributes(@NotNull Class<?> annotationClass, @NotNull Function<TableInfo, String> displayNameFunction, String... extraPkg) {
+    public ClassAnnotationAttributes(Class<?> annotationClass, Function<TableInfo, String> displayNameFunction, String... extraPkg) {
         super(annotationClass);
         this.displayNameFunction = displayNameFunction;
         if (extraPkg != null && extraPkg.length > 0) {
@@ -56,20 +56,20 @@ public class ClassAnnotationAttributes extends AnnotationAttributes {
         }
     }
 
-    public ClassAnnotationAttributes(@NotNull Class<?> annotationClass, @NotNull String displayName, String... extraPkg) {
+    public ClassAnnotationAttributes(Class<?> annotationClass, String displayName, String... extraPkg) {
         super(annotationClass, displayName, extraPkg);
     }
 
-    public ClassAnnotationAttributes(@NotNull String displayName, @NotNull String... importPackages) {
+    public ClassAnnotationAttributes(String displayName, String... importPackages) {
         super(displayName, importPackages);
     }
 
-    public ClassAnnotationAttributes(@NotNull String importPackage, @NotNull Function<TableInfo, String> displayNameFunction) {
+    public ClassAnnotationAttributes(String importPackage, Function<TableInfo, String> displayNameFunction) {
         super.getImportPackages().add(importPackage);
         this.displayNameFunction = displayNameFunction;
     }
 
-    public ClassAnnotationAttributes(@NotNull Set<String> importPackages, @NotNull Function<TableInfo, String> displayNameFunction) {
+    public ClassAnnotationAttributes(Set<String> importPackages, Function<TableInfo, String> displayNameFunction) {
         super.getImportPackages().addAll(importPackages);
         this.displayNameFunction = displayNameFunction;
     }

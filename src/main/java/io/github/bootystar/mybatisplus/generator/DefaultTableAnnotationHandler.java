@@ -18,8 +18,8 @@ package io.github.bootystar.mybatisplus.generator;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.builder.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.Entity;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.model.ClassAnnotationAttributes;
 

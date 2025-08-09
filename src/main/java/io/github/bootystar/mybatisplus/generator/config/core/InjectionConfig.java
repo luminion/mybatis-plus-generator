@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config;
+package io.github.bootystar.mybatisplus.generator.config.core;
 
+import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.builder.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
-import org.jetbrains.annotations.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,7 +74,6 @@ public class InjectionConfig {
     /**
      * 获取自定义配置 Map 对象
      */
-    @NotNull
     public Map<String, Object> getCustomMap() {
         return customMap;
     }
@@ -81,7 +81,6 @@ public class InjectionConfig {
     /**
      * 获取自定义模板文件列表
      */
-    @NotNull
     public List<CustomFile> getCustomFiles() {
         return customFiles;
     }
@@ -103,7 +102,7 @@ public class InjectionConfig {
          * @param biConsumer 消费者
          * @return this
          */
-        public Builder beforeOutputFile(@NotNull BiConsumer<TableInfo, Map<String, Object>> biConsumer) {
+        public Builder beforeOutputFile(BiConsumer<TableInfo, Map<String, Object>> biConsumer) {
             this.injectionConfig.beforeOutputFileBiConsumer = biConsumer;
             return this;
         }
@@ -114,7 +113,7 @@ public class InjectionConfig {
          * @param customMap Map 对象
          * @return this
          */
-        public Builder customMap(@NotNull Map<String, Object> customMap) {
+        public Builder customMap(Map<String, Object> customMap) {
             this.injectionConfig.customMap = customMap;
             return this;
         }
@@ -125,18 +124,18 @@ public class InjectionConfig {
          * @param customFile key为文件名称，value为文件路径
          * @return this
          */
-        public Builder customFile(@NotNull Map<String, String> customFile) {
+        public Builder customFile(Map<String, String> customFile) {
             return customFile(customFile.entrySet().stream()
                 .map(e -> new CustomFile.Builder().fileName(e.getKey()).templatePath(e.getValue()).build())
                 .collect(Collectors.toList()));
         }
 
-        public Builder customFile(@NotNull CustomFile customFile) {
+        public Builder customFile(CustomFile customFile) {
             this.injectionConfig.customFiles.add(customFile);
             return this;
         }
 
-        public Builder customFile(@NotNull List<CustomFile> customFiles) {
+        public Builder customFile(List<CustomFile> customFiles) {
             this.injectionConfig.customFiles.addAll(customFiles);
             return this;
         }

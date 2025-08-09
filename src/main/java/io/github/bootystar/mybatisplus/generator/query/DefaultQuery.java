@@ -16,16 +16,16 @@
 package io.github.bootystar.mybatisplus.generator.query;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.DataSourceConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.builder.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.Entity;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import io.github.bootystar.mybatisplus.generator.type.ITypeConvertHandler;
 import io.github.bootystar.mybatisplus.generator.type.TypeRegistry;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,14 +51,14 @@ public class DefaultQuery extends AbstractDatabaseQuery {
     private final TypeRegistry typeRegistry;
     protected final DatabaseMetaDataWrapper databaseMetaDataWrapper;
 
-    public DefaultQuery(@NotNull ConfigBuilder configBuilder) {
+    public DefaultQuery(ConfigBuilder configBuilder) {
         super(configBuilder);
         typeRegistry = new TypeRegistry(configBuilder.getGlobalConfig());
         this.databaseMetaDataWrapper = new DatabaseMetaDataWrapper(dataSourceConfig.getConn(), dataSourceConfig.getSchemaName());
     }
 
     @Override
-    public @NotNull List<TableInfo> queryTables() {
+    public List<TableInfo> queryTables() {
         try {
             boolean isInclude = !strategyConfig.getInclude().isEmpty();
             boolean isExclude = !strategyConfig.getExclude().isEmpty();
@@ -102,7 +102,7 @@ public class DefaultQuery extends AbstractDatabaseQuery {
         return databaseMetaDataWrapper.getTables(tableNamePattern, skipView ? new String[]{"TABLE"} : new String[]{"TABLE", "VIEW"});
     }
 
-    protected void convertTableFields(@NotNull TableInfo tableInfo) {
+    protected void convertTableFields(TableInfo tableInfo) {
         String tableName = tableInfo.getName();
         Map<String, DatabaseMetaDataWrapper.Column> columnsInfoMap = getColumnsInfo(tableName);
         Entity entity = strategyConfig.entity();

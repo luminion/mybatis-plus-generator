@@ -15,6 +15,8 @@
  */
 package io.github.bootystar.mybatisplus.generator.config;
 
+import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

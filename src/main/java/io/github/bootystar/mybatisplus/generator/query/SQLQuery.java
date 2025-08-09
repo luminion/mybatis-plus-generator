@@ -19,13 +19,13 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.IDbQuery;
 import io.github.bootystar.mybatisplus.generator.config.ITypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.builder.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.Entity;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.querys.DbQueryDecorator;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.sql.SQLException;
 import java.util.*;
@@ -43,13 +43,12 @@ public class SQLQuery extends AbstractDatabaseQuery {
     protected final DbQueryDecorator dbQuery;
     protected final DatabaseMetaDataWrapper databaseMetaDataWrapper;
 
-    public SQLQuery(@NotNull ConfigBuilder configBuilder) {
+    public SQLQuery(ConfigBuilder configBuilder) {
         super(configBuilder);
         this.dbQuery = new DbQueryDecorator(dataSourceConfig, strategyConfig);
         this.databaseMetaDataWrapper = new DatabaseMetaDataWrapper(dbQuery.getConnection(), dataSourceConfig.getSchemaName());
     }
 
-    @NotNull
     @Override
     public List<TableInfo> queryTables() {
         boolean isInclude = !strategyConfig.getInclude().isEmpty();
@@ -90,7 +89,7 @@ public class SQLQuery extends AbstractDatabaseQuery {
         }
     }
 
-    protected void convertTableFields(@NotNull TableInfo tableInfo) {
+    protected void convertTableFields(TableInfo tableInfo) {
         String tableName = tableInfo.getName();
         try {
             Map<String, DatabaseMetaDataWrapper.Column> columnsInfoMap = databaseMetaDataWrapper.getColumnsInfo(tableName, false);

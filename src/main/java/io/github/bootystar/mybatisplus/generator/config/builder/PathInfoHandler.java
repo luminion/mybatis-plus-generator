@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.*;
+import io.github.bootystar.mybatisplus.generator.config.core.*;
 import lombok.Getter;
 
 import java.io.File;

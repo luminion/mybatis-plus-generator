@@ -15,10 +15,10 @@
  */
 package io.github.bootystar.mybatisplus.generator.type;
 
-import io.github.bootystar.mybatisplus.generator.config.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
-import org.jetbrains.annotations.NotNull;
+
 
 /**
  * 类型转换处理器
@@ -36,7 +36,6 @@ public interface ITypeConvertHandler {
      * @param metaInfo     字段元数据信息
      * @return 子类类型
      */
-    @NotNull
     IColumnType convert(GlobalConfig globalConfig, TypeRegistry typeRegistry, TableField.MetaInfo metaInfo);
 
 }

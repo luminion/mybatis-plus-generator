@@ -19,12 +19,12 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.DataSourceConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
 import io.github.bootystar.mybatisplus.generator.config.IDbQuery;
-import io.github.bootystar.mybatisplus.generator.config.StrategyConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +55,7 @@ public class DbQueryDecorator extends AbstractDbQuery {
     private final String schema;
     private final Logger logger;
 
-    public DbQueryDecorator(@NotNull DataSourceConfig dataSourceConfig, @NotNull StrategyConfig strategyConfig) {
+    public DbQueryDecorator(DataSourceConfig dataSourceConfig, StrategyConfig strategyConfig) {
         this.dbQuery = dataSourceConfig.getDbQuery();
         this.connection = dataSourceConfig.getConn();
         this.dbType = dataSourceConfig.getDbType();

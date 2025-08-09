@@ -17,7 +17,7 @@ package io.github.bootystar.mybatisplus.generator.fill;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import io.github.bootystar.mybatisplus.generator.IFill;
-import org.jetbrains.annotations.NotNull;
+
 
 /**
  * 属性填充
@@ -31,23 +31,23 @@ public class Property implements IFill {
 
     private final FieldFill fieldFill;
 
-    public Property(@NotNull String propertyName, @NotNull FieldFill fieldFill) {
+    public Property(String propertyName, FieldFill fieldFill) {
         this.propertyName = propertyName;
         this.fieldFill = fieldFill;
     }
 
-    public Property(@NotNull String propertyName) {
+    public Property(String propertyName) {
         this.propertyName = propertyName;
         this.fieldFill = FieldFill.DEFAULT;
     }
 
     @Override
-    public @NotNull String getName() {
+    public String getName() {
         return this.propertyName;
     }
 
     @Override
-    public @NotNull FieldFill getFieldFill() {
+    public FieldFill getFieldFill() {
         return this.fieldFill;
     }
 }

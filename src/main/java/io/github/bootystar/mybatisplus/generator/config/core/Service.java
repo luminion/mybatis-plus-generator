@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.builder;
+package io.github.bootystar.mybatisplus.generator.config.core;
 
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.StrategyConfig;
+import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,12 +81,10 @@ public class Service implements ITemplate {
      */
     private String superServiceImplClass = ConstVal.SUPER_SERVICE_IMPL_CLASS;
 
-    @NotNull
     public String getSuperServiceClass() {
         return superServiceClass;
     }
 
-    @NotNull
     public String getSuperServiceImplClass() {
         return superServiceImplClass;
     }
@@ -113,19 +111,16 @@ public class Service implements ITemplate {
     @Getter
     private boolean fileOverride;
 
-    @NotNull
     public ConverterFileName getConverterServiceFileName() {
         return converterServiceFileName;
     }
 
-    @NotNull
     public ConverterFileName getConverterServiceImplFileName() {
         return converterServiceImplFileName;
     }
 
     @Override
-    @NotNull
-    public Map<String, Object> renderData(@NotNull TableInfo tableInfo) {
+    public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> data = new HashMap<>();
         data.put("superServiceClassPackage", this.superServiceClass);
         data.put("superServiceClass", ClassUtils.getSimpleName(this.superServiceClass));
@@ -140,7 +135,7 @@ public class Service implements ITemplate {
 
         private final Service service = new Service();
 
-        public Builder(@NotNull StrategyConfig strategyConfig) {
+        public Builder(StrategyConfig strategyConfig) {
             super(strategyConfig);
         }
 
@@ -150,7 +145,7 @@ public class Service implements ITemplate {
          * @param clazz 类
          * @return this
          */
-        public Builder superServiceClass(@NotNull Class<?> clazz) {
+        public Builder superServiceClass(Class<?> clazz) {
             return superServiceClass(clazz.getName());
         }
 
@@ -160,7 +155,7 @@ public class Service implements ITemplate {
          * @param superServiceClass 类名
          * @return this
          */
-        public Builder superServiceClass(@NotNull String superServiceClass) {
+        public Builder superServiceClass(String superServiceClass) {
             this.service.superServiceClass = superServiceClass;
             return this;
         }
@@ -171,7 +166,7 @@ public class Service implements ITemplate {
          * @param clazz 类
          * @return this
          */
-        public Builder superServiceImplClass(@NotNull Class<?> clazz) {
+        public Builder superServiceImplClass(Class<?> clazz) {
             return superServiceImplClass(clazz.getName());
         }
 
@@ -181,7 +176,7 @@ public class Service implements ITemplate {
          * @param superServiceImplClass 类名
          * @return this
          */
-        public Builder superServiceImplClass(@NotNull String superServiceImplClass) {
+        public Builder superServiceImplClass(String superServiceImplClass) {
             this.service.superServiceImplClass = superServiceImplClass;
             return this;
         }
@@ -193,7 +188,7 @@ public class Service implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder convertServiceFileName(@NotNull ConverterFileName converter) {
+        public Builder convertServiceFileName(ConverterFileName converter) {
             this.service.converterServiceFileName = converter;
             return this;
         }
@@ -205,7 +200,7 @@ public class Service implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder convertServiceImplFileName(@NotNull ConverterFileName converter) {
+        public Builder convertServiceImplFileName(ConverterFileName converter) {
             this.service.converterServiceImplFileName = converter;
             return this;
         }
@@ -217,7 +212,7 @@ public class Service implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder formatServiceFileName(@NotNull String format) {
+        public Builder formatServiceFileName(String format) {
             return convertServiceFileName((entityName) -> String.format(format, entityName));
         }
 
@@ -228,7 +223,7 @@ public class Service implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder formatServiceImplFileName(@NotNull String format) {
+        public Builder formatServiceImplFileName(String format) {
             return convertServiceImplFileName((entityName) -> String.format(format, entityName));
         }
 
@@ -292,7 +287,7 @@ public class Service implements ITemplate {
          * @return this
          * @since 3.5.6
          */
-        public Builder serviceTemplate(@NotNull String template) {
+        public Builder serviceTemplate(String template) {
             this.service.serviceTemplate = template;
             return this;
         }
@@ -303,13 +298,12 @@ public class Service implements ITemplate {
          * @return this
          * @since 3.5.6
          */
-        public Builder serviceImplTemplate(@NotNull String template) {
+        public Builder serviceImplTemplate(String template) {
             this.service.serviceImplTemplate = template;
             return this;
         }
 
-        @NotNull
-        public Service get() {
+            public Service get() {
             return this.service;
         }
     }

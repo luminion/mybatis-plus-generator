@@ -16,7 +16,7 @@
 package io.github.bootystar.mybatisplus.generator;
 
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.io.Serializable;
 import java.util.Map;
@@ -29,7 +29,6 @@ import java.util.Map;
  */
 public interface ITemplate extends Serializable {
 
-    @NotNull
-    Map<String, Object> renderData(@NotNull TableInfo tableInfo);
+    Map<String, Object> renderData(TableInfo tableInfo);
 
 }
