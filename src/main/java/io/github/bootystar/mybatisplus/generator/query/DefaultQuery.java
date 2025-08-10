@@ -18,7 +18,7 @@ package io.github.bootystar.mybatisplus.generator.query;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.core.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
@@ -105,7 +105,7 @@ public class DefaultQuery extends AbstractDatabaseQuery {
     protected void convertTableFields(TableInfo tableInfo) {
         String tableName = tableInfo.getName();
         Map<String, DatabaseMetaDataWrapper.Column> columnsInfoMap = getColumnsInfo(tableName);
-        Entity entity = strategyConfig.entity();
+        EntityConfig entity = strategyConfig.entity();
         columnsInfoMap.forEach((k, columnInfo) -> {
             String columnName = columnInfo.getName();
             TableField field = new TableField(this.configBuilder, columnName);

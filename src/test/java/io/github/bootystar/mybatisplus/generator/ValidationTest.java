@@ -17,8 +17,8 @@
 //            System.out.println("1. 验证配置类是否正确创建...");
 //            
 //            // 测试ControllerConfig
-//            io.github.bootystar.mybatisplus.generator.config.support.Controller controllerConfig = 
-//                io.github.bootystar.mybatisplus.generator.config.support.Controller.builder()
+//            io.github.bootystar.mybatisplus.generator.config.support.ControllerConfig controllerConfig = 
+//                io.github.bootystar.mybatisplus.generator.config.support.ControllerConfig.builder()
 //                    .enableRestStyle()
 //                    .enableHyphenStyle()
 //                    .baseUrl("/api/v1")
@@ -26,24 +26,24 @@
 //            System.out.println("✓ ControllerConfig创建成功");
 //            
 //            // 测试ServiceConfig
-//            io.github.bootystar.mybatisplus.generator.config.support.Service serviceConfig = 
-//                io.github.bootystar.mybatisplus.generator.config.support.Service.builder()
+//            io.github.bootystar.mybatisplus.generator.config.support.ServiceConfig serviceConfig = 
+//                io.github.bootystar.mybatisplus.generator.config.support.ServiceConfig.builder()
 //                    .superServiceClass("io.github.bootystar.mybatisplus.extension.service.IService")
 //                    .enableServiceInterface()
 //                    .build();
 //            System.out.println("✓ ServiceConfig创建成功");
 //            
 //            // 测试MapperConfig
-//            io.github.bootystar.mybatisplus.generator.config.support.Mapper mapperConfig = 
-//                io.github.bootystar.mybatisplus.generator.config.support.Mapper.builder()
+//            io.github.bootystar.mybatisplus.generator.config.support.MapperConfig mapperConfig = 
+//                io.github.bootystar.mybatisplus.generator.config.support.MapperConfig.builder()
 //                    .superClass("io.github.bootystar.mybatisplus.core.mapper.BaseMapper")
 //                    .enableMapperAnnotation()
 //                    .build();
 //            System.out.println("✓ MapperConfig创建成功");
 //            
 //            // 测试EntityConfig
-//            io.github.bootystar.mybatisplus.generator.config.support.Entity entityConfig = 
-//                io.github.bootystar.mybatisplus.generator.config.support.Entity.builder()
+//            io.github.bootystar.mybatisplus.generator.config.support.EntityConfig entityConfig = 
+//                io.github.bootystar.mybatisplus.generator.config.support.EntityConfig.builder()
 //                    .enableLombok()
 //                    .enableSerialVersionUID()
 //                    .build();
@@ -74,37 +74,37 @@
 //            
 //            // 验证ControllerConfig属性
 //            if (controllerConfig.isRestControllerStyle()) {
-//                System.out.println("✓ Controller.restControllerStyle设置正确");
+//                System.out.println("✓ ControllerConfig.restControllerStyle设置正确");
 //            }
 //            if (controllerConfig.isHyphenStyle()) {
-//                System.out.println("✓ Controller.hyphenStyle设置正确");
+//                System.out.println("✓ ControllerConfig.hyphenStyle设置正确");
 //            }
 //            if ("/api/v1".equals(controllerConfig.getBaseUrl())) {
-//                System.out.println("✓ Controller.baseUrl设置正确");
+//                System.out.println("✓ ControllerConfig.baseUrl设置正确");
 //            }
 //            
 //            // 验证ServiceConfig属性
 //            if ("io.github.bootystar.mybatisplus.extension.service.IService".equals(serviceConfig.getSuperServiceClass())) {
-//                System.out.println("✓ Service.superServiceClass设置正确");
+//                System.out.println("✓ ServiceConfig.superServiceClass设置正确");
 //            }
 //            if (serviceConfig.isServiceInterface()) {
-//                System.out.println("✓ Service.serviceInterface设置正确");
+//                System.out.println("✓ ServiceConfig.serviceInterface设置正确");
 //            }
 //            
 //            // 验证MapperConfig属性
 //            if ("io.github.bootystar.mybatisplus.core.mapper.BaseMapper".equals(mapperConfig.getSuperClass())) {
-//                System.out.println("✓ Mapper.superClass设置正确");
+//                System.out.println("✓ MapperConfig.superClass设置正确");
 //            }
 //            if (mapperConfig.isEnableMapperAnnotation()) {
-//                System.out.println("✓ Mapper.enableMapperAnnotation设置正确");
+//                System.out.println("✓ MapperConfig.enableMapperAnnotation设置正确");
 //            }
 //            
 //            // 验证EntityConfig属性
 //            if (entityConfig.isEnableLombok()) {
-//                System.out.println("✓ Entity.enableLombok设置正确");
+//                System.out.println("✓ EntityConfig.enableLombok设置正确");
 //            }
 //            if (entityConfig.isEnableSerialVersionUID()) {
-//                System.out.println("✓ Entity.enableSerialVersionUID设置正确");
+//                System.out.println("✓ EntityConfig.enableSerialVersionUID设置正确");
 //            }
 //            
 //            // 验证DtoConfig属性

@@ -19,9 +19,7 @@ import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 import lombok.Getter;
 import lombok.Setter;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,77 +32,64 @@ import java.util.function.Supplier;
  * @author hubin
  * @since 2016-12-02
  */
+@Slf4j
+@Getter
 public class GlobalConfig {
 
-    private GlobalConfig() {
+    protected GlobalConfig() {
     }
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(GlobalConfig.class);
 
     /**
      * 生成文件的输出目录【 windows:D://  linux or mac:/tmp 】
      */
     @Getter
-    private String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "D://" : "/tmp";
+    protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "D://" : "/tmp";
 
     /**
      * 是否打开输出目录
      */
     @Getter
-    private boolean open = true;
+    protected boolean open = true;
 
     /**
      * 作者
      */
     @Getter
-    private String author = "baomidou";
+    protected String author = "baomidou";
 
     /**
      * 开启 Kotlin 模式（默认 false）
      */
     @Getter
-    private boolean kotlin;
+    protected boolean kotlin;
 
     /**
      * 开启 swagger 模式（默认 false 与 springdoc 不可同时使用）
      */
-    private boolean swagger;
+    protected boolean swagger;
     /**
      * 开启 springdoc 模式（默认 false 与 swagger 不可同时使用）
      */
     @Getter
-    private boolean springdoc;
+    protected boolean springdoc;
 
     /**
      * 时间类型对应策略
      */
-    private DateType dateType = DateType.TIME_PACK;
+    @Getter
+    protected DateType dateType = DateType.TIME_PACK;
 
     /**
      * 获取注释日期
      *
      * @since 3.5.0
      */
-    private Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-
-    /**
-     * 是否生成service 接口（默认 true）
-     * 增加此开关的原因：在某些项目实践中，只需要生成service实现类，不需要抽象sevice接口
-     * 针对某些项目，生成service接口，开发时反而麻烦，这种情况，可以将该属性设置为false
-     * @deprecated 3.5.6 {@link Service.Builder#disableService()}
-     */
-    @Getter
-    @Setter
-    @Deprecated
-    private boolean serviceInterface = true;
+    protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
     public boolean isSwagger() {
         // springdoc 设置优先于 swagger
         return !springdoc && swagger;
-    }
-
-    public DateType getDateType() {
-        return dateType;
     }
 
     public String getCommentDate() {
@@ -120,7 +105,7 @@ public class GlobalConfig {
      */
     public static class Builder implements IConfigBuilder<GlobalConfig> {
 
-        private final GlobalConfig globalConfig;
+        protected final GlobalConfig globalConfig;
 
         public Builder() {
             this.globalConfig = new GlobalConfig();
@@ -171,14 +156,6 @@ public class GlobalConfig {
          */
         public Builder enableSpringdoc() {
             this.globalConfig.springdoc = true;
-            return this;
-        }
-
-        /**
-         * 不生成service接口
-         */
-        public Builder disableServiceInterface() {
-            this.globalConfig.serviceInterface = false;
             return this;
         }
 

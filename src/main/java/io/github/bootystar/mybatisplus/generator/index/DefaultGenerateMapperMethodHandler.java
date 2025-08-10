@@ -18,8 +18,8 @@ package io.github.bootystar.mybatisplus.generator.index;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.Entity;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * <p>由于需求不一样,默认只处理单字段索引,如果默认复合索引的方案符合你的要求,你可以考虑{@link #singleIndex}设置成false</p>
  *
  * @author nieqiurong
- * @see Entity.Builder#enableColumnConstant()
+ * @see EntityConfig.Builder#enableColumnConstant()
  * @since 3.5.10
  */
 public class DefaultGenerateMapperMethodHandler extends AbstractMapperMethodHandler {
@@ -60,7 +60,7 @@ public class DefaultGenerateMapperMethodHandler extends AbstractMapperMethodHand
             .collect(Collectors.groupingBy(DatabaseMetaDataWrapper.Index::getName));
         String entityName = tableInfo.getEntityName();
         GlobalConfig globalConfig = tableInfo.getGlobalConfig();
-        Entity entity = tableInfo.getStrategyConfig().entity();
+        EntityConfig entity = tableInfo.getEntityConfig();
         boolean columnConstant = entity.isColumnConstant();
         Set<Map.Entry<String, List<DatabaseMetaDataWrapper.Index>>> entrySet = indexlistMap.entrySet();
         List<MapperMethod> methodList = new ArrayList<>();

@@ -18,13 +18,11 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
+import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,69 +34,61 @@ import java.util.Map;
  * @since 3.5.0
  */
 @Slf4j
-public class Controller implements ITemplate {
+public class ControllerConfig implements ITemplate {
 
 
-    private Controller() {
+    protected ControllerConfig() {
     }
 
     /**
-     * 生成 <code>@RestController</code> 控制器（默认 false）
+     * 生成 <code>@RestController</code> 控制器
      * <pre>
-     *      <code>@Controller</code> -> <code>@RestController</code>
+     *      <code>@Controller</code> 
+     *      -> 
+     *      <code>@RestController</code>
      * </pre>
      */
-    @Getter
-    private boolean restStyle;
+    protected boolean restStyle = false;
 
     /**
-     * 驼峰转连字符（默认 false）
+     * 驼峰转连字符
      * <pre>
      *      <code>@RequestMapping("/managerUserActionHistory")</code> -> <code>@RequestMapping("/manager-user-action-history")</code>
      * </pre>
      */
-    @Getter
-    private boolean hyphenStyle;
+    protected boolean hyphenStyle = true;
 
     /**
      * 自定义继承的Controller类全称，带包名
      */
-    private String superClass;
+    protected String superClass;
 
     /**
      * 转换输出控制器文件名称
      *
      * @since 3.5.0
      */
-    @Getter
-    private ConverterFileName converterFileName = (entityName -> entityName + ConstVal.CONTROLLER);
+    protected ConverterFileName converterFileName = (entityName -> entityName + ConstVal.CONTROLLER);
 
     /**
      * 是否覆盖已有文件（默认 false）
      *
      * @since 3.5.2
      */
-    @Getter
-    private boolean fileOverride;
+    protected boolean fileOverride;
 
     /**
      * 是否生成
      *
      * @since 3.5.6
      */
-    @Getter
-    private boolean generate = true;
+    protected boolean generate = true;
 
     /**
      * 模板路径
      * @since 3.5.6
      */
-    @Getter
-    private String templatePath = ConstVal.TEMPLATE_CONTROLLER;
-
-    public String getSuperClass() {
-        return superClass;
-    }
+    protected String templatePath = ConstVal.TEMPLATE_CONTROLLER;
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
@@ -111,14 +101,14 @@ public class Controller implements ITemplate {
         return data;
     }
 
-    public static class Builder extends BaseBuilder {
-
-        private final Controller controller = new Controller();
-
-        public Builder(StrategyConfig strategyConfig) {
-            super(strategyConfig);
+    public static class Builder implements IConfigBuilder<ControllerConfig> {
+        protected final ControllerConfig controller = new ControllerConfig();
+        @Override
+        public ControllerConfig build() {
+            return this.controller;
         }
-
+        
+        
         /**
          * 父类控制器
          *
@@ -146,7 +136,7 @@ public class Controller implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder enableHyphenStyle() {
+        public Builder disableHyphenStyle() {
             this.controller.hyphenStyle = true;
             return this;
         }
@@ -157,8 +147,8 @@ public class Controller implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder enableRestStyle() {
-            this.controller.restStyle = true;
+        public Builder disableRestStyle() {
+            this.controller.restStyle = false;
             return this;
         }
 
@@ -183,18 +173,6 @@ public class Controller implements ITemplate {
          */
         public Builder formatFileName(String format) {
             return convertFileName((entityName) -> String.format(format, entityName));
-        }
-
-        /**
-         * 覆盖已有文件（该方法后续会删除，替代方法为enableFileOverride方法）
-         *
-         * @see #enableFileOverride()
-         */
-        @Deprecated
-        public Builder fileOverride() {
-            LOGGER.warn("fileOverride方法后续会删除，替代方法为enableFileOverride方法");
-            this.controller.fileOverride = true;
-            return this;
         }
 
         /**
@@ -228,10 +206,6 @@ public class Controller implements ITemplate {
         public Builder template(String template) {
             this.controller.templatePath = template;
             return this;
-        }
-
-            public Controller get() {
-            return this.controller;
         }
     }
 }

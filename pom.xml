@@ -15,8 +15,8 @@
     <version>2.0.0</version>
     
     <properties>
-<!--        <mybatis-plus.version>3.5.0</mybatis-plus.version>-->
-        <mybatis-plus.version>3.5.12</mybatis-plus.version>
+        <mybatis-plus.version>3.4.3</mybatis-plus.version>
+<!--        <mybatis-plus.version>3.5.12</mybatis-plus.version>-->
     </properties>
 
     <dependencies>
@@ -32,11 +32,11 @@
             <version>${mybatis-plus.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.baomidou</groupId>-->
+<!--            <artifactId>mybatis-plus-generator</artifactId>-->
+<!--            <version>${mybatis-plus.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

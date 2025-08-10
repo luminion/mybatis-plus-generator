@@ -37,68 +37,68 @@ import java.util.Map;
  */
 public class PackageConfig {
 
-    private PackageConfig() {
+    protected PackageConfig() {
     }
 
     /**
      * 父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名
      */
-    private String parent = "com.baomidou";
+    protected String parent = "com.baomidou";
 
     /**
      * 父包模块名
      */
     @Getter
-    private String moduleName = "";
+    protected String moduleName = "";
 
     /**
      * Entity包名
      */
     @Getter
-    private String entity = "entity";
+    protected String entity = "entity";
 
     /**
      * Service包名
      */
     @Getter
-    private String service = "service";
+    protected String service = "service";
 
     /**
-     * Service Impl包名
+     * ServiceConfig Impl包名
      */
     @Getter
-    private String serviceImpl = "service.impl";
+    protected String serviceImpl = "service.impl";
 
     /**
      * Mapper包名
      */
     @Getter
-    private String mapper = "mapper";
+    protected String mapper = "mapper";
 
     /**
-     * Mapper XML包名
+     * MapperConfig XML包名
      */
     @Getter
-    private String xml = "mapper.xml";
+    protected String xml = "mapper.xml";
 
     /**
      * Controller包名
      */
     @Getter
-    private String controller = "controller";
+    protected String controller = "controller";
 
     /**
      * 路径配置信息
      */
     @Getter
-    private Map<OutputFile, String> pathInfo;
+    protected Map<OutputFile, String> pathInfo;
 
     /**
      * 包配置信息
      *
      * @since 3.5.0
      */
-    private final Map<String, String> packageInfo = new HashMap<>();
+    protected final Map<String, String> packageInfo = new HashMap<>();
 
     /**
      * 父包名
@@ -200,7 +200,7 @@ public class PackageConfig {
      */
     public static class Builder implements IConfigBuilder<PackageConfig> {
 
-        private final PackageConfig packageConfig;
+        protected final PackageConfig packageConfig;
 
         public Builder() {
             this.packageConfig = new PackageConfig();

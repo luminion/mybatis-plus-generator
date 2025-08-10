@@ -31,9 +31,8 @@ import io.github.bootystar.mybatisplus.generator.query.DefaultQuery;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
 import io.github.bootystar.mybatisplus.generator.query.SQLQuery;
 import io.github.bootystar.mybatisplus.generator.type.ITypeConvertHandler;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -50,70 +49,75 @@ import java.util.Properties;
  * @author YangHu, hcl, hubin
  * @since 2016/8/30
  */
+@Slf4j
 public class DataSourceConfig {
 
-    protected final Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
 
-    private DataSourceConfig() {
+    protected DataSourceConfig() {
     }
 
     /**
      * 数据库信息查询
      */
-    private IDbQuery dbQuery;
+    protected IDbQuery dbQuery;
 
     /**
      * schemaName
      */
-    private String schemaName;
+    @Getter
+    protected String schemaName;
 
     /**
      * 类型转换
      */
-    private ITypeConvert typeConvert;
+    protected ITypeConvert typeConvert;
 
     /**
      * 关键字处理器
      *
      * @since 3.3.2
      */
-    private IKeyWordsHandler keyWordsHandler;
+    @Getter
+    protected IKeyWordsHandler keyWordsHandler;
 
     /**
      * 驱动连接的URL
      */
-    private String url;
+    @Getter
+    protected String url;
 
     /**
      * 数据库连接用户名
      */
-    private String username;
+    @Getter
+    protected String username;
 
     /**
      * 数据库连接密码
      */
-    private String password;
+    @Getter
+    protected String password;
 
     /**
      * 数据源实例
      *
      * @since 3.5.0
      */
-    private DataSource dataSource;
+    protected DataSource dataSource;
 
     /**
      * 数据库连接
      *
      * @since 3.5.0
      */
-    private Connection connection;
+    protected Connection connection;
 
     /**
      * 数据库连接属性
      *
      * @since 3.5.3
      */
-    private final Map<String, String> connectionProperties = new HashMap<>();
+    protected final Map<String, String> connectionProperties = new HashMap<>();
 
     /**
      * 查询方式
@@ -122,21 +126,23 @@ public class DataSourceConfig {
      * @see SQLQuery SQL语句查询方式，配合{@link #typeConvert} 使用
      * @since 3.5.3
      */
-    private Class<? extends AbstractDatabaseQuery> databaseQueryClass = DefaultQuery.class;
+    protected Class<? extends AbstractDatabaseQuery> databaseQueryClass = DefaultQuery.class;
 
     /**
      * 类型转换处理
      *
      * @since 3.5.3
      */
-    private ITypeConvertHandler typeConvertHandler;
+    @Getter
+    protected ITypeConvertHandler typeConvertHandler;
 
     /**
      * 驱动全类名
      *
      * @since 3.5.8
      */
-    private String driverClassName;
+    @Getter
+    protected String driverClassName;
 
     /**
      * 获取数据库查询
@@ -166,7 +172,7 @@ public class DataSourceConfig {
      * @param str url
      * @return 类型枚举值，如果没找到，则返回 null
      */
-    private DbType getDbType(String str) {
+    protected DbType getDbType(String str) {
         if (str.contains(":mysql:") || str.contains(":cobar:")) {
             return DbType.MYSQL;
         } else if (str.contains(":oracle:")) {
@@ -183,8 +189,8 @@ public class DataSourceConfig {
             return DbType.SQLITE;
         } else if (str.contains(":h2:")) {
             return DbType.H2;
-        } else if (str.contains(":lealone:")) {
-            return DbType.LEALONE;
+//        } else if (str.contains(":lealone:")) {
+//            return DbType.LEALONE;
         } else if (str.contains(":kingbase:") || str.contains(":kingbase8:")) {
             return DbType.KINGBASE_ES;
         } else if (str.contains(":dm:")) {
@@ -260,7 +266,7 @@ public class DataSourceConfig {
         return connection;
     }
 
-    private void processProperties(Properties properties) {
+    protected void processProperties(Properties properties) {
         if (this.databaseQueryClass.getName().equals(DefaultQuery.class.getName())) {
             switch (this.getDbType()) {
                 case MYSQL:
@@ -300,36 +306,8 @@ public class DataSourceConfig {
         return schema;
     }
 
-    public String getSchemaName() {
-        return schemaName;
-    }
-
-    public IKeyWordsHandler getKeyWordsHandler() {
-        return keyWordsHandler;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
     public Class<? extends IDatabaseQuery> getDatabaseQueryClass() {
         return databaseQueryClass;
-    }
-
-    public ITypeConvertHandler getTypeConvertHandler() {
-        return typeConvertHandler;
-    }
-
-    public String getDriverClassName() {
-        return driverClassName;
     }
 
     /**
@@ -340,9 +318,9 @@ public class DataSourceConfig {
      */
     public static class Builder implements IConfigBuilder<DataSourceConfig> {
 
-        private final DataSourceConfig dataSourceConfig;
+        protected final DataSourceConfig dataSourceConfig;
 
-        private Builder() {
+        protected Builder() {
             this.dataSourceConfig = new DataSourceConfig();
         }
 

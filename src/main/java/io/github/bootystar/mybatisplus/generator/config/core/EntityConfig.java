@@ -22,7 +22,7 @@ import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.*;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
+import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
@@ -31,9 +31,7 @@ import io.github.bootystar.mybatisplus.generator.model.AnnotationAttributes;
 import io.github.bootystar.mybatisplus.generator.model.ClassAnnotationAttributes;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -46,9 +44,9 @@ import java.util.stream.Collectors;
  * @author nieqiurong 2020/10/11.
  * @since 3.5.0
  */
-public class Entity implements ITemplate {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Entity.class);
+@Slf4j
+@Getter
+public class EntityConfig implements ITemplate {
 
     /**
      * Java模板默认路径
@@ -56,44 +54,46 @@ public class Entity implements ITemplate {
      * @since 3.5.6
      */
     @Getter
-    private String javaTemplate = ConstVal.TEMPLATE_ENTITY_JAVA;
+    protected String javaTemplate = ConstVal.TEMPLATE_ENTITY_JAVA;
 
     /**
      * Kotlin模板默认路径
      */
     @Getter
-    private String kotlinTemplate = ConstVal.TEMPLATE_ENTITY_KT;
+    protected String kotlinTemplate = ConstVal.TEMPLATE_ENTITY_KT;
 
-    private Entity() {
+    protected EntityConfig() {
     }
 
     /**
      * 名称转换
      */
-    private INameConvert nameConvert;
+    @Getter
+    protected INameConvert nameConvert;
 
     /**
      * 自定义继承的Entity类全称，带包名
      */
-    private String superClass;
+    @Getter
+    protected String superClass;
 
     /**
      * 自定义基础的Entity类，公共字段
      */
     @Getter
-    private final Set<String> superEntityColumns = new HashSet<>();
+    protected final Set<String> superEntityColumns = new HashSet<>();
 
     /**
      * 自定义忽略字段
      * <a href="https://github.com/baomidou/generator/issues/46">...</a>
      */
-    private final Set<String> ignoreColumns = new HashSet<>();
+    protected final Set<String> ignoreColumns = new HashSet<>();
 
     /**
      * 实体是否生成 serialVersionUID
      */
     @Getter
-    private boolean serialVersionUID = true;
+    protected boolean serialVersionUID = true;
 
     /**
      * 是否启用 {@link java.io.Serial} (需JAVA 14) 注解
@@ -101,7 +101,7 @@ public class Entity implements ITemplate {
      * @since 3.5.11
      */
     @Getter
-    private boolean serialAnnotation;
+    protected boolean serialAnnotation;
 
     /**
      * 【实体】是否生成字段常量（默认 false）<br>
@@ -109,7 +109,7 @@ public class Entity implements ITemplate {
      * public static final String ID = "test_id";
      */
     @Getter
-    private boolean columnConstant;
+    protected boolean columnConstant;
 
     /**
      * 【实体】是否为链式模型（默认 false）
@@ -117,71 +117,77 @@ public class Entity implements ITemplate {
      * @since 3.3.2
      */
     @Getter
-    private boolean chain;
+    protected boolean chain;
 
     /**
      * 【实体】是否为lombok模型（默认 false）<br>
      * <a href="https://projectlombok.org/">document</a>
      */
     @Getter
-    private boolean lombok;
+    protected boolean lombok;
 
     /**
      * Boolean类型字段是否移除is前缀（默认 false）<br>
      * 比如 : 数据库字段名称 : 'is_xxx',类型为 : tinyint. 在映射实体的时候则会去掉is,在实体类中映射最终结果为 xxx
      */
     @Getter
-    private boolean booleanColumnRemoveIsPrefix;
+    protected boolean booleanColumnRemoveIsPrefix;
 
     /**
      * 是否生成实体时，生成字段注解（默认 false）
      */
     @Getter
-    private boolean tableFieldAnnotationEnable;
+    protected boolean tableFieldAnnotationEnable;
 
     /**
      * 乐观锁字段名称(数据库字段)
      *
      * @since 3.5.0
      */
-    private String versionColumnName;
+    @Getter
+    protected String versionColumnName;
 
     /**
      * 乐观锁属性名称(实体字段)
      *
      * @since 3.5.0
      */
-    private String versionPropertyName;
+    @Getter
+    protected String versionPropertyName;
 
     /**
      * 逻辑删除字段名称(数据库字段)
      *
      * @since 3.5.0
      */
-    private String logicDeleteColumnName;
+    @Getter
+    protected String logicDeleteColumnName;
 
     /**
      * 逻辑删除属性名称(实体字段)
      *
      * @since 3.5.0
      */
-    private String logicDeletePropertyName;
+    @Getter
+    protected String logicDeletePropertyName;
 
     /**
      * 表填充字段
      */
-    private final List<IFill> tableFillList = new ArrayList<>();
+    @Getter
+    protected final List<IFill> tableFillList = new ArrayList<>();
 
     /**
      * 数据库表映射到实体的命名策略，默认下划线转驼峰命名
      */
-    private NamingStrategy naming = NamingStrategy.underline_to_camel;
+    @Getter
+    protected NamingStrategy naming = NamingStrategy.underline_to_camel;
 
     /**
      * 数据库表字段映射到实体的命名策略
      * <p>未指定按照 naming 执行</p>
      */
-    private NamingStrategy columnNaming = null;
+    protected NamingStrategy columnNaming = null;
 
     /**
      * 开启 ActiveRecord 模式（默认 false）
@@ -189,21 +195,23 @@ public class Entity implements ITemplate {
      * @since 3.5.0
      */
     @Getter
-    private boolean activeRecord;
+    protected boolean activeRecord;
 
     /**
      * 指定生成的主键的ID类型
      *
      * @since 3.5.0
      */
-    private IdType idType;
+    @Getter
+    protected IdType idType;
 
     /**
      * 转换输出文件名称
      *
      * @since 3.5.0
      */
-    private ConverterFileName converterFileName = (entityName -> entityName);
+    @Getter
+    protected ConverterFileName converterFileName = (entityName -> entityName);
 
     /**
      * 是否覆盖已有文件（默认 false）
@@ -211,7 +219,7 @@ public class Entity implements ITemplate {
      * @since 3.5.2
      */
     @Getter
-    private boolean fileOverride;
+    protected boolean fileOverride;
 
 
     /**
@@ -220,7 +228,7 @@ public class Entity implements ITemplate {
      * @since 3.5.6
      */
     @Getter
-    private boolean generate = true;
+    protected boolean generate = true;
 
     /**
      * 默认lombok(低版本属性默认只有Getter和Setter)
@@ -229,7 +237,7 @@ public class Entity implements ITemplate {
      * @since 3.5.10
      */
     @Getter
-    private boolean defaultLombok = true;
+    protected boolean defaultLombok = true;
 
     /**
      * 是否生成ToString
@@ -239,7 +247,7 @@ public class Entity implements ITemplate {
      * @since 3.5.10
      */
     @Getter
-    private boolean toString = true;
+    protected boolean toString = true;
 
 
     /**
@@ -249,7 +257,7 @@ public class Entity implements ITemplate {
      * @since 3.5.10
      */
     @Getter
-    private boolean fieldUseJavaDoc = true;
+    protected boolean fieldUseJavaDoc = true;
 
     /**
      * 实体类注解
@@ -257,35 +265,35 @@ public class Entity implements ITemplate {
      * @since 3.5.10
      */
     @Getter
-    private final List<ClassAnnotationAttributes> classAnnotations = new ArrayList<>();
+    protected final List<ClassAnnotationAttributes> classAnnotations = new ArrayList<>();
 
     /**
      * 表注解处理器
      *
      * @since 3.5.10
      */
-    private ITableAnnotationHandler tableAnnotationHandler = new DefaultTableAnnotationHandler();
+    protected ITableAnnotationHandler tableAnnotationHandler = new DefaultTableAnnotationHandler();
 
     /**
      * 字段注解处理器
      *
      * @since 3.5.10
      */
-    private ITableFieldAnnotationHandler tableFieldAnnotationHandler = new DefaultTableFieldAnnotationHandler();
+    protected ITableFieldAnnotationHandler tableFieldAnnotationHandler = new DefaultTableFieldAnnotationHandler();
 
     /**
      * 导包处理方法
      *
      * @since 3.5.11
      */
-    private Function<Set<String>, List<String>> importPackageFunction;
+    protected Function<Set<String>, List<String>> importPackageFunction;
 
     /**
      * 处理类注解方法 (含类与字段)
      *
      * @since 3.5.11
      */
-    private Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction;
+    protected Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction;
 
 
     /**
@@ -296,13 +304,30 @@ public class Entity implements ITemplate {
      * @param clazz 实体父类 Class
      */
     public void convertSuperEntityColumns(Class<?> clazz) {
-        List<Field> fields = TableInfoHelper.getAllFields(clazz, annotationHandler);
+        // 3.5.12版本
+//        List<Field> fields = TableInfoHelper.getAllFields(clazz);
+//        this.superEntityColumns.addAll(fields.stream().map(field -> {
+//            TableId tableId = annotationHandler.getAnnotation(field, TableId.class);
+//            if (tableId != null && StringUtils.isNotBlank(tableId.value())) {
+//                return tableId.value();
+//            }
+//            TableField tableField = annotationHandler.getAnnotation(field, TableField.class);
+//            if (tableField != null && StringUtils.isNotBlank(tableField.value())) {
+//                return tableField.value();
+//            }
+//            if (null == columnNaming || columnNaming == NamingStrategy.no_change) {
+//                return field.getName();
+//            }
+//            return StringUtils.camelToUnderline(field.getName());
+//        }).collect(Collectors.toSet()));
+        // 3.5.0 版本
+        List<Field> fields = TableInfoHelper.getAllFields(clazz);
         this.superEntityColumns.addAll(fields.stream().map(field -> {
-            TableId tableId = annotationHandler.getAnnotation(field, TableId.class);
+            TableId tableId = field.getAnnotation(TableId.class);
             if (tableId != null && StringUtils.isNotBlank(tableId.value())) {
                 return tableId.value();
             }
-            TableField tableField = annotationHandler.getAnnotation(field, TableField.class);
+            TableField tableField = field.getAnnotation(TableField.class);
             if (tableField != null && StringUtils.isNotBlank(tableField.value())) {
                 return tableField.value();
             }
@@ -339,46 +364,6 @@ public class Entity implements ITemplate {
      */
     public boolean matchIgnoreColumns(String fieldName) {
         return ignoreColumns.stream().anyMatch(e -> e.equalsIgnoreCase(fieldName));
-    }
-
-    public INameConvert getNameConvert() {
-        return nameConvert;
-    }
-
-    public String getSuperClass() {
-        return superClass;
-    }
-
-    public String getVersionColumnName() {
-        return versionColumnName;
-    }
-
-    public String getVersionPropertyName() {
-        return versionPropertyName;
-    }
-
-    public String getLogicDeleteColumnName() {
-        return logicDeleteColumnName;
-    }
-
-    public String getLogicDeletePropertyName() {
-        return logicDeletePropertyName;
-    }
-
-    public List<IFill> getTableFillList() {
-        return tableFillList;
-    }
-
-    public NamingStrategy getNaming() {
-        return naming;
-    }
-
-    public IdType getIdType() {
-        return idType;
-    }
-
-    public ConverterFileName getConverterFileName() {
-        return converterFileName;
     }
 
     @Override
@@ -432,13 +417,14 @@ public class Entity implements ITemplate {
         return data;
     }
 
-    public static class Builder extends BaseBuilder {
+    public static class Builder implements IConfigBuilder<EntityConfig> {
 
-        private final Entity entity = new Entity();
+        protected final EntityConfig entity = new EntityConfig();
 
-        public Builder(StrategyConfig strategyConfig) {
-            super(strategyConfig);
-            this.entity.nameConvert = new INameConvert.DefaultNameConvert(strategyConfig);
+
+        @Override
+        public EntityConfig build() {
+            return entity;
         }
 
         /**
@@ -739,18 +725,6 @@ public class Entity implements ITemplate {
         }
 
         /**
-         * 覆盖已有文件（该方法后续会删除，替代方法为enableFileOverride方法）
-         *
-         * @see #enableFileOverride()
-         */
-        @Deprecated
-        public Builder fileOverride() {
-            LOGGER.warn("fileOverride方法后续会删除，替代方法为enableFileOverride方法");
-            this.entity.fileOverride = true;
-            return this;
-        }
-
-        /**
          * 覆盖已有文件
          *
          * @since 3.5.3
@@ -877,20 +851,9 @@ public class Entity implements ITemplate {
             this.entity.annotationAttributesFunction = annotationAttributesFunction;
             return this;
         }
+        
 
-        public Entity get() {
-            String superClass = this.entity.superClass;
-            if (StringUtils.isNotBlank(superClass)) {
-                tryLoadClass(superClass).ifPresent(this.entity::convertSuperEntityColumns);
-            } else {
-                if (!this.entity.superEntityColumns.isEmpty()) {
-                    LOGGER.warn("Forgot to set entity supper class ?");
-                }
-            }
-            return this.entity;
-        }
-
-        private Optional<Class<?>> tryLoadClass(String className) {
+        protected Optional<Class<?>> tryLoadClass(String className) {
             try {
                 return Optional.of(ClassUtils.toClassConfident(className));
             } catch (Exception e) {
@@ -898,5 +861,6 @@ public class Entity implements ITemplate {
             }
             return Optional.empty();
         }
+
     }
 }

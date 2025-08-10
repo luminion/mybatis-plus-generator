@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.IGenerateMapperMethodHandler;
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
+import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.model.MapperMethod;
@@ -43,34 +43,24 @@ import java.util.stream.Collectors;
  * @author nieqiurong 2020/10/11.
  * @since 3.5.0
  */
-public class Mapper implements ITemplate {
+public class MapperConfig implements ITemplate {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(Mapper.class);
+    protected final static Logger LOGGER = LoggerFactory.getLogger(MapperConfig.class);
 
-    private Mapper() {
+    protected MapperConfig() {
     }
 
     /**
      * 自定义继承的Mapper类全称，带包名
      */
-    private String superClass = ConstVal.SUPER_MAPPER_CLASS;
-
-    /**
-     * 是否添加 @Mapper 注解（默认 false）
-     *
-     * @see #mapperAnnotationClass
-     * @since 3.5.1
-     * @deprecated 3.5.4
-     */
-    @Deprecated
-    private boolean mapperAnnotation;
+    protected String superClass = ConstVal.SUPER_MAPPER_CLASS;
 
     /**
      * Mapper标记注解
      *
      * @since 3.5.3
      */
-    private Class<? extends Annotation> mapperAnnotationClass;
+    protected Class<? extends Annotation> mapperAnnotationClass = org.apache.ibatis.annotations.Mapper.class;
 
     /**
      * 是否开启BaseResultMap（默认 false）
@@ -78,7 +68,7 @@ public class Mapper implements ITemplate {
      * @since 3.5.0
      */
     @Getter
-    private boolean baseResultMap;
+    protected boolean baseResultMap;
 
     /**
      * 是否开启baseColumnList（默认 false）
@@ -86,7 +76,7 @@ public class Mapper implements ITemplate {
      * @since 3.5.0
      */
     @Getter
-    private boolean baseColumnList;
+    protected boolean baseColumnList;
 
     /**
      * 转换输出Mapper文件名称
@@ -94,7 +84,7 @@ public class Mapper implements ITemplate {
      * @since 3.5.0
      */
     @Getter
-    private ConverterFileName converterMapperFileName = (entityName -> entityName + ConstVal.MAPPER);
+    protected ConverterFileName converterMapperFileName = (entityName -> entityName + ConstVal.MAPPER);
 
     /**
      * 转换输出Xml文件名称
@@ -102,7 +92,7 @@ public class Mapper implements ITemplate {
      * @since 3.5.0
      */
     @Getter
-    private ConverterFileName converterXmlFileName = (entityName -> entityName + ConstVal.MAPPER);
+    protected ConverterFileName converterXmlFileName = (entityName -> entityName + ConstVal.MAPPER);
 
     /**
      * 是否覆盖已有文件（默认 false）
@@ -110,14 +100,14 @@ public class Mapper implements ITemplate {
      * @since 3.5.2
      */
     @Getter
-    private boolean fileOverride;
+    protected boolean fileOverride;
 
     /**
      * 设置缓存实现类
      *
      * @since 3.5.0
      */
-    private Class<? extends Cache> cache;
+    protected Class<? extends Cache> cache;
 
     /**
      * 是否生成XML
@@ -125,7 +115,7 @@ public class Mapper implements ITemplate {
      * @since 3.5.6
      */
     @Getter
-    private boolean generateMapperXml = true;
+    protected boolean generateMapperXml = true;
 
     /**
      * 是否生成Mapper
@@ -133,7 +123,7 @@ public class Mapper implements ITemplate {
      * @since 3.5.6
      */
     @Getter
-    private boolean generateMapper = true;
+    protected boolean generateMapper = true;
 
     /**
      * Mapper模板路径
@@ -141,7 +131,7 @@ public class Mapper implements ITemplate {
      * @since 3.5.6
      */
     @Getter
-    private String mapperTemplatePath = ConstVal.TEMPLATE_MAPPER;
+    protected String mapperTemplatePath = ConstVal.TEMPLATE_MAPPER;
 
     /**
      * MapperXml模板路径
@@ -149,7 +139,7 @@ public class Mapper implements ITemplate {
      * @since 3.5.6
      */
     @Getter
-    private String mapperXmlTemplatePath = ConstVal.TEMPLATE_XML;
+    protected String mapperXmlTemplatePath = ConstVal.TEMPLATE_XML;
 
     public String getSuperClass() {
         return superClass;
@@ -169,14 +159,14 @@ public class Mapper implements ITemplate {
      *
      * @since 3.5.10
      */
-    private IGenerateMapperMethodHandler generateMapperMethodHandler;
+    protected IGenerateMapperMethodHandler generateMapperMethodHandler;
 
     /**
      * 导包处理方法
      *
      * @since 3.5.11
      */
-    private Function<Set<String>, List<String>> importPackageFunction;
+    protected Function<Set<String>, List<String>> importPackageFunction;
 
 
     @Override
@@ -203,7 +193,7 @@ public class Mapper implements ITemplate {
             methodList = generateMapperMethodHandler.getMethodList(tableInfo);
             importPackages.addAll(generateMapperMethodHandler.getImportPackages(tableInfo));
         }
-        if(StringUtils.isNotBlank(superClass)){
+        if (StringUtils.isNotBlank(superClass)) {
             importPackages.add(superClass);
         }
         if (mapperAnnotationClass != null) {
@@ -221,12 +211,13 @@ public class Mapper implements ITemplate {
         return data;
     }
 
-    public static class Builder extends BaseBuilder {
+    public static class Builder implements IConfigBuilder<MapperConfig> {
 
-        private final Mapper mapper = new Mapper();
+        protected final MapperConfig mapper = new MapperConfig();
 
-        public Builder(StrategyConfig strategyConfig) {
-            super(strategyConfig);
+        @Override
+        public MapperConfig build() {
+            return mapper;
         }
 
         /**
@@ -252,23 +243,7 @@ public class Mapper implements ITemplate {
         }
 
         /**
-         * 开启 @Mapper 注解
-         *
-         * @return this
-         * @see #mapperAnnotation(Class)
-         * @since 3.5.1
-         * @deprecated 3.5.4
-         */
-        @Deprecated
-        public Builder enableMapperAnnotation() {
-            this.mapper.mapperAnnotation = true;
-            //TODO 因为现在mybatis-plus传递mybatis-spring依赖，这里是没问题的，但后面如果考虑脱离mybatis-spring的时候就需要把这里处理掉，建议使用mapperAnnotation方法来标记自己的注解。
-            this.mapper.mapperAnnotationClass = org.apache.ibatis.annotations.Mapper.class;
-            return this;
-        }
-
-        /**
-         * 标记 Mapper 注解
+         * 标记 MapperConfig 注解
          *
          * @param annotationClass 注解Class
          * @return this
@@ -461,7 +436,7 @@ public class Mapper implements ITemplate {
         }
 
 
-            public Mapper get() {
+        public MapperConfig get() {
             return this.mapper;
         }
     }

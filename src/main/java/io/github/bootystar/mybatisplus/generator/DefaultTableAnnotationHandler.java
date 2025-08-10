@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.model.ClassAnnotationAttributes;
 
@@ -35,7 +35,7 @@ import java.util.List;
 public class DefaultTableAnnotationHandler implements ITableAnnotationHandler {
 
     @Override
-    public List<ClassAnnotationAttributes> handle(TableInfo tableInfo, Entity entity) {
+    public List<ClassAnnotationAttributes> handle(TableInfo tableInfo, EntityConfig entity) {
         List<ClassAnnotationAttributes> annotationAttributesList = new ArrayList<>();
         GlobalConfig globalConfig = tableInfo.getGlobalConfig();
         String comment = tableInfo.getComment();

@@ -16,11 +16,10 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.IOutputFile;
-import io.github.bootystar.mybatisplus.generator.config.builder.*;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import lombok.Getter;
-
 
 import java.io.File;
 import java.util.Arrays;
@@ -34,61 +33,63 @@ import java.util.Set;
  * @author YangHu, tangguo, hubin
  * @since 2016/8/30
  */
+@Getter
 public class StrategyConfig {
 
-    private StrategyConfig() {
+    protected StrategyConfig() {
     }
 
     /**
      * 是否大写命名（默认 false）
      */
-    private boolean isCapitalMode;
+    protected boolean isCapitalMode;
 
     /**
      * 是否跳过视图（默认 false）
      */
     @Getter
-    private boolean skipView;
+    protected boolean skipView;
 
     /**
      * 过滤表前缀
      * example: addTablePrefix("t_")
      * result: t_simple -> Simple
      */
-    private final Set<String> tablePrefix = new HashSet<>();
+    @Getter
+    protected final Set<String> tablePrefix = new HashSet<>();
 
     /**
      * 过滤表后缀
      * example: addTableSuffix("_0")
      * result: t_simple_0 -> Simple
      */
-    private final Set<String> tableSuffix = new HashSet<>();
+    protected final Set<String> tableSuffix = new HashSet<>();
 
     /**
      * 过滤字段前缀
      * example: addFieldPrefix("is_")
      * result: is_deleted -> deleted
      */
-    private final Set<String> fieldPrefix = new HashSet<>();
+    protected final Set<String> fieldPrefix = new HashSet<>();
 
     /**
      * 过滤字段后缀
      * example: addFieldSuffix("_flag")
      * result: deleted_flag -> deleted
      */
-    private final Set<String> fieldSuffix = new HashSet<>();
+    protected final Set<String> fieldSuffix = new HashSet<>();
 
     /**
      * 需要包含的表名，允许正则表达式（与exclude二选一配置）<br/>
      * 当{@link #enableSqlFilter}为true时，正则表达式无效.
      */
-    private final Set<String> include = new HashSet<>();
+    protected final Set<String> include = new HashSet<>();
 
     /**
      * 需要排除的表名，允许正则表达式<br/>
      * 当{@link #enableSqlFilter}为true时，正则表达式无效.
      */
-    private final Set<String> exclude = new HashSet<>();
+    protected final Set<String> exclude = new HashSet<>();
 
     /**
      * 启用sql过滤，语法不能支持使用sql过滤表的话，可以考虑关闭此开关.
@@ -96,20 +97,20 @@ public class StrategyConfig {
      * @since 3.3.1
      */
     @Getter
-    private boolean enableSqlFilter = true;
+    protected boolean enableSqlFilter = true;
 
     /**
      * 启用 schema 默认 false
      */
     @Getter
-    private boolean enableSchema;
+    protected boolean enableSchema;
 
     /**
      * 包含表名
      *
      * @since 3.3.0
      */
-    private LikeTable likeTable;
+    protected LikeTable likeTable;
 
     /**
      * 不包含表名
@@ -119,117 +120,9 @@ public class StrategyConfig {
      *
      * @since 3.3.0
      */
-    private LikeTable notLikeTable;
+    protected LikeTable notLikeTable;
 
-    private final Entity.Builder entityBuilder = new Entity.Builder(this);
-
-    private final Controller.Builder controllerBuilder = new Controller.Builder(this);
-
-    private final Mapper.Builder mapperBuilder = new Mapper.Builder(this);
-
-    private final Service.Builder serviceBuilder = new Service.Builder(this);
-
-    private Entity entity;
-
-    private Controller controller;
-
-    private Mapper mapper;
-
-    private Service service;
-
-    private IOutputFile outputFile = (path, ot) -> new File(path);
-
-    /**
-     * 实体配置构建者
-     *
-     * @return 实体配置构建者
-     * @since 3.5.0
-     */
-    public Entity.Builder entityBuilder() {
-        return entityBuilder;
-    }
-
-    /**
-     * 实体配置
-     *
-     * @return 实体配置
-     * @since 3.5.0
-     */
-    public Entity entity() {
-        if (entity == null) {
-            this.entity = entityBuilder.get();
-        }
-        return entity;
-    }
-
-    /**
-     * 控制器配置构建者
-     *
-     * @return 控制器配置构建者
-     * @since 3.5.0
-     */
-    public Controller.Builder controllerBuilder() {
-        return controllerBuilder;
-    }
-
-    /**
-     * 控制器配置
-     *
-     * @return 控制器配置
-     * @since 3.5.0
-     */
-    public Controller controller() {
-        if (controller == null) {
-            this.controller = controllerBuilder.get();
-        }
-        return controller;
-    }
-
-    /**
-     * Mapper配置构建者
-     *
-     * @return Mapper配置构建者
-     * @since 3.5.0
-     */
-    public Mapper.Builder mapperBuilder() {
-        return mapperBuilder;
-    }
-
-    /**
-     * Mapper配置
-     *
-     * @return Mapper配置
-     * @since 3.5.0
-     */
-    public Mapper mapper() {
-        if (mapper == null) {
-            this.mapper = mapperBuilder.get();
-        }
-        return mapper;
-    }
-
-    /**
-     * Service配置构建者
-     *
-     * @return Service配置构建者
-     * @since 3.5.0
-     */
-    public Service.Builder serviceBuilder() {
-        return serviceBuilder;
-    }
-
-    /**
-     * Service配置
-     *
-     * @return Service配置
-     * @since 3.5.0
-     */
-    public Service service() {
-        if (service == null) {
-            this.service = serviceBuilder.get();
-        }
-        return service;
-    }
+    protected IOutputFile outputFile = (path, ot) -> new File(path);
 
     /**
      * 大写命名、字段符合大写字母数字下划线命名
@@ -296,7 +189,7 @@ public class StrategyConfig {
      * @return 是否匹配
      * @since 3.5.0
      */
-    private boolean matchTable(String tableName, Set<String> matchTables) {
+    protected boolean matchTable(String tableName, Set<String> matchTables) {
         return matchTables.stream().anyMatch(t -> tableNameMatches(t, tableName));
     }
 
@@ -307,16 +200,12 @@ public class StrategyConfig {
      * @param dbTableName    数据库表名
      * @return 是否匹配
      */
-    private boolean tableNameMatches(String matchTableName, String dbTableName) {
+    protected boolean tableNameMatches(String matchTableName, String dbTableName) {
         return matchTableName.equalsIgnoreCase(dbTableName) || StringUtils.matches(matchTableName, dbTableName);
     }
 
     public boolean isCapitalMode() {
         return isCapitalMode;
-    }
-
-    public Set<String> getTablePrefix() {
-        return tablePrefix;
     }
 
     public Set<String> getTableSuffix() {
@@ -357,13 +246,14 @@ public class StrategyConfig {
      * @author nieqiurong 2020/10/11.
      * @since 3.5.0
      */
-    public static class Builder extends BaseBuilder {
+    public static class Builder implements IConfigBuilder<StrategyConfig> {
 
-        private final StrategyConfig strategyConfig;
+        protected final StrategyConfig strategyConfig = new StrategyConfig();
 
-        public Builder() {
-            super(new StrategyConfig());
-            strategyConfig = super.build();
+        @Override
+        public StrategyConfig build() {
+            this.strategyConfig.validate();
+            return strategyConfig;
         }
 
         /**
@@ -542,10 +432,6 @@ public class StrategyConfig {
             return this;
         }
 
-        @Override
-            public StrategyConfig build() {
-            this.strategyConfig.validate();
-            return strategyConfig;
-        }
+
     }
 }

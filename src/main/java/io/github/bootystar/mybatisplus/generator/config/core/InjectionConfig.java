@@ -18,9 +18,8 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.builder.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,26 +35,34 @@ import java.util.stream.Collectors;
  * @author hubin
  * @since 2016-12-07
  */
+@Slf4j
 public class InjectionConfig {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(InjectionConfig.class);
 
     /**
      * 输出文件之前消费者
      */
-    private BiConsumer<TableInfo, Map<String, Object>> beforeOutputFileBiConsumer;
+    protected BiConsumer<TableInfo, Map<String, Object>> beforeOutputFileBiConsumer;
 
     /**
      * 自定义配置 Map 对象
+     * -- GETTER --
+     *  获取自定义配置 Map 对象
+
      */
-    private Map<String, Object> customMap = new HashMap<>();
+    @Getter
+    protected Map<String, Object> customMap = new HashMap<>();
 
     /**
      * 自定义模板文件列表
      *
-     * @since 3.5.3
+     *
+     * -- GETTER --
+     *  获取自定义模板文件列表
+     @since 3.5.3
      */
-    private final List<CustomFile> customFiles = new ArrayList<>();
+    @Getter
+    protected final List<CustomFile> customFiles = new ArrayList<>();
 
     /**
      * 输出文件前
@@ -72,25 +79,11 @@ public class InjectionConfig {
     }
 
     /**
-     * 获取自定义配置 Map 对象
-     */
-    public Map<String, Object> getCustomMap() {
-        return customMap;
-    }
-
-    /**
-     * 获取自定义模板文件列表
-     */
-    public List<CustomFile> getCustomFiles() {
-        return customFiles;
-    }
-
-    /**
      * 构建者
      */
     public static class Builder implements IConfigBuilder<InjectionConfig> {
 
-        private final InjectionConfig injectionConfig;
+        protected final InjectionConfig injectionConfig;
 
         public Builder() {
             this.injectionConfig = new InjectionConfig();
