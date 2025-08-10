@@ -19,13 +19,13 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.IOutputFile;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
+import io.github.bootystar.mybatisplus.generator.config.po.TableField;
+import io.github.bootystar.mybatisplus.generator.config.rules.ExtraFieldStrategy;
 import lombok.Getter;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.BiFunction;
 
 /**
  * 策略配置项
@@ -42,6 +42,7 @@ public class StrategyConfig {
     /**
      * 是否大写命名（默认 false）
      */
+    @Getter
     protected boolean isCapitalMode;
 
     /**
@@ -63,6 +64,7 @@ public class StrategyConfig {
      * example: addTableSuffix("_0")
      * result: t_simple_0 -> Simple
      */
+    @Getter
     protected final Set<String> tableSuffix = new HashSet<>();
 
     /**
@@ -70,6 +72,7 @@ public class StrategyConfig {
      * example: addFieldPrefix("is_")
      * result: is_deleted -> deleted
      */
+    @Getter
     protected final Set<String> fieldPrefix = new HashSet<>();
 
     /**
@@ -77,18 +80,21 @@ public class StrategyConfig {
      * example: addFieldSuffix("_flag")
      * result: deleted_flag -> deleted
      */
+    @Getter
     protected final Set<String> fieldSuffix = new HashSet<>();
 
     /**
      * 需要包含的表名，允许正则表达式（与exclude二选一配置）<br/>
      * 当{@link #enableSqlFilter}为true时，正则表达式无效.
      */
+    @Getter
     protected final Set<String> include = new HashSet<>();
 
     /**
      * 需要排除的表名，允许正则表达式<br/>
      * 当{@link #enableSqlFilter}为true时，正则表达式无效.
      */
+    @Getter
     protected final Set<String> exclude = new HashSet<>();
 
     /**
@@ -110,6 +116,7 @@ public class StrategyConfig {
      *
      * @since 3.3.0
      */
+    @Getter
     protected LikeTable likeTable;
 
     /**
@@ -120,9 +127,70 @@ public class StrategyConfig {
      *
      * @since 3.3.0
      */
+    @Getter
     protected LikeTable notLikeTable;
 
+    @Getter
     protected IOutputFile outputFile = (path, ot) -> new File(path);
+
+
+    // =============自定义项==============
+
+    /**
+     * 生成新增方法
+     */
+    protected boolean generateInsert = true;
+    /**
+     * 生成更新方法
+     */
+    protected boolean generateUpdate = true;
+    /**
+     * 生成删除方法
+     */
+    protected boolean generateDelete = true;
+    /**
+     * 生成查询方法
+     */
+    protected boolean generateSelect = true;
+    /**
+     * 生成导入方法
+     */
+    protected boolean generateImport = true;
+    /**
+     * 生成导出方法
+     */
+    protected boolean generateExport = true;
+
+    /**
+     * swagger实体是否添加注解
+     */
+    protected boolean swaggerModelWithAnnotation;
+
+    /**
+     * swagger注解添加uuid标识
+     */
+    protected boolean swaggerAnnotationWithUUID;
+
+    /**
+     * 额外类链接注释
+     */
+    protected boolean extraClassLinkComment = true;
+
+    /**
+     * excel注解的包
+     */
+    protected String excelBasePackage = "cn.idev.excel";
+    
+    /**
+     * 额外字段后缀
+     */
+    protected Map<String, String> extraFieldSuffixMap;
+
+    /**
+     * 额外字段策略
+     */
+    protected BiFunction<String, TableField, Boolean> extraFieldStrategy = new ExtraFieldStrategy();
+
 
     /**
      * 大写命名、字段符合大写字母数字下划线命名
@@ -202,42 +270,6 @@ public class StrategyConfig {
      */
     protected boolean tableNameMatches(String matchTableName, String dbTableName) {
         return matchTableName.equalsIgnoreCase(dbTableName) || StringUtils.matches(matchTableName, dbTableName);
-    }
-
-    public boolean isCapitalMode() {
-        return isCapitalMode;
-    }
-
-    public Set<String> getTableSuffix() {
-        return tableSuffix;
-    }
-
-    public Set<String> getFieldPrefix() {
-        return fieldPrefix;
-    }
-
-    public Set<String> getFieldSuffix() {
-        return fieldSuffix;
-    }
-
-    public Set<String> getInclude() {
-        return include;
-    }
-
-    public Set<String> getExclude() {
-        return exclude;
-    }
-
-    public LikeTable getLikeTable() {
-        return likeTable;
-    }
-
-    public LikeTable getNotLikeTable() {
-        return notLikeTable;
-    }
-
-    public IOutputFile getOutputFile() {
-        return outputFile;
     }
 
     /**
@@ -431,6 +463,137 @@ public class StrategyConfig {
             this.strategyConfig.outputFile = outputFile;
             return this;
         }
+
+        // =============自定义项==============
+
+        /**
+         * 不生成新增方法
+         *
+         * @return this
+         */
+        public Builder disableInsert() {
+            this.strategyConfig.generateInsert = false;
+            return this;
+        }
+
+        /**
+         * 不生成更新方法
+         *
+         * @return this
+         */
+        public Builder disableUpdate() {
+            this.strategyConfig.generateUpdate = false;
+            return this;
+        }
+
+        /**
+         * 不生成删除方法
+         *
+         * @return this
+         */
+        public Builder disableDelete() {
+            this.strategyConfig.generateDelete = false;
+            return this;
+        }
+
+        /**
+         * 不生成查询方法
+         *
+         * @return this
+         */
+        public Builder disableSelect() {
+            this.strategyConfig.generateSelect = false;
+            return this;
+        }
+
+        /**
+         * 不生成导入方法
+         *
+         * @return this
+         */
+        public Builder disableImport() {
+            this.strategyConfig.generateImport = false;
+            return this;
+        }
+
+        /**
+         * 不生成导出方法
+         *
+         * @return this
+         */
+        public Builder disableExport() {
+            this.strategyConfig.generateExport = false;
+            return this;
+        }
+
+        /**
+         * 启用swagger/springdoc模型实体的注解
+         * <p>
+         * 已知swagger注解在同名时有冲突, 禁用后请确保表注释不为空且不同名
+         *
+         * @return this
+         */
+        public Builder enableSwaggerModelWithAnnotation() {
+            this.strategyConfig.swaggerModelWithAnnotation = true;
+            return this;
+        }
+
+        /**
+         * 启用swagger/springdoc文档额外uuid标识
+         * <p>
+         * 已知swagger注解在同名时有冲突, 禁用后请确保表注释不为空且不同名
+         *
+         * @return this
+         */
+        public Builder enableSwaggerAnnotationWithUUID() {
+            this.strategyConfig.swaggerAnnotationWithUUID = true;
+            return this;
+        }
+
+        /**
+         * 添加额外类链接注释
+         *
+         * @return this
+         */
+        public Builder disableExtraClassLinkComment() {
+            this.strategyConfig.extraClassLinkComment = false;
+            return this;
+        }
+
+        /**
+         * 使用EasyExcel
+         * <p>默认使用FastExcel</p>
+         *
+         * @return this
+         */
+        public Builder enableEasyExcel() {
+            this.strategyConfig.excelBasePackage = "com.alibaba.excel";
+            return this;
+        }
+
+        /**
+         * 额外字段后缀
+         *
+         * @param extraFieldSuffixMap 额外字段后缀, Map<String, String>, 2个泛型参数分别为后缀,sql运算符
+         * @return this
+         */
+        public Builder extraFieldSuffixMap(Map<String, String> extraFieldSuffixMap) {
+            this.strategyConfig.extraFieldSuffixMap = extraFieldSuffixMap;
+            return this;
+        }
+
+        /**
+         * 额外字段策略
+         *
+         * @param extraFieldStrategy 额外字段策略, BiFunction<String, TableField, Boolean>, 3个泛型参数分别为sql运算符,表字段信息,是否生成
+         * @return this
+         */
+        public Builder extraFieldStrategy(BiFunction<String, TableField, Boolean> extraFieldStrategy) {
+            this.strategyConfig.extraFieldStrategy = extraFieldStrategy;
+            return this;
+        }
+        
+
 
 
     }

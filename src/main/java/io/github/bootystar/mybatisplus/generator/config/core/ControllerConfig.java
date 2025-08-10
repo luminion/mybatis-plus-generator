@@ -15,16 +15,19 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.core;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
+import io.github.bootystar.mybatisplus.generator.config.po.MethodPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
+import io.github.bootystar.mybatisplus.generator.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -48,7 +51,7 @@ public class ControllerConfig implements ITemplate {
      *      <code>@RestController</code>
      * </pre>
      */
-    protected boolean restStyle = false;
+    protected boolean restController = false;
 
     /**
      * 驼峰转连字符
@@ -83,6 +86,65 @@ public class ControllerConfig implements ITemplate {
      * @since 3.5.6
      */
     protected boolean generate = true;
+    
+    // =============自定义项==============
+
+    /**
+     * 请求基础url
+     */
+    protected String baseUrl;
+
+    /**
+     * 跨域注解
+     */
+    protected boolean crossOrigins;
+
+    /**
+     * javaEE api包(jakarta或javax)
+     * <p>
+     * 涉及HttpServletRequest,HttpServletResponse,@Resource
+     */
+    protected String javaApiPackage = "jakarta";
+
+    /**
+     * 返回结果方法
+     */
+    protected MethodPayload returnMethod = new MethodPayload();
+
+    /**
+     * 分页结果方法
+     */
+    protected MethodPayload pageMethod = new MethodPayload();
+
+    /**
+     * 使用@AutoWired替换@Resource
+     */
+    protected boolean autoWired;
+
+    /**
+     * restful样式
+     */
+    protected boolean restful;
+
+    /**
+     * 请求路径参数
+     */
+    protected boolean pathVariable = true;
+
+    /**
+     * controller是否使用@RequestBody注解
+     */
+    protected boolean requestBody = true;
+
+    /**
+     * 参数校验注解
+     */
+    protected boolean validated = true;
+
+    /**
+     * 复杂查询使用post请求
+     */
+    protected boolean postQuery = true;
 
     /**
      * 模板路径
@@ -92,10 +154,10 @@ public class ControllerConfig implements ITemplate {
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
-        Map<String, Object> data = new HashMap<>(5);
+        Map<String, Object> data = ITemplate.super.renderData(tableInfo);
         data.put("controllerMappingHyphen", StringUtils.camelToHyphen(tableInfo.getEntityPath()));
         data.put("controllerMappingHyphenStyle", this.hyphenStyle);
-        data.put("restControllerStyle", this.restStyle);
+        data.put("restControllerStyle", this.restController);
         data.put("superControllerClassPackage", StringUtils.isBlank(superClass) ? null : superClass);
         data.put("superControllerClass", ClassUtils.getSimpleName(this.superClass));
         return data;
@@ -147,8 +209,8 @@ public class ControllerConfig implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder disableRestStyle() {
-            this.controller.restStyle = false;
+        public Builder disableRestController() {
+            this.controller.restController = false;
             return this;
         }
 
@@ -207,5 +269,135 @@ public class ControllerConfig implements ITemplate {
             this.controller.templatePath = template;
             return this;
         }
+        
+        // ============自定义项==============
+        
+        /**
+         * controller请求前缀
+         *
+         * @param url url
+         * @return this
+         */
+        public Builder baseUrl(String url) {
+            if (url == null || url.isEmpty()) {
+                this.controller.baseUrl = url;
+                return this;
+            }
+            if (!url.startsWith("/")) {
+                url = "/" + url;
+            }
+            if (url.endsWith("/")) {
+                url = url.substring(0, url.length() - 1);
+            }
+            this.controller.baseUrl = url;
+            return this;
+        }
+
+        /**
+         * 跨域注解
+         *
+         * @return this
+         */
+        public Builder enableCrossOrigins() {
+            this.controller.crossOrigins = true;
+            return this;
+        }
+
+        /**
+         * 使用javax包作为javaEE api
+         * <p>springboot2.x使用javax, springboot3.x使用jakarta</p>
+         * 默认使用jakarta
+         *
+         * @return this
+         */
+        public Builder enableJavax() {
+            this.controller.javaApiPackage = "javax";
+            return this;
+        }
+
+ 
+
+        /**
+         * 指定controller的返回结果包装类及方法
+         *
+         * @param methodReference 方法引用
+         * @return this
+         */
+        public <R> Builder returnMethod(SFunction<Object, R> methodReference) {
+            this.controller.returnMethod = ReflectUtil.lambdaMethodInfo(methodReference, Object.class);
+            return this;
+        }
+
+        /**
+         * 指定controller返回的分页包装类及方法
+         *
+         * @param methodReference 方法参考
+         * @return this
+         */
+        public <O, R> Builder pageMethod(SFunction<IPage<O>, R> methodReference) {
+            this.controller.pageMethod = ReflectUtil.lambdaMethodInfo(methodReference, IPage.class);
+            return this;
+        }
+
+        /**
+         * 使用@AutoWired替换@Resource
+         *
+         * @return this
+         */
+        public Builder enableAutoWired() {
+            this.controller.autoWired = true;
+            return this;
+        }
+
+        /**
+         * 禁止复杂查询使用post请求(使用Get请求替代)
+         *
+         * @return this
+         */
+        public Builder disablePostQuery() {
+            this.controller.postQuery = false;
+            return this;
+        }
+
+        /**
+         * 增删查改使用restful风格
+         *
+         * @return this
+         */
+        public Builder enableRestful() {
+            this.controller.restful = true;
+            return this;
+        }
+
+        /**
+         * 禁用路径变量
+         *
+         * @return {@link B }
+         */
+        public Builder disablePathVariable() {
+            this.controller.pathVariable = false;
+            return this;
+        }
+
+        /**
+         * 禁用消息体接收数据
+         *
+         * @return this
+         */
+        public Builder disableRequestBody() {
+            this.controller.requestBody = false;
+            return this;
+        }
+
+        /**
+         * 禁用参数校验注解
+         *
+         * @return this
+         */
+        public Builder disableValidated() {
+            this.controller.validated = false;
+            return this;
+        }
     }
+    
 }

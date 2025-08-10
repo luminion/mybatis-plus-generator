@@ -24,8 +24,6 @@ import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -95,6 +93,7 @@ public class ServiceConfig implements ITemplate {
      *
      * @since 3.5.0
      */
+    @Getter
     protected ConverterFileName converterServiceFileName = (entityName -> "I" + entityName + ConstVal.SERVICE);
 
     /**
@@ -102,6 +101,7 @@ public class ServiceConfig implements ITemplate {
      *
      * @since 3.5.0
      */
+    @Getter
     protected ConverterFileName converterServiceImplFileName = (entityName -> entityName + ConstVal.SERVICE_IMPL);
 
     /**
@@ -111,14 +111,15 @@ public class ServiceConfig implements ITemplate {
      */
     @Getter
     protected boolean fileOverride;
+    
+    // =============自定义项==============
+    /**
+     * 生成重写的父类方法
+     */
+    protected boolean methodOverride = true;
 
-    public ConverterFileName getConverterServiceFileName() {
-        return converterServiceFileName;
-    }
+   
 
-    public ConverterFileName getConverterServiceImplFileName() {
-        return converterServiceImplFileName;
-    }
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
@@ -293,8 +294,18 @@ public class ServiceConfig implements ITemplate {
             return this;
         }
 
-            public ServiceConfig get() {
-            return this.service;
+        // =============自定义项==============
+        
+        /**
+         * 禁用生成重写父类方法, 仅当特殊继承时有效
+         *
+         * @return this
+         */
+        public Builder disableMethodOverride() {
+            this.service.methodOverride = false;
+            return this;
         }
+
+       
     }
 }

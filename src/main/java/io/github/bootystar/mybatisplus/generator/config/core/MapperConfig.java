@@ -26,11 +26,9 @@ import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.model.MapperMethod;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.cache.decorators.LoggingCache;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -43,9 +41,8 @@ import java.util.stream.Collectors;
  * @author nieqiurong 2020/10/11.
  * @since 3.5.0
  */
+@Slf4j
 public class MapperConfig implements ITemplate {
-
-    protected final static Logger LOGGER = LoggerFactory.getLogger(MapperConfig.class);
 
     protected MapperConfig() {
     }
@@ -53,6 +50,7 @@ public class MapperConfig implements ITemplate {
     /**
      * 自定义继承的Mapper类全称，带包名
      */
+    @Getter
     protected String superClass = ConstVal.SUPER_MAPPER_CLASS;
 
     /**
@@ -141,14 +139,19 @@ public class MapperConfig implements ITemplate {
     @Getter
     protected String mapperXmlTemplatePath = ConstVal.TEMPLATE_XML;
 
-    public String getSuperClass() {
-        return superClass;
-    }
+    // =============自定义项==============
 
-    @Deprecated
-    public boolean isMapperAnnotation() {
-        return mapperAnnotationClass != null;
-    }
+    /**
+     * 排序字段map
+     * 字段名 -> 是否倒序
+     */
+    protected Map<String, Boolean> sortColumnMap = new LinkedHashMap<>();
+    
+    /**
+     * 是否生成重写父类方法
+     */
+    protected boolean methodOverride;
+    
 
     public Class<? extends Cache> getCache() {
         return this.cache == null ? LoggingCache.class : this.cache;
@@ -334,17 +337,6 @@ public class MapperConfig implements ITemplate {
             return convertXmlFileName((entityName) -> String.format(format, entityName));
         }
 
-        /**
-         * 覆盖已有文件（该方法后续会删除，替代方法为enableFileOverride方法）
-         *
-         * @see #enableFileOverride()
-         */
-        @Deprecated
-        public Builder fileOverride() {
-            LOGGER.warn("fileOverride方法后续会删除，替代方法为enableFileOverride方法");
-            this.mapper.fileOverride = true;
-            return this;
-        }
 
         /**
          * 覆盖已有文件
@@ -355,7 +347,7 @@ public class MapperConfig implements ITemplate {
         }
 
         /**
-         * Service模板路径
+         * mapper模板路径
          *
          * @return this
          * @since 3.5.6
@@ -366,7 +358,7 @@ public class MapperConfig implements ITemplate {
         }
 
         /**
-         * ServiceImpl模板路径
+         * mapper.xml模板路径
          *
          * @return this
          * @since 3.5.6
@@ -434,10 +426,29 @@ public class MapperConfig implements ITemplate {
             this.mapper.importPackageFunction = importPackageFunction;
             return this;
         }
+        
+        // =============自定义项==============
 
+        /**
+         * 清空排序字段
+         *
+         * @return this
+         */
+        public Builder clearSortColumnMap() {
+            this.mapper.sortColumnMap.clear();
+            return this;
+        }
 
-        public MapperConfig get() {
-            return this.mapper;
+        /**
+         * 添加排序字段,越先添加优先级越高
+         *
+         * @param columnName 字段名
+         * @param isDesc     是否倒排
+         * @return this
+         */
+        public Builder sortColumn(String columnName, boolean isDesc) {
+            this.mapper.sortColumnMap.put(columnName, isDesc);
+            return this;
         }
     }
 }

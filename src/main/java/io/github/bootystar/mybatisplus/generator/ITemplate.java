@@ -16,9 +16,14 @@
 package io.github.bootystar.mybatisplus.generator;
 
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
+import io.github.bootystar.mybatisplus.generator.util.ReflectUtil;
+import lombok.SneakyThrows;
 
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,8 +32,18 @@ import java.util.Map;
  * @author nieqiurong 2020/11/9.
  * @since 3.5.0
  */
+
 public interface ITemplate extends Serializable {
 
-    Map<String, Object> renderData(TableInfo tableInfo);
+    @SneakyThrows
+    default Map<String, Object> renderData(TableInfo tableInfo) {
+        // 添加自定义配置字段信息
+        HashMap<String, Object> data = new HashMap<>();
+        Collection<Field> fields = ReflectUtil.fieldMap(getClass()).values();
+        for (Field field : fields) {
+            data.put(field.getName(), field.get(this));
+        }
+        return data;
+    }
 
 }

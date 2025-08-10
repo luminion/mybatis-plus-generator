@@ -58,18 +58,6 @@ public class PackageConfig {
     protected String entity = "entity";
 
     /**
-     * Service包名
-     */
-    @Getter
-    protected String service = "service";
-
-    /**
-     * ServiceConfig Impl包名
-     */
-    @Getter
-    protected String serviceImpl = "service.impl";
-
-    /**
      * Mapper包名
      */
     @Getter
@@ -82,6 +70,18 @@ public class PackageConfig {
     protected String xml = "mapper.xml";
 
     /**
+     * Service包名
+     */
+    @Getter
+    protected String service = "service";
+
+    /**
+     * ServiceConfig Impl包名
+     */
+    @Getter
+    protected String serviceImpl = "service.impl";
+
+    /**
      * Controller包名
      */
     @Getter
@@ -92,6 +92,18 @@ public class PackageConfig {
      */
     @Getter
     protected Map<OutputFile, String> pathInfo;
+    
+    @Getter
+    protected String dtoInsert = "dto";
+    
+    @Getter
+    protected String dtoUpdate = "dto";
+    
+    @Getter
+    protected String dtoSelect = "dto";
+    
+    @Getter
+    protected String vo = "vo";
 
     /**
      * 包配置信息
@@ -151,6 +163,10 @@ public class PackageConfig {
             packageInfo.put(ConstVal.SERVICE_IMPL, this.joinPackage(this.getServiceImpl()));
             packageInfo.put(ConstVal.CONTROLLER, this.joinPackage(this.getController()));
             packageInfo.put(ConstVal.PARENT, this.getParent());
+            packageInfo.put(ConstVal.DTO_INSERT, this.joinPackage(this.getDtoInsert()));
+            packageInfo.put(ConstVal.DTO_UPDATE, this.joinPackage(this.getDtoUpdate()));
+            packageInfo.put(ConstVal.DTO_SELECT, this.joinPackage(this.getDtoSelect()));
+            packageInfo.put(ConstVal.VO, this.joinPackage(this.getVo()));
             if (injectionConfig != null) {
                 List<CustomFile> customFiles = injectionConfig.getCustomFiles();
                 for (CustomFile customFile : customFiles) {

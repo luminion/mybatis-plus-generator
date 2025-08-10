@@ -50,8 +50,8 @@
 //            System.out.println("✓ EntityConfig创建成功");
 //            
 //            // 测试DtoConfig
-//            io.github.bootystar.mybatisplus.generator.config.DtoConfig dtoConfig = 
-//                io.github.bootystar.mybatisplus.generator.config.DtoConfig.builder()
+//            io.github.bootystar.mybatisplus.generator.config.ModelConfig dtoConfig = 
+//                io.github.bootystar.mybatisplus.generator.config.ModelConfig.builder()
 //                    .package4DTO("dto")
 //                    .enableFileOverride()
 //                    .build();
@@ -109,10 +109,10 @@
 //            
 //            // 验证DtoConfig属性
 //            if ("dto".equals(dtoConfig.getPackage4DTO())) {
-//                System.out.println("✓ DtoConfig.package4DTO设置正确");
+//                System.out.println("✓ ModelConfig.package4DTO设置正确");
 //            }
 //            if (dtoConfig.isFileOverride()) {
-//                System.out.println("✓ DtoConfig.fileOverride设置正确");
+//                System.out.println("✓ ModelConfig.fileOverride设置正确");
 //            }
 //            
 //            // 验证VoConfig属性
