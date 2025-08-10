@@ -33,7 +33,50 @@ import java.util.regex.Pattern;
  * @author YangHu, tangguo, hubin, Juzi, lanjerry
  * @since 2016-08-30
  */
+@Getter
 public class ConfigBuilder {
+
+    /**
+     * 数据库配置信息
+     */
+    private final DataSourceConfig dataSourceConfig;
+
+    /**
+     * 全局配置信息
+     */
+    private GlobalConfig globalConfig;
+    
+    /**
+     * 包配置信息
+     */
+    private final PackageConfig packageConfig;
+
+    /**
+     * 策略配置信息
+     */
+    private StrategyConfig strategyConfig;
+
+    /**
+     * 注入配置信息
+     */
+    private InjectionConfig injectionConfig;
+    
+    /**
+     * entity配置信息
+     */
+    private EntityConfig entityConfig;
+    /**
+     * mapper配置信息
+     */
+    private MapperConfig mapperConfig;
+    /**
+     * service配置信息
+     */
+    private ServiceConfig serviceConfig;
+    /**
+     * controller配置信息
+     */
+    private ControllerConfig controllerConfig;
 
 
     /**
@@ -46,44 +89,23 @@ public class ConfigBuilder {
      */
     private final Map<OutputFile, String> pathInfo = new HashMap<>();
 
-    /**
-     * 策略配置信息
-     */
-    private StrategyConfig strategyConfig;
-
-    /**
-     * 全局配置信息
-     */
-    private GlobalConfig globalConfig;
-
-    /**
-     * 注入配置信息
-     */
-    private InjectionConfig injectionConfig;
 
     /**
      * 过滤正则
      */
     private static final Pattern REGX = Pattern.compile("[~!/@#$%^&*()+\\\\\\[\\]|{};:'\",<.>?]+");
 
-    /**
-     * 包配置信息
-     */
-    private final PackageConfig packageConfig;
-
-    /**
-     * 数据库配置信息
-     */
-    private final DataSourceConfig dataSourceConfig;
 
     /**
      * 数据查询实例
+     *
      * @since 3.5.3
      */
     private final IDatabaseQuery databaseQuery;
 
     /**
      * 资源加载器
+     *
      * @since 3.5.9
      */
     @Getter
@@ -98,11 +120,13 @@ public class ConfigBuilder {
      * @param strategyConfig   表配置
      * @param globalConfig     全局配置
      */
-    public ConfigBuilder(PackageConfig packageConfig,
-                         DataSourceConfig dataSourceConfig,
-                         StrategyConfig strategyConfig, 
-                         GlobalConfig globalConfig,
-                         InjectionConfig injectionConfig) {
+    public ConfigBuilder(
+            PackageConfig packageConfig, 
+            DataSourceConfig dataSourceConfig, 
+            StrategyConfig strategyConfig, 
+            GlobalConfig globalConfig, 
+            InjectionConfig injectionConfig
+    ) {
         this.dataSourceConfig = dataSourceConfig;
         this.strategyConfig = Optional.ofNullable(strategyConfig).orElseGet(GeneratorBuilder::strategyConfig);
         this.globalConfig = Optional.ofNullable(globalConfig).orElseGet(GeneratorBuilder::globalConfig);
@@ -154,28 +178,5 @@ public class ConfigBuilder {
         }
         return tableInfoList;
     }
-
-    public Map<OutputFile, String> getPathInfo() {
-        return pathInfo;
-    }
-
-    public StrategyConfig getStrategyConfig() {
-        return strategyConfig;
-    }
-
-    public GlobalConfig getGlobalConfig() {
-        return globalConfig;
-    }
-
-    public InjectionConfig getInjectionConfig() {
-        return injectionConfig;
-    }
-
-    public PackageConfig getPackageConfig() {
-        return packageConfig;
-    }
-
-    public DataSourceConfig getDataSourceConfig() {
-        return dataSourceConfig;
-    }
+    
 }

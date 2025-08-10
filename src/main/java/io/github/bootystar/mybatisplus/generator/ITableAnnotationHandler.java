@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator;
 
-import io.github.bootystar.mybatisplus.generator.config.core.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.model.ClassAnnotationAttributes;
 
@@ -35,6 +35,6 @@ public interface ITableAnnotationHandler {
      * @param tableInfo 表信息
      * @return 注解信息
      */
-    List<ClassAnnotationAttributes> handle(TableInfo tableInfo, Entity entity);
+    List<ClassAnnotationAttributes> handle(TableInfo tableInfo, EntityConfig entity);
 
 }

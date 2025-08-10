@@ -70,25 +70,25 @@ class PathInfoHandler {
      * @param strategyConfig 模板配置
      */
     private void setDefaultPathInfo(InjectionConfig injectionConfig, GlobalConfig globalConfig, StrategyConfig strategyConfig) {
-        Entity entity = strategyConfig.entity();
+        EntityConfig entity = strategyConfig.entity();
         if (entity.isGenerate()) {
             putPathInfo(injectionConfig, globalConfig.isKotlin() ? entity.getKotlinTemplate() : entity.getJavaTemplate(), OutputFile.entity, ConstVal.ENTITY);
         }
-        Mapper mapper = strategyConfig.mapper();
+        MapperConfig mapper = strategyConfig.mapper();
         if (mapper.isGenerateMapper()) {
             putPathInfo(injectionConfig, mapper.getMapperTemplatePath(), OutputFile.mapper, ConstVal.MAPPER);
         }
         if (mapper.isGenerateMapperXml()) {
             putPathInfo(injectionConfig, mapper.getMapperXmlTemplatePath(), OutputFile.xml, ConstVal.XML);
         }
-        Service service = strategyConfig.service();
+        ServiceConfig service = strategyConfig.service();
         if (service.isGenerateService()) {
             putPathInfo(injectionConfig, service.getServiceTemplate(), OutputFile.service, ConstVal.SERVICE);
         }
         if (service.isGenerateServiceImpl()) {
             putPathInfo(injectionConfig, service.getServiceImplTemplate(), OutputFile.serviceImpl, ConstVal.SERVICE_IMPL);
         }
-        Controller controller = strategyConfig.controller();
+        ControllerConfig controller = strategyConfig.controller();
         if (controller.isGenerate()) {
             putPathInfo(injectionConfig, controller.getTemplatePath(), OutputFile.controller, ConstVal.CONTROLLER);
         }

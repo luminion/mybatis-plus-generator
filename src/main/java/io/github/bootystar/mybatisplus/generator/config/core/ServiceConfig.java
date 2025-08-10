@@ -17,12 +17,13 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
+import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,11 +36,11 @@ import java.util.Map;
  * @author nieqiurong 2020/10/11.
  * @since 3.5.0
  */
-public class Service implements ITemplate {
+@Slf4j
+public class ServiceConfig implements ITemplate {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(Service.class);
 
-    private Service() {
+    protected ServiceConfig() {
     }
 
     /**
@@ -48,7 +49,7 @@ public class Service implements ITemplate {
      * @since 3.5.6
      */
     @Getter
-    private boolean generateServiceImpl = true;
+    protected boolean generateServiceImpl = true;
 
 
     /**
@@ -57,29 +58,29 @@ public class Service implements ITemplate {
      * @since 3.5.6
      */
     @Getter
-    private boolean generateService = true;
+    protected boolean generateService = true;
 
     /**
      * @since 3.5.6
      */
     @Getter
-    private String serviceTemplate = ConstVal.TEMPLATE_SERVICE;
+    protected String serviceTemplate = ConstVal.TEMPLATE_SERVICE;
 
     /**
      * @since 3.5.6
      */
     @Getter
-    private String serviceImplTemplate = ConstVal.TEMPLATE_SERVICE_IMPL;
+    protected String serviceImplTemplate = ConstVal.TEMPLATE_SERVICE_IMPL;
 
     /**
      * 自定义继承的Service类全称，带包名
      */
-    private String superServiceClass = ConstVal.SUPER_SERVICE_CLASS;
+    protected String superServiceClass = ConstVal.SUPER_SERVICE_CLASS;
 
     /**
      * 自定义继承的ServiceImpl类全称，带包名
      */
-    private String superServiceImplClass = ConstVal.SUPER_SERVICE_IMPL_CLASS;
+    protected String superServiceImplClass = ConstVal.SUPER_SERVICE_IMPL_CLASS;
 
     public String getSuperServiceClass() {
         return superServiceClass;
@@ -94,14 +95,14 @@ public class Service implements ITemplate {
      *
      * @since 3.5.0
      */
-    private ConverterFileName converterServiceFileName = (entityName -> "I" + entityName + ConstVal.SERVICE);
+    protected ConverterFileName converterServiceFileName = (entityName -> "I" + entityName + ConstVal.SERVICE);
 
     /**
      * 转换输出ServiceImpl文件名称
      *
      * @since 3.5.0
      */
-    private ConverterFileName converterServiceImplFileName = (entityName -> entityName + ConstVal.SERVICE_IMPL);
+    protected ConverterFileName converterServiceImplFileName = (entityName -> entityName + ConstVal.SERVICE_IMPL);
 
     /**
      * 是否覆盖已有文件（默认 false）
@@ -109,7 +110,7 @@ public class Service implements ITemplate {
      * @since 3.5.2
      */
     @Getter
-    private boolean fileOverride;
+    protected boolean fileOverride;
 
     public ConverterFileName getConverterServiceFileName() {
         return converterServiceFileName;
@@ -131,12 +132,13 @@ public class Service implements ITemplate {
         return data;
     }
 
-    public static class Builder extends BaseBuilder {
+    public static class Builder implements IConfigBuilder<ServiceConfig> {
 
-        private final Service service = new Service();
+        protected final ServiceConfig service = new ServiceConfig();
 
-        public Builder(StrategyConfig strategyConfig) {
-            super(strategyConfig);
+        @Override
+        public ServiceConfig build() {
+            return service;
         }
 
         /**
@@ -228,18 +230,6 @@ public class Service implements ITemplate {
         }
 
         /**
-         * 覆盖已有文件（该方法后续会删除，替代方法为enableFileOverride方法）
-         *
-         * @see #enableFileOverride()
-         */
-        @Deprecated
-        public Builder fileOverride() {
-            LOGGER.warn("fileOverride方法后续会删除，替代方法为enableFileOverride方法");
-            this.service.fileOverride = true;
-            return this;
-        }
-
-        /**
          * 覆盖已有文件
          */
         public Builder enableFileOverride() {
@@ -303,7 +293,7 @@ public class Service implements ITemplate {
             return this;
         }
 
-            public Service get() {
+            public ServiceConfig get() {
             return this.service;
         }
     }

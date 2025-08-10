@@ -17,12 +17,9 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.PackageConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.*;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.core.Entity;
-import io.github.bootystar.mybatisplus.generator.config.core.Service;
+import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import lombok.Getter;
@@ -137,7 +134,7 @@ public class TableInfo {
     /**
      * 实体
      */
-    private final Entity entity;
+    private final EntityConfig entity;
 
     /**
      * 索引信息
@@ -179,7 +176,7 @@ public class TableInfo {
     public TableInfo(ConfigBuilder configBuilder, String name) {
         this.strategyConfig = configBuilder.getStrategyConfig();
         this.globalConfig = configBuilder.getGlobalConfig();
-        this.entity = configBuilder.getStrategyConfig().entity();
+        this.entity = configBuilder.getEntityConfig();
         this.packageConfig = configBuilder.getPackageConfig();
         this.name = name;
     }
@@ -364,7 +361,7 @@ public class TableInfo {
 
     /**
      * 获取是否生成service接口
-     * @deprecated {@link Service.Builder#disableService()}
+     * @deprecated {@link ServiceConfig.Builder#disableService()}
      */
     @Deprecated
     public boolean isServiceInterface() {

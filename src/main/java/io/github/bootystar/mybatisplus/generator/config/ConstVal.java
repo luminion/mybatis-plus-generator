@@ -29,12 +29,12 @@ public interface ConstVal {
 
     String MODULE_NAME = "ModuleName";
 
-    String ENTITY = "Entity";
-    String SERVICE = "Service";
+    String ENTITY = "EntityConfig";
+    String SERVICE = "ServiceConfig";
     String SERVICE_IMPL = "ServiceImpl";
-    String MAPPER = "Mapper";
+    String MAPPER = "MapperConfig";
     String XML = "Xml";
-    String CONTROLLER = "Controller";
+    String CONTROLLER = "ControllerConfig";
     String PARENT = "Parent";
 
     String JAVA_TMPDIR = "java.io.tmpdir";
