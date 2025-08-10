@@ -56,11 +56,6 @@ public class EntityConfig implements ITemplate {
     @Getter
     protected String javaTemplate = ConstVal.TEMPLATE_ENTITY_JAVA;
 
-    /**
-     * Kotlin模板默认路径
-     */
-    @Getter
-    protected String kotlinTemplate = ConstVal.TEMPLATE_ENTITY_KT;
 
     protected EntityConfig() {
     }
@@ -743,18 +738,6 @@ public class EntityConfig implements ITemplate {
          */
         public Builder javaTemplate(String template) {
             this.entity.javaTemplate = template;
-            return this;
-        }
-
-        /**
-         * 指定模板路径
-         *
-         * @param template 模板路径
-         * @return this
-         * @since 3.5.6
-         */
-        public Builder kotlinTemplatePath(String template) {
-            this.entity.kotlinTemplate = template;
             return this;
         }
 
