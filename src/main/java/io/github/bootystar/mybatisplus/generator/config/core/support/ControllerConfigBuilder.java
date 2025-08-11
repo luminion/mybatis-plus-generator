@@ -3,8 +3,11 @@ package io.github.bootystar.mybatisplus.generator.config.core.support;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
+import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ReflectUtil;
+
+import java.util.Map;
 
 /**
  * @author bootystar
@@ -199,8 +202,18 @@ public class ControllerConfigBuilder implements IConfigBuilder<ControllerConfig>
      *
      * @return this
      */
-    public ControllerConfigBuilder disablePostQuery() {
+    public ControllerConfigBuilder disablePost() {
         this.controller.postQuery = false;
+        return this;
+    }
+  
+    /**
+     * 禁止get请求使用@RequestBody注解
+     *
+     * @return this
+     */
+    public ControllerConfigBuilder disableGetRequestBody() {
+        this.controller.getRequestBody = false;
         return this;
     }
 

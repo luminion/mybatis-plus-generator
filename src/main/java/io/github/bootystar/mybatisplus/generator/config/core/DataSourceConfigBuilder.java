@@ -18,7 +18,7 @@ import java.sql.SQLException;
  */
 public class DataSourceConfigBuilder implements IConfigBuilder<DataSourceConfig> {
 
-    protected final DataSourceConfig dataSourceConfig = new DataSourceConfig()
+    protected final DataSourceConfig dataSourceConfig = new DataSourceConfig();
 
     /**
      * 构造初始化方法

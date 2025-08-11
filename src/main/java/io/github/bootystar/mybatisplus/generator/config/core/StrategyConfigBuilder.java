@@ -2,6 +2,7 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.IOutputFile;
+import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 
@@ -271,6 +272,26 @@ public class StrategyConfigBuilder implements IConfigBuilder<StrategyConfig> {
         this.strategyConfig.methodOverride = false;
         return this;
     }
+    
+    /**
+     * 指定查询的DTO
+     *
+     * @return this
+     */
+    public StrategyConfigBuilder queryDTO(Class<?> queryDTO) {
+        this.strategyConfig.queryDTO = new ClassPayload(queryDTO);
+        return this;
+    }
+    
+    /**
+     * 新增或修改时排除的字段
+     *
+     * @return this
+     */
+    public StrategyConfigBuilder editExcludeColumns(String... editExcludeColumns) {
+        this.strategyConfig.editExcludeColumns.addAll(Arrays.asList(editExcludeColumns));
+        return this;
+    }
 
     /**
      * 启用swagger/springdoc模型实体的注解
@@ -318,13 +339,25 @@ public class StrategyConfigBuilder implements IConfigBuilder<StrategyConfig> {
     }
 
     /**
-     * 额外字段后缀
+     * 额外字段后缀, k->后缀 ,v->sql运算符
      *
-     * @param extraFieldSuffixMap 额外字段后缀, Map<String, String>, 2个泛型参数分别为后缀,sql运算符
+     * @param extraFieldSuffixMap 额外字段后缀
      * @return this
      */
-    public StrategyConfigBuilder extraFieldSuffixMap(Map<String, String> extraFieldSuffixMap) {
-        this.strategyConfig.extraFieldSuffixMap = extraFieldSuffixMap;
+    public StrategyConfigBuilder clearExtraFieldSuffix() {
+        this.strategyConfig.extraFieldSuffixMap.clear();
+        return this;
+    }
+    
+    /**
+     * 额外字段后缀
+     *
+     * @param suffix     后缀
+     * @param operator   sql运算符
+     * @return this
+     */
+    public StrategyConfigBuilder extraFieldSuffix(String suffix, String operator) {
+        this.strategyConfig.extraFieldSuffixMap.put(suffix, operator);
         return this;
     }
 
