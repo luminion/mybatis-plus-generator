@@ -174,7 +174,7 @@ public class MapperConfig implements ITemplate {
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
-        Map<String, Object> data = new HashMap<>();
+        Map<String, Object> data = ITemplate.super.renderData(tableInfo);
         boolean enableCache = this.cache != null;
         data.put("enableCache", enableCache);
         data.put("mapperAnnotation", mapperAnnotationClass != null);

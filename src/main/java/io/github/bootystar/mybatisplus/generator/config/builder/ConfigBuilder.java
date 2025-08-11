@@ -125,14 +125,31 @@ public class ConfigBuilder {
             DataSourceConfig dataSourceConfig, 
             StrategyConfig strategyConfig, 
             GlobalConfig globalConfig, 
-            InjectionConfig injectionConfig
+            InjectionConfig injectionConfig,
+            EntityConfig entityConfig,
+            MapperConfig mapperConfig,
+            ServiceConfig serviceConfig,
+            ControllerConfig controllerConfig
     ) {
         this.dataSourceConfig = dataSourceConfig;
-        this.strategyConfig = Optional.ofNullable(strategyConfig).orElseGet(GeneratorBuilder::strategyConfig);
-        this.globalConfig = Optional.ofNullable(globalConfig).orElseGet(GeneratorBuilder::globalConfig);
-        this.packageConfig = Optional.ofNullable(packageConfig).orElseGet(GeneratorBuilder::packageConfig);
-        this.injectionConfig = Optional.ofNullable(injectionConfig).orElseGet(GeneratorBuilder::injectionConfig);
-        this.pathInfo.putAll(new PathInfoHandler(this.injectionConfig, this.globalConfig, this.strategyConfig, this.packageConfig).getPathInfo());
+        this.strategyConfig = Optional.ofNullable(strategyConfig)
+                .orElseGet(() -> new StrategyConfig.Builder().build());
+        this.globalConfig = Optional.ofNullable(globalConfig)
+                .orElseGet(() -> new GlobalConfig.Builder().build());
+        this.packageConfig = Optional.ofNullable(packageConfig)
+                .orElseGet(() -> new PackageConfig.Builder().build());
+        this.injectionConfig = Optional.ofNullable(injectionConfig)
+                .orElseGet(() -> new InjectionConfig.Builder().build());
+        this.entityConfig = Optional.ofNullable(entityConfig)
+                .orElseGet(() -> new EntityConfig.Builder().build());
+        this.mapperConfig = Optional.ofNullable(mapperConfig)
+                .orElseGet(() -> new MapperConfig.Builder().build());
+        this.serviceConfig = Optional.ofNullable(serviceConfig)
+                .orElseGet(() -> new ServiceConfig.Builder().build());
+        this.controllerConfig = Optional.ofNullable(controllerConfig)
+                .orElseGet(() -> new ControllerConfig.Builder().build());
+        PathInfoHandler pathInfoHandler = new PathInfoHandler(this.injectionConfig, this.globalConfig, this.strategyConfig, this.packageConfig);
+        this.pathInfo.putAll(pathInfoHandler.getPathInfo());
         Class<? extends IDatabaseQuery> databaseQueryClass = dataSourceConfig.getDatabaseQueryClass();
         try {
             Constructor<? extends IDatabaseQuery> declaredConstructor = databaseQueryClass.getDeclaredConstructor(this.getClass());

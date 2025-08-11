@@ -15,6 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.core;
 
+import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.builder.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
  * @since 2016-12-07
  */
 @Slf4j
-public class InjectionConfig {
+public class InjectionConfig implements ITemplate {
 
 
     /**
