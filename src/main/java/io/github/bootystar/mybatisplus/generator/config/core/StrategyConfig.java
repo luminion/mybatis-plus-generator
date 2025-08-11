@@ -160,6 +160,11 @@ public class StrategyConfig {
      * 生成导出方法
      */
     protected boolean generateExport = true;
+    
+    /**
+     * 是否生成重写父类方法
+     */
+    protected boolean methodOverride = true;
 
     /**
      * swagger实体是否添加注解

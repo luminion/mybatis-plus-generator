@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.IDbQuery;
 import io.github.bootystar.mybatisplus.generator.config.ITypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.querys.DbQueryDecorator;

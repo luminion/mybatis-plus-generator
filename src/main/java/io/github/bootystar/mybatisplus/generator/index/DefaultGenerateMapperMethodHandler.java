@@ -18,7 +18,7 @@ package io.github.bootystar.mybatisplus.generator.index;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
