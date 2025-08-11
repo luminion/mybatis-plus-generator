@@ -48,12 +48,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Getter
 public class EntityConfig implements ITemplate {
-    /**
-     * Java模板默认路径
-     *
-     * @since 3.5.6
-     */
-    protected String javaTemplate = ConstVal.TEMPLATE_ENTITY_JAVA;
     
     protected EntityConfig() {
     }
@@ -67,8 +61,6 @@ public class EntityConfig implements ITemplate {
      * 自定义继承的Entity类全称，带包名
      */
     protected String superClass;
-
-
 
     /**
      * 实体是否生成 serialVersionUID
@@ -151,6 +143,10 @@ public class EntityConfig implements ITemplate {
      * <p>未指定按照 naming 执行</p>
      */
     protected NamingStrategy columnNaming = null;
+    public NamingStrategy getColumnNaming() {
+        // 未指定以 naming 策略为准
+        return Optional.ofNullable(columnNaming).orElse(naming);
+    }
 
     /**
      * 自定义基础的Entity类，公共字段
@@ -195,7 +191,6 @@ public class EntityConfig implements ITemplate {
      * @since 3.5.2
      */
     protected boolean fileOverride;
-
 
     /**
      * 是否生成
@@ -265,6 +260,13 @@ public class EntityConfig implements ITemplate {
      */
     protected Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction;
 
+    /**
+     * Java模板默认路径
+     *
+     * @since 3.5.6
+     */
+    protected String javaTemplate = ConstVal.TEMPLATE_ENTITY_JAVA;
+    
 
     /**
      * <p>
@@ -306,11 +308,6 @@ public class EntityConfig implements ITemplate {
             }
             return StringUtils.camelToUnderline(field.getName());
         }).collect(Collectors.toSet()));
-    }
-
-    public NamingStrategy getColumnNaming() {
-        // 未指定以 naming 策略为准
-        return Optional.ofNullable(columnNaming).orElse(naming);
     }
 
     /**

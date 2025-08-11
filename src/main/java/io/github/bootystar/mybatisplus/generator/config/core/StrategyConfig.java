@@ -18,6 +18,10 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.IOutputFile;
+import io.github.bootystar.mybatisplus.generator.config.core.support.ControllerConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.MapperConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.ServiceConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.rules.ExtraFieldStrategy;
@@ -42,13 +46,11 @@ public class StrategyConfig {
     /**
      * 是否大写命名（默认 false）
      */
-    @Getter
     protected boolean isCapitalMode;
-
+    
     /**
      * 是否跳过视图（默认 false）
      */
-    @Getter
     protected boolean skipView;
 
     /**
@@ -56,7 +58,6 @@ public class StrategyConfig {
      * example: addTablePrefix("t_")
      * result: t_simple -> Simple
      */
-    @Getter
     protected final Set<String> tablePrefix = new HashSet<>();
 
     /**
@@ -64,7 +65,6 @@ public class StrategyConfig {
      * example: addTableSuffix("_0")
      * result: t_simple_0 -> Simple
      */
-    @Getter
     protected final Set<String> tableSuffix = new HashSet<>();
 
     /**
@@ -72,7 +72,6 @@ public class StrategyConfig {
      * example: addFieldPrefix("is_")
      * result: is_deleted -> deleted
      */
-    @Getter
     protected final Set<String> fieldPrefix = new HashSet<>();
 
     /**
@@ -80,21 +79,18 @@ public class StrategyConfig {
      * example: addFieldSuffix("_flag")
      * result: deleted_flag -> deleted
      */
-    @Getter
     protected final Set<String> fieldSuffix = new HashSet<>();
 
     /**
      * 需要包含的表名，允许正则表达式（与exclude二选一配置）<br/>
      * 当{@link #enableSqlFilter}为true时，正则表达式无效.
      */
-    @Getter
     protected final Set<String> include = new HashSet<>();
 
     /**
      * 需要排除的表名，允许正则表达式<br/>
      * 当{@link #enableSqlFilter}为true时，正则表达式无效.
      */
-    @Getter
     protected final Set<String> exclude = new HashSet<>();
 
     /**
@@ -102,13 +98,11 @@ public class StrategyConfig {
      *
      * @since 3.3.1
      */
-    @Getter
     protected boolean enableSqlFilter = true;
 
     /**
      * 启用 schema 默认 false
      */
-    @Getter
     protected boolean enableSchema;
 
     /**
@@ -116,7 +110,6 @@ public class StrategyConfig {
      *
      * @since 3.3.0
      */
-    @Getter
     protected LikeTable likeTable;
 
     /**
@@ -127,10 +120,8 @@ public class StrategyConfig {
      *
      * @since 3.3.0
      */
-    @Getter
     protected LikeTable notLikeTable;
 
-    @Getter
     protected IOutputFile outputFile = (path, ot) -> new File(path);
 
 
@@ -276,330 +267,5 @@ public class StrategyConfig {
     protected boolean tableNameMatches(String matchTableName, String dbTableName) {
         return matchTableName.equalsIgnoreCase(dbTableName) || StringUtils.matches(matchTableName, dbTableName);
     }
-
-    /**
-     * 策略配置构建者
-     *
-     * @author nieqiurong 2020/10/11.
-     * @since 3.5.0
-     */
-    public static class Builder implements IConfigBuilder<StrategyConfig> {
-
-        protected final StrategyConfig strategyConfig = new StrategyConfig();
-
-        @Override
-        public StrategyConfig build() {
-            this.strategyConfig.validate();
-            return strategyConfig;
-        }
-
-        /**
-         * 开启大写命名
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableCapitalMode() {
-            this.strategyConfig.isCapitalMode = true;
-            return this;
-        }
-
-        /**
-         * 开启跳过视图
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableSkipView() {
-            this.strategyConfig.skipView = true;
-            return this;
-        }
-
-        /**
-         * 禁用sql过滤
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder disableSqlFilter() {
-            this.strategyConfig.enableSqlFilter = false;
-            return this;
-        }
-
-        /**
-         * 启用 schema
-         *
-         * @return this
-         * @since 3.5.1
-         */
-        public Builder enableSchema() {
-            this.strategyConfig.enableSchema = true;
-            return this;
-        }
-
-        /**
-         * 增加过滤表前缀
-         *
-         * @param tablePrefix 过滤表前缀
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder addTablePrefix(String... tablePrefix) {
-            return addTablePrefix(Arrays.asList(tablePrefix));
-        }
-
-        public Builder addTablePrefix(List<String> tablePrefixList) {
-            this.strategyConfig.tablePrefix.addAll(tablePrefixList);
-            return this;
-        }
-
-        /**
-         * 增加过滤表后缀
-         *
-         * @param tableSuffix 过滤表后缀
-         * @return this
-         * @since 3.5.1
-         */
-        public Builder addTableSuffix(String... tableSuffix) {
-            return addTableSuffix(Arrays.asList(tableSuffix));
-        }
-
-        public Builder addTableSuffix(List<String> tableSuffixList) {
-            this.strategyConfig.tableSuffix.addAll(tableSuffixList);
-            return this;
-        }
-
-        /**
-         * 增加过滤字段前缀
-         *
-         * @param fieldPrefix 过滤字段前缀
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder addFieldPrefix(String... fieldPrefix) {
-            return addFieldPrefix(Arrays.asList(fieldPrefix));
-        }
-
-        public Builder addFieldPrefix(List<String> fieldPrefix) {
-            this.strategyConfig.fieldPrefix.addAll(fieldPrefix);
-            return this;
-        }
-
-        /**
-         * 增加过滤字段后缀
-         *
-         * @param fieldSuffix 过滤字段后缀
-         * @return this
-         * @since 3.5.1
-         */
-        public Builder addFieldSuffix(String... fieldSuffix) {
-            return addFieldSuffix(Arrays.asList(fieldSuffix));
-        }
-
-        public Builder addFieldSuffix(List<String> fieldSuffixList) {
-            this.strategyConfig.fieldSuffix.addAll(fieldSuffixList);
-            return this;
-        }
-
-        /**
-         * 增加包含的表名
-         *
-         * @param include 包含表
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder addInclude(String... include) {
-            this.strategyConfig.include.addAll(Arrays.asList(include));
-            return this;
-        }
-
-        public Builder addInclude(List<String> includes) {
-            this.strategyConfig.include.addAll(includes);
-            return this;
-        }
-
-        public Builder addInclude(String include) {
-            this.strategyConfig.include.addAll(Arrays.asList(include.split(",")));
-            return this;
-        }
-
-        /**
-         * 增加排除表
-         *
-         * @param exclude 排除表
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder addExclude(String... exclude) {
-            return addExclude(Arrays.asList(exclude));
-        }
-
-        public Builder addExclude(List<String> excludeList) {
-            this.strategyConfig.exclude.addAll(excludeList);
-            return this;
-        }
-
-        /**
-         * 包含表名
-         *
-         * @return this
-         */
-        public Builder likeTable(LikeTable likeTable) {
-            this.strategyConfig.likeTable = likeTable;
-            return this;
-        }
-
-        /**
-         * 不包含表名
-         *
-         * @return this
-         */
-        public Builder notLikeTable(LikeTable notLikeTable) {
-            this.strategyConfig.notLikeTable = notLikeTable;
-            return this;
-        }
-
-        /**
-         * 输出文件处理
-         *
-         * @return this
-         */
-        public Builder outputFile(IOutputFile outputFile) {
-            this.strategyConfig.outputFile = outputFile;
-            return this;
-        }
-
-        // =============自定义项==============
-
-        /**
-         * 不生成新增方法
-         *
-         * @return this
-         */
-        public Builder disableInsert() {
-            this.strategyConfig.generateInsert = false;
-            return this;
-        }
-
-        /**
-         * 不生成更新方法
-         *
-         * @return this
-         */
-        public Builder disableUpdate() {
-            this.strategyConfig.generateUpdate = false;
-            return this;
-        }
-
-        /**
-         * 不生成删除方法
-         *
-         * @return this
-         */
-        public Builder disableDelete() {
-            this.strategyConfig.generateDelete = false;
-            return this;
-        }
-
-        /**
-         * 不生成查询方法
-         *
-         * @return this
-         */
-        public Builder disableSelect() {
-            this.strategyConfig.generateSelect = false;
-            return this;
-        }
-
-        /**
-         * 不生成导入方法
-         *
-         * @return this
-         */
-        public Builder disableImport() {
-            this.strategyConfig.generateImport = false;
-            return this;
-        }
-
-        /**
-         * 不生成导出方法
-         *
-         * @return this
-         */
-        public Builder disableExport() {
-            this.strategyConfig.generateExport = false;
-            return this;
-        }
-
-        /**
-         * 启用swagger/springdoc模型实体的注解
-         * <p>
-         * 已知swagger注解在同名时有冲突, 禁用后请确保表注释不为空且不同名
-         *
-         * @return this
-         */
-        public Builder enableSwaggerModelWithAnnotation() {
-            this.strategyConfig.swaggerModelWithAnnotation = true;
-            return this;
-        }
-
-        /**
-         * 启用swagger/springdoc文档额外uuid标识
-         * <p>
-         * 已知swagger注解在同名时有冲突, 禁用后请确保表注释不为空且不同名
-         *
-         * @return this
-         */
-        public Builder enableSwaggerAnnotationWithUUID() {
-            this.strategyConfig.swaggerAnnotationWithUUID = true;
-            return this;
-        }
-
-        /**
-         * 添加额外类链接注释
-         *
-         * @return this
-         */
-        public Builder disableExtraClassLinkComment() {
-            this.strategyConfig.extraClassLinkComment = false;
-            return this;
-        }
-
-        /**
-         * 使用EasyExcel
-         * <p>默认使用FastExcel</p>
-         *
-         * @return this
-         */
-        public Builder enableEasyExcel() {
-            this.strategyConfig.excelBasePackage = "com.alibaba.excel";
-            return this;
-        }
-
-        /**
-         * 额外字段后缀
-         *
-         * @param extraFieldSuffixMap 额外字段后缀, Map<String, String>, 2个泛型参数分别为后缀,sql运算符
-         * @return this
-         */
-        public Builder extraFieldSuffixMap(Map<String, String> extraFieldSuffixMap) {
-            this.strategyConfig.extraFieldSuffixMap = extraFieldSuffixMap;
-            return this;
-        }
-
-        /**
-         * 额外字段策略
-         *
-         * @param extraFieldStrategy 额外字段策略, BiFunction<String, TableField, Boolean>, 3个泛型参数分别为sql运算符,表字段信息,是否生成
-         * @return this
-         */
-        public Builder extraFieldStrategy(BiFunction<String, TableField, Boolean> extraFieldStrategy) {
-            this.strategyConfig.extraFieldStrategy = extraFieldStrategy;
-            return this;
-        }
-        
-
-
-
-    }
+    
 }

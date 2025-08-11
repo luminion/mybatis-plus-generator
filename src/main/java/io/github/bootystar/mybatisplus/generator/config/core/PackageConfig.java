@@ -35,6 +35,7 @@ import java.util.Map;
  * @author YangHu, tangguo, hubin
  * @since 2016-08-30
  */
+@Getter
 public class PackageConfig {
 
     protected PackageConfig() {
@@ -48,62 +49,62 @@ public class PackageConfig {
     /**
      * 父包模块名
      */
-    @Getter
     protected String moduleName = "";
 
     /**
      * Entity包名
      */
-    @Getter
     protected String entity = "entity";
 
     /**
      * Mapper包名
      */
-    @Getter
     protected String mapper = "mapper";
 
     /**
      * MapperConfig XML包名
      */
-    @Getter
     protected String xml = "mapper.xml";
 
     /**
      * Service包名
      */
-    @Getter
     protected String service = "service";
 
     /**
      * ServiceConfig Impl包名
      */
-    @Getter
     protected String serviceImpl = "service.impl";
 
     /**
      * Controller包名
      */
-    @Getter
     protected String controller = "controller";
+
+    /**
+     * DTO包名
+     */
+    protected String dtoInsert = "dto";
+    
+    /**
+     * DTO包名
+     */
+    protected String dtoUpdate = "dto";
+    
+    /**
+     * DTO包名
+     */
+    protected String dtoSelect = "dto";
+    
+    /**
+     * VO包名
+     */
+    protected String vo = "vo";
 
     /**
      * 路径配置信息
      */
-    @Getter
     protected Map<OutputFile, String> pathInfo;
-    
-    @Getter
-    protected String dtoInsert = "dto";
-    
-    @Getter
-    protected String dtoUpdate = "dto";
-    
-    @Getter
-    protected String dtoSelect = "dto";
-    
-    @Getter
-    protected String vo = "vo";
 
     /**
      * 包配置信息
@@ -131,19 +132,6 @@ public class PackageConfig {
     public String joinPackage(String subPackage) {
         String parent = getParent();
         return StringUtils.isBlank(parent) ? subPackage : (parent + StringPool.DOT + subPackage);
-    }
-
-    /**
-     * 获取包配置信息
-     *
-     * @return 包配置信息
-     * @see #getPackageInfo(InjectionConfig)
-     * @since 3.5.0
-     * @deprecated 3.5.10
-     */
-    @Deprecated
-    public Map<String, String> getPackageInfo() {
-        return getPackageInfo((InjectionConfig) null);
     }
 
     /**
@@ -188,17 +176,6 @@ public class PackageConfig {
     /**
      * 获取包配置信息
      *
-     * @param module 模块
-     * @return 配置信息
-     * @see #getPackageInfo(InjectionConfig, String)
-     * @since 3.5.0
-     */
-    @Deprecated
-    public String getPackageInfo(String module) {
-        return getPackageInfo().get(module);
-    }
-
-    /**
      * @since 3.5.10
      * @param injectionConfig 注入配置
      * @param module 模块
@@ -207,150 +184,5 @@ public class PackageConfig {
     public String getPackageInfo(InjectionConfig injectionConfig, String module) {
         return getPackageInfo(injectionConfig).get(module);
     }
-
-    /**
-     * 构建者
-     *
-     * @author nieqiurong
-     * @since 3.5.0
-     */
-    public static class Builder implements IConfigBuilder<PackageConfig> {
-
-        protected final PackageConfig packageConfig;
-
-        public Builder() {
-            this.packageConfig = new PackageConfig();
-        }
-
-        public Builder(String parent, String moduleName) {
-            this();
-            this.packageConfig.parent = parent;
-            this.packageConfig.moduleName = moduleName;
-        }
-
-        /**
-         * 指定父包名
-         *
-         * @param parent 父包名
-         * @return this
-         */
-        public Builder parent(String parent) {
-            this.packageConfig.parent = parent;
-            return this;
-        }
-
-        /**
-         * 指定模块名称
-         *
-         * @param moduleName 模块名
-         * @return this
-         */
-        public Builder moduleName(String moduleName) {
-            this.packageConfig.moduleName = moduleName;
-            return this;
-        }
-
-        /**
-         * 指定实体包名
-         *
-         * @param entity 实体包名
-         * @return this
-         */
-        public Builder entity(String entity) {
-            this.packageConfig.entity = entity;
-            return this;
-        }
-
-        /**
-         * 指定service接口包名
-         *
-         * @param service service包名
-         * @return this
-         */
-        public Builder service(String service) {
-            this.packageConfig.service = service;
-            return this;
-        }
-
-        /**
-         * service实现类包名
-         *
-         * @param serviceImpl service实现类包名
-         * @return this
-         */
-        public Builder serviceImpl(String serviceImpl) {
-            this.packageConfig.serviceImpl = serviceImpl;
-            return this;
-        }
-
-        /**
-         * 指定mapper接口包名
-         *
-         * @param mapper mapper包名
-         * @return this
-         */
-        public Builder mapper(String mapper) {
-            this.packageConfig.mapper = mapper;
-            return this;
-        }
-
-        /**
-         * 指定xml包名
-         *
-         * @param xml xml包名
-         * @return this
-         */
-        public Builder xml(String xml) {
-            this.packageConfig.xml = xml;
-            return this;
-        }
-
-        /**
-         * 指定控制器包名
-         *
-         * @param controller 控制器包名
-         * @return this
-         */
-        public Builder controller(String controller) {
-            this.packageConfig.controller = controller;
-            return this;
-        }
-
-        /**
-         * 路径配置信息
-         *
-         * @param pathInfo 路径配置信息
-         * @return this
-         */
-        public Builder pathInfo(Map<OutputFile, String> pathInfo) {
-            this.packageConfig.pathInfo = pathInfo;
-            return this;
-        }
-
-        /**
-         * 连接父子包名
-         *
-         * @param subPackage 子包名
-         * @return 连接后的包名
-         */
-            public String joinPackage(String subPackage) {
-            return this.packageConfig.joinPackage(subPackage);
-        }
-
-        /**
-         * 构建包配置对象
-         * <p>当指定{@link #parent(String)} 与 {@link #moduleName(String)}时,其他模块名字会加上这两个作为前缀</p>
-         * <p>
-         * 例如:
-         * <p>当设置 {@link #parent(String)},那么entity的配置为 {@link #getParent()}.{@link #getEntity()}</p>
-         * <p>当设置 {@link #parent(String)}与{@link #moduleName(String)},那么entity的配置为 {@link #getParent()}.{@link #getModuleName()}.{@link #getEntity()} </p>
-         * </p>
-         *
-         * @return 包配置对象
-         */
-        @Override
-        public PackageConfig build() {
-            return this.packageConfig;
-        }
-    }
+    
 }
