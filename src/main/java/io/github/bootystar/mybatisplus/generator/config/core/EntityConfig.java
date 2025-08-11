@@ -363,7 +363,7 @@ public class EntityConfig implements ITemplate {
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
-        Map<String, Object> data = new HashMap<>();
+        Map<String, Object> data = ITemplate.super.renderData(tableInfo);
         data.put("idType", idType == null ? null : idType.toString());
         data.put("logicDeleteFieldName", this.logicDeleteColumnName);
         data.put("versionFieldName", this.versionColumnName);

@@ -15,6 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.core;
 
+import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 import lombok.Getter;
@@ -34,7 +35,7 @@ import java.util.function.Supplier;
  */
 @Slf4j
 @Getter
-public class GlobalConfig {
+public class GlobalConfig implements ITemplate {
 
     protected GlobalConfig() {
     }

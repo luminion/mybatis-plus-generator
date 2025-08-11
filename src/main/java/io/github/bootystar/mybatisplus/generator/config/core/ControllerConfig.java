@@ -26,6 +26,7 @@ import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import io.github.bootystar.mybatisplus.generator.util.ReflectUtil;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -85,6 +86,7 @@ public class ControllerConfig implements ITemplate {
      *
      * @since 3.5.6
      */
+    @Getter
     protected boolean generate = true;
     
     // =============自定义项==============
