@@ -17,6 +17,10 @@ package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import io.github.bootystar.mybatisplus.generator.config.*;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
+import io.github.bootystar.mybatisplus.generator.config.core.support.ControllerConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.MapperConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.ServiceConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
 import lombok.Getter;

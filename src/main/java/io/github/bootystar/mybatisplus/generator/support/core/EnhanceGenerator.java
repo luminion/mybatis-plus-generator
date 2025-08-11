@@ -2,6 +2,10 @@ package io.github.bootystar.mybatisplus.generator.support.core;
 
 
 import io.github.bootystar.mybatisplus.generator.config.core.*;
+import io.github.bootystar.mybatisplus.generator.config.core.support.ControllerConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.MapperConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.ServiceConfig;
 
 import java.util.function.Consumer;
 

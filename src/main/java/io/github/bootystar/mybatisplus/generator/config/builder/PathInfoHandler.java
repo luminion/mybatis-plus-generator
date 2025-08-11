@@ -20,6 +20,10 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.*;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
+import io.github.bootystar.mybatisplus.generator.config.core.support.ControllerConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.MapperConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.ServiceConfig;
 import lombok.Getter;
 
 import java.io.File;

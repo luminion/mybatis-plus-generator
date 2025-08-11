@@ -22,7 +22,7 @@ import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper;
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
