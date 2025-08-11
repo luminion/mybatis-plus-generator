@@ -37,8 +37,8 @@ import java.util.stream.Collectors;
  * @since 2016-12-07
  */
 @Slf4j
+@Getter
 public class InjectionConfig implements ITemplate {
-
 
     /**
      * 输出文件之前消费者
@@ -49,20 +49,15 @@ public class InjectionConfig implements ITemplate {
      * 自定义配置 Map 对象
      * -- GETTER --
      *  获取自定义配置 Map 对象
-
      */
-    @Getter
     protected Map<String, Object> customMap = new HashMap<>();
 
     /**
      * 自定义模板文件列表
-     *
-     *
      * -- GETTER --
      *  获取自定义模板文件列表
-     @since 3.5.3
+     *  @since 3.5.3
      */
-    @Getter
     protected final List<CustomFile> customFiles = new ArrayList<>();
 
     /**
@@ -76,74 +71,6 @@ public class InjectionConfig implements ITemplate {
         }
         if (null != beforeOutputFileBiConsumer) {
             beforeOutputFileBiConsumer.accept(tableInfo, objectMap);
-        }
-    }
-
-    /**
-     * 构建者
-     */
-    public static class Builder implements IConfigBuilder<InjectionConfig> {
-
-        protected final InjectionConfig injectionConfig;
-
-        public Builder() {
-            this.injectionConfig = new InjectionConfig();
-        }
-
-        /**
-         * 输出文件之前消费者
-         *
-         * @param biConsumer 消费者
-         * @return this
-         */
-        public Builder beforeOutputFile(BiConsumer<TableInfo, Map<String, Object>> biConsumer) {
-            this.injectionConfig.beforeOutputFileBiConsumer = biConsumer;
-            return this;
-        }
-
-        /**
-         * 自定义配置 Map 对象
-         *
-         * @param customMap Map 对象
-         * @return this
-         */
-        public Builder customMap(Map<String, Object> customMap) {
-            this.injectionConfig.customMap = customMap;
-            return this;
-        }
-
-        /**
-         * 自定义配置模板文件
-         *
-         * @param customFile key为文件名称，value为文件路径
-         * @return this
-         */
-        public Builder customFile(Map<String, String> customFile) {
-            return customFile(customFile.entrySet().stream()
-                .map(e -> new CustomFile.Builder().fileName(e.getKey()).templatePath(e.getValue()).build())
-                .collect(Collectors.toList()));
-        }
-
-        public Builder customFile(CustomFile customFile) {
-            this.injectionConfig.customFiles.add(customFile);
-            return this;
-        }
-
-        public Builder customFile(List<CustomFile> customFiles) {
-            this.injectionConfig.customFiles.addAll(customFiles);
-            return this;
-        }
-
-        public Builder customFile(Consumer<CustomFile.Builder> consumer) {
-            CustomFile.Builder builder = new CustomFile.Builder();
-            consumer.accept(builder);
-            this.injectionConfig.customFiles.add(builder.build());
-            return this;
-        }
-
-        @Override
-        public InjectionConfig build() {
-            return this.injectionConfig;
         }
     }
 

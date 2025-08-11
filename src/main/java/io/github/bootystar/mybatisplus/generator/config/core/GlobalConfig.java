@@ -40,45 +40,39 @@ public class GlobalConfig implements ITemplate {
     protected GlobalConfig() {
     }
 
-
     /**
-     * 生成文件的输出目录【 windows:D://  linux or mac:/tmp 】
+     * 生成文件的输出目录【 windows:C://tmp  linux or mac:/tmp 】
      */
-    @Getter
-    protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "D://" : "/tmp";
+    protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "C://tmp" : "/tmp";
 
     /**
      * 是否打开输出目录
      */
-    @Getter
     protected boolean open = true;
 
     /**
      * 作者
      */
-    @Getter
-    protected String author = "baomidou";
+    protected String author = "bootystar";
 
     /**
      * 开启 Kotlin 模式（默认 false）
      */
-    @Getter
     protected boolean kotlin;
 
     /**
      * 开启 swagger 模式（默认 false 与 springdoc 不可同时使用）
      */
     protected boolean swagger;
+
     /**
      * 开启 springdoc 模式（默认 false 与 swagger 不可同时使用）
      */
-    @Getter
     protected boolean springdoc;
 
     /**
      * 时间类型对应策略
      */
-    @Getter
     protected DateType dateType = DateType.TIME_PACK;
 
     /**
@@ -88,113 +82,19 @@ public class GlobalConfig implements ITemplate {
      */
     protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
+    /**
+     * 是否启用swagger
+     */
     public boolean isSwagger() {
         // springdoc 设置优先于 swagger
         return !springdoc && swagger;
     }
 
+    /**
+     * 获取注释日期
+     */
     public String getCommentDate() {
         return commentDate.get();
     }
 
-
-    /**
-     * 全局配置构建
-     *
-     * @author nieqiurong 2020/10/11.
-     * @since 3.5.0
-     */
-    public static class Builder implements IConfigBuilder<GlobalConfig> {
-
-        protected final GlobalConfig globalConfig;
-
-        public Builder() {
-            this.globalConfig = new GlobalConfig();
-        }
-
-        /**
-         * 禁止打开输出目录
-         */
-        public Builder disableOpenDir() {
-            this.globalConfig.open = false;
-            return this;
-        }
-
-        /**
-         * 输出目录
-         */
-        public Builder outputDir(String outputDir) {
-            this.globalConfig.outputDir = outputDir;
-            return this;
-        }
-
-        /**
-         * 作者
-         */
-        public Builder author(String author) {
-            this.globalConfig.author = author;
-            return this;
-        }
-
-        /**
-         * 开启 kotlin 模式
-         */
-        public Builder enableKotlin() {
-            this.globalConfig.kotlin = true;
-            return this;
-        }
-
-        /**
-         * 开启 swagger 模式
-         */
-        public Builder enableSwagger() {
-            this.globalConfig.swagger = true;
-            return this;
-        }
-
-        /**
-         * 开启 springdoc 模式
-         */
-        public Builder enableSpringdoc() {
-            this.globalConfig.springdoc = true;
-            return this;
-        }
-
-        /**
-         * 时间类型对应策略
-         */
-        public Builder dateType(DateType dateType) {
-            this.globalConfig.dateType = dateType;
-            return this;
-        }
-
-        /**
-         * 注释日期获取处理
-         * example: () -> LocalDateTime.now().format(DateTimeFormatter.ISO_DATE)
-         *
-         * @param commentDate 获取注释日期
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder commentDate(Supplier<String> commentDate) {
-            this.globalConfig.commentDate = commentDate;
-            return this;
-        }
-
-        /**
-         * 指定注释日期格式化
-         *
-         * @param pattern 格式
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder commentDate(String pattern) {
-            return commentDate(() -> new SimpleDateFormat(pattern).format(new Date()));
-        }
-
-        @Override
-        public GlobalConfig build() {
-            return this.globalConfig;
-        }
-    }
 }

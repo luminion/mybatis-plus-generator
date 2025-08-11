@@ -9,6 +9,7 @@ import java.util.Set;
 /**
  * @author bootystar
  */
+@Deprecated
 public class ModelConfig {
 //
 //    /**
