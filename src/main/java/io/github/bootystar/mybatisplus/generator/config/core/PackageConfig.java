@@ -18,7 +18,6 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.builder.CustomFile;
 import lombok.Getter;
@@ -82,19 +81,19 @@ public class PackageConfig {
     protected String controller = "controller";
 
     /**
-     * DTO包名
+     * 查询DTO包名
      */
-    protected String dtoInsert = "dto";
+    protected String queryDTO = "dto";
     
     /**
-     * DTO包名
+     * 新增DTO包名
      */
-    protected String dtoUpdate = "dto";
+    protected String insertDTO = "dto";
     
     /**
-     * DTO包名
+     * 修改DTO包名
      */
-    protected String dtoSelect = "dto";
+    protected String updateDTO = "dto";
     
     /**
      * VO包名
@@ -151,9 +150,9 @@ public class PackageConfig {
             packageInfo.put(ConstVal.SERVICE_IMPL, this.joinPackage(this.getServiceImpl()));
             packageInfo.put(ConstVal.CONTROLLER, this.joinPackage(this.getController()));
             packageInfo.put(ConstVal.PARENT, this.getParent());
-            packageInfo.put(ConstVal.DTO_INSERT, this.joinPackage(this.getDtoInsert()));
-            packageInfo.put(ConstVal.DTO_UPDATE, this.joinPackage(this.getDtoUpdate()));
-            packageInfo.put(ConstVal.DTO_SELECT, this.joinPackage(this.getDtoSelect()));
+            packageInfo.put(ConstVal.DTO_INSERT, this.joinPackage(this.getInsertDTO()));
+            packageInfo.put(ConstVal.DTO_UPDATE, this.joinPackage(this.getUpdateDTO()));
+            packageInfo.put(ConstVal.DTO_SELECT, this.joinPackage(this.getQueryDTO()));
             packageInfo.put(ConstVal.VO, this.joinPackage(this.getVo()));
             if (injectionConfig != null) {
                 List<CustomFile> customFiles = injectionConfig.getCustomFiles();

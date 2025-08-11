@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
+import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.MethodPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
@@ -147,6 +148,11 @@ public class ControllerConfig implements ITemplate {
      * 复杂查询使用post请求
      */
     protected boolean postQuery = true;
+    
+    /**
+     * get请求是否使用@RequestBody注解
+     */
+    protected boolean getRequestBody = true;
 
     /**
      * 模板路径

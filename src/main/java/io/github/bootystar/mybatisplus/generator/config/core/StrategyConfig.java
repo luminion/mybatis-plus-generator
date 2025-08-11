@@ -22,6 +22,7 @@ import io.github.bootystar.mybatisplus.generator.config.core.support.ControllerC
 import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.support.MapperConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.support.ServiceConfig;
+import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.rules.ExtraFieldStrategy;
@@ -158,6 +159,16 @@ public class StrategyConfig {
     protected boolean methodOverride = true;
 
     /**
+     * 指定查询的DTO
+     */
+    protected ClassPayload queryDTO;
+
+    /**
+     * 新增或修改时排除的字段
+     */
+    protected Collection<String> editExcludeColumns;
+
+    /**
      * swagger实体是否添加注解
      */
     protected boolean swaggerModelWithAnnotation;
@@ -180,7 +191,7 @@ public class StrategyConfig {
     /**
      * 额外字段后缀
      */
-    protected Map<String, String> extraFieldSuffixMap;
+    protected Map<String, String> extraFieldSuffixMap = new LinkedHashMap<>();
 
     /**
      * 额外字段策略

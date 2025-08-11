@@ -69,28 +69,6 @@ public class PackageConfigBuilder implements IConfigBuilder<PackageConfig> {
     }
 
     /**
-     * 指定service接口包名
-     *
-     * @param service service包名
-     * @return this
-     */
-    public PackageConfigBuilder service(String service) {
-        this.packageConfig.service = service;
-        return this;
-    }
-
-    /**
-     * service实现类包名
-     *
-     * @param serviceImpl service实现类包名
-     * @return this
-     */
-    public PackageConfigBuilder serviceImpl(String serviceImpl) {
-        this.packageConfig.serviceImpl = serviceImpl;
-        return this;
-    }
-
-    /**
      * 指定mapper接口包名
      *
      * @param mapper mapper包名
@@ -111,7 +89,29 @@ public class PackageConfigBuilder implements IConfigBuilder<PackageConfig> {
         this.packageConfig.xml = xml;
         return this;
     }
+    
+    /**
+     * 指定service接口包名
+     *
+     * @param service service包名
+     * @return this
+     */
+    public PackageConfigBuilder service(String service) {
+        this.packageConfig.service = service;
+        return this;
+    }
 
+    /**
+     * service实现类包名
+     *
+     * @param serviceImpl service实现类包名
+     * @return this
+     */
+    public PackageConfigBuilder serviceImpl(String serviceImpl) {
+        this.packageConfig.serviceImpl = serviceImpl;
+        return this;
+    }
+    
     /**
      * 指定控制器包名
      *
@@ -123,6 +123,39 @@ public class PackageConfigBuilder implements IConfigBuilder<PackageConfig> {
         return this;
     }
 
+    /**
+     * 指定查询DTO包名
+     *
+     * @param queryDTO 查询DTO包名
+     * @return this
+     */
+    public PackageConfigBuilder queryDTO(String queryDTO) {
+        this.packageConfig.queryDTO = queryDTO;
+        return this;
+    }
+    
+    /**
+     * 指定新增DTO包名
+     *
+     * @param insertDTO 新增DTO包名
+     * @return this
+     */
+    public PackageConfigBuilder insertDTO(String insertDTO) {
+        this.packageConfig.insertDTO = insertDTO;
+        return this;
+    }
+    
+    /**
+     * 指定修改DTO包名
+     *
+     * @param updateDTO 修改DTO包名
+     * @return this
+     */
+    public PackageConfigBuilder updateDTO(String updateDTO) {
+        this.packageConfig.updateDTO = updateDTO;
+        return this;
+    }
+    
     /**
      * 路径配置信息
      *
