@@ -22,7 +22,7 @@ import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper;
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
@@ -63,7 +63,7 @@ public class DefaultGenerateMapperLambdaMethodHandler extends AbstractMapperMeth
         String entityName = tableInfo.getEntityName();
         GlobalConfig globalConfig = tableInfo.getGlobalConfig();
         StrategyConfig strategyConfig = tableInfo.getStrategyConfig();
-        EntityConfig entity = strategyConfig.entity();
+        Entity entity = strategyConfig.entity();
         Set<Map.Entry<String, List<DatabaseMetaDataWrapper.Index>>> entrySet = indexlistMap.entrySet();
         List<MapperMethod> methodList = new ArrayList<>();
         for (Map.Entry<String, List<DatabaseMetaDataWrapper.Index>> entry : entrySet) {

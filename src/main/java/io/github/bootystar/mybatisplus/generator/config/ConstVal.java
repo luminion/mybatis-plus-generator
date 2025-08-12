@@ -35,10 +35,10 @@ public interface ConstVal {
     String MAPPER = "Mapper";
     String XML = "Xml";
     String CONTROLLER = "Controller";
-    String DTO_INSERT = "DtoInsert";
-    String DTO_UPDATE = "DtoUpdate";
-    String DTO_SELECT = "DtoSelect";
-    String VO = "Vo";
+    String QUERY_DTO = "queryDTO";
+    String INSERT_DTO = "InsertDTO";
+    String UPDATE_DTO = "UpdateDTO";
+    String VO = "VO";
     String PARENT = "Parent";
 
     String JAVA_TMPDIR = "java.io.tmpdir";

@@ -2,10 +2,10 @@ package io.github.bootystar.mybatisplus.generator.support.core;
 
 
 import io.github.bootystar.mybatisplus.generator.config.core.*;
-import io.github.bootystar.mybatisplus.generator.config.core.support.ControllerConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.MapperConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.ServiceConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Controller;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Mapper;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Service;
 
 import java.util.function.Consumer;
 
@@ -29,13 +29,13 @@ public interface EnhanceGenerator<B> {
 
 //    EnhanceGenerator<B> customConfig(Consumer<B> consumer);
 
-    EnhanceGenerator<B> entity(Consumer<EntityConfig.Builder> consumer);
+    EnhanceGenerator<B> entity(Consumer<Entity.Builder> consumer);
 
-    EnhanceGenerator<B> mapper(Consumer<MapperConfig.Builder> consumer);
+    EnhanceGenerator<B> mapper(Consumer<Mapper.Builder> consumer);
 
-    EnhanceGenerator<B> service(Consumer<ServiceConfig.Builder> consumer);
+    EnhanceGenerator<B> service(Consumer<Service.Builder> consumer);
 
-    EnhanceGenerator<B> controller(Consumer<ControllerConfig.Builder> consumer);
+    EnhanceGenerator<B> controller(Consumer<Controller.Builder> consumer);
 
     EnhanceGenerator<B> mapperXmlResource(String path);
 
