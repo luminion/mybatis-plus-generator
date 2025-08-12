@@ -20,10 +20,10 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.*;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
-import io.github.bootystar.mybatisplus.generator.config.core.support.ControllerConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.MapperConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.ServiceConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Controller;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Mapper;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Service;
 import lombok.Getter;
 
 import java.io.File;
@@ -74,25 +74,25 @@ class PathInfoHandler {
      * @param strategyConfig 模板配置
      */
     private void setDefaultPathInfo(InjectionConfig injectionConfig, GlobalConfig globalConfig, StrategyConfig strategyConfig) {
-        EntityConfig entity = strategyConfig.entity();
+        Entity entity = strategyConfig.entity();
         if (entity.isGenerate()) {
             putPathInfo(injectionConfig, globalConfig.isKotlin() ? entity.getKotlinTemplate() : entity.getJavaTemplate(), OutputFile.entity, ConstVal.ENTITY);
         }
-        MapperConfig mapper = strategyConfig.mapper();
+        Mapper mapper = strategyConfig.mapper();
         if (mapper.isGenerateMapper()) {
             putPathInfo(injectionConfig, mapper.getMapperTemplatePath(), OutputFile.mapper, ConstVal.MAPPER);
         }
         if (mapper.isGenerateMapperXml()) {
             putPathInfo(injectionConfig, mapper.getMapperXmlTemplatePath(), OutputFile.xml, ConstVal.XML);
         }
-        ServiceConfig service = strategyConfig.service();
+        Service service = strategyConfig.service();
         if (service.isGenerateService()) {
             putPathInfo(injectionConfig, service.getServiceTemplate(), OutputFile.service, ConstVal.SERVICE);
         }
         if (service.isGenerateServiceImpl()) {
             putPathInfo(injectionConfig, service.getServiceImplTemplate(), OutputFile.serviceImpl, ConstVal.SERVICE_IMPL);
         }
-        ControllerConfig controller = strategyConfig.controller();
+        Controller controller = strategyConfig.controller();
         if (controller.isGenerate()) {
             putPathInfo(injectionConfig, controller.getTemplatePath(), OutputFile.controller, ConstVal.CONTROLLER);
         }

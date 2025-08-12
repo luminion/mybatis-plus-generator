@@ -18,7 +18,7 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.IKeyWordsHandler;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
@@ -121,7 +121,7 @@ public class TableField {
     /**
      * 实体属性配置
      */
-    private final EntityConfig entity;
+    private final Entity entity;
 
     /**
      * 数据库配置
@@ -157,7 +157,7 @@ public class TableField {
     public TableField(ConfigBuilder configBuilder, String name) {
         this.name = name;
         this.columnName = name;
-        this.entity = configBuilder.getEntityConfig();
+        this.entity = configBuilder.getEntity();
         this.dataSourceConfig = configBuilder.getDataSourceConfig();
         this.globalConfig = configBuilder.getGlobalConfig();
     }
@@ -377,7 +377,7 @@ public class TableField {
      * @return 实体配置信息
      * @since 3.5.10
      */
-    public EntityConfig getEntity() {
+    public Entity getEntity() {
         return this.entity;
     }
 

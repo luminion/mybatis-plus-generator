@@ -16,17 +16,20 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.IOutputFile;
-import io.github.bootystar.mybatisplus.generator.config.core.support.ControllerConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.MapperConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.ServiceConfig;
-import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
+import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Controller;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Mapper;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Service;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
+import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.ExtraFieldStrategy;
 import lombok.Getter;
+import org.apache.ibatis.type.JdbcType;
 
 import java.io.File;
 import java.util.*;
@@ -39,7 +42,7 @@ import java.util.function.BiFunction;
  * @since 2016/8/30
  */
 @Getter
-public class StrategyConfig {
+public class StrategyConfig implements ITemplate {
 
     protected StrategyConfig() {
     }
@@ -123,6 +126,22 @@ public class StrategyConfig {
      */
     protected LikeTable notLikeTable;
 
+    private final Entity.Builder entityBuilder = new Entity.Builder(this);
+
+    private final Controller.Builder controllerBuilder = new Controller.Builder(this);
+
+    private final Mapper.Builder mapperBuilder = new Mapper.Builder(this);
+
+    private final Service.Builder serviceBuilder = new Service.Builder(this);
+
+    private Entity entity;
+
+    private Controller controller;
+
+    private Mapper mapper;
+
+    private Service service;
+
     protected IOutputFile outputFile = (path, ot) -> new File(path);
 
 
@@ -159,11 +178,6 @@ public class StrategyConfig {
     protected boolean methodOverride = true;
 
     /**
-     * 指定查询的DTO
-     */
-    protected ClassPayload queryDTO;
-
-    /**
      * 新增或修改时排除的字段
      */
     protected Collection<String> editExcludeColumns;
@@ -198,7 +212,98 @@ public class StrategyConfig {
      */
     protected BiFunction<String, TableField, Boolean> extraFieldStrategy = new ExtraFieldStrategy();
 
+    /**
+     * 实体配置构建者
+     *
+     * @return 实体配置构建者
+     * @since 3.5.0
+     */
+    public Entity.Builder entityBuilder() {
+        return entityBuilder;
+    }
 
+    /**
+     * 实体配置
+     *
+     * @return 实体配置
+     * @since 3.5.0
+     */
+    public Entity entity() {
+        if (entity == null) {
+            this.entity = entityBuilder.get();
+        }
+        return entity;
+    }
+
+    /**
+     * 控制器配置构建者
+     *
+     * @return 控制器配置构建者
+     * @since 3.5.0
+     */
+    public Controller.Builder controllerBuilder() {
+        return controllerBuilder;
+    }
+
+    /**
+     * 控制器配置
+     *
+     * @return 控制器配置
+     * @since 3.5.0
+     */
+    public Controller controller() {
+        if (controller == null) {
+            this.controller = controllerBuilder.get();
+        }
+        return controller;
+    }
+
+    /**
+     * Mapper配置构建者
+     *
+     * @return Mapper配置构建者
+     * @since 3.5.0
+     */
+    public Mapper.Builder mapperBuilder() {
+        return mapperBuilder;
+    }
+
+    /**
+     * Mapper配置
+     *
+     * @return Mapper配置
+     * @since 3.5.0
+     */
+    public Mapper mapper() {
+        if (mapper == null) {
+            this.mapper = mapperBuilder.get();
+        }
+        return mapper;
+    }
+
+    /**
+     * Service配置构建者
+     *
+     * @return Service配置构建者
+     * @since 3.5.0
+     */
+    public Service.Builder serviceBuilder() {
+        return serviceBuilder;
+    }
+
+    /**
+     * Service配置
+     *
+     * @return Service配置
+     * @since 3.5.0
+     */
+    public Service service() {
+        if (service == null) {
+            this.service = serviceBuilder.get();
+        }
+        return service;
+    }
+    
     /**
      * 大写命名、字段符合大写字母数字下划线命名
      *
@@ -278,5 +383,379 @@ public class StrategyConfig {
     protected boolean tableNameMatches(String matchTableName, String dbTableName) {
         return matchTableName.equalsIgnoreCase(dbTableName) || StringUtils.matches(matchTableName, dbTableName);
     }
-    
+
+    @Override
+    public Map<String, Object> renderData(TableInfo tableInfo) {
+        Map<String, Object> map = ITemplate.super.renderData(tableInfo);
+        // DTO及VO导入的包
+        Set<String> importPackages = tableInfo.getImportPackages();
+        Set<String> importPackages4DTO = new HashSet<>();
+        for (String importPackage : importPackages) {
+            if (!importPackage.startsWith("com.baomidou.mybatisplus.annotation" )) {
+                importPackages4DTO.add(importPackage);
+            }
+        }
+        if (!importPackages4DTO.isEmpty()) {
+            map.put("importPackages4DTO",importPackages4DTO);    
+        }
+        List<JdbcType> jdbcTimeTypes = Arrays.asList(
+                JdbcType.DATE, 
+                JdbcType.TIME, 
+                JdbcType.TIMESTAMP, 
+                JdbcType.DATETIMEOFFSET,// SQL Server 2008
+                JdbcType.TIME_WITH_TIMEZONE,// JDBC 4.2 JDK8
+                JdbcType.TIMESTAMP_WITH_TIMEZONE // JDBC 4.2 JDK8
+        );
+        map.put("jdbcTimeTypes", jdbcTimeTypes);
+        
+        return map;
+    }
+
+    public static class Builder extends BaseBuilder {
+
+        protected StrategyConfig strategyConfig;
+
+        public Builder() {
+            super(new StrategyConfig());
+            strategyConfig = super.build();
+        }
+
+        /**
+         * 开启大写命名
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder enableCapitalMode() {
+            this.strategyConfig.isCapitalMode = true;
+            return this;
+        }
+
+        /**
+         * 开启跳过视图
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder enableSkipView() {
+            this.strategyConfig.skipView = true;
+            return this;
+        }
+
+        /**
+         * 禁用sql过滤
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder disableSqlFilter() {
+            this.strategyConfig.enableSqlFilter = false;
+            return this;
+        }
+
+        /**
+         * 启用 schema
+         *
+         * @return this
+         * @since 3.5.1
+         */
+        public Builder enableSchema() {
+            this.strategyConfig.enableSchema = true;
+            return this;
+        }
+
+        /**
+         * 增加过滤表前缀
+         *
+         * @param tablePrefix 过滤表前缀
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder addTablePrefix(String... tablePrefix) {
+            return addTablePrefix(Arrays.asList(tablePrefix));
+        }
+
+        public Builder addTablePrefix(List<String> tablePrefixList) {
+            this.strategyConfig.tablePrefix.addAll(tablePrefixList);
+            return this;
+        }
+
+        /**
+         * 增加过滤表后缀
+         *
+         * @param tableSuffix 过滤表后缀
+         * @return this
+         * @since 3.5.1
+         */
+        public Builder addTableSuffix(String... tableSuffix) {
+            return addTableSuffix(Arrays.asList(tableSuffix));
+        }
+
+        public Builder addTableSuffix(List<String> tableSuffixList) {
+            this.strategyConfig.tableSuffix.addAll(tableSuffixList);
+            return this;
+        }
+
+        /**
+         * 增加过滤字段前缀
+         *
+         * @param fieldPrefix 过滤字段前缀
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder addFieldPrefix(String... fieldPrefix) {
+            return addFieldPrefix(Arrays.asList(fieldPrefix));
+        }
+
+        public Builder addFieldPrefix(List<String> fieldPrefix) {
+            this.strategyConfig.fieldPrefix.addAll(fieldPrefix);
+            return this;
+        }
+
+        /**
+         * 增加过滤字段后缀
+         *
+         * @param fieldSuffix 过滤字段后缀
+         * @return this
+         * @since 3.5.1
+         */
+        public Builder addFieldSuffix(String... fieldSuffix) {
+            return addFieldSuffix(Arrays.asList(fieldSuffix));
+        }
+
+        public Builder addFieldSuffix(List<String> fieldSuffixList) {
+            this.strategyConfig.fieldSuffix.addAll(fieldSuffixList);
+            return this;
+        }
+
+        /**
+         * 增加包含的表名
+         *
+         * @param include 包含表
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder addInclude(String... include) {
+            this.strategyConfig.include.addAll(Arrays.asList(include));
+            return this;
+        }
+
+        public Builder addInclude(List<String> includes) {
+            this.strategyConfig.include.addAll(includes);
+            return this;
+        }
+
+        public Builder addInclude(String include) {
+            this.strategyConfig.include.addAll(Arrays.asList(include.split(",")));
+            return this;
+        }
+
+        /**
+         * 增加排除表
+         *
+         * @param exclude 排除表
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder addExclude(String... exclude) {
+            return addExclude(Arrays.asList(exclude));
+        }
+
+        public Builder addExclude(List<String> excludeList) {
+            this.strategyConfig.exclude.addAll(excludeList);
+            return this;
+        }
+
+        /**
+         * 包含表名
+         *
+         * @return this
+         */
+        public Builder likeTable(LikeTable likeTable) {
+            this.strategyConfig.likeTable = likeTable;
+            return this;
+        }
+
+        /**
+         * 不包含表名
+         *
+         * @return this
+         */
+        public Builder notLikeTable(LikeTable notLikeTable) {
+            this.strategyConfig.notLikeTable = notLikeTable;
+            return this;
+        }
+
+        /**
+         * 输出文件处理
+         *
+         * @return this
+         */
+        public Builder outputFile(IOutputFile outputFile) {
+            this.strategyConfig.outputFile = outputFile;
+            return this;
+        }
+
+        // =============自定义项==============
+
+        /**
+         * 不生成新增方法
+         *
+         * @return this
+         */
+        public Builder disableInsert() {
+            this.strategyConfig.generateInsert = false;
+            return this;
+        }
+
+        /**
+         * 不生成更新方法
+         *
+         * @return this
+         */
+        public Builder disableUpdate() {
+            this.strategyConfig.generateUpdate = false;
+            return this;
+        }
+
+        /**
+         * 不生成删除方法
+         *
+         * @return this
+         */
+        public Builder disableDelete() {
+            this.strategyConfig.generateDelete = false;
+            return this;
+        }
+
+        /**
+         * 不生成查询方法
+         *
+         * @return this
+         */
+        public Builder disableSelect() {
+            this.strategyConfig.generateSelect = false;
+            return this;
+        }
+
+        /**
+         * 不生成导入方法
+         *
+         * @return this
+         */
+        public Builder disableImport() {
+            this.strategyConfig.generateImport = false;
+            return this;
+        }
+
+        /**
+         * 不生成导出方法
+         *
+         * @return this
+         */
+        public Builder disableExport() {
+            this.strategyConfig.generateExport = false;
+            return this;
+        }
+
+        /**
+         * 不生成重写父类方法
+         * <p>仅特殊配置时有效</p>
+         *
+         * @return this
+         */
+        public Builder disableOverrideMethods() {
+            this.strategyConfig.methodOverride = false;
+            return this;
+        }
+
+        /**
+         * 新增或修改时排除的字段
+         *
+         * @return this
+         */
+        public Builder editExcludeColumns(String... editExcludeColumns) {
+            this.strategyConfig.editExcludeColumns.addAll(Arrays.asList(editExcludeColumns));
+            return this;
+        }
+
+        /**
+         * 启用swagger/springdoc模型实体的注解
+         * <p>
+         * 已知swagger注解在同名时有冲突, 禁用后请确保表注释不为空且不同名
+         *
+         * @return this
+         */
+        public Builder enableSwaggerModelWithAnnotation() {
+            this.strategyConfig.swaggerModelWithAnnotation = true;
+            return this;
+        }
+
+        /**
+         * 启用swagger/springdoc文档额外uuid标识
+         * <p>
+         * 已知swagger注解在同名时有冲突, 禁用后请确保表注释不为空且不同名
+         *
+         * @return this
+         */
+        public Builder enableSwaggerAnnotationWithUUID() {
+            this.strategyConfig.swaggerAnnotationWithUUID = true;
+            return this;
+        }
+
+        /**
+         * 添加额外类链接注释
+         *
+         * @return this
+         */
+        public Builder disableExtraClassLinkComment() {
+            this.strategyConfig.extraClassLinkComment = false;
+            return this;
+        }
+
+        /**
+         * 使用EasyExcel
+         * <p>默认使用FastExcel</p>
+         *
+         * @return this
+         */
+        public Builder enableEasyExcel() {
+            this.strategyConfig.excelBasePackage = "com.alibaba.excel";
+            return this;
+        }
+
+        /**
+         * 额外字段后缀, k->后缀 ,v->sql运算符
+         *
+         * @param extraFieldSuffixMap 额外字段后缀
+         * @return this
+         */
+        public Builder clearExtraFieldSuffix() {
+            this.strategyConfig.extraFieldSuffixMap.clear();
+            return this;
+        }
+
+        /**
+         * 额外字段后缀
+         *
+         * @param suffix     后缀
+         * @param operator   sql运算符
+         * @return this
+         */
+        public Builder extraFieldSuffix(String suffix, String operator) {
+            this.strategyConfig.extraFieldSuffixMap.put(suffix, operator);
+            return this;
+        }
+
+        /**
+         * 额外字段策略
+         *
+         * @param extraFieldStrategy 额外字段策略, BiFunction<String, TableField, Boolean>, 3个泛型参数分别为sql运算符,表字段信息,是否生成
+         * @return this
+         */
+        public Builder extraFieldStrategy(BiFunction<String, TableField, Boolean> extraFieldStrategy) {
+            this.strategyConfig.extraFieldStrategy = extraFieldStrategy;
+            return this;
+        }
+    }
 }

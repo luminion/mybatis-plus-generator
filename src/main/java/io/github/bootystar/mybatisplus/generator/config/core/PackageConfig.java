@@ -18,6 +18,7 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
+import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.builder.CustomFile;
 import lombok.Getter;
@@ -61,7 +62,7 @@ public class PackageConfig {
     protected String mapper = "mapper";
 
     /**
-     * MapperConfig XML包名
+     * Mapper XML包名
      */
     protected String xml = "mapper.xml";
 
@@ -71,7 +72,7 @@ public class PackageConfig {
     protected String service = "service";
 
     /**
-     * ServiceConfig Impl包名
+     * Service Impl包名
      */
     protected String serviceImpl = "service.impl";
 
@@ -150,9 +151,9 @@ public class PackageConfig {
             packageInfo.put(ConstVal.SERVICE_IMPL, this.joinPackage(this.getServiceImpl()));
             packageInfo.put(ConstVal.CONTROLLER, this.joinPackage(this.getController()));
             packageInfo.put(ConstVal.PARENT, this.getParent());
-            packageInfo.put(ConstVal.DTO_INSERT, this.joinPackage(this.getInsertDTO()));
-            packageInfo.put(ConstVal.DTO_UPDATE, this.joinPackage(this.getUpdateDTO()));
-            packageInfo.put(ConstVal.DTO_SELECT, this.joinPackage(this.getQueryDTO()));
+            packageInfo.put(ConstVal.INSERT_DTO, this.joinPackage(this.getInsertDTO()));
+            packageInfo.put(ConstVal.UPDATE_DTO, this.joinPackage(this.getUpdateDTO()));
+            packageInfo.put(ConstVal.QUERY_DTO, this.joinPackage(this.getQueryDTO()));
             packageInfo.put(ConstVal.VO, this.joinPackage(this.getVo()));
             if (injectionConfig != null) {
                 List<CustomFile> customFiles = injectionConfig.getCustomFiles();
@@ -182,6 +183,178 @@ public class PackageConfig {
      */
     public String getPackageInfo(InjectionConfig injectionConfig, String module) {
         return getPackageInfo(injectionConfig).get(module);
+    }
+
+    public static class Builder implements IConfigBuilder<PackageConfig> {
+        protected final PackageConfig packageConfig = new PackageConfig();
+
+        public Builder() {
+        }
+
+        public Builder(String parent, String moduleName) {
+            this.packageConfig.parent = parent;
+            this.packageConfig.moduleName = moduleName;
+        }
+
+        /**
+         * 构建包配置对象
+         * <p>当指定{@link #parent(String)} 与 {@link #moduleName(String)}时,其他模块名字会加上这两个作为前缀</p>
+         * <p>
+         * 例如:
+         * <p>当设置 {@link #parent(String)},那么entity的配置为 parent.entity
+         * <p>当设置 {@link #parent(String)}与{@link #moduleName(String)},那么entity的配置为 parent.module.entity 
+         * </p>
+         *
+         * @return 包配置对象
+         */
+        @Override
+        public PackageConfig build() {
+            return this.packageConfig;
+        }
+
+        /**
+         * 指定父包名
+         *
+         * @param parent 父包名
+         * @return this
+         */
+        public Builder parent(String parent) {
+            this.packageConfig.parent = parent;
+            return this;
+        }
+
+        /**
+         * 指定模块名称
+         *
+         * @param moduleName 模块名
+         * @return this
+         */
+        public Builder moduleName(String moduleName) {
+            this.packageConfig.moduleName = moduleName;
+            return this;
+        }
+
+        /**
+         * 指定实体包名
+         *
+         * @param entity 实体包名
+         * @return this
+         */
+        public Builder entity(String entity) {
+            this.packageConfig.entity = entity;
+            return this;
+        }
+
+        /**
+         * 指定mapper接口包名
+         *
+         * @param mapper mapper包名
+         * @return this
+         */
+        public Builder mapper(String mapper) {
+            this.packageConfig.mapper = mapper;
+            return this;
+        }
+
+        /**
+         * 指定xml包名
+         *
+         * @param xml xml包名
+         * @return this
+         */
+        public Builder xml(String xml) {
+            this.packageConfig.xml = xml;
+            return this;
+        }
+
+        /**
+         * 指定service接口包名
+         *
+         * @param service service包名
+         * @return this
+         */
+        public Builder service(String service) {
+            this.packageConfig.service = service;
+            return this;
+        }
+
+        /**
+         * service实现类包名
+         *
+         * @param serviceImpl service实现类包名
+         * @return this
+         */
+        public Builder serviceImpl(String serviceImpl) {
+            this.packageConfig.serviceImpl = serviceImpl;
+            return this;
+        }
+
+        /**
+         * 指定控制器包名
+         *
+         * @param controller 控制器包名
+         * @return this
+         */
+        public Builder controller(String controller) {
+            this.packageConfig.controller = controller;
+            return this;
+        }
+
+        /**
+         * 指定查询DTO包名
+         *
+         * @param queryDTO 查询DTO包名
+         * @return this
+         */
+        public Builder queryDTO(String queryDTO) {
+            this.packageConfig.queryDTO = queryDTO;
+            return this;
+        }
+
+        /**
+         * 指定新增DTO包名
+         *
+         * @param insertDTO 新增DTO包名
+         * @return this
+         */
+        public Builder insertDTO(String insertDTO) {
+            this.packageConfig.insertDTO = insertDTO;
+            return this;
+        }
+
+        /**
+         * 指定修改DTO包名
+         *
+         * @param updateDTO 修改DTO包名
+         * @return this
+         */
+        public Builder updateDTO(String updateDTO) {
+            this.packageConfig.updateDTO = updateDTO;
+            return this;
+        }
+
+        /**
+         * 路径配置信息
+         *
+         * @param pathInfo 路径配置信息
+         * @return this
+         */
+        public Builder pathInfo(Map<OutputFile, String> pathInfo) {
+            this.packageConfig.pathInfo = pathInfo;
+            return this;
+        }
+
+        /**
+         * 连接父子包名
+         *
+         * @param subPackage 子包名
+         * @return 连接后的包名
+         */
+        public String joinPackage(String subPackage) {
+            return this.packageConfig.joinPackage(subPackage);
+        }
+
+
     }
     
 }

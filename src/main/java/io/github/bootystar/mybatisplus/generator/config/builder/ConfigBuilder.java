@@ -17,10 +17,10 @@ package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import io.github.bootystar.mybatisplus.generator.config.*;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
-import io.github.bootystar.mybatisplus.generator.config.core.support.ControllerConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.EntityConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.MapperConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.ServiceConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Controller;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Mapper;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Service;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
 import lombok.Getter;
@@ -68,19 +68,19 @@ public class ConfigBuilder {
     /**
      * entity配置信息
      */
-    private EntityConfig entityConfig;
+    private Entity entity;
     /**
      * mapper配置信息
      */
-    private MapperConfig mapperConfig;
+    private Mapper mapper;
     /**
      * service配置信息
      */
-    private ServiceConfig serviceConfig;
+    private Service service;
     /**
      * controller配置信息
      */
-    private ControllerConfig controllerConfig;
+    private Controller controller;
 
 
     /**
@@ -130,10 +130,10 @@ public class ConfigBuilder {
             StrategyConfig strategyConfig, 
             GlobalConfig globalConfig, 
             InjectionConfig injectionConfig,
-            EntityConfig entityConfig,
-            MapperConfig mapperConfig,
-            ServiceConfig serviceConfig,
-            ControllerConfig controllerConfig
+            Entity entity,
+            Mapper mapper,
+            Service service,
+            Controller controller
     ) {
         this.dataSourceConfig = dataSourceConfig;
         this.strategyConfig = Optional.ofNullable(strategyConfig)
@@ -144,14 +144,14 @@ public class ConfigBuilder {
                 .orElseGet(() -> new PackageConfig.Builder().build());
         this.injectionConfig = Optional.ofNullable(injectionConfig)
                 .orElseGet(() -> new InjectionConfig.Builder().build());
-        this.entityConfig = Optional.ofNullable(entityConfig)
-                .orElseGet(() -> new EntityConfig.Builder().build());
-        this.mapperConfig = Optional.ofNullable(mapperConfig)
-                .orElseGet(() -> new MapperConfig.Builder().build());
-        this.serviceConfig = Optional.ofNullable(serviceConfig)
-                .orElseGet(() -> new ServiceConfig.Builder().build());
-        this.controllerConfig = Optional.ofNullable(controllerConfig)
-                .orElseGet(() -> new ControllerConfig.Builder().build());
+        this.entity = Optional.ofNullable(entity)
+                .orElseGet(() -> new Entity.Builder().build());
+        this.mapper = Optional.ofNullable(mapper)
+                .orElseGet(() -> new Mapper.Builder().build());
+        this.service = Optional.ofNullable(service)
+                .orElseGet(() -> new Service.Builder().build());
+        this.controller = Optional.ofNullable(controller)
+                .orElseGet(() -> new Controller.Builder().build());
         PathInfoHandler pathInfoHandler = new PathInfoHandler(this.injectionConfig, this.globalConfig, this.strategyConfig, this.packageConfig);
         this.pathInfo.putAll(pathInfoHandler.getPathInfo());
         Class<? extends IDatabaseQuery> databaseQueryClass = dataSourceConfig.getDatabaseQueryClass();
