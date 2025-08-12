@@ -1,36 +1,60 @@
 package ${package.Mapper};
 
-<#list importMapperFrameworkPackages as pkg>
-import ${pkg};
-</#list>
-<#if importMapperJavaPackages?size !=0>
-
-  <#list importMapperJavaPackages as pkg>
-import ${pkg};
-   </#list>
+<#-- ------参数设置----start -->
+<#assign entityVO = "${entity}VO">
+<#--#if(${selectDTO.classFullName})
+##    #set($sourceEntitySelectDTO = ${selectDTO.clazz("${entity}")})
+##    #set($importStr4SelectDTO="import ${selectDTO.classFullName};")
+###else
+##    #set($sourceEntitySelectDTO = "${entity}SelectDTO")
+##    #set($importStr4SelectDTO="import ${basePackage}.${package4DTO}.${entity}SelectDTO;")
+###end-->
+<#-- ------参数设置----end -->
+import io.github.bootystar.mybatisplus.core.metadata.IPage;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ${superMapperClassPackage};
+<#--import org.apache.ibatis.annotations.Param;-->
+<#if mapperAnnotationClass??>
+    import ${mapperAnnotationClass.name};
 </#if>
+<#--${importStr4SelectDTO}-->
+import ${basePackage}.${package4VO}.${entity}VO;
+import ${package.Entity}.${entity};
+
+<#if generateSelect>
+    import java.io.Serializable;
+</#if>
+import java.util.List;
+import java.util.Map;
 
 /**
- * <p>
- * ${table.comment!} Mapper 接口
- * </p>
- *
- * @author ${author}
- * @since ${date}
- */
+* ${(table.comment)!''}Mapper
+*
+* @author ${author}
+* @since ${date}
+*/
 <#if mapperAnnotationClass??>
-@${mapperAnnotationClass.simpleName}
+    @${mapperAnnotationClass.simpleName}
 </#if>
-public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+<#if kotlin>
+    interface ${table.mapperName} : ${superMapperClass}<${entity}>
+<#else>
+    public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 
-<#list mapperMethodList as m>
-    /**
-     * generate by ${m.indexName}
-     *
-    <#list m.tableFieldList as f>
-     * @param ${f.propertyName} ${f.comment}
-    </#list>
-     */
-    ${m.method}
-</#list>
-}
+    default List<${entityVO}> voQuery(Object obj, IPage<${entityVO}> page) {
+    if (obj != null && !(obj instanceof Map)){
+    ObjectMapper mapper = new ObjectMapper();
+    obj = mapper.convertValue(obj, new TypeReference
+    <Map
+    <String, Object>>() {});
+    }
+    List<${entityVO}> vos = voQueryByXml(obj, page);
+    return vos;
+    }
+
+    List<${entityVO}> voQueryByXml(Object s, IPage
+    <${entity}VO> page);
+
+        }
+</#if>
