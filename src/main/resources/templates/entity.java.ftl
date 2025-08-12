@@ -1,87 +1,141 @@
 package ${package.Entity};
 
-<#list importEntityFrameworkPackages as pkg>
-import ${pkg};
-</#list>
+<#if springdoc??>
+    import io.swagger.v3.oas.annotations.media.Schema;
+<#elseif swagger??>
+    import io.swagger.annotations.ApiModel;
+    import io.swagger.annotations.ApiModelProperty;
+</#if>
+<#if entityLombokModel>
+    import lombok.Data;
+    <#if chainModel>
+        import lombok.experimental.Accessors;
+    </#if>
+</#if>
 
-<#list importEntityJavaPackages as pkg>
-import ${pkg};
+<#list table.importPackages as pkg>
+    import ${pkg};
 </#list>
 
 /**
- * <p>
- * ${table.comment!}
- * </p>
- *
- * @author ${author}
- * @since ${date}
- */
-<#list entityClassAnnotations as an>
-${an.displayName}
-</#list>
+* ${(table.comment)!''}
+*
+* @author ${author}
+* @since ${date}
+<#if extraClassLinkComment>
+    * @see ${package.Mapper}.${table.mapperName}
+    * @see ${package.ServiceImpl}.${table.serviceImplName}
+</#if>
+*/
+<#if entityLombokModel>
+    @Data
+    <#if chainModel>
+        @Accessors(chain = true)
+    </#if>
+</#if>
+<#if table.convert>
+    @TableName("${schemaName}${table.name}")
+</#if>
+<#if swaggerModelWithAnnotation>
+    <#if springdoc??>
+    <#--@Schema(name = "${entity}", description = "${(table.comment)!''}")-->
+        @Schema(name = "${entity}${(swaggerUUID)!''}", description = "${(table.comment)!''}")
+    <#elseif swagger??>
+    <#--@ApiModel(value = "${entity}对象", description = "${(table.comment)!''}")-->
+        @ApiModel(value = "${entity}${(swaggerUUID)!''}", description = "${(table.comment)!''}")
+    </#if>
+</#if>
 <#if superEntityClass??>
-public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
+    public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
 <#elseif activeRecord>
-public class ${entity} extends Model<${entity}> {
+    public class ${entity} extends Model<${entity}> {
 <#elseif entitySerialVersionUID>
-public class ${entity} implements Serializable {
+    public class ${entity} implements Serializable {
 <#else>
-public class ${entity} {
+    public class ${entity} {
 </#if>
 <#if entitySerialVersionUID>
 
-    <#if entitySerialAnnotation>
-    @Serial
-    </#if>
     private static final long serialVersionUID = 1L;
 </#if>
-<#-- ----------  BEGIN 字段循环遍历  ---------->
+<#-- ----------  BEGIN 字段循环遍历  ---------- -->
 <#list table.fields as field>
-    <#if field.keyFlag>
-        <#assign keyPropertyName="${field.propertyName}"/>
-    </#if>
 
-    <#if field.comment!?length gt 0>
-        <#if entityFieldUseJavaDoc>
-    /**
-     * ${field.comment}
-     */
+    <#if field.keyFlag>
+        <#assign keyPropertyName=field.propertyName>
+    </#if>
+    <#if (field.comment)?? && field.comment != "">
+        <#if springdoc??>
+            @Schema(description = "${field.comment}")
+        <#elseif swagger??>
+            @ApiModelProperty("${field.comment}")
+        <#else>
+            /**
+            * ${field.comment}
+            */
         </#if>
     </#if>
-    <#list field.annotationAttributesList as an>
-    ${an.displayName}
-    </#list>
+    <#if field.keyFlag>
+    <#-- 主键 -->
+        <#if field.keyIdentityFlag>
+            @TableId(value = "${field.annotationColumnName}", type = IdType.AUTO)
+        <#elseif (idType)?? && idType != "">
+            @TableId(value = "${field.annotationColumnName}", type = IdType.${idType})
+        <#elseif field.convert>
+            @TableId("${field.annotationColumnName}")
+        </#if>
+    <#-- 普通字段 -->
+    <#elseif field.fill??>
+    <#-- -----   存在字段填充设置   ----- -->
+        <#if field.convert>
+            @TableField(value = "${field.annotationColumnName}", fill = FieldFill.${field.fill})
+        <#else>
+            @TableField(fill = FieldFill.${field.fill})
+        </#if>
+    <#elseif field.convert>
+        @TableField("${field.annotationColumnName}")
+    </#if>
+<#-- 乐观锁注解 -->
+    <#if field.versionField>
+        @Version
+    </#if>
+<#-- 逻辑删除注解 -->
+    <#if field.logicDeleteField>
+        @TableLogic
+    </#if>
     private ${field.propertyType} ${field.propertyName};
 </#list>
-<#------------  END 字段循环遍历  ---------->
+<#-- ----------  END 字段循环遍历  ---------- -->
 <#if !entityLombokModel>
     <#list table.fields as field>
         <#if field.propertyType == "boolean">
-            <#assign getprefix="is"/>
+            <#assign getprefix="is">
         <#else>
-            <#assign getprefix="get"/>
+            <#assign getprefix="get">
         </#if>
 
-    public ${field.propertyType} ${getprefix}${field.capitalName}() {
+        public ${field.propertyType} ${getprefix}${field.capitalName}() {
         return ${field.propertyName};
-    }
+        }
 
-    <#if chainModel>
-    public ${entity} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
-    <#else>
-    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
-    </#if>
+        <#if chainModel>
+            public ${entity} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+        <#else>
+            public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+        </#if>
         this.${field.propertyName} = ${field.propertyName};
         <#if chainModel>
-        return this;
+            return this;
         </#if>
-    }
+        }
     </#list>
+<#-- --foreach end--- -->
 </#if>
+<#-- --end of #if(!${entityLombokModel})-- -->
 <#if entityColumnConstant>
     <#list table.fields as field>
 
-    public static final String ${field.name?upper_case} = "${field.name}";
+        public static final String ${field.name?upper_case} = "${field.name}";
     </#list>
 </#if>
 <#if activeRecord>
@@ -95,19 +149,19 @@ public class ${entity} {
     </#if>
     }
 </#if>
-<#if !entityLombokModel && entityToString>
+<#if !entityLombokModel>
 
     @Override
     public String toString() {
-        return "${entity}{" +
+    return "${entity}{" +
     <#list table.fields as field>
-        <#if field_index==0>
+        <#if field_index == 0>
             "${field.propertyName} = " + ${field.propertyName} +
         <#else>
             ", ${field.propertyName} = " + ${field.propertyName} +
         </#if>
     </#list>
-            "}";
+    "}";
     }
 </#if>
 }
