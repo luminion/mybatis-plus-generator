@@ -42,7 +42,7 @@ import java.util.function.BiFunction;
  * @since 2016/8/30
  */
 @Getter
-public class StrategyConfig {
+public class StrategyConfig implements ITemplate{
 
     protected StrategyConfig() {
     }

@@ -157,7 +157,7 @@ public class TableField {
     public TableField(ConfigBuilder configBuilder, String name) {
         this.name = name;
         this.columnName = name;
-        this.entity = configBuilder.getEntity();
+        this.entity = configBuilder.getStrategyConfig().entity();
         this.dataSourceConfig = configBuilder.getDataSourceConfig();
         this.globalConfig = configBuilder.getGlobalConfig();
     }

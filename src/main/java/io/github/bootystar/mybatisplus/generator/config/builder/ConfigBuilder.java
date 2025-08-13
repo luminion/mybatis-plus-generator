@@ -15,17 +15,13 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
-import io.github.bootystar.mybatisplus.generator.config.*;
+import io.github.bootystar.mybatisplus.generator.config.OutputFile;
+import io.github.bootystar.mybatisplus.generator.config.TemplateLoadWay;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Controller;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Mapper;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Service;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
 import lombok.Getter;
 import lombok.Setter;
-
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -41,49 +37,6 @@ import java.util.regex.Pattern;
 public class ConfigBuilder {
 
     /**
-     * 数据库配置信息
-     */
-    private final DataSourceConfig dataSourceConfig;
-
-    /**
-     * 全局配置信息
-     */
-    private GlobalConfig globalConfig;
-    
-    /**
-     * 包配置信息
-     */
-    private final PackageConfig packageConfig;
-
-    /**
-     * 策略配置信息
-     */
-    private StrategyConfig strategyConfig;
-
-    /**
-     * 注入配置信息
-     */
-    private InjectionConfig injectionConfig;
-    
-    /**
-     * entity配置信息
-     */
-    private Entity entity;
-    /**
-     * mapper配置信息
-     */
-    private Mapper mapper;
-    /**
-     * service配置信息
-     */
-    private Service service;
-    /**
-     * controller配置信息
-     */
-    private Controller controller;
-
-
-    /**
      * 数据库表信息
      */
     private final List<TableInfo> tableInfoList = new ArrayList<>();
@@ -91,28 +44,54 @@ public class ConfigBuilder {
     /**
      * 路径配置信息
      */
+    @Getter
     private final Map<OutputFile, String> pathInfo = new HashMap<>();
 
+    /**
+     * 策略配置信息
+     */
+    @Getter
+    private StrategyConfig strategyConfig;
+
+    /**
+     * 全局配置信息
+     */
+    @Getter
+    private GlobalConfig globalConfig;
+
+    /**
+     * 注入配置信息
+     */
+    @Getter
+    private InjectionConfig injectionConfig;
 
     /**
      * 过滤正则
      */
     private static final Pattern REGX = Pattern.compile("[~!/@#$%^&*()+\\\\\\[\\]|{};:'\",<.>?]+");
 
+    /**
+     * 包配置信息
+     */
+    @Getter
+    private final PackageConfig packageConfig;
+
+    /**
+     * 数据库配置信息
+     */
+    @Getter
+    private final DataSourceConfig dataSourceConfig;
 
     /**
      * 数据查询实例
-     *
      * @since 3.5.3
      */
     private final IDatabaseQuery databaseQuery;
 
     /**
      * 资源加载器
-     *
      * @since 3.5.9
      */
-    @Getter
     @Setter
     private TemplateLoadWay templateLoadWay = TemplateLoadWay.FILE;
 
@@ -124,24 +103,17 @@ public class ConfigBuilder {
      * @param strategyConfig   表配置
      * @param globalConfig     全局配置
      */
-    public ConfigBuilder(
-            PackageConfig packageConfig, 
-            DataSourceConfig dataSourceConfig, 
-            StrategyConfig strategyConfig, 
-            GlobalConfig globalConfig, 
-            InjectionConfig injectionConfig
-    ) {
+    public ConfigBuilder(PackageConfig packageConfig, 
+                         DataSourceConfig dataSourceConfig,
+                         StrategyConfig strategyConfig, 
+                         GlobalConfig globalConfig, 
+                         InjectionConfig injectionConfig) {
         this.dataSourceConfig = dataSourceConfig;
-        this.strategyConfig = Optional.ofNullable(strategyConfig)
-                .orElseGet(() -> new StrategyConfig.Builder().build());
-        this.globalConfig = Optional.ofNullable(globalConfig)
-                .orElseGet(() -> new GlobalConfig.Builder().build());
-        this.packageConfig = Optional.ofNullable(packageConfig)
-                .orElseGet(() -> new PackageConfig.Builder().build());
-        this.injectionConfig = Optional.ofNullable(injectionConfig)
-                .orElseGet(() -> new InjectionConfig.Builder().build());
-        PathInfoHandler pathInfoHandler = new PathInfoHandler(this.injectionConfig, this.globalConfig, this.strategyConfig, this.packageConfig);
-        this.pathInfo.putAll(pathInfoHandler.getPathInfo());
+        this.strategyConfig = Optional.ofNullable(strategyConfig).orElseGet(GeneratorBuilder::strategyConfig);
+        this.globalConfig = Optional.ofNullable(globalConfig).orElseGet(GeneratorBuilder::globalConfig);
+        this.packageConfig = Optional.ofNullable(packageConfig).orElseGet(GeneratorBuilder::packageConfig);
+        this.injectionConfig = Optional.ofNullable(injectionConfig).orElseGet(GeneratorBuilder::injectionConfig);
+        this.pathInfo.putAll(new PathInfoHandler(this.injectionConfig, this.globalConfig, this.strategyConfig, this.packageConfig).getPathInfo());
         Class<? extends IDatabaseQuery> databaseQueryClass = dataSourceConfig.getDatabaseQueryClass();
         try {
             Constructor<? extends IDatabaseQuery> declaredConstructor = databaseQueryClass.getDeclaredConstructor(this.getClass());
@@ -187,5 +159,4 @@ public class ConfigBuilder {
         }
         return tableInfoList;
     }
-    
 }
