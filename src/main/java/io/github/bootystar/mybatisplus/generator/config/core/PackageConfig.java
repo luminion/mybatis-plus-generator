@@ -185,6 +185,12 @@ public class PackageConfig {
         return getPackageInfo(injectionConfig).get(module);
     }
 
+    /**
+     * 构建者
+     *
+     * @author nieqiurong
+     * @since 3.5.0
+     */
     public static class Builder implements IConfigBuilder<PackageConfig> {
         protected final PackageConfig packageConfig = new PackageConfig();
 

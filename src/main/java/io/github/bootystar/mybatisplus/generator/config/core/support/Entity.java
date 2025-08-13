@@ -22,10 +22,8 @@ import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.*;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
-import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
@@ -202,14 +200,6 @@ public class Entity implements ITemplate {
     protected boolean generate = true;
 
     /**
-     * 默认lombok(低版本属性默认只有Getter和Setter)
-     * <p>当升级至3.5.10后,默认启用@ToString,如果不需要,可通过{@link Builder#toString(boolean)}关闭</p>
-     *
-     * @since 3.5.10
-     */
-    protected boolean defaultLombok = true;
-
-    /**
      * 是否生成ToString
      * <p>低版本下,lombok没有处理ToString逻辑,现在处理生成@ToString</p>
      * <p>支持控制toString方法是否生成</p>
@@ -268,6 +258,13 @@ public class Entity implements ITemplate {
      * @since 3.5.6
      */
     protected String javaTemplate = ConstVal.TEMPLATE_ENTITY_JAVA;
+
+    /**
+     * Kotlin模板默认路径
+     * @deprecated 不支持kotlin
+     */
+    @Deprecated
+    private String kotlinTemplate = ConstVal.TEMPLATE_ENTITY_KT;
     
 
     /**
@@ -492,33 +489,13 @@ public class Entity implements ITemplate {
         }
 
         /**
-         * 开启lombok模型 (默认添加Getter和Setter)
-         * <p>自3.5.10开始,默认添加ToString搭配,如果想关闭可通过{@link #toString(boolean)}关闭</p>
+         * 开启lombok模型
          *
          * @return this
          * @since 3.5.0
          */
         public Builder enableLombok() {
             this.entity.lombok = true;
-            return this;
-        }
-
-        /**
-         * 开启lombok模型 (会把注解属性都加入进去,无论是否启用{@link GlobalConfig#isKotlin()})
-         * <p>注意如果通过此方法开启lombok模型,默认的lombok注解(get,set,toString)都将不会生成,请自行控制添加</p>
-         * <p>由{@link #toString(boolean)}控制的也会失效</p>
-         * 使用@Data示例: enableLombok(new ClassAnnotationAttributes("@Data","lombok.Data"))
-         *
-         * @param attributes 注解属性集合
-         * @return this
-         * @since 3.5.10
-         */
-        public Builder enableLombok(ClassAnnotationAttributes... attributes) {
-            this.entity.lombok = true;
-            this.entity.defaultLombok = false;
-            for (ClassAnnotationAttributes attribute : attributes) {
-                this.addClassAnnotation(attribute);
-            }
             return this;
         }
 
@@ -776,18 +753,6 @@ public class Entity implements ITemplate {
          */
         public Builder tableAnnotationHandler(ITableAnnotationHandler tableAnnotationHandler){
             this.entity.tableAnnotationHandler = tableAnnotationHandler;
-            return this;
-        }
-
-        /**
-         * 设置是否生成ToString方法
-         *
-         * @param toString 是否生成
-         * @return this
-         * @since 3.5.10
-         */
-        public Builder toString(boolean toString) {
-            this.entity.toString = toString;
             return this;
         }
 

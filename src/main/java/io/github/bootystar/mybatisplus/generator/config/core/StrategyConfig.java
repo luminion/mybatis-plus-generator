@@ -42,7 +42,7 @@ import java.util.function.BiFunction;
  * @since 2016/8/30
  */
 @Getter
-public class StrategyConfig implements ITemplate {
+public class StrategyConfig {
 
     protected StrategyConfig() {
     }
@@ -51,7 +51,7 @@ public class StrategyConfig implements ITemplate {
      * 是否大写命名（默认 false）
      */
     protected boolean isCapitalMode;
-    
+
     /**
      * 是否跳过视图（默认 false）
      */
@@ -171,7 +171,7 @@ public class StrategyConfig implements ITemplate {
      * 生成导出方法
      */
     protected boolean generateExport = true;
-    
+
     /**
      * 是否生成重写父类方法
      */
@@ -180,7 +180,7 @@ public class StrategyConfig implements ITemplate {
     /**
      * 新增或修改时排除的字段
      */
-    protected Collection<String> editExcludeColumns;
+    protected Collection<String> editExcludeColumns = new LinkedHashSet<>();
 
     /**
      * swagger实体是否添加注解
@@ -201,7 +201,7 @@ public class StrategyConfig implements ITemplate {
      * excel注解的包
      */
     protected String excelBasePackage = "cn.idev.excel";
-    
+
     /**
      * 额外字段后缀
      */
@@ -303,7 +303,7 @@ public class StrategyConfig implements ITemplate {
         }
         return service;
     }
-    
+
     /**
      * 大写命名、字段符合大写字母数字下划线命名
      *
@@ -391,26 +391,32 @@ public class StrategyConfig implements ITemplate {
         Set<String> importPackages = tableInfo.getImportPackages();
         Set<String> importPackages4DTO = new HashSet<>();
         for (String importPackage : importPackages) {
-            if (!importPackage.startsWith("com.baomidou.mybatisplus.annotation" )) {
+            if (!importPackage.startsWith("com.baomidou.mybatisplus.annotation")) {
                 importPackages4DTO.add(importPackage);
             }
         }
         if (!importPackages4DTO.isEmpty()) {
-            map.put("importPackages4DTO",importPackages4DTO);    
+            map.put("importPackages4DTO", importPackages4DTO);
         }
         List<JdbcType> jdbcTimeTypes = Arrays.asList(
-                JdbcType.DATE, 
-                JdbcType.TIME, 
-                JdbcType.TIMESTAMP, 
+                JdbcType.DATE,
+                JdbcType.TIME,
+                JdbcType.TIMESTAMP,
                 JdbcType.DATETIMEOFFSET,// SQL Server 2008
                 JdbcType.TIME_WITH_TIMEZONE,// JDBC 4.2 JDK8
                 JdbcType.TIMESTAMP_WITH_TIMEZONE // JDBC 4.2 JDK8
         );
         map.put("jdbcTimeTypes", jdbcTimeTypes);
-        
+
         return map;
     }
 
+    /**
+     * 策略配置构建者
+     *
+     * @author nieqiurong 2020/10/11.
+     * @since 3.5.0
+     */
     public static class Builder extends BaseBuilder {
 
         protected StrategyConfig strategyConfig;
@@ -725,9 +731,8 @@ public class StrategyConfig implements ITemplate {
         }
 
         /**
-         * 额外字段后缀, k->后缀 ,v->sql运算符
+         * 清除额外字段后缀
          *
-         * @param extraFieldSuffixMap 额外字段后缀
          * @return this
          */
         public Builder clearExtraFieldSuffix() {
@@ -738,8 +743,8 @@ public class StrategyConfig implements ITemplate {
         /**
          * 额外字段后缀
          *
-         * @param suffix     后缀
-         * @param operator   sql运算符
+         * @param suffix   后缀
+         * @param operator sql运算符
          * @return this
          */
         public Builder extraFieldSuffix(String suffix, String operator) {

@@ -15,6 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator;
 
+import io.github.bootystar.mybatisplus.generator.config.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.core.InjectionConfig;
@@ -25,6 +26,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -154,7 +156,7 @@ public class AutoGenerator {
         logger.debug("==========================准备生成文件...==========================");
         // 初始化配置
         if (null == config) {
-            config = new ConfigBuilder(packageInfo, dataSource, strategy, template, globalConfig, injection);
+            config = new ConfigBuilder(packageInfo, dataSource, strategy, globalConfig, injection);
         }
         if (null == templateEngine) {
             templateEngine = new FreemarkerTemplateEngine();
@@ -163,6 +165,17 @@ public class AutoGenerator {
         // 模板引擎初始化执行文件输出
         templateEngine.init(config).batchOutput().open();
         logger.debug("==========================文件生成完成！！！==========================");
+        String banner = "\n" +
+                ".------..------..------..------..------..------..------..------..------.\n" +
+                "|B.--. ||O.--. ||O.--. ||T.--. ||Y.--. ||S.--. ||T.--. ||A.--. ||R.--. |\n" +
+                "| :(): || :/\\: || :/\\: || :/\\: || (\\/) || :/\\: || :/\\: || (\\/) || :(): |\n" +
+                "| ()() || :\\/: || :\\/: || (__) || :\\/: || :\\/: || (__) || :\\/: || ()() |\n" +
+                "| '--'B|| '--'O|| '--'O|| '--'T|| '--'Y|| '--'S|| '--'T|| '--'A|| '--'R|\n" +
+                "`------'`------'`------'`------'`------'`------'`------'`------'`------'\n";
+        System.out.println(banner);
+        System.out.println("execute success! check files in following folder:");
+        String path = config.getPathInfo().get(OutputFile.parent);
+        System.out.println(new File(path).getAbsolutePath());
     }
 
     /**

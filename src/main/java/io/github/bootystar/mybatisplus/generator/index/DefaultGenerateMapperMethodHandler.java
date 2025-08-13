@@ -60,7 +60,7 @@ public class DefaultGenerateMapperMethodHandler extends AbstractMapperMethodHand
             .collect(Collectors.groupingBy(DatabaseMetaDataWrapper.Index::getName));
         String entityName = tableInfo.getEntityName();
         GlobalConfig globalConfig = tableInfo.getGlobalConfig();
-        Entity entity = tableInfo.getEntityConfig();
+        Entity entity = tableInfo.getStrategyConfig().entity();
         boolean columnConstant = entity.isColumnConstant();
         Set<Map.Entry<String, List<DatabaseMetaDataWrapper.Index>>> entrySet = indexlistMap.entrySet();
         List<MapperMethod> methodList = new ArrayList<>();

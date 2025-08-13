@@ -310,6 +310,12 @@ public class DataSourceConfig {
         return databaseQueryClass;
     }
 
+    /**
+     * 数据库配置构建者
+     *
+     * @author nieqiurong 2020/10/10.
+     * @since 3.5.0
+     */
     public static class Builder implements IConfigBuilder<DataSourceConfig> {
         protected final DataSourceConfig dataSourceConfig = new DataSourceConfig();
 

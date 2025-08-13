@@ -15,11 +15,14 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.core;
 
-import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
+import io.github.bootystar.mybatisplus.generator.config.core.support.Service;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,15 +37,15 @@ import java.util.function.Supplier;
  */
 @Slf4j
 @Getter
-public class GlobalConfig implements ITemplate {
+public class GlobalConfig {
 
     protected GlobalConfig() {
     }
 
     /**
-     * 生成文件的输出目录【 windows:C://tmp  linux or mac:/tmp 】
+     * 生成文件的输出目录【 windows:D://  linux or mac:/tmp 】
      */
-    protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "C://tmp" : "/tmp";
+    protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "D://" : "/tmp";
 
     /**
      * 是否打开输出目录
@@ -55,10 +58,16 @@ public class GlobalConfig implements ITemplate {
     protected String author = "bootystar";
 
     /**
+     * 开启 Kotlin 模式（默认 false）
+     * @deprecated 不支持kotlin
+     */
+    @Deprecated
+    protected boolean kotlin = false; 
+
+    /**
      * 开启 swagger 模式（默认 false 与 springdoc 不可同时使用）
      */
     protected boolean swagger;
-
     /**
      * 开启 springdoc 模式（默认 false 与 swagger 不可同时使用）
      */
@@ -76,21 +85,22 @@ public class GlobalConfig implements ITemplate {
      */
     protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-    /**
-     * 是否启用swagger
-     */
     public boolean isSwagger() {
         // springdoc 设置优先于 swagger
         return !springdoc && swagger;
     }
 
-    /**
-     * 获取注释日期
-     */
     public String getCommentDate() {
         return commentDate.get();
     }
 
+
+    /**
+     * 全局配置构建
+     *
+     * @author nieqiurong 2020/10/11.
+     * @since 3.5.0
+     */
     public static class Builder implements IConfigBuilder<GlobalConfig> {
 
         protected final GlobalConfig globalConfig = new GlobalConfig();
