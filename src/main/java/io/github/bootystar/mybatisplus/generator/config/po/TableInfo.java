@@ -180,7 +180,7 @@ public class TableInfo {
     public TableInfo(ConfigBuilder configBuilder, String name) {
         this.strategyConfig = configBuilder.getStrategyConfig();
         this.globalConfig = configBuilder.getGlobalConfig();
-        this.entity = configBuilder.getEntity();
+        this.entity = configBuilder.getStrategyConfig().entity();
         this.packageConfig = configBuilder.getPackageConfig();
         this.name = name;
     }
