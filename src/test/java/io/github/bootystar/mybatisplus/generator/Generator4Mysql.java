@@ -21,6 +21,14 @@ public class Generator4Mysql {
                 .packageConfig(pkg -> pkg
                         .parent("com.example.test")
                 )
+                .strategyConfig(s->s
+                        // controller
+                        .controllerBuilder().enableJavax()
+                        // entity
+                        .entityBuilder()
+//                        .enableLombok()
+                        
+                )
                 .execute("sys_user")
         ;
     }

@@ -160,7 +160,8 @@ public class AutoGenerator {
             config = new ConfigBuilder(packageInfo, dataSource, strategy, globalConfig, injection);
         }
         if (null == templateEngine) {
-            templateEngine = new VelocityTemplateEngine();
+            templateEngine = new FreemarkerTemplateEngine();
+//            templateEngine = new VelocityTemplateEngine();
         }
         templateEngine.setConfigBuilder(config);
         // 模板引擎初始化执行文件输出
