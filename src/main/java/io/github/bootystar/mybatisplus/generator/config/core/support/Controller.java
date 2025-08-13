@@ -22,6 +22,7 @@ import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
+import io.github.bootystar.mybatisplus.generator.config.core.PackageConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.MethodPayload;
@@ -32,9 +33,9 @@ import io.github.bootystar.mybatisplus.generator.util.ReflectUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 控制器属性配置
@@ -318,16 +319,6 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder baseUrl(String url) {
-            if (url == null || url.isEmpty()) {
-                this.controller.baseUrl = url;
-                return this;
-            }
-            if (!url.startsWith("/")) {
-                url = "/" + url;
-            }
-            if (url.endsWith("/")) {
-                url = url.substring(0, url.length() - 1);
-            }
             this.controller.baseUrl = url;
             return this;
         }
