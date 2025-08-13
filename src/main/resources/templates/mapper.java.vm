@@ -1,40 +1,40 @@
 package ${package.Mapper};
 
-<#list importMapperFrameworkPackages as pkg>
+#foreach($pkg in ${importMapperFrameworkPackages})
 import ${pkg};
-</#list>
-<#if importMapperJavaPackages?size !=0>
+#end
+#if($importMapperJavaPackages.size()>0)
 
-  <#list importMapperJavaPackages as pkg>
+#foreach($pkg in ${importMapperJavaPackages})
 import ${pkg};
-   </#list>
-</#if>
+#end
+#end
 
 /**
  * <p>
- * ${table.comment!} Mapper 接口
+ * $!{table.comment} Mapper 接口
  * </p>
  *
  * @author ${author}
  * @since ${date}
  */
-<#if mapperAnnotationClass??>
+#if(${mapperAnnotationClass})
 @${mapperAnnotationClass.simpleName}
-</#if>
-<#if kotlin>
+#end
+#if(${kotlin})
 interface ${table.mapperName} : ${superMapperClass}<${entity}> {
-<#else>
+#else
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
-</#if>
+#end
 
-<#list mapperMethodList as m>
+#foreach($m in ${mapperMethodList})
     /**
      * generate by ${m.indexName}
      *
-    <#list m.tableFieldList as f>
+     #foreach($f in ${m.tableFieldList})
      * @param ${f.propertyName} ${f.comment}
-    </#list>
+     #end
      */
     ${m.method}
-</#list>
+#end
 }
