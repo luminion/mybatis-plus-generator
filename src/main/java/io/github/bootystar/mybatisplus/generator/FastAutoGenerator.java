@@ -15,10 +15,16 @@
  */
 package io.github.bootystar.mybatisplus.generator;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import io.github.bootystar.mybatisplus.generator.config.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
+import io.github.bootystar.mybatisplus.generator.config.rules.DbColumnType;
 import io.github.bootystar.mybatisplus.generator.engine.AbstractTemplateEngine;
+import org.apache.ibatis.type.JdbcType;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -178,16 +184,60 @@ public final class FastAutoGenerator {
         biConsumer.accept(this::scannerNext, this.injectionConfigBuilder);
         return this;
     }
-    
-    /**
-     * 模板引擎配置
-     *
-     * @param templateEngine 模板引擎
-     * @return FastAutoGenerator
-     */
-    public FastAutoGenerator templateEngine(AbstractTemplateEngine templateEngine) {
-        this.templateEngine = templateEngine;
+
+    public FastAutoGenerator mapperXmlResource(String path) {
+        String projectPath = System.getProperty("user.dir");
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        packageConfigBuilder.pathInfo(Collections.singletonMap(OutputFile.mapper, projectPath + "/src/main/resources/" + path));
         return this;
+    }
+    
+    
+    public FastAutoGenerator initialize() {
+        globalConfigBuilder
+                .disableOpenDir()
+        ;
+        dataSourceConfigBuilder
+                .typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+                    if (JdbcType.TINYINT == metaInfo.getJdbcType()) {
+                        return DbColumnType.INTEGER;
+                    }
+                    if (JdbcType.SMALLINT == metaInfo.getJdbcType()) {
+                        return DbColumnType.INTEGER;
+                    }
+                    return typeRegistry.getColumnType(metaInfo);
+                });
+        strategyConfigBuilder
+                .editExcludeColumns("create_time", "update_time", "create_by", "update_by", "created_by", "updated_by", "create_at", "update_at", "created_at", "updated_at")
+                .mapperBuilder()
+                .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
+                .sortColumn("order", false)
+                .sortColumn("rank", false)
+                .sortColumn("sort", false)
+                .sortColumn("seq", false)
+                .sortColumn("sequence", false)
+                .sortColumn("create_time", true)
+                .sortColumn("id", true)
+                .entityBuilder()
+                .idType(IdType.ASSIGN_ID)
+                .logicDeleteColumnName("deleted")
+                .versionColumnName("version")
+                .disableSerialVersionUID()
+                .enableLombok()
+        ;
+        strategyConfigBuilder.serviceBuilder()
+                .formatServiceFileName("%sService")
+        ;
+        return this;
+    }
+    
+    public void execute(String... tableNames) {
+        if (tableNames != null && tableNames.length > 0) {
+            strategyConfigBuilder.addInclude(Arrays.asList(tableNames));
+        }
+        execute();
     }
 
     public void execute() {

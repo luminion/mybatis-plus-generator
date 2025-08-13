@@ -129,11 +129,7 @@ public class ConfigBuilder {
             DataSourceConfig dataSourceConfig, 
             StrategyConfig strategyConfig, 
             GlobalConfig globalConfig, 
-            InjectionConfig injectionConfig,
-            Entity entity,
-            Mapper mapper,
-            Service service,
-            Controller controller
+            InjectionConfig injectionConfig
     ) {
         this.dataSourceConfig = dataSourceConfig;
         this.strategyConfig = Optional.ofNullable(strategyConfig)
@@ -144,14 +140,6 @@ public class ConfigBuilder {
                 .orElseGet(() -> new PackageConfig.Builder().build());
         this.injectionConfig = Optional.ofNullable(injectionConfig)
                 .orElseGet(() -> new InjectionConfig.Builder().build());
-        this.entity = Optional.ofNullable(entity)
-                .orElseGet(() -> new Entity.Builder().build());
-        this.mapper = Optional.ofNullable(mapper)
-                .orElseGet(() -> new Mapper.Builder().build());
-        this.service = Optional.ofNullable(service)
-                .orElseGet(() -> new Service.Builder().build());
-        this.controller = Optional.ofNullable(controller)
-                .orElseGet(() -> new Controller.Builder().build());
         PathInfoHandler pathInfoHandler = new PathInfoHandler(this.injectionConfig, this.globalConfig, this.strategyConfig, this.packageConfig);
         this.pathInfo.putAll(pathInfoHandler.getPathInfo());
         Class<? extends IDatabaseQuery> databaseQueryClass = dataSourceConfig.getDatabaseQueryClass();

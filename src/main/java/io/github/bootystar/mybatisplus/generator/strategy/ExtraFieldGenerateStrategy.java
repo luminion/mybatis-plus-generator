@@ -1,6 +1,6 @@
 package io.github.bootystar.mybatisplus.generator.strategy;
 
-import com.baomidou.mybatisplus.generator.config.po.TableField;
+import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 
 /**
  * 额外字段策略

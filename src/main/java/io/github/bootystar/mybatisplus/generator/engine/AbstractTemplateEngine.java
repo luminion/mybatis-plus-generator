@@ -98,7 +98,7 @@ public abstract class AbstractTemplateEngine {
         GlobalConfig globalConfig = configBuilder.getGlobalConfig();
         if (entity.isGenerate()) {
             String entityFile = String.format((entityPath + File.separator + "%s" + suffixJavaOrKt()), entityName);
-            outputFile(getOutputFile(entityFile, OutputFile.entity), objectMap, templateFilePath(globalConfig.isKotlin() ? entity.getKotlinTemplate() : entity.getJavaTemplate()), getConfigBuilder().getEntity().isFileOverride());
+            outputFile(getOutputFile(entityFile, OutputFile.entity), objectMap, templateFilePath( entity.getJavaTemplate()), getConfigBuilder().getEntity().isFileOverride());
         }
     }
 
@@ -309,7 +309,6 @@ public abstract class AbstractTemplateEngine {
         objectMap.put("package", config.getPackageConfig().getPackageInfo(config.getInjectionConfig()));
         GlobalConfig globalConfig = config.getGlobalConfig();
         objectMap.put("author", globalConfig.getAuthor());
-        objectMap.put("kotlin", globalConfig.isKotlin());
         objectMap.put("swagger", globalConfig.isSwagger());
         objectMap.put("springdoc", globalConfig.isSpringdoc());
         objectMap.put("date", globalConfig.getCommentDate());
@@ -345,7 +344,8 @@ public abstract class AbstractTemplateEngine {
      * 文件后缀
      */
     protected String suffixJavaOrKt() {
-        return getConfigBuilder().getGlobalConfig().isKotlin() ? ConstVal.KT_SUFFIX : ConstVal.JAVA_SUFFIX;
+//        return getConfigBuilder().getGlobalConfig().isKotlin() ? ConstVal.KT_SUFFIX : ConstVal.JAVA_SUFFIX;
+        return ConstVal.JAVA_SUFFIX;
     }
 
     public AbstractTemplateEngine setConfigBuilder(ConfigBuilder configBuilder) {

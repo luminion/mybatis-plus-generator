@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Getter
-public class InjectionConfig implements ITemplate {
+public class InjectionConfig {
 
     /**
      * 输出文件之前消费者
@@ -47,17 +47,16 @@ public class InjectionConfig implements ITemplate {
 
     /**
      * 自定义配置 Map 对象
-     * -- GETTER --
-     *  获取自定义配置 Map 对象
      */
+    @Getter
     protected Map<String, Object> customMap = new HashMap<>();
 
     /**
      * 自定义模板文件列表
-     * -- GETTER --
-     *  获取自定义模板文件列表
-     *  @since 3.5.3
+     *
+     * @since 3.5.3
      */
+    @Getter
     protected final List<CustomFile> customFiles = new ArrayList<>();
 
     /**
@@ -74,6 +73,9 @@ public class InjectionConfig implements ITemplate {
         }
     }
 
+    /**
+     * 构建者
+     */
     public static class Builder implements IConfigBuilder<InjectionConfig> {
         protected final InjectionConfig injectionConfig = new InjectionConfig();
 

@@ -55,6 +55,7 @@ public class TableInfo {
     /**
      * 包导入信息
      */
+    @Getter
     private final Set<String> importPackages = new TreeSet<>();
 
     /**
@@ -114,6 +115,7 @@ public class TableInfo {
     /**
      * 表字段
      */
+    @Getter
     private final List<TableField> fields = new ArrayList<>();
 
     /**
@@ -125,6 +127,7 @@ public class TableInfo {
     /**
      * 公共字段
      */
+    @Getter
     private final List<TableField> commonFields = new ArrayList<>();
 
     /**
@@ -343,29 +346,9 @@ public class TableInfo {
         return this;
     }
 
-    public Set<String> getImportPackages() {
-        return importPackages;
-    }
-
     public TableInfo setConvert(boolean convert) {
         this.convert = convert;
         return this;
     }
-
-    public List<TableField> getFields() {
-        return fields;
-    }
-
-    public List<TableField> getCommonFields() {
-        return commonFields;
-    }
-
-    /**
-     * 获取是否生成service接口
-     * @deprecated {@link Service.Builder#disableService()}
-     */
-    @Deprecated
-    public boolean isServiceInterface() {
-        return globalConfig.isServiceInterface();
-    }
+    
 }
