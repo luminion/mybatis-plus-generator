@@ -1,13 +1,11 @@
 package ${package.Controller};
 
-import org.springframework.web.bind.annotation.RequestMapping;
-#if(${restControllerStyle})
-import org.springframework.web.bind.annotation.RestController;
-#else
-import org.springframework.stereotype.Controller;
+#foreach($pkg in ${importControllerFrameworkPackages})
+import ${pkg};
 #end
-#if(${superControllerClassPackage})
-import ${superControllerClassPackage};
+
+#foreach($pkg in ${importControllerJavaPackages})
+import ${pkg};
 #end
 
 /**
@@ -28,6 +26,217 @@ import ${superControllerClassPackage};
 public class ${table.controllerName} extends ${superControllerClass} {
 #else
 public class ${table.controllerName} {
+#end
+
+    $!{autoWired}
+    private ${baseService} baseService;
+#if(${generateQuery})
+    
+    #if(${springdoc})
+    @Operation(summary = "根据id查询详情")
+    #elseif(${swagger})
+    @ApiOperation(value = "根据id查询详情")
+    #else
+    /**
+     * 根据id查询详情
+     *
+     * @param id 主键id
+     * @return 查询结果
+     */
+    #end
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    #if(${restful})
+    @GetMapping("$!{idPathParams}")
+    #else
+    @GetMapping("/select$!{idPathParams}")
+    #end
+    public ${returnMethod.clazz("${entityVO}")} selectId($!{idMethodParams}${primaryKeyPropertyType} id) {
+        return ${returnMethod.method("baseService.voById(id)")};
+    }
+
+    #if(${springdoc})
+    @Operation(summary = "列表")
+    #elseif(${swagger})
+    @ApiOperation(value = "列表")
+    #else
+    /**
+     * 列表
+     *
+     * @param param 查询条件
+     * @return 查询结果
+     */
+    #end
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    ${requestMethod4Select}("/list")
+    public ${returnMethod.clazz("List<${entityVO}>")} selectList($!{optionalBodyStr}${entityQueryDTO} param) {
+        return ${returnMethod.method("baseService.voList(param)")};
+    }
+    
+    #if(${springdoc})
+    @Operation(summary = "分页查询")
+    #elseif(${swagger})
+    @ApiOperation(value = "分页查询")
+    #else
+    /**
+     * 分页查询
+     *
+     * @param param 查询条件
+     * @param current 页码
+     * @param size 每页大小
+     * @return 查询结果
+     */
+    #end
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    ${requestMethod4Select}("/page$!{pagePathParams}")
+    public ${returnMethod.clazz(${pageClazz4return})} selectPage($!{optionalBodyStr}${entityQueryDTO} param, $!{pageMethodParams}) {
+        return ${returnMethod.method(${pageMethod.method("baseService.voPage(param, current, size)")})};
+    }
+#end
+#if(${generateExport})
+
+    #if(${springdoc})
+    @Operation(summary = "excel文件导出")
+        #elseif(${swagger})
+    @ApiOperation(value = "excel文件导出")
+        #else
+    /**
+     * excel文件导出
+     * @param param 查询条件
+     * @param current 页码
+     * @param size 每页大小(-1为全部)
+     */
+    #end
+    ${requestMethod4Select}("/excel/export$!{pagePathParams}")
+    public void excelExport($!{optionalBodyStr}${entityQueryDTO} param, ${pageMethodParams}, HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis() + ".xlsx");
+        baseService.excelExport(param, response.getOutputStream(), ${entityVO}.class, current, size);
+    }
+#end
+#if(${generateImport})
+
+    #if(${springdoc})
+    @Operation(summary = "excel导入模板")
+    #elseif(${swagger})
+    @ApiOperation(value = "excel导入模板")
+    #else
+    /**
+     * excel导入模板
+     */
+    #end
+    @GetMapping("/excel/template")
+    public void excelTemplate(HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis() + ".xlsx");
+        baseService.excelTemplate(response.getOutputStream(), ${entityInsertDTO}.class);
+    }
+
+    #if(${springdoc})
+    @Operation(summary = "excel文件导入")
+        #elseif(${swagger})
+    @ApiOperation(value = "excel文件导入")
+        #else
+    /**
+     * excel文件导入
+     *
+     * @param excel excel文件
+     * @return 导入条数
+     */
+    #end
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    @PostMapping("/excel/import")
+    public ${returnMethod.clazz("Integer")} excelImport(@RequestParam("excel") MultipartFile excel) throws IOException {
+        if (excel == null || excel.isEmpty()) return ${returnMethod.method(0)};
+        return ${returnMethod.method("baseService.excelImport(excel.getInputStream(), ${entityInsertDTO}.class)")};
+    }
+#end
+#if(${generateInsert})
+
+    #if(${springdoc})
+    @Operation(summary = "新增")
+    #elseif(${swagger})
+    @ApiOperation(value = "新增")
+    #else
+    /**
+     * 新增
+     *
+     * @param param 新增入参对象
+     * @return 新增后的数据
+     */
+    #end
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    #if(${restful})
+    @PostMapping("")
+        #else
+    @PostMapping("/insert")
+    #end
+    public ${returnMethod.clazz("Object")} insert($!{requiredBodyStr}$!{validatedStr}${entityInsertDTO} param) {
+        return ${returnMethod.method("baseService.insertByDTO(param)")};
+    }
+#end
+#if(${generateUpdate})
+
+    #if(${springdoc})
+    @Operation(summary = "修改")
+    #elseif(${swagger})
+    @ApiOperation(value = "修改")
+    #else
+    /**
+     * 修改
+     *
+     * @param param 修改入参对象
+     * @return 是否成功
+     */
+    #end
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    #if(${restful})
+    @PutMapping("")
+    #else
+    @PostMapping("/update")
+    #end
+    public ${returnMethod.clazz("Boolean")} update($!{requiredBodyStr}$!{validatedStr}${entityUpdateDTO} param) {
+        return ${returnMethod.method("baseService.updateByDTO(param)")};
+    }
+#end
+#if(${generateDelete})
+
+    #if(${springdoc})
+    @Operation(summary = "删除")
+    #elseif(${swagger})
+    @ApiOperation(value = "删除")
+    #else
+    /**
+     * 删除
+     *
+     * @param id 主键id
+     * @return 是否成功
+     */
+    #end
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    #if(${restful})
+    @DeleteMapping("$!{idPathParams}")
+    #else
+    @PostMapping("/delete$!{idPathParams}")
+    #end
+    public ${returnMethod.clazz("Boolean")} delete($!{idMethodParams}${primaryKeyPropertyType} id) {
+        return ${returnMethod.method("baseService.removeById(id)")};
+    }
 #end
 
 }

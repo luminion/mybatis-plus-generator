@@ -11,10 +11,38 @@ import ${superServiceClassPackage};
  * @author ${author}
  * @since ${date}
  */
-#if(${kotlin})
-interface ${table.serviceName} : ${superServiceClass}<${entity}>
+#if(${enhancer})
+public interface ${table.serviceName} extends ${superServiceClass}<${entity}> implements EnhancedService<${entityVO}> {
 #else
 public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
-
-}
 #end
+#if(${methodOverride})
+    #if(${generateQuery})
+
+    ${entityVO} voById(Serializable id);
+
+    List<${entityVO}> voList(${entityQueryDTO} param);
+
+    IPage<${entityVO}> voPage(${entityQueryDTO} param, Long current, Long size);
+    #end
+    #if(${generateExport})
+
+    void excelExport(${entityQueryDTO} param, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields);
+    #end
+    #if(${generateImport})
+
+    void excelTemplate(OutputStream os, Class<?> clazz);
+
+    int excelImport(InputStream is, Class<?> clazz);
+    #end
+    #if(${generateInsert})
+
+    Object insertByDTO(${entityInsertDTO} param);
+    #end
+    #if(${generateUpdate})
+
+    boolean updateByDTO(${entityUpdateDTO} param);
+    #end
+#end
+}
+
