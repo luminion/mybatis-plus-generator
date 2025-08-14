@@ -6,7 +6,7 @@ import ${pkg};
 #if($importMapperJavaPackages.size()>0)
 
 #foreach($pkg in ${importMapperJavaPackages})
-import ${pkg};
+import ${pkg};import com.fasterxml.jackson.databind.ObjectMapper;
 #end
 #end
 
@@ -21,8 +21,8 @@ import ${pkg};
 #if(${mapperAnnotationClass})
 @${mapperAnnotationClass.simpleName}
 #end
-#if(${kotlin})
-interface ${table.mapperName} : ${superMapperClass}<${entity}> {
+#if(${enhancer})
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}>, EnhancedMapper<${entityVO}> {
 #else
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 #end
@@ -36,5 +36,18 @@ public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
      #end
      */
     ${m.method}
+#end
+#if(${methodOverride})
+
+    List<V> voQueryByXml(Object param, IPage<V> page);
+
+    #if(${showOverrideAnnotation})@Override#end
+    default List<V> voQuery(Object param, IPage<V> page) {
+        #if(${enhancer})
+        return super.voQuery(param, page);
+        #else
+        return voQueryByXml(new ObjectMapper().convertValue(param, Map.class), page);      
+        #end
+    }
 #end
 }
