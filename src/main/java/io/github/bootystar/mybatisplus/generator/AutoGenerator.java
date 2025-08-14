@@ -21,7 +21,6 @@ import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.core.InjectionConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.engine.AbstractTemplateEngine;
-import io.github.bootystar.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import io.github.bootystar.mybatisplus.generator.engine.VelocityTemplateEngine;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -160,8 +159,7 @@ public class AutoGenerator {
             config = new ConfigBuilder(packageInfo, dataSource, strategy, globalConfig, injection);
         }
         if (null == templateEngine) {
-            templateEngine = new FreemarkerTemplateEngine();
-//            templateEngine = new VelocityTemplateEngine();
+            templateEngine = new VelocityTemplateEngine();
         }
         templateEngine.setConfigBuilder(config);
         // 模板引擎初始化执行文件输出
