@@ -317,7 +317,7 @@ public class DataSourceConfig {
      * @since 3.5.0
      */
     public static class Builder implements IConfigBuilder<DataSourceConfig> {
-        protected final DataSourceConfig dataSourceConfig = new DataSourceConfig();
+        protected final DataSourceConfig config = new DataSourceConfig();
 
         /**
          * 构造初始化方法
@@ -330,9 +330,9 @@ public class DataSourceConfig {
             if (StringUtils.isBlank(url)) {
                 throw new RuntimeException("无法创建文件，请正确输入 url 配置信息！");
             }
-            this.dataSourceConfig.url = url;
-            this.dataSourceConfig.username = username;
-            this.dataSourceConfig.password = password;
+            this.config.url = url;
+            this.config.username = username;
+            this.config.password = password;
         }
 
         /**
@@ -341,17 +341,17 @@ public class DataSourceConfig {
          * @param dataSource 外部数据源实例
          */
         public Builder(DataSource dataSource) {
-            this.dataSourceConfig.dataSource = dataSource;
+            this.config.dataSource = dataSource;
             try {
                 Connection conn = dataSource.getConnection();
-                this.dataSourceConfig.url = conn.getMetaData().getURL();
+                this.config.url = conn.getMetaData().getURL();
                 try {
-                    this.dataSourceConfig.schemaName = conn.getSchema();
+                    this.config.schemaName = conn.getSchema();
                 } catch (Throwable exception) {
                     //ignore  如果使用低版本的驱动，这里由于是1.7新增的方法，所以会报错，如果驱动太低，需要自行指定了。
                 }
-                this.dataSourceConfig.connection = conn;
-                this.dataSourceConfig.username = conn.getMetaData().getUserName();
+                this.config.connection = conn;
+                this.config.username = conn.getMetaData().getUserName();
             } catch (SQLException ex) {
                 throw new RuntimeException("构建数据库配置对象失败!", ex);
             }
@@ -364,7 +364,7 @@ public class DataSourceConfig {
          */
         @Override
         public DataSourceConfig build() {
-            return this.dataSourceConfig;
+            return this.config;
         }
 
         /**
@@ -374,7 +374,7 @@ public class DataSourceConfig {
          * @return this
          */
         public Builder dbQuery(IDbQuery dbQuery) {
-            this.dataSourceConfig.dbQuery = dbQuery;
+            this.config.dbQuery = dbQuery;
             return this;
         }
 
@@ -385,7 +385,7 @@ public class DataSourceConfig {
          * @return this
          */
         public Builder schema(String schemaName) {
-            this.dataSourceConfig.schemaName = schemaName;
+            this.config.schemaName = schemaName;
             return this;
         }
 
@@ -396,7 +396,7 @@ public class DataSourceConfig {
          * @return this
          */
         public Builder typeConvert(ITypeConvert typeConvert) {
-            this.dataSourceConfig.typeConvert = typeConvert;
+            this.config.typeConvert = typeConvert;
             return this;
         }
 
@@ -407,7 +407,7 @@ public class DataSourceConfig {
          * @return this
          */
         public Builder keyWordsHandler(IKeyWordsHandler keyWordsHandler) {
-            this.dataSourceConfig.keyWordsHandler = keyWordsHandler;
+            this.config.keyWordsHandler = keyWordsHandler;
             return this;
         }
 
@@ -419,7 +419,7 @@ public class DataSourceConfig {
          * @since 3.5.3
          */
         public Builder databaseQueryClass(Class<? extends AbstractDatabaseQuery> databaseQueryClass) {
-            this.dataSourceConfig.databaseQueryClass = databaseQueryClass;
+            this.config.databaseQueryClass = databaseQueryClass;
             return this;
         }
 
@@ -431,7 +431,7 @@ public class DataSourceConfig {
          * @since 3.5.3
          */
         public Builder typeConvertHandler(ITypeConvertHandler typeConvertHandler) {
-            this.dataSourceConfig.typeConvertHandler = typeConvertHandler;
+            this.config.typeConvertHandler = typeConvertHandler;
             return this;
         }
 
@@ -444,7 +444,7 @@ public class DataSourceConfig {
          * @since 3.5.3
          */
         public Builder addConnectionProperty(String key, String value) {
-            this.dataSourceConfig.connectionProperties.put(key, value);
+            this.config.connectionProperties.put(key, value);
             return this;
         }
 
@@ -458,7 +458,7 @@ public class DataSourceConfig {
          */
         public Builder driverClassName(String className) {
             ClassUtils.toClassConfident(className);
-            this.dataSourceConfig.driverClassName = className;
+            this.config.driverClassName = className;
             return this;
         }
 

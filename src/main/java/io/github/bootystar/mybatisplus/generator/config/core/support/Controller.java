@@ -20,9 +20,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
-import io.github.bootystar.mybatisplus.generator.config.core.PackageConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.MethodPayload;
@@ -34,8 +32,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 控制器属性配置
@@ -108,13 +104,6 @@ public class Controller implements ITemplate {
     protected boolean crossOrigins;
 
     /**
-     * javaEE api包(jakarta或javax)
-     * <p>
-     * 涉及HttpServletRequest,HttpServletResponse,@Resource
-     */
-    protected String javaApiPackage = "jakarta";
-
-    /**
      * 返回结果方法
      */
     protected MethodPayload returnMethod = new MethodPayload();
@@ -148,11 +137,6 @@ public class Controller implements ITemplate {
      * controller是否使用@RequestBody注解
      */
     protected boolean requestBody = true;
-
-    /**
-     * 参数校验注解
-     */
-    protected boolean validated = true;
 
     /**
      * 复杂查询使用post请求
@@ -201,14 +185,14 @@ public class Controller implements ITemplate {
     }
     
     public static class Builder extends BaseBuilder {
-        protected final Controller controller = new Controller();
+        protected final Controller config = new Controller();
 
         public Builder(StrategyConfig strategyConfig) {
             super(strategyConfig);
         }
 
         public Controller get() {
-            return this.controller;
+            return this.config;
         }
 
         /**
@@ -228,7 +212,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder superClass(String superClass) {
-            this.controller.superClass = superClass;
+            this.config.superClass = superClass;
             return this;
         }
 
@@ -239,7 +223,7 @@ public class Controller implements ITemplate {
          * @since 3.5.0
          */
         public Builder disableHyphenStyle() {
-            this.controller.hyphenStyle = true;
+            this.config.hyphenStyle = true;
             return this;
         }
 
@@ -250,7 +234,7 @@ public class Controller implements ITemplate {
          * @since 3.5.0
          */
         public Builder disableRestController() {
-            this.controller.restController = false;
+            this.config.restController = false;
             return this;
         }
 
@@ -262,7 +246,7 @@ public class Controller implements ITemplate {
          * @since 3.5.0
          */
         public Builder convertFileName(ConverterFileName converter) {
-            this.controller.converterFileName = converter;
+            this.config.converterFileName = converter;
             return this;
         }
 
@@ -283,7 +267,7 @@ public class Controller implements ITemplate {
          * @since 3.5.3
          */
         public Builder enableFileOverride() {
-            this.controller.fileOverride = true;
+            this.config.fileOverride = true;
             return this;
         }
 
@@ -294,7 +278,7 @@ public class Controller implements ITemplate {
          * @since 3.5.6
          */
         public Builder disable() {
-            this.controller.generate = false;
+            this.config.generate = false;
             return this;
         }
 
@@ -306,7 +290,7 @@ public class Controller implements ITemplate {
          * @since 3.5.6
          */
         public Builder template(String template) {
-            this.controller.templatePath = template;
+            this.config.templatePath = template;
             return this;
         }
 
@@ -319,7 +303,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder baseUrl(String url) {
-            this.controller.baseUrl = url;
+            this.config.baseUrl = url;
             return this;
         }
 
@@ -329,22 +313,9 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder enableCrossOrigins() {
-            this.controller.crossOrigins = true;
+            this.config.crossOrigins = true;
             return this;
         }
-
-        /**
-         * 使用javax包作为javaEE api
-         * <p>springboot2.x使用javax, springboot3.x使用jakarta</p>
-         * 默认使用jakarta
-         *
-         * @return this
-         */
-        public Builder enableJavax() {
-            this.controller.javaApiPackage = "javax";
-            return this;
-        }
-
 
         /**
          * 指定controller的返回结果包装类及方法
@@ -353,7 +324,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public <R> Builder returnMethod(SFunction<Object, R> methodReference) {
-            this.controller.returnMethod = ReflectUtil.lambdaMethodInfo(methodReference, Object.class);
+            this.config.returnMethod = ReflectUtil.lambdaMethodInfo(methodReference, Object.class);
             return this;
         }
 
@@ -364,7 +335,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public <O, R> Builder pageMethod(SFunction<IPage<O>, R> methodReference) {
-            this.controller.pageMethod = ReflectUtil.lambdaMethodInfo(methodReference, IPage.class);
+            this.config.pageMethod = ReflectUtil.lambdaMethodInfo(methodReference, IPage.class);
             return this;
         }
 
@@ -374,7 +345,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder queryDTO(Class<?> queryDTO) {
-            this.controller.queryDTO = new ClassPayload(queryDTO);
+            this.config.queryDTO = new ClassPayload(queryDTO);
             return this;
         }
 
@@ -384,7 +355,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder enableAutoWired() {
-            this.controller.autoWired = true;
+            this.config.autoWired = true;
             return this;
         }
 
@@ -394,7 +365,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder disablePost() {
-            this.controller.postQuery = false;
+            this.config.postQuery = false;
             return this;
         }
 
@@ -404,7 +375,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder disableGetRequestBody() {
-            this.controller.queryRequestBody = false;
+            this.config.queryRequestBody = false;
             return this;
         }
 
@@ -414,7 +385,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder enableRestful() {
-            this.controller.restful = true;
+            this.config.restful = true;
             return this;
         }
 
@@ -424,7 +395,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder disablePathVariable() {
-            this.controller.pathVariable = false;
+            this.config.pathVariable = false;
             return this;
         }
 
@@ -434,17 +405,7 @@ public class Controller implements ITemplate {
          * @return this
          */
         public Builder disableRequestBody() {
-            this.controller.requestBody = false;
-            return this;
-        }
-
-        /**
-         * 禁用参数校验注解
-         *
-         * @return this
-         */
-        public Builder disableValidated() {
-            this.controller.validated = false;
+            this.config.requestBody = false;
             return this;
         }
     }

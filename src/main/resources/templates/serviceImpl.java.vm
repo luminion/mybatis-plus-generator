@@ -71,7 +71,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         ${superMehtod}.excelExport(param, os, clazz, current, size, includeFields);
         #else
         List<${entityVO}> voList = this.voPage(param, current, size).getRecords();
-        ${excelClass}.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(voList);
+        ${excelApiClass}.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(voList);
         #end
     }
     #end
@@ -82,17 +82,17 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         #if(${enhancer})
         ${superMehtod}.excelTemplate(os, clazz);
         #else
-        ${excelClass}.write(os, clazz).sheet().doWrite(Collections.emptyList());
+        ${excelApiClass}.write(os, clazz).sheet().doWrite(Collections.emptyList());
         #end
     }
 
     #if(${showOverrideAnnotation})@Override#end
     public int excelImport(InputStream is, Class<?> clazz) {
         #if(${enhancer})
-//        List<${entityInsertDTO}> dataList = ${excelClass}.read(is).head(clazz).sheet().doReadSync();
+//        List<${entityInsertDTO}> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
         return ${superMehtod}.excelImport(is, clazz);
         #else
-        List<?> dataList = ${excelClass}.read(is).head(clazz).sheet().doReadSync();
+        List<?> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
         List<${entity}> entityList = dataList.stream().map(e -> {
 //            ${entityInsertDTO} dto = (${entityInsertDTO}) e;
             ${entity} entity = new ${entity}();

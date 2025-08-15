@@ -17,13 +17,9 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.ITemplate;
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.IOutputFile;
 import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Controller;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Mapper;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Service;
+import io.github.bootystar.mybatisplus.generator.config.core.support.*;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -176,31 +172,33 @@ public class StrategyConfig implements ITemplate{
      * 是否生成重写父类方法
      */
     protected boolean methodOverride = true;
+    
+    /**
+     * javaEE api包(jakarta或javax)
+     * <p>
+     * 涉及HttpServletRequest,HttpServletResponse,@Resource
+     */
+    protected String javaApiPackage = "jakarta";
+    
+    /**
+     * excel注解的包
+     */
+    protected String excelApiPackage = "cn.idev.excel";
+    
+    /**
+     * excel类
+     */
+    protected String excelClass = "FastExcel";
 
     /**
-     * 新增或修改时排除的字段
+     * 参数校验
      */
-    protected Collection<String> editExcludeColumns = new LinkedHashSet<>();
-
-    /**
-     * swagger实体是否添加注解
-     */
-    protected boolean swaggerModelWithAnnotation;
-
-    /**
-     * swagger注解添加uuid标识
-     */
-    protected boolean swaggerAnnotationWithUUID;
+    protected boolean validated = true;
 
     /**
      * 额外类链接注释
      */
     protected boolean extraClassLinkComment = true;
-
-    /**
-     * excel注解的包
-     */
-    protected String excelBasePackage = "cn.idev.excel";
 
     /**
      * 额外字段后缀
@@ -419,11 +417,11 @@ public class StrategyConfig implements ITemplate{
      */
     public static class Builder extends BaseBuilder {
 
-        protected StrategyConfig strategyConfig;
+        protected StrategyConfig config;
 
         public Builder() {
             super(new StrategyConfig());
-            strategyConfig = super.build();
+            config = super.build();
         }
 
         /**
@@ -433,7 +431,7 @@ public class StrategyConfig implements ITemplate{
          * @since 3.5.0
          */
         public Builder enableCapitalMode() {
-            this.strategyConfig.isCapitalMode = true;
+            this.config.isCapitalMode = true;
             return this;
         }
 
@@ -444,7 +442,7 @@ public class StrategyConfig implements ITemplate{
          * @since 3.5.0
          */
         public Builder enableSkipView() {
-            this.strategyConfig.skipView = true;
+            this.config.skipView = true;
             return this;
         }
 
@@ -455,7 +453,7 @@ public class StrategyConfig implements ITemplate{
          * @since 3.5.0
          */
         public Builder disableSqlFilter() {
-            this.strategyConfig.enableSqlFilter = false;
+            this.config.enableSqlFilter = false;
             return this;
         }
 
@@ -466,7 +464,7 @@ public class StrategyConfig implements ITemplate{
          * @since 3.5.1
          */
         public Builder enableSchema() {
-            this.strategyConfig.enableSchema = true;
+            this.config.enableSchema = true;
             return this;
         }
 
@@ -482,7 +480,7 @@ public class StrategyConfig implements ITemplate{
         }
 
         public Builder addTablePrefix(List<String> tablePrefixList) {
-            this.strategyConfig.tablePrefix.addAll(tablePrefixList);
+            this.config.tablePrefix.addAll(tablePrefixList);
             return this;
         }
 
@@ -498,7 +496,7 @@ public class StrategyConfig implements ITemplate{
         }
 
         public Builder addTableSuffix(List<String> tableSuffixList) {
-            this.strategyConfig.tableSuffix.addAll(tableSuffixList);
+            this.config.tableSuffix.addAll(tableSuffixList);
             return this;
         }
 
@@ -514,7 +512,7 @@ public class StrategyConfig implements ITemplate{
         }
 
         public Builder addFieldPrefix(List<String> fieldPrefix) {
-            this.strategyConfig.fieldPrefix.addAll(fieldPrefix);
+            this.config.fieldPrefix.addAll(fieldPrefix);
             return this;
         }
 
@@ -530,7 +528,7 @@ public class StrategyConfig implements ITemplate{
         }
 
         public Builder addFieldSuffix(List<String> fieldSuffixList) {
-            this.strategyConfig.fieldSuffix.addAll(fieldSuffixList);
+            this.config.fieldSuffix.addAll(fieldSuffixList);
             return this;
         }
 
@@ -542,17 +540,17 @@ public class StrategyConfig implements ITemplate{
          * @since 3.5.0
          */
         public Builder addInclude(String... include) {
-            this.strategyConfig.include.addAll(Arrays.asList(include));
+            this.config.include.addAll(Arrays.asList(include));
             return this;
         }
 
         public Builder addInclude(List<String> includes) {
-            this.strategyConfig.include.addAll(includes);
+            this.config.include.addAll(includes);
             return this;
         }
 
         public Builder addInclude(String include) {
-            this.strategyConfig.include.addAll(Arrays.asList(include.split(",")));
+            this.config.include.addAll(Arrays.asList(include.split(",")));
             return this;
         }
 
@@ -568,7 +566,7 @@ public class StrategyConfig implements ITemplate{
         }
 
         public Builder addExclude(List<String> excludeList) {
-            this.strategyConfig.exclude.addAll(excludeList);
+            this.config.exclude.addAll(excludeList);
             return this;
         }
 
@@ -578,7 +576,7 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder likeTable(LikeTable likeTable) {
-            this.strategyConfig.likeTable = likeTable;
+            this.config.likeTable = likeTable;
             return this;
         }
 
@@ -588,7 +586,7 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder notLikeTable(LikeTable notLikeTable) {
-            this.strategyConfig.notLikeTable = notLikeTable;
+            this.config.notLikeTable = notLikeTable;
             return this;
         }
 
@@ -598,7 +596,7 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder outputFile(IOutputFile outputFile) {
-            this.strategyConfig.outputFile = outputFile;
+            this.config.outputFile = outputFile;
             return this;
         }
 
@@ -610,7 +608,7 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder disableInsert() {
-            this.strategyConfig.generateInsert = false;
+            this.config.generateInsert = false;
             return this;
         }
 
@@ -620,7 +618,7 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder disableUpdate() {
-            this.strategyConfig.generateUpdate = false;
+            this.config.generateUpdate = false;
             return this;
         }
 
@@ -630,7 +628,7 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder disableDelete() {
-            this.strategyConfig.generateDelete = false;
+            this.config.generateDelete = false;
             return this;
         }
 
@@ -640,7 +638,7 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder disableSelect() {
-            this.strategyConfig.generateSelect = false;
+            this.config.generateSelect = false;
             return this;
         }
 
@@ -650,7 +648,7 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder disableImport() {
-            this.strategyConfig.generateImport = false;
+            this.config.generateImport = false;
             return this;
         }
 
@@ -660,7 +658,7 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder disableExport() {
-            this.strategyConfig.generateExport = false;
+            this.config.generateExport = false;
             return this;
         }
 
@@ -671,51 +669,29 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder disableOverrideMethods() {
-            this.strategyConfig.methodOverride = false;
+            this.config.methodOverride = false;
             return this;
         }
 
         /**
-         * 新增或修改时排除的字段
+         * 禁用参数校验
          *
          * @return this
          */
-        public Builder editExcludeColumns(String... editExcludeColumns) {
-            this.strategyConfig.editExcludeColumns.addAll(Arrays.asList(editExcludeColumns));
+        public Builder disableValidated() {
+            this.config.validated = false;
             return this;
         }
 
         /**
-         * 启用swagger/springdoc模型实体的注解
-         * <p>
-         * 已知swagger注解在同名时有冲突, 禁用后请确保表注释不为空且不同名
+         * 使用javax包作为javaEE api
+         * <p>springboot2.x使用javax, springboot3.x使用jakarta</p>
+         * 默认使用jakarta
          *
          * @return this
          */
-        public Builder enableSwaggerModelWithAnnotation() {
-            this.strategyConfig.swaggerModelWithAnnotation = true;
-            return this;
-        }
-
-        /**
-         * 启用swagger/springdoc文档额外uuid标识
-         * <p>
-         * 已知swagger注解在同名时有冲突, 禁用后请确保表注释不为空且不同名
-         *
-         * @return this
-         */
-        public Builder enableSwaggerAnnotationWithUUID() {
-            this.strategyConfig.swaggerAnnotationWithUUID = true;
-            return this;
-        }
-
-        /**
-         * 添加额外类链接注释
-         *
-         * @return this
-         */
-        public Builder disableExtraClassLinkComment() {
-            this.strategyConfig.extraClassLinkComment = false;
+        public Builder useJavax() {
+            this.config.javaApiPackage = "javax";
             return this;
         }
 
@@ -725,18 +701,19 @@ public class StrategyConfig implements ITemplate{
          *
          * @return this
          */
-        public Builder enableEasyExcel() {
-            this.strategyConfig.excelBasePackage = "com.alibaba.excel";
+        public Builder useEasyExcel() {
+            this.config.excelApiPackage = "com.alibaba.excel";
+            this.config.excelClass = "EasyExcel";
             return this;
         }
 
         /**
-         * 清除额外字段后缀
+         * 添加额外类链接注释
          *
          * @return this
          */
-        public Builder clearExtraFieldSuffix() {
-            this.strategyConfig.extraFieldSuffixMap.clear();
+        public Builder disableExtraClassLinkComment() {
+            this.config.extraClassLinkComment = false;
             return this;
         }
 
@@ -748,7 +725,7 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder extraFieldSuffix(String suffix, String operator) {
-            this.strategyConfig.extraFieldSuffixMap.put(suffix, operator);
+            this.config.extraFieldSuffixMap.put(suffix, operator);
             return this;
         }
 
@@ -759,7 +736,17 @@ public class StrategyConfig implements ITemplate{
          * @return this
          */
         public Builder extraFieldStrategy(BiFunction<String, TableField, Boolean> extraFieldStrategy) {
-            this.strategyConfig.extraFieldStrategy = extraFieldStrategy;
+            this.config.extraFieldStrategy = extraFieldStrategy;
+            return this;
+        }
+
+        /**
+         * 清除额外字段后缀
+         *
+         * @return this
+         */
+        public Builder clearExtraFieldSuffix() {
+            this.config.extraFieldSuffixMap.clear();
             return this;
         }
     }

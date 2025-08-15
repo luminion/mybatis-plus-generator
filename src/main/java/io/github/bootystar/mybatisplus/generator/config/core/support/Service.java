@@ -17,7 +17,6 @@ package io.github.bootystar.mybatisplus.generator.config.core.support;
 
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -112,14 +111,14 @@ public class Service implements ITemplate {
 
     public static class Builder extends BaseBuilder {
 
-        protected final Service service = new Service();
+        protected final Service config = new Service();
 
         public Builder(StrategyConfig strategyConfig) {
             super(strategyConfig);
         }
 
         public Service get() {
-            return this.service;
+            return this.config;
         }
 
         /**
@@ -139,7 +138,7 @@ public class Service implements ITemplate {
          * @return this
          */
         public Builder superServiceClass(String superServiceClass) {
-            this.service.superServiceClass = superServiceClass;
+            this.config.superServiceClass = superServiceClass;
             return this;
         }
 
@@ -160,7 +159,7 @@ public class Service implements ITemplate {
          * @return this
          */
         public Builder superServiceImplClass(String superServiceImplClass) {
-            this.service.superServiceImplClass = superServiceImplClass;
+            this.config.superServiceImplClass = superServiceImplClass;
             return this;
         }
 
@@ -172,7 +171,7 @@ public class Service implements ITemplate {
          * @since 3.5.0
          */
         public Builder convertServiceFileName(ConverterFileName converter) {
-            this.service.converterServiceFileName = converter;
+            this.config.converterServiceFileName = converter;
             return this;
         }
 
@@ -184,7 +183,7 @@ public class Service implements ITemplate {
          * @since 3.5.0
          */
         public Builder convertServiceImplFileName(ConverterFileName converter) {
-            this.service.converterServiceImplFileName = converter;
+            this.config.converterServiceImplFileName = converter;
             return this;
         }
 
@@ -214,7 +213,7 @@ public class Service implements ITemplate {
          * 覆盖已有文件
          */
         public Builder enableFileOverride() {
-            this.service.fileOverride = true;
+            this.config.fileOverride = true;
             return this;
         }
 
@@ -225,8 +224,8 @@ public class Service implements ITemplate {
          * @since 3.5.6
          */
         public Builder disable() {
-            this.service.generateService = false;
-            this.service.generateServiceImpl = false;
+            this.config.generateService = false;
+            this.config.generateServiceImpl = false;
             return this;
         }
 
@@ -237,7 +236,7 @@ public class Service implements ITemplate {
          * @since 3.5.6
          */
         public Builder disableService() {
-            this.service.generateService = false;
+            this.config.generateService = false;
             return this;
         }
 
@@ -248,7 +247,7 @@ public class Service implements ITemplate {
          * @since 3.5.6
          */
         public Builder disableServiceImpl() {
-            this.service.generateServiceImpl = false;
+            this.config.generateServiceImpl = false;
             return this;
         }
 
@@ -259,7 +258,7 @@ public class Service implements ITemplate {
          * @since 3.5.6
          */
         public Builder serviceTemplate(String template) {
-            this.service.serviceTemplate = template;
+            this.config.serviceTemplate = template;
             return this;
         }
 
@@ -270,7 +269,7 @@ public class Service implements ITemplate {
          * @since 3.5.6
          */
         public Builder serviceImplTemplate(String template) {
-            this.service.serviceImplTemplate = template;
+            this.config.serviceImplTemplate = template;
             return this;
         }
 

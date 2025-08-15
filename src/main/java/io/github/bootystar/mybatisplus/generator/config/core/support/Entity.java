@@ -18,15 +18,12 @@ package io.github.bootystar.mybatisplus.generator.config.core.support;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.*;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
-import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
@@ -51,7 +48,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Getter
 public class Entity implements ITemplate {
-    
+
     protected Entity() {
     }
 
@@ -268,7 +265,31 @@ public class Entity implements ITemplate {
      */
     @Deprecated
     private String kotlinTemplate = ConstVal.TEMPLATE_ENTITY_KT;
+
+    /**
+     * 新增或修改时排除的字段
+     */
+    protected Collection<String> editExcludeColumns = new LinkedHashSet<>();
+
+    /**
+     * 查询dto继承实体类
+     */
+    private boolean extendsEntityQueryDTO;
     
+    /**
+     * vo继承实体类
+     */
+    private boolean extendsEntityVO;
+
+    /**
+     * swagger实体是否添加注解
+     */
+    protected boolean swaggerModelWithAnnotation;
+
+    /**
+     * swagger注解添加uuid标识
+     */
+    protected boolean swaggerAnnotationWithUUID;
 
     /**
      * <p>
@@ -386,11 +407,11 @@ public class Entity implements ITemplate {
         return data;
     }
     public static class Builder extends BaseBuilder {
-        protected final Entity entity = new Entity();
+        protected final Entity config = new Entity();
 
         public Builder(StrategyConfig strategyConfig) {
             super(strategyConfig);
-            this.entity.nameConvert = new INameConvert.DefaultNameConvert(strategyConfig);
+            this.config.nameConvert = new INameConvert.DefaultNameConvert(strategyConfig);
         }
         
         protected Optional<Class<?>> tryLoadClass(String className) {
@@ -403,15 +424,15 @@ public class Entity implements ITemplate {
         }
         
         public Entity get() {
-            String superClass = this.entity.superClass;
+            String superClass = this.config.superClass;
             if (StringUtils.isNotBlank(superClass)) {
-                tryLoadClass(superClass).ifPresent(this.entity::convertSuperEntityColumns);
+                tryLoadClass(superClass).ifPresent(this.config::convertSuperEntityColumns);
             } else {
-                if (!this.entity.superEntityColumns.isEmpty()) {
+                if (!this.config.superEntityColumns.isEmpty()) {
                     log.warn("Forgot to set entity supper class ?");
                 }
             }
-            return this.entity;
+            return this.config;
         }
 
         /**
@@ -421,7 +442,7 @@ public class Entity implements ITemplate {
          * @return this
          */
         public Builder nameConvert(INameConvert nameConvert) {
-            this.entity.nameConvert = nameConvert;
+            this.config.nameConvert = nameConvert;
             return this;
         }
 
@@ -442,7 +463,7 @@ public class Entity implements ITemplate {
          * @return this
          */
         public Builder superClass(String superEntityClass) {
-            this.entity.superClass = superEntityClass;
+            this.config.superClass = superEntityClass;
             return this;
         }
 
@@ -453,7 +474,7 @@ public class Entity implements ITemplate {
          * @since 3.5.0
          */
         public Builder disableSerialVersionUID() {
-            this.entity.serialVersionUID = false;
+            this.config.serialVersionUID = false;
             return this;
         }
 
@@ -465,7 +486,7 @@ public class Entity implements ITemplate {
          * @since 3.5.11
          */
         public Builder enableSerialAnnotation() {
-            this.entity.serialAnnotation = true;
+            this.config.serialAnnotation = true;
             return this;
         }
 
@@ -476,7 +497,7 @@ public class Entity implements ITemplate {
          * @since 3.5.0
          */
         public Builder enableColumnConstant() {
-            this.entity.columnConstant = true;
+            this.config.columnConstant = true;
             return this;
         }
 
@@ -487,7 +508,7 @@ public class Entity implements ITemplate {
          * @since 3.5.0
          */
         public Builder enableChainModel() {
-            this.entity.chain = true;
+            this.config.chain = true;
             return this;
         }
 
@@ -498,7 +519,7 @@ public class Entity implements ITemplate {
          * @since 3.5.0
          */
         public Builder enableLombok() {
-            this.entity.lombok = true;
+            this.config.lombok = true;
             return this;
         }
 
@@ -509,7 +530,7 @@ public class Entity implements ITemplate {
          * @since 3.5.0
          */
         public Builder enableRemoveIsPrefix() {
-            this.entity.booleanColumnRemoveIsPrefix = true;
+            this.config.booleanColumnRemoveIsPrefix = true;
             return this;
         }
 
@@ -520,7 +541,7 @@ public class Entity implements ITemplate {
          * @since 3.5.0
          */
         public Builder enableTableFieldAnnotation() {
-            this.entity.tableFieldAnnotationEnable = true;
+            this.config.tableFieldAnnotationEnable = true;
             return this;
         }
 
@@ -531,7 +552,7 @@ public class Entity implements ITemplate {
          * @since 3.5.0
          */
         public Builder enableActiveRecord() {
-            this.entity.activeRecord = true;
+            this.config.activeRecord = true;
             return this;
         }
 
@@ -542,7 +563,7 @@ public class Entity implements ITemplate {
          * @return this
          */
         public Builder versionColumnName(String versionColumnName) {
-            this.entity.versionColumnName = versionColumnName;
+            this.config.versionColumnName = versionColumnName;
             return this;
         }
 
@@ -553,7 +574,7 @@ public class Entity implements ITemplate {
          * @return this
          */
         public Builder versionPropertyName(String versionPropertyName) {
-            this.entity.versionPropertyName = versionPropertyName;
+            this.config.versionPropertyName = versionPropertyName;
             return this;
         }
 
@@ -564,7 +585,7 @@ public class Entity implements ITemplate {
          * @return this
          */
         public Builder logicDeleteColumnName(String logicDeleteColumnName) {
-            this.entity.logicDeleteColumnName = logicDeleteColumnName;
+            this.config.logicDeleteColumnName = logicDeleteColumnName;
             return this;
         }
 
@@ -575,7 +596,7 @@ public class Entity implements ITemplate {
          * @return this
          */
         public Builder logicDeletePropertyName(String logicDeletePropertyName) {
-            this.entity.logicDeletePropertyName = logicDeletePropertyName;
+            this.config.logicDeletePropertyName = logicDeletePropertyName;
             return this;
         }
 
@@ -586,7 +607,7 @@ public class Entity implements ITemplate {
          * @return this
          */
         public Builder naming(NamingStrategy namingStrategy) {
-            this.entity.naming = namingStrategy;
+            this.config.naming = namingStrategy;
             return this;
         }
 
@@ -597,7 +618,7 @@ public class Entity implements ITemplate {
          * @return this
          */
         public Builder columnNaming(NamingStrategy namingStrategy) {
-            this.entity.columnNaming = namingStrategy;
+            this.config.columnNaming = namingStrategy;
             return this;
         }
 
@@ -613,7 +634,7 @@ public class Entity implements ITemplate {
         }
 
         public Builder addSuperEntityColumns(List<String> superEntityColumnList) {
-            this.entity.superEntityColumns.addAll(superEntityColumnList);
+            this.config.superEntityColumns.addAll(superEntityColumnList);
             return this;
         }
 
@@ -629,7 +650,7 @@ public class Entity implements ITemplate {
         }
 
         public Builder addIgnoreColumns(List<String> ignoreColumnList) {
-            this.entity.ignoreColumns.addAll(ignoreColumnList);
+            this.config.ignoreColumns.addAll(ignoreColumnList);
             return this;
         }
 
@@ -652,7 +673,7 @@ public class Entity implements ITemplate {
          * @since 3.5.0
          */
         public Builder addTableFills(List<IFill> tableFillList) {
-            this.entity.tableFillList.addAll(tableFillList);
+            this.config.tableFillList.addAll(tableFillList);
             return this;
         }
 
@@ -664,7 +685,7 @@ public class Entity implements ITemplate {
          * @since 3.5.0
          */
         public Builder idType(IdType idType) {
-            this.entity.idType = idType;
+            this.config.idType = idType;
             return this;
         }
 
@@ -676,7 +697,7 @@ public class Entity implements ITemplate {
          * @since 3.5.0
          */
         public Builder convertFileName(ConverterFileName converter) {
-            this.entity.converterFileName = converter;
+            this.config.converterFileName = converter;
             return this;
         }
 
@@ -697,7 +718,7 @@ public class Entity implements ITemplate {
          * @since 3.5.3
          */
         public Builder enableFileOverride() {
-            this.entity.fileOverride = true;
+            this.config.fileOverride = true;
             return this;
         }
 
@@ -709,7 +730,7 @@ public class Entity implements ITemplate {
          * @since 3.5.6
          */
         public Builder javaTemplate(String template) {
-            this.entity.javaTemplate = template;
+            this.config.javaTemplate = template;
             return this;
         }
 
@@ -720,7 +741,7 @@ public class Entity implements ITemplate {
          * @since 3.5.6
          */
         public Builder disable() {
-            this.entity.generate = false;
+            this.config.generate = false;
             return this;
         }
 
@@ -732,7 +753,7 @@ public class Entity implements ITemplate {
          * @since 3.5.10
          */
         public Builder addClassAnnotation(ClassAnnotationAttributes attributes) {
-            this.entity.classAnnotations.add(attributes);
+            this.config.classAnnotations.add(attributes);
             return this;
         }
 
@@ -744,18 +765,19 @@ public class Entity implements ITemplate {
          * @since 3.5.10
          */
         public Builder tableFieldAnnotationHandler(ITableFieldAnnotationHandler tableFieldAnnotationHandler) {
-            this.entity.tableFieldAnnotationHandler = tableFieldAnnotationHandler;
+            this.config.tableFieldAnnotationHandler = tableFieldAnnotationHandler;
             return this;
         }
 
         /**
          * 指定表注解处理器
+         * 
          * @param tableAnnotationHandler 表注解处理器
-         * @since 3.5.10
          * @return this
+         * @since 3.5.10
          */
         public Builder tableAnnotationHandler(ITableAnnotationHandler tableAnnotationHandler){
-            this.entity.tableAnnotationHandler = tableAnnotationHandler;
+            this.config.tableAnnotationHandler = tableAnnotationHandler;
             return this;
         }
 
@@ -767,7 +789,7 @@ public class Entity implements ITemplate {
          * @since 3.5.10
          */
         public Builder fieldUseJavaDoc(boolean fieldUseJavaDoc) {
-            this.entity.fieldUseJavaDoc = fieldUseJavaDoc;
+            this.config.fieldUseJavaDoc = fieldUseJavaDoc;
             return this;
         }
 
@@ -779,7 +801,7 @@ public class Entity implements ITemplate {
          * @since 3.5.11
          */
         public Builder importPackageFunction(Function<Set<String>, List<String>> importPackageFunction) {
-            this.entity.importPackageFunction = importPackageFunction;
+            this.config.importPackageFunction = importPackageFunction;
             return this;
         }
 
@@ -791,7 +813,37 @@ public class Entity implements ITemplate {
          * @since 3.5.11
          */
         public Builder annotationAttributesFunction(Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction) {
-            this.entity.annotationAttributesFunction = annotationAttributesFunction;
+            this.config.annotationAttributesFunction = annotationAttributesFunction;
+            return this;
+        }
+
+        /**
+         * 新增或修改时排除的字段
+         *
+         * @return this
+         */
+        public Builder editExcludeColumns(String... editExcludeColumns) {
+            this.config.editExcludeColumns.addAll(Arrays.asList(editExcludeColumns));
+            return this;
+        }
+        
+        /**
+         * 查询dto继承实体类
+         *
+         * @return this
+         */
+        public Builder enableQueryDTOExtendsEntity() {
+            this.config.extendsEntityQueryDTO = true;
+            return this;
+        }
+
+        /**
+         * vo继承实体类
+         *
+         * @return this
+         */
+        public Builder enableVOExtendsEntity() {
+            this.config.extendsEntityVO = true;
             return this;
         }
 
