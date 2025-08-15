@@ -42,14 +42,17 @@ public class DefaultTableAnnotationHandler implements ITableAnnotationHandler {
         if (StringUtils.isBlank(comment)) {
             comment = StringPool.EMPTY;
         }
-//        boolean kotlin = globalConfig.isKotlin();
-//        if (!kotlin) {
+        boolean kotlin = globalConfig.isKotlin();
+        if (!kotlin && entity.isLombok()) {
             // 原先kt模板没有处理这些,作为兼容项
-            if (entity.isChain() && entity.isLombok()) {
+            if (entity.isChain()) {
                 annotationAttributesList.add(new ClassAnnotationAttributes("@Accessors(chain = true)", "lombok.experimental.Accessors"));
             }
+            if (entity.getSuperClass() != null) {
+                annotationAttributesList.add(new ClassAnnotationAttributes("@EqualsAndHashCode(callSuper = true)", "lombok.EqualsAndHashCode"));
+            }
             annotationAttributesList.add(new ClassAnnotationAttributes("@Data", "lombok.Data"));
-//        }
+        }
         if (tableInfo.isConvert()) {
             String schemaName = tableInfo.getSchemaName();
             if (StringUtils.isBlank(schemaName)) {
