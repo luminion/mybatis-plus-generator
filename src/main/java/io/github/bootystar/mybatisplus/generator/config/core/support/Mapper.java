@@ -20,7 +20,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.IGenerateMapperMethodHandler;
 import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.builder.BaseBuilder;
 import io.github.bootystar.mybatisplus.generator.config.core.PackageConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
@@ -215,14 +214,14 @@ public class Mapper implements ITemplate {
     }
 
     public static class Builder extends BaseBuilder {
-        protected final Mapper mapper = new Mapper();
+        protected final Mapper config = new Mapper();
 
         public Builder(StrategyConfig strategyConfig) {
             super(strategyConfig);
         }
 
         public Mapper get() {
-            return this.mapper;
+            return this.config;
         }
 
         /**
@@ -232,7 +231,7 @@ public class Mapper implements ITemplate {
          * @return this
          */
         public Builder superClass(String superClass) {
-            this.mapper.superClass = superClass;
+            this.config.superClass = superClass;
             return this;
         }
 
@@ -255,7 +254,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.3
          */
         public Builder mapperAnnotation(Class<? extends Annotation> annotationClass) {
-            this.mapper.mapperAnnotationClass = annotationClass;
+            this.config.mapperAnnotationClass = annotationClass;
             return this;
         }
 
@@ -266,7 +265,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.0
          */
         public Builder enableBaseResultMap() {
-            this.mapper.baseResultMap = true;
+            this.config.baseResultMap = true;
             return this;
         }
 
@@ -277,7 +276,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.0
          */
         public Builder enableBaseColumnList() {
-            this.mapper.baseColumnList = true;
+            this.config.baseColumnList = true;
             return this;
         }
 
@@ -289,7 +288,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.0
          */
         public Builder cache(Class<? extends Cache> cache) {
-            this.mapper.cache = cache;
+            this.config.cache = cache;
             return this;
         }
 
@@ -301,7 +300,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.0
          */
         public Builder convertMapperFileName(ConverterFileName converter) {
-            this.mapper.converterMapperFileName = converter;
+            this.config.converterMapperFileName = converter;
             return this;
         }
 
@@ -313,7 +312,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.0
          */
         public Builder convertXmlFileName(ConverterFileName converter) {
-            this.mapper.converterXmlFileName = converter;
+            this.config.converterXmlFileName = converter;
             return this;
         }
 
@@ -344,7 +343,7 @@ public class Mapper implements ITemplate {
          * 覆盖已有文件
          */
         public Builder enableFileOverride() {
-            this.mapper.fileOverride = true;
+            this.config.fileOverride = true;
             return this;
         }
 
@@ -355,7 +354,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.6
          */
         public Builder mapperTemplate(String template) {
-            this.mapper.mapperTemplatePath = template;
+            this.config.mapperTemplatePath = template;
             return this;
         }
 
@@ -366,7 +365,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.6
          */
         public Builder mapperXmlTemplate(String template) {
-            this.mapper.mapperXmlTemplatePath = template;
+            this.config.mapperXmlTemplatePath = template;
             return this;
         }
 
@@ -377,8 +376,8 @@ public class Mapper implements ITemplate {
          * @since 3.5.6
          */
         public Builder disable() {
-            this.mapper.generateMapper = false;
-            this.mapper.generateMapperXml = false;
+            this.config.generateMapper = false;
+            this.config.generateMapperXml = false;
             return this;
         }
 
@@ -389,7 +388,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.6
          */
         public Builder disableMapper() {
-            this.mapper.generateMapper = false;
+            this.config.generateMapper = false;
             return this;
         }
 
@@ -400,7 +399,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.6
          */
         public Builder disableMapperXml() {
-            this.mapper.generateMapperXml = false;
+            this.config.generateMapperXml = false;
             return this;
         }
 
@@ -412,7 +411,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.10
          */
         public Builder generateMapperMethodHandler(IGenerateMapperMethodHandler generateMapperMethodHandler) {
-            this.mapper.generateMapperMethodHandler = generateMapperMethodHandler;
+            this.config.generateMapperMethodHandler = generateMapperMethodHandler;
             return this;
         }
 
@@ -425,7 +424,7 @@ public class Mapper implements ITemplate {
          * @since 3.5.11
          */
         public Builder importPackageFunction(Function<Set<String>, List<String>> importPackageFunction) {
-            this.mapper.importPackageFunction = importPackageFunction;
+            this.config.importPackageFunction = importPackageFunction;
             return this;
         }
 
@@ -437,7 +436,7 @@ public class Mapper implements ITemplate {
          * @return this
          */
         public Builder clearSortColumnMap() {
-            this.mapper.sortColumnMap.clear();
+            this.config.sortColumnMap.clear();
             return this;
         }
 
@@ -449,7 +448,7 @@ public class Mapper implements ITemplate {
          * @return this
          */
         public Builder sortColumn(String columnName, boolean isDesc) {
-            this.mapper.sortColumnMap.put(columnName, isDesc);
+            this.config.sortColumnMap.put(columnName, isDesc);
             return this;
         }
 

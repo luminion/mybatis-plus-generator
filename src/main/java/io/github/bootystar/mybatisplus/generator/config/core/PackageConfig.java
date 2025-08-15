@@ -192,14 +192,14 @@ public class PackageConfig {
      * @since 3.5.0
      */
     public static class Builder implements IConfigBuilder<PackageConfig> {
-        protected final PackageConfig packageConfig = new PackageConfig();
+        protected final PackageConfig config = new PackageConfig();
 
         public Builder() {
         }
 
         public Builder(String parent, String moduleName) {
-            this.packageConfig.parent = parent;
-            this.packageConfig.moduleName = moduleName;
+            this.config.parent = parent;
+            this.config.moduleName = moduleName;
         }
 
         /**
@@ -215,7 +215,7 @@ public class PackageConfig {
          */
         @Override
         public PackageConfig build() {
-            return this.packageConfig;
+            return this.config;
         }
 
         /**
@@ -225,7 +225,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder parent(String parent) {
-            this.packageConfig.parent = parent;
+            this.config.parent = parent;
             return this;
         }
 
@@ -236,7 +236,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder moduleName(String moduleName) {
-            this.packageConfig.moduleName = moduleName;
+            this.config.moduleName = moduleName;
             return this;
         }
 
@@ -247,7 +247,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder entity(String entity) {
-            this.packageConfig.entity = entity;
+            this.config.entity = entity;
             return this;
         }
 
@@ -258,7 +258,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder mapper(String mapper) {
-            this.packageConfig.mapper = mapper;
+            this.config.mapper = mapper;
             return this;
         }
 
@@ -269,7 +269,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder xml(String xml) {
-            this.packageConfig.xml = xml;
+            this.config.xml = xml;
             return this;
         }
 
@@ -280,7 +280,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder service(String service) {
-            this.packageConfig.service = service;
+            this.config.service = service;
             return this;
         }
 
@@ -291,7 +291,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder serviceImpl(String serviceImpl) {
-            this.packageConfig.serviceImpl = serviceImpl;
+            this.config.serviceImpl = serviceImpl;
             return this;
         }
 
@@ -302,7 +302,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder controller(String controller) {
-            this.packageConfig.controller = controller;
+            this.config.controller = controller;
             return this;
         }
 
@@ -313,7 +313,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder queryDTO(String queryDTO) {
-            this.packageConfig.queryDTO = queryDTO;
+            this.config.queryDTO = queryDTO;
             return this;
         }
 
@@ -324,7 +324,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder insertDTO(String insertDTO) {
-            this.packageConfig.insertDTO = insertDTO;
+            this.config.insertDTO = insertDTO;
             return this;
         }
 
@@ -335,7 +335,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder updateDTO(String updateDTO) {
-            this.packageConfig.updateDTO = updateDTO;
+            this.config.updateDTO = updateDTO;
             return this;
         }
 
@@ -346,7 +346,7 @@ public class PackageConfig {
          * @return this
          */
         public Builder pathInfo(Map<OutputFile, String> pathInfo) {
-            this.packageConfig.pathInfo = pathInfo;
+            this.config.pathInfo = pathInfo;
             return this;
         }
 
@@ -357,7 +357,7 @@ public class PackageConfig {
          * @return 连接后的包名
          */
         public String joinPackage(String subPackage) {
-            return this.packageConfig.joinPackage(subPackage);
+            return this.config.joinPackage(subPackage);
         }
 
 

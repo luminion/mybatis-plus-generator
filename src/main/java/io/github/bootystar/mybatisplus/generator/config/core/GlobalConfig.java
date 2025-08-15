@@ -16,13 +16,9 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Service;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -103,18 +99,18 @@ public class GlobalConfig {
      */
     public static class Builder implements IConfigBuilder<GlobalConfig> {
 
-        protected final GlobalConfig globalConfig = new GlobalConfig();
+        protected final GlobalConfig config = new GlobalConfig();
 
         @Override
         public GlobalConfig build() {
-            return this.globalConfig;
+            return this.config;
         }
         
         /**
          * 禁止打开输出目录
          */
         public Builder disableOpenDir() {
-            this.globalConfig.open = false;
+            this.config.open = false;
             return this;
         }
 
@@ -122,7 +118,7 @@ public class GlobalConfig {
          * 输出目录
          */
         public Builder outputDir(String outputDir) {
-            this.globalConfig.outputDir = outputDir;
+            this.config.outputDir = outputDir;
             return this;
         }
 
@@ -130,7 +126,7 @@ public class GlobalConfig {
          * 作者
          */
         public Builder author(String author) {
-            this.globalConfig.author = author;
+            this.config.author = author;
             return this;
         }
 
@@ -138,7 +134,7 @@ public class GlobalConfig {
          * 开启 swagger 模式
          */
         public Builder enableSwagger() {
-            this.globalConfig.swagger = true;
+            this.config.swagger = true;
             return this;
         }
 
@@ -146,7 +142,7 @@ public class GlobalConfig {
          * 开启 springdoc 模式
          */
         public Builder enableSpringdoc() {
-            this.globalConfig.springdoc = true;
+            this.config.springdoc = true;
             return this;
         }
 
@@ -154,7 +150,7 @@ public class GlobalConfig {
          * 时间类型对应策略
          */
         public Builder dateType(DateType dateType) {
-            this.globalConfig.dateType = dateType;
+            this.config.dateType = dateType;
             return this;
         }
 
@@ -167,7 +163,7 @@ public class GlobalConfig {
          * @since 3.5.0
          */
         public Builder commentDate(Supplier<String> commentDate) {
-            this.globalConfig.commentDate = commentDate;
+            this.config.commentDate = commentDate;
             return this;
         }
 

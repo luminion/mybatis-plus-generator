@@ -15,7 +15,6 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.core;
 
-import io.github.bootystar.mybatisplus.generator.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.builder.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -77,11 +76,11 @@ public class InjectionConfig {
      * 构建者
      */
     public static class Builder implements IConfigBuilder<InjectionConfig> {
-        protected final InjectionConfig injectionConfig = new InjectionConfig();
+        protected final InjectionConfig config = new InjectionConfig();
 
         @Override
         public InjectionConfig build() {
-            return this.injectionConfig;
+            return this.config;
         }
 
         /**
@@ -91,7 +90,7 @@ public class InjectionConfig {
          * @return this
          */
         public Builder beforeOutputFile(BiConsumer<TableInfo, Map<String, Object>> biConsumer) {
-            this.injectionConfig.beforeOutputFileBiConsumer = biConsumer;
+            this.config.beforeOutputFileBiConsumer = biConsumer;
             return this;
         }
 
@@ -102,7 +101,7 @@ public class InjectionConfig {
          * @return this
          */
         public Builder customMap(Map<String, Object> customMap) {
-            this.injectionConfig.customMap = customMap;
+            this.config.customMap = customMap;
             return this;
         }
 
@@ -119,19 +118,19 @@ public class InjectionConfig {
         }
 
         public Builder customFile(CustomFile customFile) {
-            this.injectionConfig.customFiles.add(customFile);
+            this.config.customFiles.add(customFile);
             return this;
         }
 
         public Builder customFile(List<CustomFile> customFiles) {
-            this.injectionConfig.customFiles.addAll(customFiles);
+            this.config.customFiles.addAll(customFiles);
             return this;
         }
 
         public Builder customFile(Consumer<CustomFile.Builder> consumer) {
             CustomFile.Builder builder = new CustomFile.Builder();
             consumer.accept(builder);
-            this.injectionConfig.customFiles.add(builder.build());
+            this.config.customFiles.add(builder.build());
             return this;
         }
     }

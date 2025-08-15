@@ -10,7 +10,7 @@ import ${pkg};
 
 /**
  * <p>
- * $!{table.comment}
+ * $!{table.comment}-InsertDTO
  * </p>
  *
  * @author ${author}
