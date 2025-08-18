@@ -60,7 +60,7 @@ public class Controller implements ITemplate {
      *      <code>@RestController</code>
      * </pre>
      */
-    protected boolean restController = false;
+    protected boolean restController = true;
 
     /**
      * 驼峰转连字符
@@ -90,6 +90,12 @@ public class Controller implements ITemplate {
      * @since 3.5.6
      */
     protected boolean generate = true;
+
+    /**
+     * 模板路径
+     * @since 3.5.6
+     */
+    protected String templatePath = ConstVal.TEMPLATE_CONTROLLER;
     
     // =============自定义项==============
 
@@ -147,12 +153,6 @@ public class Controller implements ITemplate {
      * get请求是否使用@RequestBody注解
      */
     protected boolean queryRequestBody = true;
-
-    /**
-     * 模板路径
-     * @since 3.5.6
-     */
-    protected String templatePath = ConstVal.TEMPLATE_CONTROLLER;
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
@@ -217,17 +217,6 @@ public class Controller implements ITemplate {
         }
 
         /**
-         * 关闭驼峰转连字符
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder disableHyphenStyle() {
-            this.config.hyphenStyle = true;
-            return this;
-        }
-
-        /**
          * 关闭@RestController控制器
          *
          * @return this
@@ -235,6 +224,17 @@ public class Controller implements ITemplate {
          */
         public Builder disableRestController() {
             this.config.restController = false;
+            return this;
+        }
+
+        /**
+         * 关闭驼峰转连字符
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder disableHyphenStyle() {
+            this.config.hyphenStyle = false;
             return this;
         }
 
