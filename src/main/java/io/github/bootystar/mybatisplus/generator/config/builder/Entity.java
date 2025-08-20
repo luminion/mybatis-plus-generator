@@ -431,9 +431,12 @@ public class Entity extends EntityConfig {
 
         /**
          * 新增或修改时排除的字段
+         * todo  废弃
          *
+         * @deprecated 使用 {@link #addTableFills(IFill...)}替代
          * @return this
          */
+        @Deprecated
         public Builder editExcludeColumns(String... editExcludeColumns) {
             this.config.editExcludeColumns.addAll(Arrays.asList(editExcludeColumns));
             return this;

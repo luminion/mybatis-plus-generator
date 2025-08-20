@@ -19,7 +19,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.TemplateLoadWay;
-import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -67,7 +66,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
     }
 
     @Override
-    public String writer(Map<String, Object> objectMap, String templateName, String templateString) throws Exception {
+    public String writer(Map<String, Object> objectMap, String templateName, String templateString) {
         StringWriter writer = new StringWriter();
         velocityEngine.evaluate(new VelocityContext(objectMap), writer, templateName, templateString);
         return writer.toString();

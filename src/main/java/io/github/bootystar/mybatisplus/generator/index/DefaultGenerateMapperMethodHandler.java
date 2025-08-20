@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
  * <p>由于需求不一样,默认只处理单字段索引,如果默认复合索引的方案符合你的要求,你可以考虑{@link #singleIndex}设置成false</p>
  *
  * @author nieqiurong
- * @see EntityConfig.Builder#enableColumnConstant()
  * @since 3.5.10
  */
 public class DefaultGenerateMapperMethodHandler extends AbstractMapperMethodHandler {
@@ -59,8 +58,8 @@ public class DefaultGenerateMapperMethodHandler extends AbstractMapperMethodHand
         Map<String, List<DatabaseMetaDataWrapper.Index>> indexlistMap = tableInfo.getIndexList().stream()
             .collect(Collectors.groupingBy(DatabaseMetaDataWrapper.Index::getName));
         String entityName = tableInfo.getEntityName();
-        GlobalConfig globalConfig = tableInfo.getGlobalConfig();
-        EntityConfig entity = tableInfo.getStrategyConfig().entity();
+        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
+        EntityConfig entity = tableInfo.getConfigAdapter().getEntityConfig();
         boolean columnConstant = entity.isColumnConstant();
         Set<Map.Entry<String, List<DatabaseMetaDataWrapper.Index>>> entrySet = indexlistMap.entrySet();
         List<MapperMethod> methodList = new ArrayList<>();
@@ -170,7 +169,7 @@ public class DefaultGenerateMapperMethodHandler extends AbstractMapperMethodHand
 
     @Override
     public Set<String> getImportPackages(TableInfo tableInfo) {
-        GlobalConfig globalConfig = tableInfo.getGlobalConfig();
+        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
         Set<String> imports = new HashSet<>();
         if (!singleIndex) {
             imports.add(ObjectUtils.class.getName());

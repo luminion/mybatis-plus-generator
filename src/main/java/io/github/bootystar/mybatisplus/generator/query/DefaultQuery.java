@@ -16,7 +16,6 @@
 package io.github.bootystar.mybatisplus.generator.query;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
 import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
@@ -41,8 +40,8 @@ import java.util.Map;
  * </p>
  * <p>
  * FAQ:
- * 1.Mysql无法读取表注释: 链接增加属性 remarks=true&useInformationSchema=true 或者通过{@link DataSourceConfig.Builder#addConnectionProperty(String, String)}设置
- * 2.Oracle无法读取注释: 增加属性remarks=true，也有些驱动版本说是增加remarksReporting=true {@link DataSourceConfig.Builder#addConnectionProperty(String, String)}
+ * 1.Mysql无法读取表注释: 链接增加属性 remarks=true&useInformationSchema=true 或者通过{@link io.github.bootystar.mybatisplus.generator.config.builder.Datasource.Builder#addConnectionProperty(String, String)}设置
+ * 2.Oracle无法读取注释: 增加属性remarks=true，也有些驱动版本说是增加remarksReporting=true {@link io.github.bootystar.mybatisplus.generator.config.builder.Datasource.Builder#addConnectionProperty(String, String)}
  * </p>
  * @since 3.5.3
  */
@@ -71,7 +70,7 @@ public class DefaultQuery extends AbstractDatabaseQuery {
             tables.forEach(table -> {
                 String tableName = table.getName();
                 if (StringUtils.isNotBlank(tableName)) {
-                    TableInfo tableInfo = new TableInfo(this.configBuilder, tableName);
+                    TableInfo tableInfo = new TableInfo(this.configAdapter, tableName);
                     tableInfo.setComment(table.getRemarks());
                     if (isInclude && strategyConfig.matchIncludeTable(tableName)) {
                         includeTableList.add(tableInfo);
@@ -105,10 +104,10 @@ public class DefaultQuery extends AbstractDatabaseQuery {
     protected void convertTableFields(TableInfo tableInfo) {
         String tableName = tableInfo.getName();
         Map<String, DatabaseMetaDataWrapper.Column> columnsInfoMap = getColumnsInfo(tableName);
-        EntityConfig entity = strategyConfig.entity();
+        EntityConfig entity = getConfigAdapter().getEntityConfig();
         columnsInfoMap.forEach((k, columnInfo) -> {
             String columnName = columnInfo.getName();
-            TableField field = new TableField(this.configBuilder, columnName);
+            TableField field = new TableField(this.configAdapter, columnName);
             // 处理ID
             if (columnInfo.isPrimaryKey()) {
                 field.primaryKey(columnInfo.isAutoIncrement());

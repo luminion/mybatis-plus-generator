@@ -28,6 +28,9 @@ import io.github.bootystar.mybatisplus.generator.fill.Column;
 import io.github.bootystar.mybatisplus.generator.fill.Property;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import io.github.bootystar.mybatisplus.generator.model.AnnotationAttributes;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.ibatis.type.JdbcType;
 
 
@@ -44,47 +47,56 @@ import java.util.stream.Collectors;
  * @author YangHu
  * @since 2016-12-03
  */
+@ToString
 public class TableField {
 
     /**
      * 是否做注解转换
      */
+    @Getter
     private boolean convert;
 
     /**
      * 是否主键
      */
+    @Getter
     private boolean keyFlag;
 
     /**
      * 主键是否为自增类型
      */
+    @Getter
     private boolean keyIdentityFlag;
 
     /**
      * 字段名称
      */
+    @Getter
     private String name;
 
     /**
      * 字段类型（已弃用，使用 {@link #columnType} 代替）
      */
+    @Getter
     @Deprecated
     private String type;
 
     /**
      * 属性名称
      */
+    @Getter
     private String propertyName;
 
     /**
      * 字段类型
      */
+    @Getter
     private IColumnType columnType;
 
     /**
      * 字段注释
      */
+    @Getter
     private String comment;
 
     /**
@@ -97,6 +109,7 @@ public class TableField {
      *
      * @since 3.3.2
      */
+    @Getter
     private boolean keyWords;
 
     /**
@@ -104,11 +117,13 @@ public class TableField {
      *
      * @since 3.3.2
      */
+    @Getter
     private String columnName;
 
     /**
      * 自定义查询字段列表
      */
+    @Getter
     private Map<String, Object> customMap;
 
     /**
@@ -116,11 +131,14 @@ public class TableField {
      *
      * @since 3.5.0
      */
+    @Setter
+    @Getter
     private MetaInfo metaInfo;
 
     /**
      * 实体属性配置
      */
+    @Getter
     private final EntityConfig entity;
 
     /**
@@ -150,16 +168,16 @@ public class TableField {
     /**
      * 构造方法
      *
-     * @param configBuilder 配置构建
+     * @param configAdapter 配置构建
      * @param name          数据库字段名称
      * @since 3.5.0
      */
-    public TableField(ConfigAdapter configBuilder, String name) {
+    public TableField(ConfigAdapter configAdapter, String name) {
         this.name = name;
         this.columnName = name;
-        this.entity = configBuilder.getStrategyConfig().entity();
-        this.dataSourceConfig = configBuilder.getDataSourceConfig();
-        this.globalConfig = configBuilder.getGlobalConfig();
+        this.entity = configAdapter.getEntityConfig();
+        this.dataSourceConfig = configAdapter.getDataSourceConfig();
+        this.globalConfig = configAdapter.getGlobalConfig();
     }
 
     /**
@@ -308,38 +326,6 @@ public class TableField {
         return this;
     }
 
-    public boolean isConvert() {
-        return convert;
-    }
-
-    public boolean isKeyFlag() {
-        return keyFlag;
-    }
-
-    public boolean isKeyIdentityFlag() {
-        return keyIdentityFlag;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getPropertyName() {
-        return propertyName;
-    }
-
-    public IColumnType getColumnType() {
-        return columnType;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
     public String getFill() {
         if (StringUtils.isBlank(fill)) {
             entity.getTableFillList().stream()
@@ -349,36 +335,6 @@ public class TableField {
                 .findFirst().ifPresent(tf -> this.fill = tf.getFieldFill().name());
         }
         return fill;
-    }
-
-    public boolean isKeyWords() {
-        return keyWords;
-    }
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public Map<String, Object> getCustomMap() {
-        return customMap;
-    }
-
-    public MetaInfo getMetaInfo() {
-        return metaInfo;
-    }
-
-    public void setMetaInfo(MetaInfo metaInfo) {
-        this.metaInfo = metaInfo;
-    }
-
-    /**
-     * 获取实体配置信息
-     *
-     * @return 实体配置信息
-     * @since 3.5.10
-     */
-    public EntityConfig getEntity() {
-        return this.entity;
     }
 
     /**
@@ -433,41 +389,49 @@ public class TableField {
         /**
          * 表名称
          */
+        @Getter
         private String tableName;
 
         /**
          * 字段名称
          */
+        @Getter
         private String columnName;
 
         /**
          * 字段长度
          */
+        @Getter
         private int length;
 
         /**
          * 是否非空
          */
+        @Getter
         private boolean nullable;
 
         /**
          * 字段注释
          */
+        @Getter
         private String remarks;
 
         /**
          * 字段默认值
          */
+        @Getter
         private String defaultValue;
 
         /**
          * 字段精度
          */
+        @Getter
         private int scale;
 
         /**
          * JDBC类型
          */
+        @Getter
         private JdbcType jdbcType;
 
         /**
@@ -475,6 +439,7 @@ public class TableField {
          *
          * @since 3.5.3
          */
+        @Getter
         private String typeName;
 
         /**
@@ -497,58 +462,6 @@ public class TableField {
                 this.typeName = column.getTypeName();
                 this.generatedColumn = column.isGeneratedColumn();
             }
-        }
-
-        public String getTableName() {
-            return tableName;
-        }
-
-        public String getColumnName() {
-            return columnName;
-        }
-
-        public int getLength() {
-            return length;
-        }
-
-        public boolean isNullable() {
-            return nullable;
-        }
-
-        public String getRemarks() {
-            return remarks;
-        }
-
-        public String getDefaultValue() {
-            return defaultValue;
-        }
-
-        public int getScale() {
-            return scale;
-        }
-
-        public JdbcType getJdbcType() {
-            return jdbcType;
-        }
-
-        public String getTypeName() {
-            return typeName;
-        }
-
-        @Override
-        public String toString() {
-            return "MetaInfo{" +
-                "tableName='" + tableName + '\'' +
-                ", columnName='" + columnName + '\'' +
-                ", length=" + length +
-                ", nullable=" + nullable +
-                ", remarks='" + remarks + '\'' +
-                ", defaultValue='" + defaultValue + '\'' +
-                ", scale=" + scale +
-                ", jdbcType=" + jdbcType +
-                ", typeName='" + typeName + '\'' +
-                ", generatedColumn=" + generatedColumn +
-                '}';
         }
     }
 }

@@ -22,6 +22,7 @@ import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,8 +41,10 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
 
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    protected final ConfigAdapter configBuilder;
+    @Getter
+    protected final ConfigAdapter configAdapter;
 
+    @Getter
     protected final DataSourceConfig dataSourceConfig;
 
     protected final StrategyConfig strategyConfig;
@@ -49,19 +52,11 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
     protected final GlobalConfig globalConfig;
 
 
-    public AbstractDatabaseQuery(ConfigAdapter configBuilder) {
-        this.configBuilder = configBuilder;
-        this.dataSourceConfig = configBuilder.getDataSourceConfig();
-        this.strategyConfig = configBuilder.getStrategyConfig();
-        this.globalConfig = configBuilder.getGlobalConfig();
-    }
-
-    public ConfigAdapter getConfigBuilder() {
-        return configBuilder;
-    }
-
-    public DataSourceConfig getDataSourceConfig() {
-        return dataSourceConfig;
+    public AbstractDatabaseQuery(ConfigAdapter configAdapter) {
+        this.configAdapter = configAdapter;
+        this.dataSourceConfig = configAdapter.getDataSourceConfig();
+        this.strategyConfig = configAdapter.getStrategyConfig();
+        this.globalConfig = configAdapter.getGlobalConfig();
     }
 
     protected void filter(List<TableInfo> tableList, List<TableInfo> includeTableList, List<TableInfo> excludeTableList) {
