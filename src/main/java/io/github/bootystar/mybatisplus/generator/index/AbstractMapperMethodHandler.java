@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.index;
 
-import io.github.bootystar.mybatisplus.generator.IGenerateMapperMethodHandler;
+import io.github.bootystar.mybatisplus.generator.handler.IGenerateMapperMethodHandler;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 
 /**

@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.builder;
+package io.github.bootystar.mybatisplus.generator.config.po;
 
 import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import lombok.Getter;
 
 import java.util.function.Function;

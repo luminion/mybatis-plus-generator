@@ -18,8 +18,8 @@ package io.github.bootystar.mybatisplus.generator.query;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.IDbQuery;
 import io.github.bootystar.mybatisplus.generator.config.ITypeConvert;
-import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
+import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
+import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.querys.DbQueryDecorator;
@@ -43,7 +43,7 @@ public class SQLQuery extends AbstractDatabaseQuery {
     protected final DbQueryDecorator dbQuery;
     protected final DatabaseMetaDataWrapper databaseMetaDataWrapper;
 
-    public SQLQuery(ConfigBuilder configBuilder) {
+    public SQLQuery(ConfigAdapter configBuilder) {
         super(configBuilder);
         this.dbQuery = new DbQueryDecorator(dataSourceConfig, strategyConfig);
         this.databaseMetaDataWrapper = new DatabaseMetaDataWrapper(dbQuery.getConnection(), dataSourceConfig.getSchemaName());
@@ -105,7 +105,7 @@ public class SQLQuery extends AbstractDatabaseQuery {
                     }
                 });
             }
-            Entity entity = strategyConfig.entity();
+            EntityConfig entity = strategyConfig.entity();
             dbQuery.execute(tableFieldsSql, result -> {
                 String columnName = result.getStringResult(dbQuery.fieldName());
                 TableField field = new TableField(this.configBuilder, columnName);

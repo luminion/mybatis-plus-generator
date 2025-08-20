@@ -15,9 +15,9 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.core;
 
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.builder.CustomFile;
+import io.github.bootystar.mybatisplus.generator.config.po.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
+import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,8 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * 注入配置
@@ -37,7 +35,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Getter
-public class InjectionConfig {
+public class InjectionConfig implements ITemplate {
 
     /**
      * 输出文件之前消费者
@@ -69,69 +67,6 @@ public class InjectionConfig {
         }
         if (null != beforeOutputFileBiConsumer) {
             beforeOutputFileBiConsumer.accept(tableInfo, objectMap);
-        }
-    }
-
-    /**
-     * 构建者
-     */
-    public static class Builder implements IConfigBuilder<InjectionConfig> {
-        protected final InjectionConfig config = new InjectionConfig();
-
-        @Override
-        public InjectionConfig build() {
-            return this.config;
-        }
-
-        /**
-         * 输出文件之前消费者
-         *
-         * @param biConsumer 消费者
-         * @return this
-         */
-        public Builder beforeOutputFile(BiConsumer<TableInfo, Map<String, Object>> biConsumer) {
-            this.config.beforeOutputFileBiConsumer = biConsumer;
-            return this;
-        }
-
-        /**
-         * 自定义配置 Map 对象
-         *
-         * @param customMap Map 对象
-         * @return this
-         */
-        public Builder customMap(Map<String, Object> customMap) {
-            this.config.customMap = customMap;
-            return this;
-        }
-
-        /**
-         * 自定义配置模板文件
-         *
-         * @param customFile key为文件名称，value为文件路径
-         * @return this
-         */
-        public Builder customFile(Map<String, String> customFile) {
-            return customFile(customFile.entrySet().stream()
-                    .map(e -> new CustomFile.Builder().fileName(e.getKey()).templatePath(e.getValue()).build())
-                    .collect(Collectors.toList()));
-        }
-
-        public Builder customFile(CustomFile customFile) {
-            this.config.customFiles.add(customFile);
-            return this;
-        }
-
-        public Builder customFile(List<CustomFile> customFiles) {
-            this.config.customFiles.addAll(customFiles);
-            return this;
-        }
-
-        public Builder customFile(Consumer<CustomFile.Builder> consumer) {
-            CustomFile.Builder builder = new CustomFile.Builder();
-            consumer.accept(builder);
-            this.config.customFiles.add(builder.build());
-            return this;
         }
     }
 

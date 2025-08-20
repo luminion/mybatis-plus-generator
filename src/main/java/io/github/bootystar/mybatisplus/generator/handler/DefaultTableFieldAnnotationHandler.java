@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator;
+package io.github.bootystar.mybatisplus.generator.handler;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -41,7 +41,7 @@ public class DefaultTableFieldAnnotationHandler implements ITableFieldAnnotation
     public List<AnnotationAttributes> handle(TableInfo tableInfo, TableField tableField) {
         List<AnnotationAttributes> annotationAttributesList = new ArrayList<>();
         GlobalConfig globalConfig = tableInfo.getGlobalConfig();
-        Entity entity = tableField.getEntity();
+        EntityConfig entity = tableField.getEntity();
         String comment = tableField.getComment();
         if (StringUtils.isNotBlank(comment)) {
             if (globalConfig.isSpringdoc()) {

@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.builder;
+package io.github.bootystar.mybatisplus.generator.config;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.*;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Controller;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Mapper;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Service;
+import io.github.bootystar.mybatisplus.generator.config.core.ControllerConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.MapperConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.ServiceConfig;
 import lombok.Getter;
 
 import java.io.File;
@@ -55,11 +54,11 @@ class PathInfoHandler {
      */
     private final PackageConfig packageConfig;
 
-    PathInfoHandler(InjectionConfig injectionConfig, GlobalConfig globalConfig, StrategyConfig strategyConfig, PackageConfig packageConfig) {
-        this.outputDir = globalConfig.getOutputDir();
-        this.packageConfig = packageConfig;
+    PathInfoHandler(ConfigAdapter configAdapter) {
+        this.outputDir = configAdapter.getGlobalConfig().getOutputDir();
+        this.packageConfig = configAdapter.getPackageConfig();
         // 设置默认输出路径
-        this.setDefaultPathInfo(injectionConfig, globalConfig, strategyConfig);
+        this.setDefaultPathInfo(configAdapter);
         // 覆盖自定义路径
         Map<OutputFile, String> pathInfo = packageConfig.getPathInfo();
         if (CollectionUtils.isNotEmpty(pathInfo)) {
@@ -73,26 +72,28 @@ class PathInfoHandler {
      * @param globalConfig   全局配置
      * @param strategyConfig 模板配置
      */
-    private void setDefaultPathInfo(InjectionConfig injectionConfig, GlobalConfig globalConfig, StrategyConfig strategyConfig) {
-        Entity entity = strategyConfig.entity();
+    private void setDefaultPathInfo(ConfigAdapter configAdapter) {
+        InjectionConfig injectionConfig = configAdapter.getInjectionConfig();
+        GlobalConfig globalConfig = configAdapter.getGlobalConfig();
+        EntityConfig entity = configAdapter.getEntityConfig();
         if (entity.isGenerate()) {
             putPathInfo(injectionConfig, globalConfig.isKotlin() ? entity.getKotlinTemplate() : entity.getJavaTemplate(), OutputFile.entity, ConstVal.ENTITY);
         }
-        Mapper mapper = strategyConfig.mapper();
+        MapperConfig mapper = configAdapter.getMapperConfig();
         if (mapper.isGenerateMapper()) {
             putPathInfo(injectionConfig, mapper.getMapperTemplatePath(), OutputFile.mapper, ConstVal.MAPPER);
         }
         if (mapper.isGenerateMapperXml()) {
             putPathInfo(injectionConfig, mapper.getMapperXmlTemplatePath(), OutputFile.xml, ConstVal.XML);
         }
-        Service service = strategyConfig.service();
+        ServiceConfig service = configAdapter.getServiceConfig();
         if (service.isGenerateService()) {
             putPathInfo(injectionConfig, service.getServiceTemplate(), OutputFile.service, ConstVal.SERVICE);
         }
         if (service.isGenerateServiceImpl()) {
             putPathInfo(injectionConfig, service.getServiceImplTemplate(), OutputFile.serviceImpl, ConstVal.SERVICE_IMPL);
         }
-        Controller controller = strategyConfig.controller();
+        ControllerConfig controller = configAdapter.getControllerConfig();
         if (controller.isGenerate()) {
             putPathInfo(injectionConfig, controller.getTemplatePath(), OutputFile.controller, ConstVal.CONTROLLER);
         }

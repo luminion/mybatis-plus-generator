@@ -18,11 +18,9 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.OutputFile;
-import io.github.bootystar.mybatisplus.generator.config.builder.CustomFile;
+import io.github.bootystar.mybatisplus.generator.config.po.CustomFile;
 import lombok.Getter;
-
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -62,7 +60,7 @@ public class PackageConfig {
     protected String mapper = "mapper";
 
     /**
-     * Mapper XML包名
+     * MapperConfig XML包名
      */
     protected String xml = "mapper.xml";
 
@@ -72,7 +70,7 @@ public class PackageConfig {
     protected String service = "service";
 
     /**
-     * Service Impl包名
+     * ServiceConfig Impl包名
      */
     protected String serviceImpl = "service.impl";
 
@@ -104,7 +102,7 @@ public class PackageConfig {
     /**
      * 路径配置信息
      */
-    protected Map<OutputFile, String> pathInfo;
+    protected Map<OutputFile, String> pathInfo = new HashMap<>();
 
     /**
      * 包配置信息
@@ -151,10 +149,10 @@ public class PackageConfig {
             packageInfo.put(ConstVal.SERVICE_IMPL, this.joinPackage(this.getServiceImpl()));
             packageInfo.put(ConstVal.CONTROLLER, this.joinPackage(this.getController()));
             packageInfo.put(ConstVal.PARENT, this.getParent());
-            packageInfo.put(ConstVal.INSERT_DTO, this.joinPackage(this.getInsertDTO()));
-            packageInfo.put(ConstVal.UPDATE_DTO, this.joinPackage(this.getUpdateDTO()));
-            packageInfo.put(ConstVal.QUERY_DTO, this.joinPackage(this.getQueryDTO()));
-            packageInfo.put(ConstVal.VO, this.joinPackage(this.getVo()));
+            packageInfo.put(ConstVal.ENTITY_INSERT_DTO, this.joinPackage(this.getInsertDTO()));
+            packageInfo.put(ConstVal.ENTITY_UPDATE_DTO, this.joinPackage(this.getUpdateDTO()));
+            packageInfo.put(ConstVal.ENTITY_QUERY_DTO, this.joinPackage(this.getQueryDTO()));
+            packageInfo.put(ConstVal.ENTITY_VO, this.joinPackage(this.getVo()));
             if (injectionConfig != null) {
                 List<CustomFile> customFiles = injectionConfig.getCustomFiles();
                 for (CustomFile customFile : customFiles) {
@@ -183,184 +181,6 @@ public class PackageConfig {
      */
     public String getPackageInfo(InjectionConfig injectionConfig, String module) {
         return getPackageInfo(injectionConfig).get(module);
-    }
-
-    /**
-     * 构建者
-     *
-     * @author nieqiurong
-     * @since 3.5.0
-     */
-    public static class Builder implements IConfigBuilder<PackageConfig> {
-        protected final PackageConfig config = new PackageConfig();
-
-        public Builder() {
-        }
-
-        public Builder(String parent, String moduleName) {
-            this.config.parent = parent;
-            this.config.moduleName = moduleName;
-        }
-
-        /**
-         * 构建包配置对象
-         * <p>当指定{@link #parent(String)} 与 {@link #moduleName(String)}时,其他模块名字会加上这两个作为前缀</p>
-         * <p>
-         * 例如:
-         * <p>当设置 {@link #parent(String)},那么entity的配置为 parent.entity
-         * <p>当设置 {@link #parent(String)}与{@link #moduleName(String)},那么entity的配置为 parent.module.entity 
-         * </p>
-         *
-         * @return 包配置对象
-         */
-        @Override
-        public PackageConfig build() {
-            return this.config;
-        }
-
-        /**
-         * 指定父包名
-         *
-         * @param parent 父包名
-         * @return this
-         */
-        public Builder parent(String parent) {
-            this.config.parent = parent;
-            return this;
-        }
-
-        /**
-         * 指定模块名称
-         *
-         * @param moduleName 模块名
-         * @return this
-         */
-        public Builder moduleName(String moduleName) {
-            this.config.moduleName = moduleName;
-            return this;
-        }
-
-        /**
-         * 指定实体包名
-         *
-         * @param entity 实体包名
-         * @return this
-         */
-        public Builder entity(String entity) {
-            this.config.entity = entity;
-            return this;
-        }
-
-        /**
-         * 指定mapper接口包名
-         *
-         * @param mapper mapper包名
-         * @return this
-         */
-        public Builder mapper(String mapper) {
-            this.config.mapper = mapper;
-            return this;
-        }
-
-        /**
-         * 指定xml包名
-         *
-         * @param xml xml包名
-         * @return this
-         */
-        public Builder xml(String xml) {
-            this.config.xml = xml;
-            return this;
-        }
-
-        /**
-         * 指定service接口包名
-         *
-         * @param service service包名
-         * @return this
-         */
-        public Builder service(String service) {
-            this.config.service = service;
-            return this;
-        }
-
-        /**
-         * service实现类包名
-         *
-         * @param serviceImpl service实现类包名
-         * @return this
-         */
-        public Builder serviceImpl(String serviceImpl) {
-            this.config.serviceImpl = serviceImpl;
-            return this;
-        }
-
-        /**
-         * 指定控制器包名
-         *
-         * @param controller 控制器包名
-         * @return this
-         */
-        public Builder controller(String controller) {
-            this.config.controller = controller;
-            return this;
-        }
-
-        /**
-         * 指定查询DTO包名
-         *
-         * @param queryDTO 查询DTO包名
-         * @return this
-         */
-        public Builder queryDTO(String queryDTO) {
-            this.config.queryDTO = queryDTO;
-            return this;
-        }
-
-        /**
-         * 指定新增DTO包名
-         *
-         * @param insertDTO 新增DTO包名
-         * @return this
-         */
-        public Builder insertDTO(String insertDTO) {
-            this.config.insertDTO = insertDTO;
-            return this;
-        }
-
-        /**
-         * 指定修改DTO包名
-         *
-         * @param updateDTO 修改DTO包名
-         * @return this
-         */
-        public Builder updateDTO(String updateDTO) {
-            this.config.updateDTO = updateDTO;
-            return this;
-        }
-
-        /**
-         * 路径配置信息
-         *
-         * @param pathInfo 路径配置信息
-         * @return this
-         */
-        public Builder pathInfo(Map<OutputFile, String> pathInfo) {
-            this.config.pathInfo = pathInfo;
-            return this;
-        }
-
-        /**
-         * 连接父子包名
-         *
-         * @param subPackage 子包名
-         * @return 连接后的包名
-         */
-        public String joinPackage(String subPackage) {
-            return this.config.joinPackage(subPackage);
-        }
-
-
     }
     
 }

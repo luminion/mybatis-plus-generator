@@ -16,7 +16,6 @@
 package io.github.bootystar.mybatisplus.generator.fill;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import io.github.bootystar.mybatisplus.generator.IFill;
 
 
 /**

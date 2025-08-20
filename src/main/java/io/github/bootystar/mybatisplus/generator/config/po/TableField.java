@@ -18,10 +18,10 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
+import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.IKeyWordsHandler;
-import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
+import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.Column;
@@ -121,7 +121,7 @@ public class TableField {
     /**
      * 实体属性配置
      */
-    private final Entity entity;
+    private final EntityConfig entity;
 
     /**
      * 数据库配置
@@ -154,7 +154,7 @@ public class TableField {
      * @param name          数据库字段名称
      * @since 3.5.0
      */
-    public TableField(ConfigBuilder configBuilder, String name) {
+    public TableField(ConfigAdapter configBuilder, String name) {
         this.name = name;
         this.columnName = name;
         this.entity = configBuilder.getStrategyConfig().entity();
@@ -377,7 +377,7 @@ public class TableField {
      * @return 实体配置信息
      * @since 3.5.10
      */
-    public Entity getEntity() {
+    public EntityConfig getEntity() {
         return this.entity;
     }
 
