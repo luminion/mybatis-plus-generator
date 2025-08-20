@@ -47,7 +47,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
         }
     }
 
-    public VelocityTemplateEngine (ConfigAdapter configAdapter) {
+    public VelocityTemplateEngine(ConfigAdapter configAdapter) {
         super(configAdapter);
         if (null == velocityEngine) {
             Properties p = new Properties();
