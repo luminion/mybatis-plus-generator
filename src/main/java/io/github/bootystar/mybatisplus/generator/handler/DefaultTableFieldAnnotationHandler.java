@@ -40,7 +40,7 @@ public class DefaultTableFieldAnnotationHandler implements ITableFieldAnnotation
     @Override
     public List<AnnotationAttributes> handle(TableInfo tableInfo, TableField tableField) {
         List<AnnotationAttributes> annotationAttributesList = new ArrayList<>();
-        GlobalConfig globalConfig = tableInfo.getGlobalConfig();
+        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
         EntityConfig entity = tableField.getEntity();
         String comment = tableField.getComment();
         if (StringUtils.isNotBlank(comment)) {

@@ -1,11 +1,12 @@
 package io.github.bootystar.mybatisplus.generator;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import io.github.bootystar.mybatisplus.generator.config.builder.*;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 import io.github.bootystar.mybatisplus.generator.config.rules.DbColumnType;
+import io.github.bootystar.mybatisplus.generator.fill.Column;
 import org.apache.ibatis.type.JdbcType;
-
 
 import java.util.function.Function;
 
@@ -60,7 +61,21 @@ public class FastGenerator {
                         .versionColumnName("version")
                         .disableSerialVersionUID()
                         .enableLombok()
-                        .editExcludeColumns("create_time", "update_time", "create_by", "update_by", "created_by", "updated_by", "create_at", "update_at", "created_at", "updated_at")
+                        .addTableFills(
+                                        new Column("create_time", FieldFill.INSERT),
+                                        new Column("update_time", FieldFill.INSERT_UPDATE),
+                                        new Column("create_at", FieldFill.INSERT),
+                                        new Column("update_at", FieldFill.INSERT_UPDATE),
+                                        new Column("created_at", FieldFill.INSERT),
+                                        new Column("updated_at", FieldFill.INSERT_UPDATE),
+                                        new Column("creator_id", FieldFill.INSERT),
+                                        new Column("updater_id", FieldFill.INSERT_UPDATE),
+                                        new Column("create_by", FieldFill.INSERT),
+                                        new Column("update_by", FieldFill.INSERT_UPDATE),
+                                        new Column("created_by", FieldFill.INSERT),
+                                        new Column("updated_by", FieldFill.INSERT_UPDATE)
+                        )
+                        .editExcludeColumns()
                 )
                 .mapper(e->e
                         .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)

@@ -63,7 +63,7 @@ public class SQLQuery extends AbstractDatabaseQuery {
             dbQuery.execute(dbQuery.tablesSql(), result -> {
                 String tableName = result.getStringResult(dbQuery.tableName());
                 if (StringUtils.isNotBlank(tableName)) {
-                    TableInfo tableInfo = new TableInfo(this.configBuilder, tableName);
+                    TableInfo tableInfo = new TableInfo(this.configAdapter, tableName);
                     String tableComment = result.getTableComment();
                     // 跳过视图
                     if (!(strategyConfig.isSkipView() && tableComment.toUpperCase().contains("VIEW"))) {
@@ -108,7 +108,7 @@ public class SQLQuery extends AbstractDatabaseQuery {
             EntityConfig entity = strategyConfig.entity();
             dbQuery.execute(tableFieldsSql, result -> {
                 String columnName = result.getStringResult(dbQuery.fieldName());
-                TableField field = new TableField(this.configBuilder, columnName);
+                TableField field = new TableField(this.configAdapter, columnName);
                 DatabaseMetaDataWrapper.Column columnInfo = columnsInfoMap.get(columnName.toLowerCase());
                 // 设置字段的元数据信息
                 TableField.MetaInfo metaInfo = new TableField.MetaInfo(columnInfo, tableInfo);

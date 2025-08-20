@@ -20,13 +20,14 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper;
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper;
+import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import io.github.bootystar.mybatisplus.generator.model.MapperMethod;
+import io.github.bootystar.mybatisplus.generator.util.KotlinTypeUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -60,9 +61,9 @@ public class DefaultGenerateMapperLambdaMethodHandler extends AbstractMapperMeth
         Map<String, List<DatabaseMetaDataWrapper.Index>> indexlistMap = tableInfo.getIndexList().stream()
             .collect(Collectors.groupingBy(DatabaseMetaDataWrapper.Index::getName));
         String entityName = tableInfo.getEntityName();
-        GlobalConfig globalConfig = tableInfo.getGlobalConfig();
-        StrategyConfig strategyConfig = tableInfo.getStrategyConfig();
-        EntityConfig entity = strategyConfig.entity();
+        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
+        StrategyConfig strategyConfig = tableInfo.getConfigAdapter().getStrategyConfig();
+        EntityConfig entity = tableInfo.getConfigAdapter().getEntityConfig();
         Set<Map.Entry<String, List<DatabaseMetaDataWrapper.Index>>> entrySet = indexlistMap.entrySet();
         List<MapperMethod> methodList = new ArrayList<>();
         for (Map.Entry<String, List<DatabaseMetaDataWrapper.Index>> entry : entrySet) {
@@ -99,14 +100,14 @@ public class DefaultGenerateMapperLambdaMethodHandler extends AbstractMapperMeth
                 } else {
                     baseWrapperBuilder.append("eq(").append(entityName).append("::");
                 }
-//                if (globalConfig.isKotlin()) {
-//                    baseWrapperBuilder.append(tableField.getPropertyName()).append(",").append(" ").append(tableField.getPropertyName()).append(")");
-//                    argsBuilder.append(tableField.getPropertyName()).append(":").append(" ")
-//                        .append(KotlinTypeUtils.getStringType(tableField.getColumnType()));
-//                    if (i > 0) {
-//                        argsBuilder.append("?");
-//                    }
-//                } else {
+                if (globalConfig.isKotlin()) {
+                    baseWrapperBuilder.append(tableField.getPropertyName()).append(",").append(" ").append(tableField.getPropertyName()).append(")");
+                    argsBuilder.append(tableField.getPropertyName()).append(":").append(" ")
+                        .append(KotlinTypeUtils.getStringType(tableField.getColumnType()));
+                    if (i > 0) {
+                        argsBuilder.append("?");
+                    }
+                } else {
                     if ("boolean".equals(tableField.getPropertyType())) {
                         baseWrapperBuilder.append("is").append(tableField.getCapitalName());
                     } else {
@@ -114,7 +115,7 @@ public class DefaultGenerateMapperLambdaMethodHandler extends AbstractMapperMeth
                     }
                     baseWrapperBuilder.append(",").append(" ").append(tableField.getPropertyName()).append(")");
                     argsBuilder.append(tableField.getColumnType().getType()).append(" ").append(tableField.getPropertyName());
-//                }
+                }
                 if (i < indexSize - 1) {
                     baseWrapperBuilder.append(".");
                     baseMethodNameBuilder.append("And");
@@ -168,7 +169,7 @@ public class DefaultGenerateMapperLambdaMethodHandler extends AbstractMapperMeth
 
     @Override
     public Set<String> getImportPackages(TableInfo tableInfo) {
-        GlobalConfig globalConfig = tableInfo.getGlobalConfig();
+        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
         Set<String> imports = new HashSet<>();
         if (!singleIndex) {
             imports.add(ObjectUtils.class.getName());

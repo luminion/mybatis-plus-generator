@@ -37,7 +37,7 @@ public class DefaultTableAnnotationHandler implements ITableAnnotationHandler {
     @Override
     public List<ClassAnnotationAttributes> handle(TableInfo tableInfo, EntityConfig entity) {
         List<ClassAnnotationAttributes> annotationAttributesList = new ArrayList<>();
-        GlobalConfig globalConfig = tableInfo.getGlobalConfig();
+        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
         String comment = tableInfo.getComment();
         if (StringUtils.isBlank(comment)) {
             comment = StringPool.EMPTY;
