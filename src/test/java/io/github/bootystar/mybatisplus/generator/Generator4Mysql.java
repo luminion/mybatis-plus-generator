@@ -10,24 +10,21 @@ public class Generator4Mysql {
         String url = "jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8";
         String username = "root";
         String password = "root";
-        FastAutoGenerator
+        FastGenerator
                 .create(url, username, password)
                 .initialize()
-                .globalConfig(global -> global.disableOpenDir()
+                .global(e -> e
+                                .disableOpenDir()
                                 .outputDir(System.getProperty("user.dir") + "/src/test/java")
 //                            .enableSwagger()
                             .enableSpringdoc()
                 )
-                .packageConfig(pkg -> pkg
+                .pkg(e -> e
                         .parent("com.example.test")
                 )
-                .strategyConfig(s->s
-                        // controller
-                        .controllerBuilder().enableJavax()
-                        // entity
-                        .entityBuilder()
-//                        .enableLombok()
-                        
+                .strategy(e->e
+                )
+                .entity(e->e
                 )
                 .execute("sys_user")
         ;

@@ -16,6 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.engine;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.TemplateLoadWay;
 import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
@@ -46,13 +47,13 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
         }
     }
 
-    @Override
-    public VelocityTemplateEngine init(ConfigBuilder configBuilder) {
+    public VelocityTemplateEngine (ConfigAdapter configAdapter) {
+        super(configAdapter);
         if (null == velocityEngine) {
             Properties p = new Properties();
             p.setProperty(Velocity.ENCODING_DEFAULT, ConstVal.UTF8);
             p.setProperty(Velocity.INPUT_ENCODING, ConstVal.UTF8);
-            if (configBuilder.getTemplateLoadWay().isFile()) {
+            if (getConfigAdapter().getTemplateLoadWay().isFile()) {
                 // 文件模板
                 p.setProperty(ConstVal.VM_LOAD_PATH_KEY, ConstVal.VM_LOAD_PATH_VALUE);
                 p.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, StringPool.EMPTY);
@@ -63,7 +64,6 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
             }
             velocityEngine = new VelocityEngine(p);
         }
-        return this;
     }
 
     @Override

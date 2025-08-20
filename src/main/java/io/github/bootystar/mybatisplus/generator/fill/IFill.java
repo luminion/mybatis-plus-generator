@@ -13,28 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator;
+package io.github.bootystar.mybatisplus.generator.fill;
 
-import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
-import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
-import io.github.bootystar.mybatisplus.generator.model.ClassAnnotationAttributes;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 
-import java.util.List;
 
 /**
- * 表注解处理器
+ * 填充接口
  *
  * @author nieqiurong
- * @since 3.5.10
+ * @since 3.5.0 2020/11/30.
  */
-public interface ITableAnnotationHandler {
+public interface IFill {
 
-    /**
-     * 处理字段级注解
-     *
-     * @param tableInfo 表信息
-     * @return 注解信息
-     */
-    List<ClassAnnotationAttributes> handle(TableInfo tableInfo, Entity entity);
+    String getName();
+
+    FieldFill getFieldFill();
 
 }

@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
-import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
+import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
 
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    protected final ConfigBuilder configBuilder;
+    protected final ConfigAdapter configBuilder;
 
     protected final DataSourceConfig dataSourceConfig;
 
@@ -49,14 +49,14 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
     protected final GlobalConfig globalConfig;
 
 
-    public AbstractDatabaseQuery(ConfigBuilder configBuilder) {
+    public AbstractDatabaseQuery(ConfigAdapter configBuilder) {
         this.configBuilder = configBuilder;
         this.dataSourceConfig = configBuilder.getDataSourceConfig();
         this.strategyConfig = configBuilder.getStrategyConfig();
         this.globalConfig = configBuilder.getGlobalConfig();
     }
 
-    public ConfigBuilder getConfigBuilder() {
+    public ConfigAdapter getConfigBuilder() {
         return configBuilder;
     }
 
@@ -70,7 +70,7 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
         if (isExclude || isInclude) {
             Map<String, String> notExistTables = new HashSet<>(isExclude ? strategyConfig.getExclude() : strategyConfig.getInclude())
                 .stream()
-                .filter(s -> !ConfigBuilder.matcherRegTable(s))
+                .filter(s -> !ConfigAdapter.matcherRegTable(s))
                 .collect(Collectors.toMap(String::toLowerCase, s -> s, (o, n) -> n));
             // 将已经存在的表移除，获取配置中数据库不存在的表
             for (TableInfo tabInfo : tableList) {

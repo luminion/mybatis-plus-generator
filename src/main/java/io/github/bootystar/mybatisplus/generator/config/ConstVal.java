@@ -30,15 +30,15 @@ public interface ConstVal {
     String MODULE_NAME = "ModuleName";
 
     String ENTITY = "Entity";
+    String ENTITY_QUERY_DTO = "EntityQueryDTO";
+    String ENTITY_INSERT_DTO = "EntityInsertDTO";
+    String ENTITY_UPDATE_DTO = "EntityUpdateDTO";
+    String ENTITY_VO = "VO";
     String SERVICE = "Service";
     String SERVICE_IMPL = "ServiceImpl";
     String MAPPER = "Mapper";
     String XML = "Xml";
     String CONTROLLER = "Controller";
-    String QUERY_DTO = "queryDTO";
-    String INSERT_DTO = "InsertDTO";
-    String UPDATE_DTO = "UpdateDTO";
-    String VO = "VO";
     String PARENT = "Parent";
 
     String JAVA_TMPDIR = "java.io.tmpdir";

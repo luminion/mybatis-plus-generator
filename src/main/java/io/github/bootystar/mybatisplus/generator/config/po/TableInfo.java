@@ -17,15 +17,11 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.core.*;
-import io.github.bootystar.mybatisplus.generator.config.builder.ConfigBuilder;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Entity;
-import io.github.bootystar.mybatisplus.generator.config.core.support.Service;
+import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import lombok.Getter;
 import lombok.Setter;
-
 
 import java.io.Serializable;
 import java.util.*;
@@ -40,17 +36,29 @@ import java.util.stream.Collectors;
  */
 public class TableInfo {
 
-    /**
-     * 策略配置
-     */
     @Getter
-    private final StrategyConfig strategyConfig;
+    private final ConfigAdapter configAdapter;
 
-    /**
-     * 全局配置信息
-     */
-    @Getter
-    private final GlobalConfig globalConfig;
+//    /**
+//     * 策略配置
+//     */
+//    @Getter
+//    private final StrategyConfig strategyConfig;
+//
+//    /**
+//     * 全局配置信息
+//     */
+//    @Getter
+//    private final GlobalConfig globalConfig;
+//    /**
+//     * @since 3.5.11
+//     */
+//    @Getter
+//    private PackageConfig packageConfig;
+//    /**
+//     * 实体
+//     */
+//    private final EntityConfig entity;
 
     /**
      * 包导入信息
@@ -135,10 +143,6 @@ public class TableInfo {
      */
     private String fieldNames;
 
-    /**
-     * 实体
-     */
-    private final Entity entity;
 
     /**
      * 索引信息
@@ -165,23 +169,18 @@ public class TableInfo {
     private String schemaName;
 
     /**
-     * @since 3.5.11
-     */
-    @Getter
-    private PackageConfig packageConfig;
-
-    /**
      * 构造方法
      *
      * @param configBuilder 配置构建
      * @param name          表名
      * @since 3.5.0
      */
-    public TableInfo(ConfigBuilder configBuilder, String name) {
-        this.strategyConfig = configBuilder.getStrategyConfig();
-        this.globalConfig = configBuilder.getGlobalConfig();
-        this.entity = configBuilder.getStrategyConfig().entity();
-        this.packageConfig = configBuilder.getPackageConfig();
+    public TableInfo(ConfigAdapter configBuilder, String name) {
+        this.configAdapter= configBuilder;
+//        this.strategyConfig = configBuilder.getStrategyConfig();
+//        this.globalConfig = configBuilder.getGlobalConfig();
+//        this.entity = configBuilder.getEntityConfig();
+//        this.packageConfig = configBuilder.getPackageConfig();
         this.name = name;
     }
 
@@ -189,7 +188,7 @@ public class TableInfo {
      * @since 3.5.0
      */
     protected TableInfo setConvert() {
-        if (strategyConfig.startsWithTablePrefix(name) || entity.isTableFieldAnnotationEnable()) {
+        if (this.getConfigAdapter().getStrategyConfig().startsWithTablePrefix(name) || this.getConfigAdapter().getEntityConfig().isTableFieldAnnotationEnable()) {
             this.convert = true;
         } else {
             this.convert = !entityName.equalsIgnoreCase(name);
@@ -218,12 +217,12 @@ public class TableInfo {
      * @since 3.5.0
      */
     public void addField(TableField field) {
-        if (entity.matchIgnoreColumns(field.getColumnName())) {
+        if (this.getConfigAdapter().getEntityConfig().matchIgnoreColumns(field.getColumnName())) {
             // 忽略字段不在处理
             return;
         }
         tableFieldMap.put(field.getName(), field);
-        if (entity.matchSuperEntityColumns(field.getColumnName())) {
+        if (this.getConfigAdapter().getEntityConfig().matchSuperEntityColumns(field.getColumnName())) {
             this.commonFields.add(field);
         } else {
             this.fields.add(field);
@@ -260,26 +259,26 @@ public class TableInfo {
      * @since 3.5.0
      */
     public void importPackage() {
-        String superEntity = entity.getSuperClass();
+        String superEntity = this.getConfigAdapter().getEntityConfig().getSuperClass();
         if (StringUtils.isNotBlank(superEntity)) {
             // 自定义父类
             this.importPackages.add(superEntity);
         } else {
-            if (entity.isActiveRecord()) {
+            if (this.getConfigAdapter().getEntityConfig().isActiveRecord()) {
                 // 无父类开启 AR 模式
                 this.importPackages.add("com.baomidou.mybatisplus.extension.activerecord.Model");
             }
         }
-        if (entity.isSerialVersionUID() || entity.isActiveRecord()) {
+        if (this.getConfigAdapter().getEntityConfig().isSerialVersionUID() || this.getConfigAdapter().getEntityConfig().isActiveRecord()) {
             this.importPackages.add(Serializable.class.getCanonicalName());
-            if (entity.isSerialAnnotation()) {
+            if (this.getConfigAdapter().getEntityConfig().isSerialAnnotation()) {
                 this.importPackages.add("java.io.Serial");
             }
         }
         if (this.isConvert()) {
             this.importPackages.add(TableName.class.getCanonicalName());
         }
-        IdType idType = entity.getIdType();
+        IdType idType = this.getConfigAdapter().getEntityConfig().getIdType();
         if (null != idType && this.isHavePrimaryKey()) {
             // 指定需要 IdType 场景
             this.importPackages.add(IdType.class.getCanonicalName());
@@ -324,19 +323,19 @@ public class TableInfo {
      * @since 3.5.0
      */
     public void processTable() {
-        String entityName = entity.getNameConvert().entityNameConvert(this);
-        this.setEntityName(entity.getConverterFileName().convert(entityName));
-        this.mapperName = strategyConfig.mapper().getConverterMapperFileName().convert(entityName);
-        this.xmlName = strategyConfig.mapper().getConverterXmlFileName().convert(entityName);
-        this.serviceName = strategyConfig.service().getConverterServiceFileName().convert(entityName);
-        this.serviceImplName = strategyConfig.service().getConverterServiceImplFileName().convert(entityName);
-        this.controllerName = strategyConfig.controller().getConverterFileName().convert(entityName);
+        String entityName = this.getConfigAdapter().getEntityConfig().getNameConvert().entityNameConvert(this);
+        this.setEntityName(this.getConfigAdapter().getEntityConfig().getConverterFileName().convert(entityName));
+        this.mapperName = this.getConfigAdapter().getMapperConfig().getConverterMapperFileName().convert(entityName);
+        this.xmlName = this.getConfigAdapter().getMapperConfig().getConverterXmlFileName().convert(entityName);
+        this.serviceName = this.getConfigAdapter().getServiceConfig().getConverterServiceFileName().convert(entityName);
+        this.serviceImplName = this.getConfigAdapter().getServiceConfig().getConverterServiceImplFileName().convert(entityName);
+        this.controllerName = this.getConfigAdapter().getControllerConfig().getConverterFileName().convert(entityName);
         this.importPackage();
     }
 
     public TableInfo setComment(String comment) {
         //TODO 待重构此处
-        this.comment = (this.globalConfig.isSwagger() || this.globalConfig.isSpringdoc())
+        this.comment = (this.getConfigAdapter().getGlobalConfig().isSwagger() || this.getConfigAdapter().getGlobalConfig().isSpringdoc())
             && StringUtils.isNotBlank(comment) ? comment.replace("\"", "\\\"") : comment;
         return this;
     }
