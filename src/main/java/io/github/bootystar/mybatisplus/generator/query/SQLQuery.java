@@ -105,7 +105,7 @@ public class SQLQuery extends AbstractDatabaseQuery {
                     }
                 });
             }
-            EntityConfig entity = strategyConfig.entity();
+            EntityConfig entity = configAdapter.getEntityConfig();
             dbQuery.execute(tableFieldsSql, result -> {
                 String columnName = result.getStringResult(dbQuery.fieldName());
                 TableField field = new TableField(this.configAdapter, columnName);

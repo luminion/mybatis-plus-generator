@@ -187,7 +187,7 @@ public class MapperConfig implements ITemplate {
         if (mapperAnnotationClass != null) {
             importPackages.add(mapperAnnotationClass.getName());
         }
-        PackageConfig packageConfig = tableInfo.getPackageConfig();
+        PackageConfig packageConfig = tableInfo.getConfigAdapter().getPackageConfig();
         String entityPackage = packageConfig.getPackageInfo(null, ConstVal.ENTITY) + StringPool.DOT + tableInfo.getEntityName();
         importPackages.add(entityPackage);
         Set<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toSet());

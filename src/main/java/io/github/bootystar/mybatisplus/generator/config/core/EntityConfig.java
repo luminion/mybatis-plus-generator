@@ -288,27 +288,6 @@ public class EntityConfig implements ITemplate {
      */
     protected boolean extendsEntityVO;
 
-    /**
-     * 实体类
-     */
-    protected ClassPayload entity = new ClassPayload();
-    /**
-     * 查询dto
-     */
-    protected ClassPayload queryDTO = new ClassPayload();
-    /**
-     * 插入dto
-     */
-    protected ClassPayload insertDTO = new ClassPayload();
-    /**
-     * 更新dto
-     */
-    protected ClassPayload updateDTO = new ClassPayload();
-    /**
-     * vo
-     */
-    protected ClassPayload viewObject = new ClassPayload();
-
 
     /**
      * <p>

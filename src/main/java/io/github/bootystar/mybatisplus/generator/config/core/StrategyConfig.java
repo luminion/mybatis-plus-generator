@@ -299,7 +299,7 @@ public class StrategyConfig implements ITemplate {
         return map;
     }
 
-    public String getJavaApiPackage(String suffix) {
+    public String resolveJavaApiPackage(String suffix) {
         return javaApiPackagePrefix + "." + suffix;
     }
 

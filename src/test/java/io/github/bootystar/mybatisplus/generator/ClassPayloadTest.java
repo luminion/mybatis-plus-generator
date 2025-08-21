@@ -13,7 +13,7 @@ public class ClassPayloadTest {
     @Test
     void test1(){
         ClassPayload classPayload = new ClassPayload(Map.class);
-        String clazz = classPayload.classReturnGenericTypeStr();
+        String clazz = classPayload.clazz();
         System.out.println(clazz);
     }
 }
