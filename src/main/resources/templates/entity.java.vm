@@ -9,9 +9,7 @@ import ${pkg};
 #end
 
 /**
- * <p>
  * $!{table.comment}
- * </p>
  *
  * @author ${author}
  * @since ${date}

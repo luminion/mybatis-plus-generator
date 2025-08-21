@@ -57,7 +57,7 @@ public class GlobalConfig {
      * @deprecated 不支持kotlin
      */
     @Deprecated
-    protected boolean kotlin = false; 
+    protected boolean kotlin = false;
 
     /**
      * 开启 swagger 模式（默认 false 与 springdoc 不可同时使用）
@@ -67,16 +67,6 @@ public class GlobalConfig {
      * 开启 springdoc 模式（默认 false 与 swagger 不可同时使用）
      */
     protected boolean springdoc;
-
-    /**
-     * swagger实体是否添加注解
-     */
-    protected boolean swaggerModelWithAnnotation;
-
-    /**
-     * swagger注解添加uuid标识
-     */
-    protected boolean swaggerAnnotationWithUUID;
 
     /**
      * 时间类型对应策略
@@ -89,6 +79,74 @@ public class GlobalConfig {
      * @since 3.5.0
      */
     protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    
+    /**
+     * 全局文件覆盖
+     */
+    protected boolean fileOverride;
+
+    /**
+     * 生成查询方法
+     */
+    protected boolean generateQuery = true;
+    /**
+     * 生成新增方法
+     */
+    protected boolean generateInsert = true;
+    /**
+     * 生成更新方法
+     */
+    protected boolean generateUpdate = true;
+    /**
+     * 生成删除方法
+     */
+    protected boolean generateDelete = true;
+    /**
+     * 生成导入方法
+     */
+    protected boolean generateImport = true;
+    /**
+     * 生成导出方法
+     */
+    protected boolean generateExport = true;
+    /**
+     * 是否生成重写父类方法
+     */
+    protected boolean methodOverride = true;
+
+    /**
+     * javaEE api包(jakarta或javax)
+     * <p>
+     * 涉及HttpServletRequest,HttpServletResponse,@Resource
+     */
+    protected String javaApiPackagePrefix = "jakarta";
+
+    /**
+     * excel注解的包
+     */
+    protected String excelApiPackagePrefix = "cn.idev.excel";
+
+    /**
+     * excel类
+     */
+    protected String excelClass = "FastExcel";
+
+    /**
+     * 参数校验
+     */
+    protected boolean validated = true;
+
+    /**
+     * 额外类链接注释
+     */
+    protected boolean extraClassLinkComment = true;
+
+    /**
+     * 注释UUID, 用于避免swagger等文档无法识别模型
+     */
+    protected boolean commentUUID;
+    
+    
 
     public boolean isSwagger() {
         // springdoc 设置优先于 swagger
@@ -98,5 +156,13 @@ public class GlobalConfig {
     public String getCommentDate() {
         return commentDate.get();
     }
-    
+
+    /**
+     * 解析java api包
+     *
+     * @param suffix 后缀
+     */
+    public String resolveJavaApiPackage(String suffix) {
+        return javaApiPackagePrefix + "." + suffix;
+    }
 }

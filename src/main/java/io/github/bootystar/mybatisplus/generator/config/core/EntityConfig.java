@@ -363,7 +363,9 @@ public class EntityConfig implements ITemplate {
         data.put("entityLombokModel", this.lombok);
         data.put("entityBooleanColumnRemoveIsPrefix", this.booleanColumnRemoveIsPrefix);
         data.put("superEntityClass", ClassUtils.getSimpleName(this.superClass));
-        
+        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
+
+
         Collection<String> importPackages = new TreeSet<>(tableInfo.getImportPackages());
         // mybatis-plus类注解
         List<ClassAnnotationAttributes> classAnnotationAttributes = new ArrayList<>();
@@ -384,14 +386,14 @@ public class EntityConfig implements ITemplate {
             }
         });
 
-        if (tableInfo.getConfigAdapter().getGlobalConfig().isSwagger()) {
+        if (globalConfig.isSwagger()) {
             importPackages.add("io.swagger.annotations.ApiModel");
             importPackages.add("io.swagger.annotations.ApiModelProperty");
         }
-        if (tableInfo.getConfigAdapter().getGlobalConfig().isSpringdoc()) {
+        if (globalConfig.isSpringdoc()) {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
         }
-        boolean kotlin = tableInfo.getConfigAdapter().getGlobalConfig().isKotlin();
+        boolean kotlin = globalConfig.isKotlin();
         if (!kotlin && this.lombok) {
             if (this.chain) {
                 importPackages.add("lombok.experimental.Accessors");
@@ -406,8 +408,8 @@ public class EntityConfig implements ITemplate {
         data.put("importEntityJavaPackages", javaPackages);
         data.put("importEntityFrameworkPackages", frameworkPackages);
 
-   
-        
+        List<String> importDTOPackages = importPackages.stream().filter(e -> !e.startsWith("com.baomidou.mybatisplus")).collect(Collectors.toList());
+        data.put("importDTOPackages", importDTOPackages);
         return data;
     }
 

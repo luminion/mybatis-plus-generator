@@ -198,7 +198,7 @@ public class ControllerConfig implements ITemplate {
         data.put("requestBaseUrl", requestBaseUrl);
         String requestBodyStr = "@RequestBody ";
         String optionalBodyStr = postQuery ? "@RequestBody(required = false) " : "";
-        String validatedStr = strategyConfig.isValidated() ? "@Validated " : "";
+        String validatedStr = globalConfig.isValidated() ? "@Validated " : "";
         data.put("requestBodyStr", requestBodyStr);
         data.put("optionalBodyStr", optionalBodyStr);
         data.put("validatedStr", validatedStr);
@@ -208,7 +208,7 @@ public class ControllerConfig implements ITemplate {
                 break;
             }
         }
-        if (strategyConfig.isGenerateSelect() || strategyConfig.isGenerateExport()) {
+        if (globalConfig.isGenerateQuery() || globalConfig.isGenerateExport()) {
             importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_VO) + "." + tableInfo.getEntityVOName());
             String entityQueryDTOStr = tableInfo.getEntityQueryDTOName();
             if (this.queryDTO != null && this.queryDTO.isRegistered()) {
@@ -242,22 +242,22 @@ public class ControllerConfig implements ITemplate {
                 data.put("pageClazz4return", "IPage<" + tableInfo.getEntityVOName() + ">");
             }
         }
-        if (strategyConfig.isValidated() && (strategyConfig.isGenerateInsert() || strategyConfig.isGenerateUpdate())) {
+        if (globalConfig.isValidated() && (globalConfig.isGenerateInsert() || globalConfig.isGenerateUpdate())) {
             importControllerFrameworkPackages.add("org.springframework.validation.annotation.Validated");
         }
-        if (strategyConfig.isGenerateInsert()) {
+        if (globalConfig.isGenerateInsert()) {
             importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_INSERT_DTO) + "." + tableInfo.getEntityInsertDTOName());
         }
-        if (strategyConfig.isGenerateUpdate()) {
+        if (globalConfig.isGenerateUpdate()) {
             importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_UPDATE_DTO) + "." + tableInfo.getEntityUpdateDTOName());
         }
 
-        if (strategyConfig.generateImport || strategyConfig.generateExport) {
-            if (strategyConfig.generateImport) {
+        if (globalConfig.generateImport || globalConfig.generateExport) {
+            if (globalConfig.generateImport) {
                 importControllerJavaPackages.add("org.springframework.web.multipart.MultipartFile");
             }
             importControllerJavaPackages.add("java.io.IOException");
-            String pkg = strategyConfig.resolveJavaApiPackage("servlet.http.HttpServletResponse");
+            String pkg = globalConfig.resolveJavaApiPackage("servlet.http.HttpServletResponse");
             if (pkg.startsWith("java")) {
                 importControllerJavaPackages.add(pkg);
             } else {

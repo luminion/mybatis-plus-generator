@@ -125,62 +125,7 @@ public class StrategyConfig implements ITemplate {
 
     // =============自定义项==============
 
-    /**
-     * 生成新增方法
-     */
-    protected boolean generateInsert = true;
-    /**
-     * 生成更新方法
-     */
-    protected boolean generateUpdate = true;
-    /**
-     * 生成删除方法
-     */
-    protected boolean generateDelete = true;
-    /**
-     * 生成查询方法
-     */
-    protected boolean generateSelect = true;
-    /**
-     * 生成导入方法
-     */
-    protected boolean generateImport = true;
-    /**
-     * 生成导出方法
-     */
-    protected boolean generateExport = true;
 
-    /**
-     * 是否生成重写父类方法
-     */
-    protected boolean methodOverride = true;
-
-    /**
-     * javaEE api包(jakarta或javax)
-     * <p>
-     * 涉及HttpServletRequest,HttpServletResponse,@Resource
-     */
-    protected String javaApiPackagePrefix = "jakarta";
-
-    /**
-     * excel注解的包
-     */
-    protected String excelApiPackagePrefix = "cn.idev.excel";
-
-    /**
-     * excel类
-     */
-    protected String excelClass = "FastExcel";
-
-    /**
-     * 参数校验
-     */
-    protected boolean validated = true;
-
-    /**
-     * 额外类链接注释
-     */
-    protected boolean extraClassLinkComment = true;
 
     /**
      * 额外字段后缀
@@ -297,10 +242,6 @@ public class StrategyConfig implements ITemplate {
         map.put("jdbcTimeTypes", jdbcTimeTypes);
 
         return map;
-    }
-
-    public String resolveJavaApiPackage(String suffix) {
-        return javaApiPackagePrefix + "." + suffix;
     }
 
 }

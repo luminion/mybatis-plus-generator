@@ -1,11 +1,11 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 /**
@@ -94,6 +94,119 @@ public class Global extends GlobalConfig{
             return commentDate(() -> new SimpleDateFormat(pattern).format(new Date()));
         }
 
+
+        /**
+         * 启用全局文件覆盖
+         */
+        public Builder enableFileOverwrite() {
+            this.config.fileOverride = true;
+            return this;
+        }
+
+        /**
+         * 不生成查询方法
+         *
+         * @return this
+         */
+        public Builder disableQuery() {
+            this.config.generateQuery = false;
+            return this;
+        }
+        
+        /**
+         * 不生成新增方法
+         *
+         * @return this
+         */
+        public Builder disableInsert() {
+            this.config.generateInsert = false;
+            return this;
+        }
+
+        /**
+         * 不生成更新方法
+         *
+         * @return this
+         */
+        public Builder disableUpdate() {
+            this.config.generateUpdate = false;
+            return this;
+        }
+
+        /**
+         * 不生成删除方法
+         *
+         * @return this
+         */
+        public Builder disableDelete() {
+            this.config.generateDelete = false;
+            return this;
+        }
+
+        /**
+         * 不生成导入方法
+         *
+         * @return this
+         */
+        public Builder disableImport() {
+            this.config.generateImport = false;
+            return this;
+        }
+
+        /**
+         * 不生成导出方法
+         *
+         * @return this
+         */
+        public Builder disableExport() {
+            this.config.generateExport = false;
+            return this;
+        }
+        
+
+        /**
+         * 使用javax包作为javaEE api
+         * <p>springboot2.x使用javax, springboot3.x使用jakarta</p>
+         * 默认使用jakarta
+         *
+         * @return this
+         */
+        public Builder enableJavaxApi() {
+            this.config.javaApiPackagePrefix = "javax";
+            return this;
+        }
+
+        /**
+         * 使用EasyExcel
+         * <p>默认使用FastExcel</p>
+         *
+         * @return this
+         */
+        public Builder enableEasyExcel() {
+            this.config.excelApiPackagePrefix = "com.alibaba.excel";
+            this.config.excelClass = "EasyExcel";
+            return this;
+        }
+
+        /**
+         * 禁用参数校验
+         *
+         * @return this
+         */
+        public Builder disableValidated() {
+            this.config.validated = false;
+            return this;
+        }
+        
+        /**
+         * 禁用注释UUID
+         *
+         * @return this
+         */
+        public Builder enableCommentUUID() {
+            this.config.commentUUID = true;
+            return this;
+        }
 
     }
 }
