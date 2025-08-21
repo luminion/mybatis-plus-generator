@@ -162,7 +162,26 @@ public class Global extends GlobalConfig{
             this.config.generateExport = false;
             return this;
         }
-        
+
+        /**
+         * 禁用参数校验
+         *
+         * @return this
+         */
+        public Builder disableValidated() {
+            this.config.validated = false;
+            return this;
+        }
+
+        /**
+         * 禁用注释UUID
+         *
+         * @return this
+         */
+        public Builder enableCommentUUID() {
+            this.config.commentUUID = true;
+            return this;
+        }
 
         /**
          * 使用javax包作为javaEE api
@@ -188,25 +207,7 @@ public class Global extends GlobalConfig{
             return this;
         }
 
-        /**
-         * 禁用参数校验
-         *
-         * @return this
-         */
-        public Builder disableValidated() {
-            this.config.validated = false;
-            return this;
-        }
-        
-        /**
-         * 禁用注释UUID
-         *
-         * @return this
-         */
-        public Builder enableCommentUUID() {
-            this.config.commentUUID = true;
-            return this;
-        }
+
 
     }
 }

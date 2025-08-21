@@ -14,8 +14,8 @@ import ${pkg};
  * @author ${author}
  * @since ${date}
  */
-#foreach($an in ${entityClassAnnotations})
-${an.displayName}
+#if(${table.convert})
+@TableName("${schemaName}${table.name}")
 #end
 #if(${superEntityClass})
 public class ${entity} extends ${superEntityClass}#if(${activeRecord})<${entity}>#end {
