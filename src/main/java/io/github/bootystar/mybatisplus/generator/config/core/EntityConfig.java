@@ -15,14 +15,11 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.core;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.INameConvert;
-import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.IFill;
@@ -150,6 +147,7 @@ public class EntityConfig implements ITemplate {
      */
     @Setter
     protected NamingStrategy columnNaming = null;
+
     public NamingStrategy getColumnNaming() {
         // 未指定以 naming 策略为准
         return Optional.ofNullable(columnNaming).orElse(naming);
@@ -206,30 +204,30 @@ public class EntityConfig implements ITemplate {
      */
     protected boolean generate = true;
 
-    /**
-     * 是否生成ToString
-     * <p>低版本下,lombok没有处理ToString逻辑,现在处理生成@ToString</p>
-     * <p>支持控制toString方法是否生成</p>
-     *
-     * @since 3.5.10
-     */
-    protected boolean toString = true;
-
-
+//    /**
+//     * 是否生成ToString
+//     * <p>低版本下,lombok没有处理ToString逻辑,现在处理生成@ToString</p>
+//     * <p>支持控制toString方法是否生成</p>
+//     *
+//     * @since 3.5.10
+//     */
+//    protected boolean toString = true;
+//
+//
     /**
      * 启用字段文档注释 (当注释字段注释不为空才生效)
      * <p>低版本下,如果是启用swagger或者springdoc时,不会生成,现在统一修改为生成文档注释</p>
      *
      * @since 3.5.10
      */
-    protected boolean fieldUseJavaDoc = true;
+    protected boolean fieldUseJavaDoc = false;
 
-    /**
-     * 实体类注解
-     *
-     * @since 3.5.10
-     */
-    protected final List<ClassAnnotationAttributes> classAnnotations = new ArrayList<>();
+//    /**
+//     * 实体类注解
+//     *
+//     * @since 3.5.10
+//     */
+//    protected final List<ClassAnnotationAttributes> classAnnotations = new ArrayList<>();
 
     /**
      * 表注解处理器
@@ -245,19 +243,19 @@ public class EntityConfig implements ITemplate {
      */
     protected ITableFieldAnnotationHandler tableFieldAnnotationHandler = new DefaultTableFieldAnnotationHandler();
 
-    /**
-     * 导包处理方法
-     *
-     * @since 3.5.11
-     */
-    protected Function<Set<String>, List<String>> importPackageFunction;
-
-    /**
-     * 处理类注解方法 (含类与字段)
-     *
-     * @since 3.5.11
-     */
-    protected Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction;
+//    /**
+//     * 导包处理方法
+//     *
+//     * @since 3.5.11
+//     */
+//    protected Function<Collection<String>, Collection<String>> importPackageFunction;
+//
+//    /**
+//     * 处理类注解方法 (含类与字段)
+//     *
+//     * @since 3.5.11
+//     */
+//    protected Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction;
 
     /**
      * Java模板默认路径
@@ -268,21 +266,17 @@ public class EntityConfig implements ITemplate {
 
     /**
      * Kotlin模板默认路径
+     *
      * @deprecated 不支持kotlin
      */
-    @Deprecated
     private String kotlinTemplate = ConstVal.TEMPLATE_ENTITY_KT;
 
-    /**
-     * 新增或修改时排除的字段
-     */
-    protected Collection<String> editExcludeColumns = new LinkedHashSet<>();
 
     /**
      * 查询dto继承实体类
      */
     protected boolean extendsEntityQueryDTO;
-    
+
     /**
      * vo继承实体类
      */
@@ -369,39 +363,39 @@ public class EntityConfig implements ITemplate {
         data.put("entityLombokModel", this.lombok);
         data.put("entityBooleanColumnRemoveIsPrefix", this.booleanColumnRemoveIsPrefix);
         data.put("superEntityClass", ClassUtils.getSimpleName(this.superClass));
-        Set<String> importPackages = new HashSet<>(tableInfo.getImportPackages());
-        List<ClassAnnotationAttributes> classAnnotationAttributes = new ArrayList<>(this.getClassAnnotations());
-        if (tableAnnotationHandler != null) {
-            List<ClassAnnotationAttributes> classAnnotationAttributesList = tableAnnotationHandler.handle(tableInfo, this);
-            if (classAnnotationAttributesList != null && !classAnnotationAttributesList.isEmpty()) {
-                classAnnotationAttributes.addAll(classAnnotationAttributesList);
-            }
+        
+        Collection<String> importPackages = new TreeSet<>(tableInfo.getImportPackages());
+        // mybatis-plus类注解
+        List<ClassAnnotationAttributes> classAnnotationAttributes = new ArrayList<>();
+        List<ClassAnnotationAttributes> classAnnotationAttributesList = tableAnnotationHandler.handle(tableInfo, this);
+        if (classAnnotationAttributesList != null && !classAnnotationAttributesList.isEmpty()) {
+            classAnnotationAttributes.addAll(classAnnotationAttributesList);
         }
         classAnnotationAttributes.forEach(attributes -> {
             attributes.handleDisplayName(tableInfo);
             importPackages.addAll(attributes.getImportPackages());
         });
-        if (tableFieldAnnotationHandler != null) {
-            tableInfo.getFields().forEach(tableField -> {
-                List<AnnotationAttributes> annotationAttributes = tableFieldAnnotationHandler.handle(tableInfo, tableField);
-                if (annotationAttributes != null && !annotationAttributes.isEmpty()) {
-                    tableField.addAnnotationAttributesList(annotationAttributes, annotationAttributesFunction);
-                    annotationAttributes.forEach(attributes -> importPackages.addAll(attributes.getImportPackages()));
-                }
-            });
+        // mybatis-plus字段属性注解
+        tableInfo.getFields().forEach(tableField -> {
+            List<AnnotationAttributes> annotationAttributes = tableFieldAnnotationHandler.handle(tableInfo, tableField);
+            if (annotationAttributes != null && !annotationAttributes.isEmpty()) {
+                tableField.addAnnotationAttributesList(annotationAttributes, null);
+                annotationAttributes.forEach(attributes -> importPackages.addAll(attributes.getImportPackages()));
+            }
+        });
+
+        if (tableInfo.getConfigAdapter().getGlobalConfig().isSwagger()) {
+            importPackages.add("io.swagger.annotations.ApiModel");
+            importPackages.add("io.swagger.annotations.ApiModelProperty");
         }
-        data.put("entityFieldUseJavaDoc", fieldUseJavaDoc);
-        data.put("entityClassAnnotations", annotationAttributesFunction != null ? annotationAttributesFunction.apply(classAnnotationAttributes) :
-            classAnnotationAttributes.stream().sorted(Comparator.comparingInt(s -> s.getDisplayName().length())).collect(Collectors.toList()));
-        data.put("importEntityPackages", importPackageFunction != null ? importPackageFunction.apply(importPackages) :
-            importPackages.stream().sorted().collect(Collectors.toList()));
-        Set<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toSet());
-        data.put("importEntityJavaPackages", importPackageFunction != null ? importPackageFunction.apply(javaPackages) :
-            javaPackages.stream().sorted().collect(Collectors.toList()));
-        Set<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toSet());
-        data.put("importEntityFrameworkPackages", importPackageFunction != null ? importPackageFunction.apply(frameworkPackages) :
-            frameworkPackages.stream().sorted().collect(Collectors.toList()));
-        data.put("entityToString", this.toString);
+        if (tableInfo.getConfigAdapter().getGlobalConfig().isSpringdoc()) {
+            importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
+        }
+
+        Collection<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        Collection<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importEntityJavaPackages", javaPackages);
+        data.put("importEntityFrameworkPackages", frameworkPackages);
         return data;
     }
 
