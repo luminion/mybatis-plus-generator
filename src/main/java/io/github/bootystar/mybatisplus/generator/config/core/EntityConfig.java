@@ -391,11 +391,23 @@ public class EntityConfig implements ITemplate {
         if (tableInfo.getConfigAdapter().getGlobalConfig().isSpringdoc()) {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
         }
-
+        boolean kotlin = tableInfo.getConfigAdapter().getGlobalConfig().isKotlin();
+        if (!kotlin && this.lombok) {
+            if (this.chain) {
+                importPackages.add("lombok.experimental.Accessors");
+            }
+            if (this.superClass != null) {
+                importPackages.add("lombok.EqualsAndHashCode");
+            }
+            importPackages.add("lombok.Data");
+        }
         Collection<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
         Collection<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
         data.put("importEntityJavaPackages", javaPackages);
         data.put("importEntityFrameworkPackages", frameworkPackages);
+
+   
+        
         return data;
     }
 
