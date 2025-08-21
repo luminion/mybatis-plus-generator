@@ -38,12 +38,13 @@ public interface ITemplate extends Serializable {
     @SneakyThrows
     default Map<String, Object> renderData(TableInfo tableInfo) {
         // 添加自定义配置字段信息
-        HashMap<String, Object> data = new HashMap<>();
-        Collection<Field> fields = ReflectUtil.fieldMap(getClass()).values();
-        for (Field field : fields) {
-            data.put(field.getName(), field.get(this));
-        }
-        return data;
+//        HashMap<String, Object> data = new HashMap<>();
+//        Collection<Field> fields = ReflectUtil.fieldMap(getClass()).values();
+//        for (Field field : fields) {
+//            data.put(field.getName(), field.get(this));
+//        }
+//        return data;
+        return new HashMap<>();
     }
 
 }

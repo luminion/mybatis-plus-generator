@@ -283,6 +283,10 @@ public abstract class AbstractTemplateEngine {
      */
     public Map<String, Object> getObjectMap(ConfigAdapter config, TableInfo tableInfo) {
         Map<String, Object> objectMap = new HashMap<>();
+        Map<String, Object> globalMap = config.getGlobalConfig().renderData(tableInfo);
+        objectMap.putAll(globalMap);
+        
+        
         StrategyConfig strategyConfig = config.getStrategyConfig();
         // 启用 schema 处理逻辑
         String schemaName = "";
@@ -309,12 +313,8 @@ public abstract class AbstractTemplateEngine {
         objectMap.putAll(entityData);
         objectMap.put("config", config);
         objectMap.put("package", config.getPackageConfig().getPackageInfo(config.getInjectionConfig()));
-        GlobalConfig globalConfig = config.getGlobalConfig();
-        objectMap.put("author", globalConfig.getAuthor());
-        objectMap.put("kotlin", globalConfig.isKotlin());
-        objectMap.put("swagger", globalConfig.isSwagger());
-        objectMap.put("springdoc", globalConfig.isSpringdoc());
-        objectMap.put("date", globalConfig.getCommentDate());
+       
+
         objectMap.put("table", tableInfo);
         objectMap.put("entity", tableInfo.getEntityName());
         
