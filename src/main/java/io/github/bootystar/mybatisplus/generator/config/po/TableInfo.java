@@ -176,7 +176,7 @@ public class TableInfo {
      * @since 3.5.0
      */
     public TableInfo(ConfigAdapter configBuilder, String name) {
-        this.configAdapter= configBuilder;
+        this.configAdapter = configBuilder;
 //        this.strategyConfig = configBuilder.getStrategyConfig();
 //        this.globalConfig = configBuilder.getGlobalConfig();
 //        this.entity = configBuilder.getEntityConfig();
@@ -336,7 +336,7 @@ public class TableInfo {
     public TableInfo setComment(String comment) {
         //TODO 待重构此处
         this.comment = (this.getConfigAdapter().getGlobalConfig().isSwagger() || this.getConfigAdapter().getGlobalConfig().isSpringdoc())
-            && StringUtils.isNotBlank(comment) ? comment.replace("\"", "\\\"") : comment;
+                && StringUtils.isNotBlank(comment) ? comment.replace("\"", "\\\"") : comment;
         return this;
     }
 
@@ -349,5 +349,21 @@ public class TableInfo {
         this.convert = convert;
         return this;
     }
-    
+
+    public String getEntityQueryDTOName() {
+        return entityName + "QueryDTO";
+    }
+
+    public String getEntityInsertDTOName() {
+        return entityName + "InsertDTO";
+    }
+
+    public String getEntityUpdateDTOName() {
+        return entityName + "UpdateDTO";
+    }
+
+    public String getEntityVOName() {
+        return entityName + "VO";
+    }
+
 }

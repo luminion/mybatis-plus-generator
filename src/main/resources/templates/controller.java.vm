@@ -21,15 +21,23 @@ import ${pkg};
 #else
 @Controller
 #end
-@RequestMapping("$!{controller.requestBaseUrl}")
+@RequestMapping("$!{requestBaseUrl}")
+#if(${entityLombokModel})
+@RequiredArgsConstructor
+#end
 #if(${superControllerClass})
 public class ${table.controllerName} extends ${superControllerClass} {
 #else
 public class ${table.controllerName} {
 #end
 
-    $!{autoWired}
-    private ${baseService} baseService;
+    private final ${baseService} baseService;
+#if(${entityLombokModel})
+
+    public ${table.controllerName}(${baseService} baseService) {
+        this.baseService = baseService;
+    }
+#end
 #if(${generateQuery})
     
     #if(${springdoc})
@@ -72,7 +80,7 @@ public class ${table.controllerName} {
     @ResponseBody
     #end
     ${requestMethod4Select}("/list")
-    public ${returnMethod.clazz("List<${entityVO}>")} selectList($!{optionalBodyStr}${entityQueryDTO} param) {
+    public ${returnMethod.clazz("List<${entityVO}>")} selectList($!{optionalBodyStr}${entityQueryDTOStr} param) {
         return ${returnMethod.method("baseService.voList(param)")};
     }
     
@@ -94,7 +102,7 @@ public class ${table.controllerName} {
     @ResponseBody
     #end
     ${requestMethod4Select}("/page$!{pagePathParams}")
-    public ${returnMethod.clazz(${pageClazz4return})} selectPage($!{optionalBodyStr}${entityQueryDTO} param, $!{pageMethodParams}) {
+    public ${returnMethod.clazz(${pageClazz4return})} selectPage($!{optionalBodyStr}${entityQueryDTOStr} param, $!{pageMethodParams}) {
         return ${returnMethod.method(${pageMethod.method("baseService.voPage(param, current, size)")})};
     }
 #end
@@ -113,7 +121,7 @@ public class ${table.controllerName} {
      */
     #end
     ${requestMethod4Select}("/excel/export$!{pagePathParams}")
-    public void excelExport($!{optionalBodyStr}${entityQueryDTO} param, ${pageMethodParams}, HttpServletResponse response) throws IOException {
+    public void excelExport($!{optionalBodyStr}${entityQueryDTOStr} param, ${pageMethodParams}, HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis() + ".xlsx");

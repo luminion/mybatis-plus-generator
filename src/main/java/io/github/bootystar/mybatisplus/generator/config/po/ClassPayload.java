@@ -40,7 +40,7 @@ public class ClassPayload {
         return true;
     }
 
-    public String classReturnGenericTypeStr(String... genericTypeStr) {
+    public String clazz(String... genericTypeStr) {
         if (classSimpleName == null) {
             return genericTypeStr!=null && genericTypeStr.length == 1 ? genericTypeStr[0] : "Object";
         }

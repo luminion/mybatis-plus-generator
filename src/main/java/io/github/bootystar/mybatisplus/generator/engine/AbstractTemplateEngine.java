@@ -210,7 +210,7 @@ public abstract class AbstractTemplateEngine {
     public AbstractTemplateEngine batchOutput() {
         try {
             ConfigAdapter config = this.getConfigAdapter();
-            List<TableInfo> tableInfoList = config.getTableInfoList();
+            List<TableInfo> tableInfoList = config.getTableInfo();
             tableInfoList.forEach(tableInfo -> {
                 Map<String, Object> objectMap = this.getObjectMap(config, tableInfo);
                 Optional.ofNullable(config.getInjectionConfig()).ifPresent(t -> {
@@ -293,37 +293,37 @@ public abstract class AbstractTemplateEngine {
                 tableInfo.setConvert(true);
             }
         }
-//        Map<String, Object> map = strategyConfig.renderData(tableInfo);
-//        objectMap.putAll(map);
-//        objectMap.put("schemaName", schemaName);
-//        Map<String, Object> controllerData = config.getControllerConfig().renderData(tableInfo);
-//        objectMap.putAll(controllerData);
-//        Map<String, Object> mapperData = config.getMapperConfig().renderData(tableInfo);
-//        objectMap.putAll(mapperData);
-//        Map<String, Object> serviceData = config.getServiceConfig().renderData(tableInfo);
-//        objectMap.putAll(serviceData);
-//        Map<String, Object> entityData = config.getEntityConfig().renderData(tableInfo);
-//        objectMap.putAll(entityData);
-//        objectMap.put("config", config);
-//        objectMap.put("package", config.getPackageConfig().getPackageInfo(config.getInjectionConfig()));
-//        GlobalConfig globalConfig = config.getGlobalConfig();
-//        objectMap.put("author", globalConfig.getAuthor());
-//        objectMap.put("kotlin", globalConfig.isKotlin());
-//        objectMap.put("swagger", globalConfig.isSwagger());
-//        objectMap.put("springdoc", globalConfig.isSpringdoc());
-//        objectMap.put("date", globalConfig.getCommentDate());
-//        objectMap.put("table", tableInfo);
-//        objectMap.put("entity", tableInfo.getEntityName());
-        
-        objectMap.put("table", tableInfo);
-        objectMap.put("global", config.getGlobalConfig());
+        Map<String, Object> map = strategyConfig.renderData(tableInfo);
+        objectMap.putAll(map);
+        objectMap.put("schemaName", schemaName);
+        Map<String, Object> controllerData = config.getControllerConfig().renderData(tableInfo);
+        objectMap.putAll(controllerData);
+        Map<String, Object> mapperData = config.getMapperConfig().renderData(tableInfo);
+        objectMap.putAll(mapperData);
+        Map<String, Object> serviceData = config.getServiceConfig().renderData(tableInfo);
+        objectMap.putAll(serviceData);
+        Map<String, Object> entityData = config.getEntityConfig().renderData(tableInfo);
+        objectMap.putAll(entityData);
+        objectMap.put("config", config);
         objectMap.put("package", config.getPackageConfig().getPackageInfo(config.getInjectionConfig()));
-        objectMap.put("strategy", config.getStrategyConfig().renderData(tableInfo));
-        objectMap.put("injection", config.getInjectionConfig().renderData(tableInfo));
-        objectMap.put("entity", config.getEntityConfig().renderData(tableInfo));
-        objectMap.put("mapper", config.getMapperConfig().renderData(tableInfo));
-        objectMap.put("service", config.getServiceConfig().renderData(tableInfo));
-        objectMap.put("controller", config.getControllerConfig().renderData(tableInfo));
+        GlobalConfig globalConfig = config.getGlobalConfig();
+        objectMap.put("author", globalConfig.getAuthor());
+        objectMap.put("kotlin", globalConfig.isKotlin());
+        objectMap.put("swagger", globalConfig.isSwagger());
+        objectMap.put("springdoc", globalConfig.isSpringdoc());
+        objectMap.put("date", globalConfig.getCommentDate());
+        objectMap.put("table", tableInfo);
+        objectMap.put("entity", tableInfo.getEntityName());
+        
+//        objectMap.put("table", tableInfo);
+//        objectMap.put("global", config.getGlobalConfig());
+//        objectMap.put("package", config.getPackageConfig().getPackageInfo(config.getInjectionConfig()));
+//        objectMap.put("strategy", config.getStrategyConfig().renderData(tableInfo));
+//        objectMap.put("injection", config.getInjectionConfig().renderData(tableInfo));
+//        objectMap.put("entity", config.getEntityConfig().renderData(tableInfo));
+//        objectMap.put("mapper", config.getMapperConfig().renderData(tableInfo));
+//        objectMap.put("service", config.getServiceConfig().renderData(tableInfo));
+//        objectMap.put("controller", config.getControllerConfig().renderData(tableInfo));
         return objectMap;
     }
 

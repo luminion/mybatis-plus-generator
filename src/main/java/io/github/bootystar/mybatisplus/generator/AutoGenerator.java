@@ -84,7 +84,7 @@ public class AutoGenerator {
     }
     
     protected List<TableInfo> getAllTableInfoList() {
-        return config.getTableInfoList();
+        return config.getTableInfo();
     }
 
     public InjectionConfig getInjectionConfig() {

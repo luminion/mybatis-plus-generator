@@ -154,16 +154,6 @@ public class Controller extends ControllerConfig {
         }
 
         /**
-         * 使用@AutoWired替换@Resource
-         *
-         * @return this
-         */
-        public Builder enableAutoWired() {
-            this.config.autoWired = true;
-            return this;
-        }
-
-        /**
          * 复杂参数查询不再使用post, 而是使用get
          *
          * @return this

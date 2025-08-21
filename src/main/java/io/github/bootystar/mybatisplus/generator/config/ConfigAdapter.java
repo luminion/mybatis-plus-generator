@@ -85,12 +85,17 @@ public class ConfigAdapter {
     /**
      * 数据库表信息
      */
-    private final List<TableInfo> tableInfoList = new ArrayList<>();
+    private final List<TableInfo> tableInfo = new ArrayList<>();
 
     /**
      * 路径配置信息
      */
     private final Map<OutputFile, String> pathInfo = new HashMap<>();
+    
+    /**
+     * 包配置信息
+     */
+    private final Map<String, String> packageInfo = new HashMap<>();
     
     /**
      * 数据查询实例
@@ -124,18 +129,25 @@ public class ConfigAdapter {
         this.mapperConfig = mapperConfig;
         this.serviceConfig = serviceConfig;
         this.controllerConfig = controllerConfig;
-
+        
         // 设置默认名称转换
         INameConvert nameConvert = entityConfig.getNameConvert();
         if (nameConvert == null) {
-            entityConfig.setNameConvert(new INameConvert.DefaultNameConvert(strategyConfig));
+            entityConfig.setNameConvert(new INameConvert.DefaultNameConvert(this));
         }
         // 设置路径信息
         this.pathInfo.putAll(new PathInfoHandler(this).getPathInfo());
+        // 设置包信息
+        this.packageInfo.putAll(packageConfig.getPackageInfo(injectionConfig));
         Class<? extends IDatabaseQuery> databaseQueryClass = dataSourceConfig.getDatabaseQueryClass();
         try {
             Constructor<? extends IDatabaseQuery> declaredConstructor = databaseQueryClass.getDeclaredConstructor(this.getClass());
             this.databaseQuery = declaredConstructor.newInstance(this);
+            // 设置表信息
+            List<TableInfo> tableInfos = this.databaseQuery.queryTables();
+            if (!tableInfos.isEmpty()) {
+                this.tableInfo.addAll(tableInfos);
+            }
         } catch (ReflectiveOperationException exception) {
             throw new RuntimeException("创建IDatabaseQuery实例出现错误:", exception);
         }
@@ -150,15 +162,5 @@ public class ConfigAdapter {
      */
     public static boolean matcherRegTable(String tableName) {
         return REGX.matcher(tableName).find();
-    }
-
-    public List<TableInfo> getTableInfoList() {
-        if (tableInfoList.isEmpty()) {
-            List<TableInfo> tableInfos = this.databaseQuery.queryTables();
-            if (!tableInfos.isEmpty()) {
-                this.tableInfoList.addAll(tableInfos);
-            }
-        }
-        return tableInfoList;
     }
 }

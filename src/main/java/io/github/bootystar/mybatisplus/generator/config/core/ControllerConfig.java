@@ -110,11 +110,6 @@ public class ControllerConfig implements ITemplate {
     protected boolean crossOrigins;
 
     /**
-     * 使用@AutoWired替换@Resource
-     */
-    protected boolean autoWired;
-
-    /**
      * restful样式
      */
     protected boolean restful;
@@ -169,119 +164,105 @@ public class ControllerConfig implements ITemplate {
         PackageConfig packageConfig = configAdapter.getPackageConfig();
         GlobalConfig globalConfig = configAdapter.getGlobalConfig();
 
-        Collection<String> importFrameworkPackages = new TreeSet<>();
-        Collection<String> importJavaPackages = new TreeSet<>();
-        data.put("importFrameworkPackages",importFrameworkPackages);
-        data.put("importJavaPackages",importJavaPackages);
+        Collection<String> importControllerFrameworkPackages = new TreeSet<>();
+        Collection<String> importControllerJavaPackages = new TreeSet<>();
+        data.put("importFrameworkPackages", importControllerFrameworkPackages);
+        data.put("importJavaPackages", importControllerJavaPackages);
         if (!StringUtils.isBlank(superClass)) {
-            importFrameworkPackages.add(superClass);
+            importControllerFrameworkPackages.add(superClass);
         }
-        if (globalConfig.isSpringdoc()){
-            importFrameworkPackages.add("io.swagger.v3.oas.annotations.tags.Tag");
-            importFrameworkPackages.add("io.swagger.v3.oas.annotations.*");
-        }else if (globalConfig.isSwagger()){
-            importFrameworkPackages.add("io.swagger.annotations.Api");
-            importFrameworkPackages.add("io.swagger.annotations.ApiOperation");
+        if (globalConfig.isSpringdoc()) {
+            importControllerFrameworkPackages.add("io.swagger.v3.oas.annotations.tags.Tag");
+            importControllerFrameworkPackages.add("io.swagger.v3.oas.annotations.*");
+        } else if (globalConfig.isSwagger()) {
+            importControllerFrameworkPackages.add("io.swagger.annotations.Api");
+            importControllerFrameworkPackages.add("io.swagger.annotations.ApiOperation");
         }
-        if (autoWired){
-            importFrameworkPackages.add("org.springframework.beans.factory.annotation.Autowired");
-        }else{
-            String pkg = strategyConfig.getJavaApiPackage("annotation.Resource");
-            if (pkg.startsWith("java")){
-                importJavaPackages.add(pkg);
-            }else {
-                importFrameworkPackages.add(pkg);
-            }
+        if (!restController) {
+            importControllerFrameworkPackages.add("org.springframework.stereotype.Controller");
         }
-        if (!restController){
-            importFrameworkPackages.add("org.springframework.stereotype.Controller");
+        if (serviceConfig.generateService) {
+            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.SERVICE) + "." + tableInfo.getServiceName());
+        } else {
+            importControllerFrameworkPackages.add(packageConfig.getPackageInfo().get(ConstVal.SERVICE_IMPL) + "." + tableInfo.getServiceImplName());
         }
-        if (serviceConfig.generateService){
-            importFrameworkPackages.add(packageConfig.getService());
-        }else{
-            importFrameworkPackages.add(packageConfig.getServiceImpl());
+        if (returnMethod.isRegistered()) {
+            importControllerFrameworkPackages.add(returnMethod.getClassFullName());
         }
-        if (returnMethod.isRegistered()){
-            importFrameworkPackages.add(returnMethod.getClassFullName());
-        }
-        
+
         String requestBaseUrl = Stream.of(this.baseUrl,
                         packageConfig.getModuleName(),
-                        this.hyphenStyle ? StringUtils.camelToHyphen(tableInfo.getEntityPath()):tableInfo.getEntityPath()
+                        this.hyphenStyle ? StringUtils.camelToHyphen(tableInfo.getEntityPath()) : tableInfo.getEntityPath()
                 ).filter(StringUtils::isNotBlank)
                 .collect(Collectors.joining("/"));
         data.put("requestBaseUrl", requestBaseUrl);
         String requestBodyStr = "@RequestBody ";
-        String optionalBodyStr = postQuery ? "@RequestBody(required = false) ":"";
-        String validatedStr = strategyConfig.isValidated() ? "@Validated ":"";
+        String optionalBodyStr = postQuery ? "@RequestBody(required = false) " : "";
+        String validatedStr = strategyConfig.isValidated() ? "@Validated " : "";
         data.put("requestBodyStr", requestBodyStr);
         data.put("optionalBodyStr", optionalBodyStr);
         data.put("validatedStr", validatedStr);
         for (TableField field : tableInfo.getFields()) {
-            if (field.isKeyFlag()){
+            if (field.isKeyFlag()) {
                 data.put("primaryKeyPropertyType", field.getPropertyType());
                 break;
             }
         }
-        
-        if (this.queryDTO == null) {
-            this.queryDTO = entityConfig.getQueryDTO();
-        }
-        if (strategyConfig.isGenerateSelect() || strategyConfig.isGenerateExport()){
-            importFrameworkPackages.add(entityConfig.getViewObject().getClassFullName());
-            String entityQueryDTOStr = this.queryDTO.getClazz().getSimpleName();
-            if (Map.class.isAssignableFrom(this.queryDTO.getClazz()) && !postQuery) {
-                entityQueryDTOStr = "@RequestParam " + entityQueryDTOStr;
-                importJavaPackages.add(queryDTO.getClassFullName());
+        if (strategyConfig.isGenerateSelect() || strategyConfig.isGenerateExport()) {
+            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_VO) + "." + tableInfo.getEntityVOName());
+            String entityQueryDTOStr = tableInfo.getEntityQueryDTOName();
+            if (this.queryDTO != null && this.queryDTO.isRegistered()) {
+                if (Map.class.isAssignableFrom(this.queryDTO.getClazz()) && !postQuery) {
+                    entityQueryDTOStr = "@RequestParam " + entityQueryDTOStr;
+                    importControllerJavaPackages.add(queryDTO.getClassFullName());
+                } else {
+                    importControllerFrameworkPackages.add(queryDTO.getClassFullName());
+                }
             } else {
-                importFrameworkPackages.add(queryDTO.getClassFullName());
+                importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_QUERY_DTO) + "." + tableInfo.getEntityQueryDTOName());
             }
             data.put("entityQueryDTOStr", entityQueryDTOStr);
-            if (this.pathVariable){
-                data.put("pagePathParams","/{current}/{size}");
-                data.put("pageMethodParams","@PathVariable(\"current\") Long current, @PathVariable(\"size\") Long size");
-                data.put("idPathParams","/{id}");
-                data.put("idMethodParams","@PathVariable(\"id\") ");
-            }else{
-                data.put("pageMethodParams","Long current, Long size");
-            }
-            importJavaPackages.add("java.util.List");
-            if (pageMethod.isRegistered()){
-                importFrameworkPackages.add(pageMethod.getClassFullName());
-                data.put("pageClazz4return",pageMethod.classReturnGenericTypeStr(entityConfig.getViewObject().getClassSimpleName()));
+          
+
+
+            if (this.pathVariable) {
+                data.put("pagePathParams", "/{current}/{size}");
+                data.put("pageMethodParams", "@PathVariable(\"current\") Long current, @PathVariable(\"size\") Long size");
+                data.put("idPathParams", "/{id}");
+                data.put("idMethodParams", "@PathVariable(\"id\") ");
             } else {
-                importFrameworkPackages.add("com.baomidou.mybatisplus.core.metadata.IPage");
-                data.put("pageClazz4return", "IPage<" + entityConfig.getViewObject().getClassSimpleName() + ">");
+                data.put("pageMethodParams", "Long current, Long size");
+            }
+            importControllerJavaPackages.add("java.util.List");
+            if (pageMethod.isRegistered()) {
+                importControllerFrameworkPackages.add(pageMethod.getClassFullName());
+                data.put("pageClazz4return", pageMethod.clazz(tableInfo.getEntityVOName()));
+            } else {
+                importControllerFrameworkPackages.add("com.baomidou.mybatisplus.core.metadata.IPage");
+                data.put("pageClazz4return", "IPage<" + tableInfo.getEntityVOName() + ">");
             }
         }
-        if (strategyConfig.isValidated() && (strategyConfig.isGenerateInsert() || strategyConfig.isGenerateUpdate())){
-            importFrameworkPackages.add("org.springframework.validation.annotation.Validated");
+        if (strategyConfig.isValidated() && (strategyConfig.isGenerateInsert() || strategyConfig.isGenerateUpdate())) {
+            importControllerFrameworkPackages.add("org.springframework.validation.annotation.Validated");
         }
-        if(strategyConfig.isGenerateInsert()){
-            ClassPayload insertDTO = entityConfig.getInsertDTO();
-            if (insertDTO.isRegistered()) {
-                importFrameworkPackages.add(insertDTO.getClassFullName());
-            }
+        if (strategyConfig.isGenerateInsert()) {
+            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_INSERT_DTO) + "." + tableInfo.getEntityInsertDTOName());
         }
-        if (strategyConfig.isGenerateUpdate()){
-            ClassPayload updateDTO = entityConfig.getUpdateDTO();
-            if (updateDTO.isRegistered()){
-                importFrameworkPackages.add(updateDTO.getClassFullName());
-            }
+        if (strategyConfig.isGenerateUpdate()) {
+            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_UPDATE_DTO) + "." + tableInfo.getEntityUpdateDTOName());
         }
-      
-        if (strategyConfig.generateImport || strategyConfig.generateExport){
-            if (strategyConfig.generateImport){
-                importJavaPackages.add("org.springframework.web.multipart.MultipartFile");    
+
+        if (strategyConfig.generateImport || strategyConfig.generateExport) {
+            if (strategyConfig.generateImport) {
+                importControllerJavaPackages.add("org.springframework.web.multipart.MultipartFile");
             }
-            importJavaPackages.add("java.io.IOException");
-            String pkg = strategyConfig.getJavaApiPackage("servlet.http.HttpServletResponse");
-            if (pkg.startsWith("java")){
-                importJavaPackages.add(pkg);
-            }else {
-                importFrameworkPackages.add(pkg);
+            importControllerJavaPackages.add("java.io.IOException");
+            String pkg = strategyConfig.resolveJavaApiPackage("servlet.http.HttpServletResponse");
+            if (pkg.startsWith("java")) {
+                importControllerJavaPackages.add(pkg);
+            } else {
+                importControllerFrameworkPackages.add(pkg);
             }
-            
         }
 
         return data;

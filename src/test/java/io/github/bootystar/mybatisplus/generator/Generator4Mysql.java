@@ -25,7 +25,18 @@ public class Generator4Mysql {
                 .strategy(e->e
                 )
                 .entity(e->e
+//                        .disable()
                 )
+                .mapper(e->e
+                        .disable()
+                )
+                .service(e->e
+                        .disable()
+                )
+                .controller(e->e
+                        .disable()
+                )
+                
                 .execute("sys_user")
         ;
     }

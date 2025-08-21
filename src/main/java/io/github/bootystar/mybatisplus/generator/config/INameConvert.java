@@ -54,20 +54,20 @@ public interface INameConvert {
      */
     class DefaultNameConvert implements INameConvert {
 
-        private final StrategyConfig strategyConfig;
+        private final ConfigAdapter configAdapter;
 
-        public DefaultNameConvert(StrategyConfig strategyConfig) {
-            this.strategyConfig = strategyConfig;
+        public DefaultNameConvert(ConfigAdapter configAdapter) {
+            this.configAdapter = configAdapter;
         }
 
         @Override
         public String entityNameConvert(TableInfo tableInfo) {
-            return NamingStrategy.capitalFirst(processName(tableInfo.getName(), strategyConfig.entity().getNaming(), strategyConfig.getTablePrefix(), strategyConfig.getTableSuffix()));
+            return NamingStrategy.capitalFirst(processName(tableInfo.getName(), configAdapter.getEntityConfig().getNaming(), configAdapter.getStrategyConfig().getTablePrefix(), configAdapter.getStrategyConfig().getTableSuffix()));
         }
 
         @Override
         public String propertyNameConvert(TableField field) {
-            return processName(field.getName(), strategyConfig.entity().getColumnNaming(), strategyConfig.getFieldPrefix(), strategyConfig.getFieldSuffix());
+            return processName(field.getName(), configAdapter.getEntityConfig().getColumnNaming(), configAdapter.getStrategyConfig().getFieldPrefix(), configAdapter.getStrategyConfig().getFieldSuffix());
         }
 
         private String processName(String name, NamingStrategy strategy, Set<String> prefix, Set<String> suffix) {
