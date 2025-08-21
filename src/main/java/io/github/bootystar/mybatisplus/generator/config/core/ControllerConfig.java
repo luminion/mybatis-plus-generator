@@ -26,9 +26,7 @@ import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 控制器属性配置
@@ -107,21 +105,6 @@ public class ControllerConfig implements ITemplate {
     protected boolean crossOrigins;
 
     /**
-     * 返回结果方法
-     */
-    protected MethodPayload returnMethod = new MethodPayload();
-
-    /**
-     * 分页结果方法
-     */
-    protected MethodPayload pageMethod = new MethodPayload();
-
-    /**
-     * 指定查询的DTO
-     */
-    protected ClassPayload queryDTO;
-
-    /**
      * 使用@AutoWired替换@Resource
      */
     protected boolean autoWired;
@@ -145,11 +128,26 @@ public class ControllerConfig implements ITemplate {
      * 复杂查询使用post请求
      */
     protected boolean postQuery = true;
-    
+
     /**
      * get请求是否使用@RequestBody注解
      */
     protected boolean queryRequestBody = true;
+
+    /**
+     * 返回结果方法
+     */
+    protected MethodPayload returnMethod = new MethodPayload();
+
+    /**
+     * 分页结果方法
+     */
+    protected MethodPayload pageMethod = new MethodPayload();
+
+    /**
+     * 指定查询的DTO
+     */
+    protected ClassPayload queryDTO;
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
@@ -159,10 +157,21 @@ public class ControllerConfig implements ITemplate {
         data.put("restControllerStyle", this.restController);
         data.put("superControllerClassPackage", StringUtils.isBlank(superClass) ? null : superClass);
         data.put("superControllerClass", ClassUtils.getSimpleName(this.superClass));
+        
+        Collection<String> importFrameworkPackages = new TreeSet<>();
+        Collection<String> importJavaPackages = new TreeSet<>();
 
+        String url = Optional.ofNullable(baseUrl).orElse("");
+        if (!url.startsWith("/")) {
+            url = "/" + url;
+        }
+        if (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
+        }
+        data.put("requestBaseUrl", baseUrl);
+        
         // 查询DTO导入的包
         List<String> queryDTOImportPackages = new ArrayList<>();
-
         String entityQueryDTO = "";
         String importStr4QueryDTO = "";
         if (queryDTO!=null){
