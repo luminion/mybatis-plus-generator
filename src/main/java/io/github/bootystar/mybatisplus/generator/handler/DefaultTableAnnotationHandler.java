@@ -42,7 +42,7 @@ public class DefaultTableAnnotationHandler implements ITableAnnotationHandler {
         if (StringUtils.isBlank(comment)) {
             comment = StringPool.EMPTY;
         }
-//        boolean kotlin = globalConfig.isKotlin();
+        boolean kotlin = globalConfig.isKotlin();
 //        if (!kotlin && entity.isLombok()) {
 //            // 原先kt模板没有处理这些,作为兼容项
 //            if (entity.isChain()) {
