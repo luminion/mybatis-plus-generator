@@ -75,7 +75,6 @@ public class FastGenerator {
                                         new Column("created_by", FieldFill.INSERT),
                                         new Column("updated_by", FieldFill.INSERT_UPDATE)
                         )
-                        .editExcludeColumns() // 废弃
                 )
                 .mapper(e->e
                         .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)

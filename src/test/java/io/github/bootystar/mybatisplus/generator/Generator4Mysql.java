@@ -15,9 +15,10 @@ public class Generator4Mysql {
                 .initialize()
                 .global(e -> e
                                 .disableOpenDir()
+                                .enableFileOverwrite()
                                 .outputDir(System.getProperty("user.dir") + "/src/test/java")
-//                            .enableSwagger()
-                            .enableSpringdoc()
+                            .enableSwagger()
+//                            .enableSpringdoc()
                 )
                 .pkg(e -> e
                         .parent("com.example.test")
