@@ -290,7 +290,7 @@ public class Strategy extends StrategyConfig {
          * @return this
          */
         public Builder useJavax() {
-            this.config.javaApiPackage = "javax";
+            this.config.javaApiPackagePrefix = "javax";
             return this;
         }
 
@@ -301,7 +301,7 @@ public class Strategy extends StrategyConfig {
          * @return this
          */
         public Builder useEasyExcel() {
-            this.config.excelApiPackage = "com.alibaba.excel";
+            this.config.excelApiPackagePrefix = "com.alibaba.excel";
             this.config.excelClass = "EasyExcel";
             return this;
         }

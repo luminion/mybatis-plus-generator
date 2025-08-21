@@ -36,7 +36,7 @@ public class MethodPayload extends ClassPayload {
         this.isConstructor = true;
     }
 
-    public String method(String parametersStr) {
+    public String methodInputParameterStr(String parametersStr) {
         if (methodName == null) {
             return parametersStr;
         }

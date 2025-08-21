@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.INameConvert;
+import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.IFill;
@@ -280,22 +281,34 @@ public class EntityConfig implements ITemplate {
     /**
      * 查询dto继承实体类
      */
-    private boolean extendsEntityQueryDTO;
+    protected boolean extendsEntityQueryDTO;
     
     /**
      * vo继承实体类
      */
-    private boolean extendsEntityVO;
+    protected boolean extendsEntityVO;
 
     /**
-     * swagger实体是否添加注解
+     * 实体类
      */
-    protected boolean swaggerModelWithAnnotation;
-
+    protected ClassPayload entity = new ClassPayload();
     /**
-     * swagger注解添加uuid标识
+     * 查询dto
      */
-    protected boolean swaggerAnnotationWithUUID;
+    protected ClassPayload queryDTO = new ClassPayload();
+    /**
+     * 插入dto
+     */
+    protected ClassPayload insertDTO = new ClassPayload();
+    /**
+     * 更新dto
+     */
+    protected ClassPayload updateDTO = new ClassPayload();
+    /**
+     * vo
+     */
+    protected ClassPayload viewObject = new ClassPayload();
+
 
     /**
      * <p>
