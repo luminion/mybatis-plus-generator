@@ -144,38 +144,6 @@ public class Controller extends ControllerConfig {
         }
 
         /**
-         * 指定controller的返回结果包装类及方法
-         *
-         * @param methodReference 方法引用
-         * @return this
-         */
-        public <R> Builder returnMethod(SFunction<Object, R> methodReference) {
-            this.config.returnMethod = ReflectUtil.lambdaMethodInfo(methodReference, Object.class);
-            return this;
-        }
-
-        /**
-         * 指定controller返回的分页包装类及方法
-         *
-         * @param methodReference 方法参考
-         * @return this
-         */
-        public <O, R> Builder pageMethod(SFunction<IPage<O>, R> methodReference) {
-            this.config.pageMethod = ReflectUtil.lambdaMethodInfo(methodReference, IPage.class);
-            return this;
-        }
-
-        /**
-         * 指定查询的DTO
-         *
-         * @return this
-         */
-        public Builder queryDTO(Class<?> queryDTO) {
-            this.config.queryDTO = new ClassPayload(queryDTO);
-            return this;
-        }
-
-        /**
          * 使用@AutoWired替换@Resource
          *
          * @return this
@@ -186,11 +154,11 @@ public class Controller extends ControllerConfig {
         }
 
         /**
-         * 禁止复杂查询使用post请求(使用Get请求替代)
+         * 复杂参数查询不再使用post, 而是使用get
          *
          * @return this
          */
-        public Builder disablePost() {
+        public Builder disablePostQuery() {
             this.config.postQuery = false;
             return this;
         }
@@ -234,5 +202,41 @@ public class Controller extends ControllerConfig {
             this.config.requestBody = false;
             return this;
         }
+
+        /**
+         * 指定controller的返回结果包装类及方法
+         *
+         * @param methodReference 方法引用
+         * @return this
+         */
+        public <R> Builder returnMethod(SFunction<Object, R> methodReference) {
+            this.config.returnMethod = ReflectUtil.lambdaMethodInfo(methodReference, Object.class);
+            return this;
+        }
+
+        /**
+         * 指定controller返回的分页包装类及方法
+         *
+         * @param methodReference 方法参考
+         * @return this
+         */
+        public <O, R> Builder pageMethod(SFunction<IPage<O>, R> methodReference) {
+            this.config.pageMethod = ReflectUtil.lambdaMethodInfo(methodReference, IPage.class);
+            return this;
+        }
+
+        /**
+         * 指定查询的DTO
+         *
+         * @return this
+         */
+        public Builder queryDTO(Class<?> queryDTO) {
+            this.config.queryDTO = new ClassPayload(queryDTO);
+            return this;
+        }
+
+   
+
+        
     }
 }
