@@ -69,6 +69,16 @@ public class GlobalConfig {
     protected boolean springdoc;
 
     /**
+     * swagger实体是否添加注解
+     */
+    protected boolean swaggerModelWithAnnotation;
+
+    /**
+     * swagger注解添加uuid标识
+     */
+    protected boolean swaggerAnnotationWithUUID;
+
+    /**
      * 时间类型对应策略
      */
     protected DateType dateType = DateType.TIME_PACK;

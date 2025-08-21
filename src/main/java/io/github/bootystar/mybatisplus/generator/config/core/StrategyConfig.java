@@ -36,7 +36,7 @@ import java.util.function.BiFunction;
  * @since 2016/8/30
  */
 @Getter
-public class StrategyConfig implements ITemplate{
+public class StrategyConfig implements ITemplate {
 
     protected StrategyConfig() {
     }
@@ -154,19 +154,19 @@ public class StrategyConfig implements ITemplate{
      * 是否生成重写父类方法
      */
     protected boolean methodOverride = true;
-    
+
     /**
      * javaEE api包(jakarta或javax)
      * <p>
      * 涉及HttpServletRequest,HttpServletResponse,@Resource
      */
-    protected String javaApiPackage = "jakarta";
-    
+    protected String javaApiPackagePrefix = "jakarta";
+
     /**
      * excel注解的包
      */
-    protected String excelApiPackage = "cn.idev.excel";
-    
+    protected String excelApiPackagePrefix = "cn.idev.excel";
+
     /**
      * excel类
      */
@@ -297,6 +297,10 @@ public class StrategyConfig implements ITemplate{
         map.put("jdbcTimeTypes", jdbcTimeTypes);
 
         return map;
+    }
+
+    public String getJavaApiPackage(String suffix) {
+        return javaApiPackagePrefix + "." + suffix;
     }
 
 }

@@ -13,7 +13,7 @@ import io.github.bootystar.mybatisplus.generator.util.ReflectUtil;
 public class Controller extends ControllerConfig {
     public static class Builder {
         protected final Controller config = new Controller();
-        
+
         protected Builder() {
         }
 
@@ -129,6 +129,16 @@ public class Controller extends ControllerConfig {
          * @return this
          */
         public Builder baseUrl(String url) {
+            if (url == null || url.isEmpty()) {
+                this.config.baseUrl = null;
+                return this;
+            }
+            if (!url.startsWith("/")) {
+                url = "/" + url;
+            }
+            if (url.endsWith("/")) {
+                url = url.substring(0, url.length() - 1);
+            }
             this.config.baseUrl = url;
             return this;
         }
@@ -160,16 +170,6 @@ public class Controller extends ControllerConfig {
          */
         public Builder disablePostQuery() {
             this.config.postQuery = false;
-            return this;
-        }
-
-        /**
-         * 禁止get请求使用@RequestBody注解
-         *
-         * @return this
-         */
-        public Builder disableGetRequestBody() {
-            this.config.queryRequestBody = false;
             return this;
         }
 
@@ -235,8 +235,6 @@ public class Controller extends ControllerConfig {
             return this;
         }
 
-   
 
-        
     }
 }
