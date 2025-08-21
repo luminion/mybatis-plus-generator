@@ -367,27 +367,10 @@ public class EntityConfig implements ITemplate {
         data.put("superEntityClass", ClassUtils.getSimpleName(this.superClass));
         GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
 
-
         Collection<String> importPackages = new TreeSet<>(tableInfo.getImportPackages());
-        // mybatis-plus类注解
-        List<ClassAnnotationAttributes> classAnnotationAttributes = new ArrayList<>();
-        List<ClassAnnotationAttributes> classAnnotationAttributesList = tableAnnotationHandler.handle(tableInfo, this);
-        if (classAnnotationAttributesList != null && !classAnnotationAttributesList.isEmpty()) {
-            classAnnotationAttributes.addAll(classAnnotationAttributesList);
+        for (io.github.bootystar.mybatisplus.generator.config.po.TableField field : tableInfo.getFields()) {
+            
         }
-        classAnnotationAttributes.forEach(attributes -> {
-            attributes.handleDisplayName(tableInfo);
-            importPackages.addAll(attributes.getImportPackages());
-        });
-        // mybatis-plus字段属性注解
-        tableInfo.getFields().forEach(tableField -> {
-            List<AnnotationAttributes> annotationAttributes = tableFieldAnnotationHandler.handle(tableInfo, tableField);
-            if (annotationAttributes != null && !annotationAttributes.isEmpty()) {
-                tableField.addAnnotationAttributesList(annotationAttributes, null);
-                annotationAttributes.forEach(attributes -> importPackages.addAll(attributes.getImportPackages()));
-            }
-        });
-
         if (globalConfig.isSwagger()) {
             importPackages.add("io.swagger.annotations.ApiModel");
             importPackages.add("io.swagger.annotations.ApiModelProperty");

@@ -4,7 +4,7 @@ package ${package.Entity};
 import ${pkg};
 #end
 
-#foreach($pkg in ${table.importPackages})
+#foreach($pkg in ${importEntityJavaPackages})
 import ${pkg};
 #end
 
@@ -12,11 +12,11 @@ import ${pkg};
  * $!{table.comment}$!{commentUUID}
  *
  * @author ${author}
- * @since ${date}
 #if(${extraComment})
  * @see ${package.Mapper}.${table.mapperName}
  * @see ${package.ServiceImpl}.${table.serviceImplName}
 #end
+ * @since ${date}
  */
 #if(${entityLombokModel})
 @Data
@@ -28,9 +28,9 @@ import ${pkg};
 @TableName("${schemaName}${table.name}")
 #end
 #if(${springdoc})
-@Schema(name = "${entity}$!{commentUUID}", description = "$!{table.comment}$!{commentUUID}")
+@Schema(description = "$!{table.comment}")
 #elseif(${swagger})
-@ApiModel(value = "${entity}$!{commentUUID}", description = "$!{table.comment}$!{commentUUID}")
+@ApiModel(description = "$!{table.comment}")
 #end
 #if(${superEntityClass})
 public class ${entity} extends ${superEntityClass}#if(${activeRecord})<${entity}>#end {
