@@ -344,6 +344,45 @@ public class Entity extends EntityConfig {
         }
 
         /**
+         * 查询dto模板路径
+         *
+         * @param template 模板
+         */
+        public Builder javaQueryDTOTemplate(String template) {
+            this.config.javaQueryDTOTemplate = template;
+            return this;
+        }
+        /**
+         * 新增dto模板路径
+         *
+         * @param template 模板
+         */
+        public Builder javaInsertDTOTemplate(String template) {
+            this.config.javaInsertDTOTemplate = template;
+            return this;
+        }
+        
+        /**
+         * 修改dto模板路径
+         *
+         * @param template 模板
+         */
+        public Builder javaUpdateDTOTemplate(String template) {
+            this.config.javaUpdateDTOTemplate = template;
+            return this;
+        }
+        
+        /**
+         * vo模板路径
+         *
+         * @param template 模板
+         */
+        public Builder javaVOTemplate(String template) {
+            this.config.javaVOTemplate = template;
+            return this;
+        }
+
+        /**
          * 禁用实体生成
          *
          * @return this
@@ -361,8 +400,8 @@ public class Entity extends EntityConfig {
          * @return this
          * @since 3.5.10
          */
-        public Builder fieldUseJavaDoc(boolean fieldUseJavaDoc) {
-            this.config.fieldUseJavaDoc = fieldUseJavaDoc;
+        public Builder disableFieldUseJavaDoc() {
+            this.config.fieldUseJavaDoc = false;
             return this;
         }
 
@@ -371,9 +410,8 @@ public class Entity extends EntityConfig {
          *
          * @return this
          */
-        public Builder enableQueryDTOExtendsEntity() {
-            // todo
-//            this.config.extendsEntityQueryDTO = true;
+        public Builder enableExtendsEntity() {
+            this.config.extendsEntityQueryDTO = true;
             return this;
         }
 
@@ -383,8 +421,7 @@ public class Entity extends EntityConfig {
          * @return this
          */
         public Builder enableVOExtendsEntity() {
-            // todo 
-//            this.config.extendsEntityVO = true;
+            this.config.extendsEntityVO = true;
             return this;
         }
 

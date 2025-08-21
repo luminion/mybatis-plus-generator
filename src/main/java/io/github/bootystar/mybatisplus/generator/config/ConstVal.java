@@ -53,6 +53,11 @@ public interface ConstVal {
      * 实体模板路径
      */
     String TEMPLATE_ENTITY_JAVA = "/templates/entity.java";
+    String TEMPLATE_ENTITY_QUERY_DTO_JAVA = "/templates/entityQueryDTO.java";
+    String TEMPLATE_ENTITY_INSERT_DTO_JAVA = "/templates/entityInsertDTO.java";
+    String TEMPLATE_ENTITY_UPDATE_DTO_JAVA = "/templates/entityUpdateDTO.java";
+    String TEMPLATE_ENTITY_VO_JAVA = "/templates/entityVO.java";
+ 
 
     /**
      * 实体模板路径(kotlin模板)

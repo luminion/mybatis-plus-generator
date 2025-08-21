@@ -38,7 +38,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -220,7 +219,7 @@ public class EntityConfig implements ITemplate {
      *
      * @since 3.5.10
      */
-    protected boolean fieldUseJavaDoc = false;
+    protected boolean fieldUseJavaDoc ;
 
 //    /**
 //     * 实体类注解
@@ -263,11 +262,14 @@ public class EntityConfig implements ITemplate {
      * @since 3.5.6
      */
     protected String javaTemplate = ConstVal.TEMPLATE_ENTITY_JAVA;
+    protected String javaQueryDTOTemplate = ConstVal.TEMPLATE_ENTITY_QUERY_DTO_JAVA;
+    protected String javaInsertDTOTemplate = ConstVal.TEMPLATE_ENTITY_INSERT_DTO_JAVA;
+    protected String javaUpdateDTOTemplate = ConstVal.TEMPLATE_ENTITY_UPDATE_DTO_JAVA;
+    protected String javaVOTemplate = ConstVal.TEMPLATE_ENTITY_VO_JAVA;
+    
 
     /**
      * Kotlin模板默认路径
-     *
-     * @deprecated 不支持kotlin
      */
     private String kotlinTemplate = ConstVal.TEMPLATE_ENTITY_KT;
 
