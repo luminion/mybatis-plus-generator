@@ -14,10 +14,7 @@ import io.github.bootystar.mybatisplus.generator.model.ClassAnnotationAttributes
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -358,42 +355,6 @@ public class Entity extends EntityConfig {
         }
 
         /**
-         * 添加类注解
-         *
-         * @param attributes 注解属性
-         * @return this
-         * @since 3.5.10
-         */
-        public Builder addClassAnnotation(ClassAnnotationAttributes attributes) {
-            this.config.classAnnotations.add(attributes);
-            return this;
-        }
-
-        /**
-         * 指定字段注解处理器
-         *
-         * @param tableFieldAnnotationHandler 字段处理器
-         * @return this
-         * @since 3.5.10
-         */
-        public Builder tableFieldAnnotationHandler(ITableFieldAnnotationHandler tableFieldAnnotationHandler) {
-            this.config.tableFieldAnnotationHandler = tableFieldAnnotationHandler;
-            return this;
-        }
-
-        /**
-         * 指定表注解处理器
-         *
-         * @param tableAnnotationHandler 表注解处理器
-         * @return this
-         * @since 3.5.10
-         */
-        public Builder tableAnnotationHandler(ITableAnnotationHandler tableAnnotationHandler) {
-            this.config.tableAnnotationHandler = tableAnnotationHandler;
-            return this;
-        }
-
-        /**
          * 设置字段是否生成文档注释
          *
          * @param fieldUseJavaDoc 是否生成文档注释
@@ -402,43 +363,6 @@ public class Entity extends EntityConfig {
          */
         public Builder fieldUseJavaDoc(boolean fieldUseJavaDoc) {
             this.config.fieldUseJavaDoc = fieldUseJavaDoc;
-            return this;
-        }
-
-        /**
-         * 导包处理方法
-         *
-         * @param importPackageFunction 导包处理
-         * @return this
-         * @since 3.5.11
-         */
-        public Builder importPackageFunction(Function<Set<String>, List<String>> importPackageFunction) {
-            this.config.importPackageFunction = importPackageFunction;
-            return this;
-        }
-
-        /**
-         * 注解处理方法 (含类与字段)
-         *
-         * @param annotationAttributesFunction 注解处理
-         * @return this
-         * @since 3.5.11
-         */
-        public Builder annotationAttributesFunction(Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction) {
-            this.config.annotationAttributesFunction = annotationAttributesFunction;
-            return this;
-        }
-
-        /**
-         * 新增或修改时排除的字段
-         * todo  废弃
-         *
-         * @deprecated 使用 {@link #addTableFills(IFill...)}替代
-         * @return this
-         */
-        @Deprecated
-        public Builder editExcludeColumns(String... editExcludeColumns) {
-            this.config.editExcludeColumns.addAll(Arrays.asList(editExcludeColumns));
             return this;
         }
 

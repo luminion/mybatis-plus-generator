@@ -71,32 +71,32 @@ ${importStr4SelectDTO}
 interface ${table.serviceName} : ${superServiceClass}<${entity}>
 #else
 public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
-##    #if(${generateSelect})
-##
-##    ${entityVO} voById(Serializable id);
-##
-##    List<${entityVO}> voList(${entitySelectDTO} s);
-##
-##    IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size);
-##    #end
-##    #if(${generateExport})
-##
-##    void excelExport(${entitySelectDTO} s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields);
-##    #end
-##    #if(${generateImport})
-##
-##    void excelTemplate(OutputStream os, Class<?> clazz);
-##
-##    int excelImport(InputStream is, Class<?> clazz);
-##    #end
-##    #if(${generateInsert})
-##
-##    Object insertByDTO(${entityInsertDTO} s);
-##    #end
-##    #if(${generateUpdate})
-##
-##    boolean updateByDTO(${entityUpdateDTO} s);
-##    #end
+    #if(${generateSelect})
+
+    ${entityVO} voById(Serializable id);
+
+    List<${entityVO}> voList(${entitySelectDTO} s);
+
+    IPage<${entityVO}> voPage(${entitySelectDTO} s, Long current, Long size);
+    #end
+    #if(${generateExport})
+
+    void excelExport(${entitySelectDTO} s, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields);
+    #end
+    #if(${generateImport})
+
+    void excelTemplate(OutputStream os, Class<?> clazz);
+
+    int excelImport(InputStream is, Class<?> clazz);
+    #end
+    #if(${generateInsert})
+
+    Object insertByDTO(${entityInsertDTO} s);
+    #end
+    #if(${generateUpdate})
+
+    boolean updateByDTO(${entityUpdateDTO} s);
+    #end
 
 
 }
