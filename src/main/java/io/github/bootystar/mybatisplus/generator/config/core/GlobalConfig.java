@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 
@@ -131,25 +130,15 @@ public class GlobalConfig implements ITemplate {
     /**
      * 额外类链接注释
      */
-    protected boolean extraComment = true;
+    protected boolean commentLink;
 
     /**
      * 注释UUID, 用于避免swagger等文档无法识别模型
+     * <p>
+     * 该属性在{@link TableInfo#setComment(String)} 时自动使用
+     * </p>
      */
     protected boolean commentUUID;
-
-    /**
-     * 【实体】是否为链式模型（默认 false）
-     *
-     * @since 3.3.2
-     */
-    protected boolean chain;
-
-    /**
-     * 【实体】是否为lombok模型（默认 false）<br>
-     * <a href="https://projectlombok.org/">document</a>
-     */
-    protected boolean lombok;
 
     /**
      * javaEE api包(jakarta或javax)
@@ -167,6 +156,19 @@ public class GlobalConfig implements ITemplate {
      * excel类
      */
     protected String excelClass = "FastExcel";
+
+    /**
+     * 【实体】是否为链式模型（默认 false）
+     *
+     * @since 3.3.2
+     */
+    protected boolean lombokChainModel;
+
+    /**
+     * 【实体】是否为lombok模型（默认 false）<br>
+     * <a href="https://projectlombok.org/">document</a>
+     */
+    protected boolean lombok;
 
     public boolean isSwagger() {
         // springdoc 设置优先于 swagger
@@ -202,17 +204,13 @@ public class GlobalConfig implements ITemplate {
         data.put("generateExport", this.generateExport);
         data.put("methodOverride", this.methodOverride);
         data.put("validated", this.validated);
-        data.put("extraComment", this.extraComment);
-        if(this.commentUUID){
-            data.put("commentUUID", UUID.randomUUID().toString().substring(0, 4).toUpperCase());
-        }
+        data.put("commentLink", this.commentLink);
         data.put("javaApiPackagePrefix", this.javaApiPackagePrefix);
         data.put("excelApiPackagePrefix", this.excelApiPackagePrefix);
         data.put("excelClass", this.excelClass);
 
-        data.put("entityBuilderModel", this.chain);
-        data.put("chainModel", this.chain);
-        data.put("entityLombokModel", this.lombok);
+        data.put("lombok", this.lombok);
+        data.put("lombokChainModel", this.lombokChainModel);
         
         return data;
     }

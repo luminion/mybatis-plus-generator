@@ -172,6 +172,14 @@ public class Global extends GlobalConfig{
         }
 
         /**
+         * 启用注释链接
+         */
+        public Builder enableCommentLink() {
+            this.config.commentLink = true;
+            return this;
+        }
+
+        /**
          * 启用注释UUID(防止swagger等文档因为重复模型名称而无法识别)
          *
          * @return this
@@ -222,8 +230,8 @@ public class Global extends GlobalConfig{
          * @return this
          * @since 3.5.0
          */
-        public Builder enableChainModel() {
-            this.config.chain = true;
+        public Builder enableLombokChainModel() {
+            this.config.lombokChainModel = true;
             return this;
         }
 

@@ -18,7 +18,6 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
@@ -256,7 +255,7 @@ public class EntityConfig implements ITemplate {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
         }
         if (!globalConfig.isKotlin() && globalConfig.isLombok()) {
-            if (globalConfig.isChain()) {
+            if (globalConfig.isLombokChainModel()) {
                 importPackages.add("lombok.experimental.Accessors");
             }
             if (this.superClass != null) {
