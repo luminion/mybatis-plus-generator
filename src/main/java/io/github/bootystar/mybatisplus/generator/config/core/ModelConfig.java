@@ -6,6 +6,7 @@ import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -57,8 +58,13 @@ public class ModelConfig implements ITemplate {
         data.put("extendsQueryDTO", this.extendsQueryDTO);
         data.put("extendsVO", this.extendsVO);
         GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
+        String superClass = tableInfo.getConfigAdapter().getEntityConfig().getSuperClass();
+
+ 
+        
         TreeSet<String> importPackages = tableInfo.getImportPackages().stream()
                 .filter(e -> !e.startsWith("com.baomidou.mybatisplus.annotation"))
+                .filter(e -> !e.startsWith(superClass))
                 .collect(Collectors.toCollection(TreeSet::new));
         if (globalConfig.isSpringdoc()) {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
@@ -74,10 +80,52 @@ public class ModelConfig implements ITemplate {
             importPackages.add("lombok.Data");
             importPackages.add("lombok.EqualsAndHashCode");
         }
-        Collection<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-        Collection<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importDTOJavaPackages", javaPackages);
-        data.put("importDTOFrameworkPackages", frameworkPackages);
+
+        TreeSet<String> importInsertDTOPackages = new TreeSet<>(importPackages);
+        TreeSet<String> importUpdateDTOPackages = new TreeSet<>(importPackages);
+        TreeSet<String> importQueryDTOPackages = new TreeSet<>(importPackages);
+        TreeSet<String> importVOPackages = new TreeSet<>(importPackages);
+        
+        boolean generateImport = globalConfig.isGenerateImport();
+        boolean generateExport = globalConfig.isGenerateExport();
+        String excelProperty = globalConfig.resolveExcelApiPackage("ExcelProperty");
+        String excelIgnoreUnannotated = globalConfig.resolveExcelApiPackage("ExcelIgnoreUnannotated");
+        if (generateImport){
+            importInsertDTOPackages.add(excelProperty);
+            importInsertDTOPackages.add(excelIgnoreUnannotated);
+        }
+        if (generateExport){
+            importVOPackages.add(excelProperty);
+            importVOPackages.add(excelIgnoreUnannotated);
+        }
+        importQueryDTOPackages.add("java.util.List");
+        String entityClassFullName = tableInfo.getConfigAdapter().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName();
+        if (extendsQueryDTO){
+            importQueryDTOPackages.add(entityClassFullName);
+        }
+        if (extendsVO){
+            importVOPackages.add(entityClassFullName);
+        }
+
+        List<String> importInsertDTOFrameworkPackages = importInsertDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importInsertDTOFrameworkPackages", importInsertDTOFrameworkPackages);
+        List<String> importInsertDTOJavaPackages = importInsertDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importInsertDTOJavaPackages", importInsertDTOJavaPackages);
+        
+        List<String> importUpdateDTOFrameworkPackages = importUpdateDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importUpdateDTOFrameworkPackages", importUpdateDTOFrameworkPackages);
+        List<String> importUpdateDTOJavaPackages = importUpdateDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importUpdateDTOJavaPackages", importUpdateDTOJavaPackages);
+        
+        List<String> importQueryDTOFrameworkPackages = importQueryDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importQueryDTOFrameworkPackages", importQueryDTOFrameworkPackages);
+        List<String> importQueryDTOJavaPackages = importQueryDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importQueryDTOJavaPackages", importQueryDTOJavaPackages);
+        
+        List<String> importVOFrameworkPackages = importVOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importVOFrameworkPackages", importVOFrameworkPackages);
+        List<String> importVOJavaPackages = importVOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importVOJavaPackages", importVOJavaPackages);
         
         return data;
     }
