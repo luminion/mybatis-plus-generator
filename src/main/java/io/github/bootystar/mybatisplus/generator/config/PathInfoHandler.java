@@ -69,33 +69,33 @@ class PathInfoHandler {
     /**
      * 设置默认输出路径
      *
-     * @param globalConfig   全局配置
-     * @param strategyConfig 模板配置
+     * @param configAdapter  配置适配器
      */
     private void setDefaultPathInfo(ConfigAdapter configAdapter) {
         InjectionConfig injectionConfig = configAdapter.getInjectionConfig();
         GlobalConfig globalConfig = configAdapter.getGlobalConfig();
         EntityConfig entity = configAdapter.getEntityConfig();
+        TemplateConfig templateConfig = configAdapter.getTemplateConfig();
         if (entity.isGenerate()) {
-            putPathInfo(injectionConfig, globalConfig.isKotlin() ? entity.getKotlinTemplate() : entity.getJavaTemplate(), OutputFile.entity, ConstVal.ENTITY);
+            putPathInfo(injectionConfig, globalConfig.isKotlin() ? templateConfig.getEntityKt() : templateConfig.getEntity(), OutputFile.entity, ConstVal.ENTITY);
         }
         MapperConfig mapper = configAdapter.getMapperConfig();
         if (mapper.isGenerateMapper()) {
-            putPathInfo(injectionConfig, mapper.getMapperTemplatePath(), OutputFile.mapper, ConstVal.MAPPER);
+            putPathInfo(injectionConfig, templateConfig.getMapper(), OutputFile.mapper, ConstVal.MAPPER);
         }
         if (mapper.isGenerateMapperXml()) {
-            putPathInfo(injectionConfig, mapper.getMapperXmlTemplatePath(), OutputFile.xml, ConstVal.XML);
+            putPathInfo(injectionConfig, templateConfig.getMapperXml(), OutputFile.xml, ConstVal.XML);
         }
         ServiceConfig service = configAdapter.getServiceConfig();
         if (service.isGenerateService()) {
-            putPathInfo(injectionConfig, service.getServiceTemplate(), OutputFile.service, ConstVal.SERVICE);
+            putPathInfo(injectionConfig, templateConfig.getService(), OutputFile.service, ConstVal.SERVICE);
         }
         if (service.isGenerateServiceImpl()) {
-            putPathInfo(injectionConfig, service.getServiceImplTemplate(), OutputFile.serviceImpl, ConstVal.SERVICE_IMPL);
+            putPathInfo(injectionConfig, templateConfig.getServiceImpl(), OutputFile.serviceImpl, ConstVal.SERVICE_IMPL);
         }
         ControllerConfig controller = configAdapter.getControllerConfig();
         if (controller.isGenerate()) {
-            putPathInfo(injectionConfig, controller.getTemplatePath(), OutputFile.controller, ConstVal.CONTROLLER);
+            putPathInfo(injectionConfig, templateConfig.getController(), OutputFile.controller, ConstVal.CONTROLLER);
         }
         putPathInfo(injectionConfig, OutputFile.parent, ConstVal.PARENT);
     }
