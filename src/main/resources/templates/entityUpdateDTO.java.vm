@@ -1,4 +1,4 @@
-package ${basePackage}.${package4DTO};
+package ${package.UpdateDTO};
 
 ## -----参数设置----start
 #set($importSize=false)
