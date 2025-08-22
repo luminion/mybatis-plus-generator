@@ -30,10 +30,10 @@ public interface ConstVal {
     String MODULE_NAME = "ModuleName";
 
     String ENTITY = "Entity";
-    String ENTITY_INSERT_DTO = "EntityInsertDTO";
-    String ENTITY_UPDATE_DTO = "EntityUpdateDTO";
-    String ENTITY_QUERY_DTO = "EntityQueryDTO";
-    String ENTITY_VO = "EntityVO";
+    String ENTITY_INSERT_DTO = "InsertDTO";
+    String ENTITY_UPDATE_DTO = "UpdateDTO";
+    String ENTITY_QUERY_DTO = "QueryDTO";
+    String ENTITY_VO = "VO";
     String SERVICE = "Service";
     String SERVICE_IMPL = "ServiceImpl";
     String MAPPER = "Mapper";
