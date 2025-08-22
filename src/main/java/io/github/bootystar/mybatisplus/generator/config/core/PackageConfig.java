@@ -82,22 +82,22 @@ public class PackageConfig {
     /**
      * 查询DTO包名
      */
-    protected String queryDTO = "dto";
+    protected String entityQueryDTO = "dto";
     
     /**
      * 新增DTO包名
      */
-    protected String insertDTO = "dto";
+    protected String entityInsertDTO = "dto";
     
     /**
      * 修改DTO包名
      */
-    protected String updateDTO = "dto";
+    protected String entityUpdateDTO = "dto";
     
     /**
      * VO包名
      */
-    protected String vo = "vo";
+    protected String entityVO = "vo";
 
     /**
      * 路径配置信息
@@ -149,10 +149,10 @@ public class PackageConfig {
             packageInfo.put(ConstVal.SERVICE_IMPL, this.joinPackage(this.getServiceImpl()));
             packageInfo.put(ConstVal.CONTROLLER, this.joinPackage(this.getController()));
             packageInfo.put(ConstVal.PARENT, this.getParent());
-            packageInfo.put(ConstVal.ENTITY_INSERT_DTO, this.joinPackage(this.getInsertDTO()));
-            packageInfo.put(ConstVal.ENTITY_UPDATE_DTO, this.joinPackage(this.getUpdateDTO()));
-            packageInfo.put(ConstVal.ENTITY_QUERY_DTO, this.joinPackage(this.getQueryDTO()));
-            packageInfo.put(ConstVal.ENTITY_VO, this.joinPackage(this.getVo()));
+            packageInfo.put(ConstVal.ENTITY_INSERT_DTO, this.joinPackage(this.getEntityInsertDTO()));
+            packageInfo.put(ConstVal.ENTITY_UPDATE_DTO, this.joinPackage(this.getEntityUpdateDTO()));
+            packageInfo.put(ConstVal.ENTITY_QUERY_DTO, this.joinPackage(this.getEntityQueryDTO()));
+            packageInfo.put(ConstVal.ENTITY_VO, this.joinPackage(this.getEntityVO()));
             if (injectionConfig != null) {
                 List<CustomFile> customFiles = injectionConfig.getCustomFiles();
                 for (CustomFile customFile : customFiles) {

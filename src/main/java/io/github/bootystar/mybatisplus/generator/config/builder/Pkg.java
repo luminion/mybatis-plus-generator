@@ -24,11 +24,11 @@ public class Pkg extends PackageConfig {
          * 指定父包名
          * 实际最终包名为 parent.module.entity
          *
-         * @param parent 父包名
+         * @param packageName 包名
          * @return this
          */
-        public Builder parent(String parent) {
-            this.config.parent = parent;
+        public Builder parent(String packageName) {
+            this.config.parent = packageName;
             return this;
         }
 
@@ -36,44 +36,88 @@ public class Pkg extends PackageConfig {
          * 指定模块名称
          * 实际最终包名为 parent.module.entity
          *
-         * @param moduleName 模块名
+         * @param packageName 模块名
          * @return this
          */
-        public Builder moduleName(String moduleName) {
-            this.config.moduleName = moduleName;
+        public Builder moduleName(String packageName) {
+            this.config.moduleName = packageName;
             return this;
         }
 
         /**
          * 指定实体包名
          *
-         * @param entity 实体包名
+         * @param packageName 实体包名
          * @return this
          */
-        public Builder entity(String entity) {
-            this.config.entity = entity;
+        public Builder entity(String packageName) {
+            this.config.entity = packageName;
+            return this;
+        }
+
+        /**
+         * 指定新增DTO包名
+         *
+         * @param packageName 新增DTO包名
+         * @return this
+         */
+        public Builder entityInsertDTO(String packageName) {
+            this.config.entityInsertDTO = packageName;
+            return this;
+        }
+
+        /**
+         * 指定修改DTO包名
+         *
+         * @param packageName 修改DTO包名
+         * @return this
+         */
+        public Builder entityUpdateDTO(String packageName) {
+            this.config.entityUpdateDTO = packageName;
+            return this;
+        }
+
+        /**
+         * 指定查询DTO包名
+         *
+         * @param packageName 查询DTO包名
+         * @return this
+         */
+        public Builder entityQueryDTO(String packageName) {
+            this.config.entityQueryDTO = packageName;
+            return this;
+        }
+    
+        /**
+         * 指定vo包名
+         *
+         * @param packageName 包名
+         * @return this
+         */
+        public Builder entityVO(String packageName) {
+            this.config.entityVO = packageName;
             return this;
         }
 
         /**
          * 指定mapper接口包名
          *
-         * @param mapper mapper包名
+         * @param packageName mapper包名
          * @return this
          */
-        public Builder mapper(String mapper) {
-            this.config.mapper = mapper;
+        public Builder mapper(String packageName) {
+            this.config.mapper = packageName;
             return this;
         }
 
         /**
          * 指定xml包名
          *
-         * @param xml xml包名
+         * @param packageName xml包名
          * @return this
          */
-        public Builder xml(String xml) {
-            this.config.xml = xml;
+        public Builder mapperXml(String packageName) {
+            this.config.xml = packageName;
             return this;
         }
 
@@ -83,7 +127,7 @@ public class Pkg extends PackageConfig {
          * @param path xml包名
          * @return this
          */
-        public Builder xmlUnderResources(String path) {
+        public Builder mapperXmlResourcePath(String path) {
             String projectPath = System.getProperty("user.dir");
             if (path.startsWith("/")) {
                 path = path.substring(1);
@@ -95,76 +139,33 @@ public class Pkg extends PackageConfig {
         /**
          * 指定service接口包名
          *
-         * @param service service包名
+         * @param packageName service包名
          * @return this
          */
-        public Builder service(String service) {
-            this.config.service = service;
+        public Builder service(String packageName) {
+            this.config.service = packageName;
             return this;
         }
 
         /**
          * service实现类包名
          *
-         * @param serviceImpl service实现类包名
+         * @param packageName service实现类包名
          * @return this
          */
-        public Builder serviceImpl(String serviceImpl) {
-            this.config.serviceImpl = serviceImpl;
+        public Builder serviceImpl(String packageName) {
+            this.config.serviceImpl = packageName;
             return this;
         }
 
         /**
          * 指定控制器包名
          *
-         * @param controller 控制器包名
+         * @param packageName 控制器包名
          * @return this
          */
-        public Builder controller(String controller) {
-            this.config.controller = controller;
-            return this;
-        }
-
-        /**
-         * 指定查询DTO包名
-         *
-         * @param queryDTO 查询DTO包名
-         * @return this
-         */
-        public Builder queryDTO(String queryDTO) {
-            this.config.queryDTO = queryDTO;
-            return this;
-        }
-
-        /**
-         * 指定新增DTO包名
-         *
-         * @param insertDTO 新增DTO包名
-         * @return this
-         */
-        public Builder insertDTO(String insertDTO) {
-            this.config.insertDTO = insertDTO;
-            return this;
-        }
-
-        /**
-         * 指定修改DTO包名
-         *
-         * @param updateDTO 修改DTO包名
-         * @return this
-         */
-        public Builder updateDTO(String updateDTO) {
-            this.config.updateDTO = updateDTO;
-            return this;
-        }
-        /**
-         * 指定vo包名
-         *
-         * @param vo vo包名
-         * @return this
-         */
-        public Builder vo(String vo) {
-            this.config.vo = vo;
+        public Builder controller(String packageName) {
+            this.config.controller = packageName;
             return this;
         }
 

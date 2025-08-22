@@ -49,7 +49,7 @@ public class FastGenerator {
                         .dateType(DateType.TIME_PACK)
                 )
                 .pkg(e->e
-                        .xmlUnderResources("mapper")
+                        .mapperXmlResourcePath("mapper")
                 )
                 .strategy(e->e
                 )
