@@ -62,7 +62,23 @@ public class GlobalConfig implements ITemplate {
      */
     protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
+    /**
+     * 全局文件覆盖
+     */
+    protected boolean fileOverride;
 
+    /**
+     * 【实体】是否为lombok模型（默认 false）<br>
+     * <a href="https://projectlombok.org/">document</a>
+     */
+    protected boolean lombok;
+
+    /**
+     * 【实体】是否为链式模型（默认 false）
+     *
+     * @since 3.3.2
+     */
+    protected boolean chainModel;
 
     /**
      * 开启 Kotlin 模式（默认 false）
@@ -108,24 +124,6 @@ public class GlobalConfig implements ITemplate {
      * excel类
      */
     protected String excelClass = "FastExcel";
-
-    /**
-     * 【实体】是否为lombok模型（默认 false）<br>
-     * <a href="https://projectlombok.org/">document</a>
-     */
-    protected boolean lombok;
-
-    /**
-     * 【实体】是否为链式模型（默认 false）
-     *
-     * @since 3.3.2
-     */
-    protected boolean chainModel;
-
-    /**
-     * 全局文件覆盖
-     */
-    protected boolean fileOverride;
 
     /**
      * 是否打开输出目录

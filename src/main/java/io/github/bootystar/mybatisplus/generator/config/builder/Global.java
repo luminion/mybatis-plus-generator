@@ -69,6 +69,35 @@ public class Global extends GlobalConfig{
             return commentDate(() -> new SimpleDateFormat(pattern).format(new Date()));
         }
 
+        /**
+         * 启用全局文件覆盖
+         */
+        public Builder enableFileOverwrite() {
+            this.config.fileOverride = true;
+            return this;
+        }
+
+        /**
+         * 开启lombok模型
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder enableLombok() {
+            this.config.lombok = true;
+            return this;
+        }
+
+        /**
+         * 开启链式getter和setter
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder enableChainModel() {
+            this.config.chainModel = true;
+            return this;
+        }
 
         /**
          * 开启 swagger 模式
@@ -125,37 +154,6 @@ public class Global extends GlobalConfig{
         public Builder enableEasyExcel() {
             this.config.excelApiPackagePrefix = "com.alibaba.excel";
             this.config.excelClass = "EasyExcel";
-            return this;
-        }
-
-        /**
-         * 开启lombok模型
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableLombok() {
-            this.config.lombok = true;
-            return this;
-        }
-
-        /**
-         * 开启链式getter和setter
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableChainModel() {
-            this.config.chainModel = true;
-            return this;
-        }
-
-
-        /**
-         * 启用全局文件覆盖
-         */
-        public Builder enableFileOverwrite() {
-            this.config.fileOverride = true;
             return this;
         }
 
