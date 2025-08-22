@@ -1,60 +1,10 @@
 package ${package.UpdateDTO};
 
-## -----参数设置----start
-#set($importSize=false)
-#set($importNotNull=false)
-#set($importNotBlank=false)
-#foreach($field in ${table.fields})
-    #if(${field.propertyType}=="String")
-        #set($importSize=true)
-    #end
-    #if($feild.versionField || ${field.keyFlag})
-        #set($importNotNull=true)
-        #if(${field.propertyType}=="String")
-            #set($importNotBlank=true)
-        #end
-    #end
+#foreach($pkg in ${importUpdateDTOFrameworkPackages})
+import ${pkg};
 #end
-## -----参数设置----end
-#if(${springdoc})
-import io.swagger.v3.oas.annotations.media.Schema;
-#elseif(${swagger})
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-#end
-#if(${entityLombokModel})
-import lombok.Data;
-    #if(${chainModel})
-import lombok.experimental.Accessors;
-    #end
-#end
-## ---字段非空验证---end
-###if(${springdoc})
-##import io.swagger.v3.oas.annotations.media.Schema;
-##    #elseif(${swagger})
-##import io.swagger.annotations.ApiModel;
-##import io.swagger.annotations.ApiModelProperty;
-###end
-###if(${entityLombokModel})
-##import lombok.Data;
-##    #if(${chainModel})
-##import lombok.experimental.Accessors;
-##    #end
-###end
 
-#if(${validated})
-## ---字段非空验证---start
-    #if(${importSize})
-import ${javaApiPackage}.validation.constraints.Size;
-    #end
-    #if(${importNotNull})
-import ${javaApiPackage}.validation.constraints.NotNull;
-    #end
-    #if(${importNotBlank})
-import ${javaApiPackage}.validation.constraints.NotBlank;
-    #end
-#end
-#foreach($pkg in ${importPackages4DTO})
+#foreach($pkg in ${importUpdateDTOJavaPackages})
 import ${pkg};
 #end
 
@@ -69,13 +19,13 @@ import ${pkg};
  * @see ${package.ServiceImpl}.${table.serviceImplName}
 #end
  */
-#if(${entityLombokModel})
+#if(${lombok})
 @Data
     #if(${chainModel})
 @Accessors(chain = true)
     #end
+@EqualsAndHashCode
 #end
-#if(${swaggerModelWithAnnotation})
 #if(${springdoc})
 ##@Schema(name = "${entity}UpdateDTO", description = "$!{table.comment}-修改DTO")
 @Schema(name = "${entity}UpdateDTO$!{swaggerUUID}", description = "$!{table.comment}-修改DTO")
@@ -83,11 +33,10 @@ import ${pkg};
 ##@ApiModel(value = "${entity}UpdateDTO", description = "$!{table.comment}-修改DTO")
 @ApiModel(value = "${entity}UpdateDTO$!{swaggerUUID}", description = "$!{table.comment}-修改DTO")
 #end
-#end
 public class ${entity}UpdateDTO {
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
-#if(($editExcludeColumns.contains(${field.columnName})))
+#if(($updateExcludeColumns.contains(${field.columnName})))
 #elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE"))
 #elseif(${field.logicDeleteField})
 #else
@@ -124,9 +73,9 @@ public class ${entity}UpdateDTO {
 #end
 #end
 ## ----------  END 字段循环遍历  ----------
-#if(!${entityLombokModel})
+#if(!${lombok})
 #foreach($field in ${table.fields})
-#if($editExcludeColumns.contains(${field.columnName}))
+#if($updateExcludeColumns.contains(${field.columnName}))
 #elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE"))
 #elseif(${field.logicDeleteField})
 #else
@@ -156,13 +105,13 @@ public class ${entity}UpdateDTO {
 #end
 ## --end of #if(!${entityLombokModel})--
 
-#if(!${entityLombokModel})
+#if(!${lombok})
 
     @Override
     public String toString() {
         return "${entity}{" +
   #foreach($field in ${table.fields})
-  #if($editExcludeColumns.contains(${field.columnName}))
+  #if($updateExcludeColumns.contains(${field.columnName}))
   #elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE"))
   #elseif(${field.logicDeleteField})
   #else

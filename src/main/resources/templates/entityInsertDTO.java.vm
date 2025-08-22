@@ -23,9 +23,7 @@ import ${pkg};
     #if(${chainModel}&&!${generateImport})
 @Accessors(chain = true)
     #end
-    #if(${extendsQueryDTO})
-@EqualsAndHashCode(callSuper = true)
-    #end
+@EqualsAndHashCode
 #end
 #if(${springdoc})
 @Schema(description = "$!{table.comment}-新增DTO")
@@ -46,7 +44,7 @@ public class ${entityInsertDTO} {
 #elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
 #elseif(${field.versionField})
 #elseif(${field.logicDeleteField})
-#elseif($editExcludeColumns.contains(${field.columnName}))
+#elseif($insertExcludeColumns.contains(${field.columnName}))
 #else
 
     #if("$!field.comment" != "")
@@ -85,7 +83,7 @@ public class ${entityInsertDTO} {
     #elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
     #elseif(${field.versionField})
     #elseif(${field.logicDeleteField})
-    #elseif($editExcludeColumns.contains(${field.columnName}))
+    #elseif($insertExcludeColumns.contains(${field.columnName}))
     #else
         #if(${field.propertyType.equals("boolean")})
             #set($getprefix="is")
@@ -121,7 +119,7 @@ public class ${entityInsertDTO} {
     #elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
     #elseif(${field.versionField})
     #elseif(${field.logicDeleteField})
-    #elseif($editExcludeColumns.contains(${field.columnName}))
+    #elseif($insertExcludeColumns.contains(${field.columnName}))
     #else
         #if($!{foreach.index}==0)
         "${field.propertyName} = " + ${field.propertyName} +

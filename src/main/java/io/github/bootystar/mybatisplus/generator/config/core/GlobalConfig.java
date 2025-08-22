@@ -46,29 +46,9 @@ public class GlobalConfig implements ITemplate {
     protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "C://tmp" : "/tmp";
 
     /**
-     * 是否打开输出目录
-     */
-    protected boolean open = true;
-
-    /**
      * 作者
      */
     protected String author = "bootystar";
-
-    /**
-     * 开启 Kotlin 模式（默认 false）
-     */
-    protected boolean kotlin = false;
-
-    /**
-     * 开启 swagger 模式（默认 false 与 springdoc 不可同时使用）
-     */
-    protected boolean swagger;
-    
-    /**
-     * 开启 springdoc 模式（默认 false 与 swagger 不可同时使用）
-     */
-    protected boolean springdoc;
 
     /**
      * 时间类型对应策略
@@ -81,12 +61,77 @@ public class GlobalConfig implements ITemplate {
      * @since 3.5.0
      */
     protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+
+
+    /**
+     * 开启 Kotlin 模式（默认 false）
+     */
+    protected boolean kotlin;
+
+    /**
+     * 开启 swagger 模式（默认 false 与 springdoc 不可同时使用）
+     */
+    protected boolean swagger;
     
+    /**
+     * 开启 springdoc 模式（默认 false 与 swagger 不可同时使用）
+     */
+    protected boolean springdoc;
+
+    /**
+     * 额外类链接注释
+     */
+    protected boolean commentLink;
+
+    /**
+     * 注释UUID, 用于避免swagger等文档无法识别模型
+     * <p>
+     * 该属性在{@link TableInfo#setComment(String)} 时自动使用
+     * </p>
+     */
+    protected boolean commentUUID;
+
+    /**
+     * javaEE api包(jakarta或javax)
+     * <p>
+     * 涉及HttpServletRequest,HttpServletResponse,@Resource
+     */
+    protected String javaApiPackagePrefix = "jakarta";
+
+    /**
+     * excel注解的包
+     */
+    protected String excelApiPackagePrefix = "cn.idev.excel";
+
+    /**
+     * excel类
+     */
+    protected String excelClass = "FastExcel";
+
+    /**
+     * 【实体】是否为lombok模型（默认 false）<br>
+     * <a href="https://projectlombok.org/">document</a>
+     */
+    protected boolean lombok;
+
+    /**
+     * 【实体】是否为链式模型（默认 false）
+     *
+     * @since 3.3.2
+     */
+    protected boolean chainModel;
+
     /**
      * 全局文件覆盖
      */
     protected boolean fileOverride;
 
+    /**
+     * 是否打开输出目录
+     */
+    protected boolean open = true;
+    
     /**
      * 生成查询方法
      */
@@ -126,49 +171,6 @@ public class GlobalConfig implements ITemplate {
      * 参数校验
      */
     protected boolean validated = true;
-
-    /**
-     * 额外类链接注释
-     */
-    protected boolean commentLink;
-
-    /**
-     * 注释UUID, 用于避免swagger等文档无法识别模型
-     * <p>
-     * 该属性在{@link TableInfo#setComment(String)} 时自动使用
-     * </p>
-     */
-    protected boolean commentUUID;
-
-    /**
-     * javaEE api包(jakarta或javax)
-     * <p>
-     * 涉及HttpServletRequest,HttpServletResponse,@Resource
-     */
-    protected String javaApiPackagePrefix = "jakarta";
-
-    /**
-     * excel注解的包
-     */
-    protected String excelApiPackagePrefix = "cn.idev.excel";
-
-    /**
-     * excel类
-     */
-    protected String excelClass = "FastExcel";
-
-    /**
-     * 【实体】是否为链式模型（默认 false）
-     *
-     * @since 3.3.2
-     */
-    protected boolean chainModel;
-
-    /**
-     * 【实体】是否为lombok模型（默认 false）<br>
-     * <a href="https://projectlombok.org/">document</a>
-     */
-    protected boolean lombok;
 
     public boolean isSwagger() {
         // springdoc 设置优先于 swagger
