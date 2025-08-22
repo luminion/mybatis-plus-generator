@@ -1,4 +1,4 @@
-package ${basePackage}.${package4DTO};
+package ${package.QueryDTO};
 
 #if(${springdoc})
 import io.swagger.v3.oas.annotations.media.Schema;

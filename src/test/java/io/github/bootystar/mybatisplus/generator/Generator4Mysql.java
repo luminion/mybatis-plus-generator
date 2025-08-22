@@ -14,11 +14,17 @@ public class Generator4Mysql {
                 .create(url, username, password)
 //                .initialize()
                 .global(e -> e
-                                .disableOpenDir()
-                                .enableFileOverwrite()
-                                .outputDir(System.getProperty("user.dir") + "/src/test/java")
-                            .enableSwagger()
-                            .enableSpringdoc()
+                        .disableOpenDir()
+                        .enableFileOverwrite()
+                        .outputDir(System.getProperty("user.dir") + "/src/test/java")
+                        .enableSwagger()
+                        .enableSpringdoc()
+                        .disableInsert()
+                        .disableUpdate()
+                        .disableQuery()
+//                        .disableImport()
+                        .disableExport()
+                        
                 )
                 .pkg(e -> e
                         .parent("com.example.test")
@@ -27,26 +33,26 @@ public class Generator4Mysql {
                         .entityUpdateDTO("entity")
                         .entityVO("entity")
                 )
-                .strategy(e->e
+                .strategy(e -> e
                 )
-                .entity(e->e
+                .entity(e -> e
 //                        .disable()
+                                .logicDeleteColumnName("deleted")
+                                .versionColumnName("version")
                 )
-                .mapper(e->e
+                .mapper(e -> e
                         .disable()
                 )
-                .service(e->e
+                .service(e -> e
                         .disable()
                 )
-                .controller(e->e
+                .controller(e -> e
                         .disable()
                 )
-                
+
                 .execute("sys_user")
         ;
     }
-
-
 
 
 }

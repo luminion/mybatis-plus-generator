@@ -245,7 +245,6 @@ public class EntityConfig implements ITemplate {
         data.put("entityBooleanColumnRemoveIsPrefix", this.booleanColumnRemoveIsPrefix);
         data.put("superEntityClass", ClassUtils.getSimpleName(this.superClass));
         GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
-
         Collection<String> importPackages = new TreeSet<>(tableInfo.getImportPackages());
         if (globalConfig.isSwagger()) {
             importPackages.add("io.swagger.annotations.ApiModel");

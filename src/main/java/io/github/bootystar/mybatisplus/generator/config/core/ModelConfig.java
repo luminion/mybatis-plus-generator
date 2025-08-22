@@ -1,6 +1,7 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
+import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
@@ -59,12 +60,9 @@ public class ModelConfig implements ITemplate {
         data.put("extendsVO", this.extendsVO);
         GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
         String superClass = tableInfo.getConfigAdapter().getEntityConfig().getSuperClass();
-
- 
-        
         TreeSet<String> importPackages = tableInfo.getImportPackages().stream()
                 .filter(e -> !e.startsWith("com.baomidou.mybatisplus.annotation"))
-                .filter(e -> !e.startsWith(superClass))
+                .filter(e -> superClass==null || !e.startsWith(superClass))
                 .collect(Collectors.toCollection(TreeSet::new));
         if (globalConfig.isSpringdoc()) {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
@@ -85,11 +83,40 @@ public class ModelConfig implements ITemplate {
         TreeSet<String> importUpdateDTOPackages = new TreeSet<>(importPackages);
         TreeSet<String> importQueryDTOPackages = new TreeSet<>(importPackages);
         TreeSet<String> importVOPackages = new TreeSet<>(importPackages);
+
+        for (TableField field : tableInfo.getFields()) {
+            if(field.isLogicDeleteField()){
+                continue;
+            }
+            if (field.isKeyFlag()){
+                importUpdateDTOPackages.add(globalConfig.resolveJavaApiPackage("validation.constraints.NotNull"));
+                continue;
+            }
+            if (field.isVersionField()){
+                importUpdateDTOPackages.add(globalConfig.resolveJavaApiPackage("validation.constraints.NotNull"));
+                continue;
+            }
+            boolean isString = "".equals(field.getPropertyType());
+            boolean isNullable = field.getMetaInfo().isNullable();
+            boolean hasDefaultValue = field.getMetaInfo().getDefaultValue()!=null;
+            if (isString){
+                importInsertDTOPackages.add(globalConfig.resolveJavaApiPackage("validation.constraints.Size"));
+            }
+            if (!isNullable && !hasDefaultValue){
+                if(isString){
+                    importInsertDTOPackages.add(globalConfig.resolveJavaApiPackage("validation.constraints.NotBlank"));
+                    importUpdateDTOPackages.add(globalConfig.resolveJavaApiPackage("validation.constraints.NotBlank"));
+                }else{
+                    importInsertDTOPackages.add(globalConfig.resolveJavaApiPackage("validation.constraints.NotNull"));
+                    importUpdateDTOPackages.add(globalConfig.resolveJavaApiPackage("validation.constraints.NotNull"));
+                }
+            }
+        }
         
         boolean generateImport = globalConfig.isGenerateImport();
         boolean generateExport = globalConfig.isGenerateExport();
-        String excelProperty = globalConfig.resolveExcelApiPackage("ExcelProperty");
-        String excelIgnoreUnannotated = globalConfig.resolveExcelApiPackage("ExcelIgnoreUnannotated");
+        String excelProperty = globalConfig.resolveExcelApiPackage("annotation.ExcelProperty");
+        String excelIgnoreUnannotated = globalConfig.resolveExcelApiPackage("annotation.ExcelIgnoreUnannotated");
         if (generateImport){
             importInsertDTOPackages.add(excelProperty);
             importInsertDTOPackages.add(excelIgnoreUnannotated);
