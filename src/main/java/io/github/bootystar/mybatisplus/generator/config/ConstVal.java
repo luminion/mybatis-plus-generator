@@ -33,11 +33,11 @@ public interface ConstVal {
     String ENTITY_QUERY_DTO = "EntityQueryDTO";
     String ENTITY_INSERT_DTO = "EntityInsertDTO";
     String ENTITY_UPDATE_DTO = "EntityUpdateDTO";
-    String ENTITY_VO = "VO";
+    String ENTITY_VO = "EntityVO";
     String SERVICE = "Service";
     String SERVICE_IMPL = "ServiceImpl";
     String MAPPER = "Mapper";
-    String XML = "Xml";
+    String XML = "MapperXml";
     String CONTROLLER = "Controller";
     String PARENT = "Parent";
 

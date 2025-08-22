@@ -42,9 +42,9 @@ public class GlobalConfig implements ITemplate {
     }
 
     /**
-     * 生成文件的输出目录【 windows:D://  linux or mac:/tmp 】
+     * 生成文件的输出目录【 windows:C://tmp  linux or mac:/tmp 】
      */
-    protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "D://" : "/tmp";
+    protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "C://tmp" : "/tmp";
 
     /**
      * 是否打开输出目录
@@ -58,7 +58,6 @@ public class GlobalConfig implements ITemplate {
 
     /**
      * 开启 Kotlin 模式（默认 false）
-     * @deprecated 不支持kotlin
      */
     protected boolean kotlin = false;
 
