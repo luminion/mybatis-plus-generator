@@ -1,7 +1,8 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import io.github.bootystar.mybatisplus.generator.config.core.ServiceConfig;
-import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
+
+import java.util.function.Function;
 
 /**
  * @author bootystar
@@ -66,7 +67,7 @@ public class Service extends ServiceConfig {
          * @return this
          * @since 3.5.0
          */
-        public Builder convertServiceFileName(ConverterFileName converter) {
+        public Builder convertServiceFileName(Function<String, String> converter) {
             this.config.converterServiceFileName = converter;
             return this;
         }
@@ -78,7 +79,7 @@ public class Service extends ServiceConfig {
          * @return this
          * @since 3.5.0
          */
-        public Builder convertServiceImplFileName(ConverterFileName converter) {
+        public Builder convertServiceImplFileName(Function<String, String> converter) {
             this.config.converterServiceImplFileName = converter;
             return this;
         }

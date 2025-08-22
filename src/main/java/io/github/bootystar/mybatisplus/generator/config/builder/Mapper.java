@@ -1,7 +1,6 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import io.github.bootystar.mybatisplus.generator.config.core.MapperConfig;
-import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import org.apache.ibatis.cache.Cache;
 
 import java.lang.annotation.Annotation;
@@ -98,7 +97,7 @@ public class Mapper extends MapperConfig{
          * @return this
          * @since 3.5.0
          */
-        public Builder convertMapperFileName(ConverterFileName converter) {
+        public Builder convertMapperFileName(Function<String, String> converter) {
             this.config.converterMapperFileName = converter;
             return this;
         }
@@ -110,7 +109,7 @@ public class Mapper extends MapperConfig{
          * @return this
          * @since 3.5.0
          */
-        public Builder convertXmlFileName(ConverterFileName converter) {
+        public Builder convertXmlFileName(Function<String, String> converter) {
             this.config.converterXmlFileName = converter;
             return this;
         }

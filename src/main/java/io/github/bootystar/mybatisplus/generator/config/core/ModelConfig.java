@@ -3,14 +3,41 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
+import lombok.Getter;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * @author bootystar
  */
+@Getter
 public class ModelConfig implements ITemplate {
+    protected ModelConfig() {
+    }
+
+    /**
+     * 文件覆盖
+     */
+    protected boolean fileOverride;
+    
+    /**
+     * 新增dto名称转换
+     */
+    protected Function<String, String> converterEntityInsertDTOName = name -> name;
+    /**
+     * 修改dto名称转换
+     */
+    protected Function<String, String> converterEntityUpdateDTOName = name -> name;
+    /**
+     * 查询dto名称转换
+     */
+    protected Function<String, String> converterEntityQueryDTOName = name -> name;
+    /**
+     * vo名称转换
+     */
+    protected Function<String, String> converterEntityVOName = name -> name;
 
     /**
      * 查询dto继承实体类

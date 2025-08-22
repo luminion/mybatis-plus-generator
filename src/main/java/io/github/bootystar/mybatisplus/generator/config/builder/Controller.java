@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import io.github.bootystar.mybatisplus.generator.config.core.ControllerConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
-import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ReflectUtil;
+
+import java.util.function.Function;
 
 /**
  * @author bootystar
@@ -71,7 +72,7 @@ public class Controller extends ControllerConfig {
          * @return this
          * @since 3.5.0
          */
-        public Builder convertFileName(ConverterFileName converter) {
+        public Builder convertFileName(Function<String, String> converter) {
             this.config.converterFileName = converter;
             return this;
         }

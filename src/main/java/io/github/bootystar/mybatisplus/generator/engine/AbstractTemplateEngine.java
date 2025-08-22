@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.OutputFile;
+import io.github.bootystar.mybatisplus.generator.config.builder.Model;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
 import io.github.bootystar.mybatisplus.generator.config.po.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -111,6 +112,55 @@ public abstract class AbstractTemplateEngine {
                     templateFilePath(globalConfig.isKotlin() ? templateConfig.getEntityKt() : templateConfig.getEntity()), 
                     entityConfig.isFileOverride() || globalConfig.isFileOverride());
         }
+    }
+
+
+    private void outputModel(TableInfo tableInfo, Map<String, Object> objectMap) {
+        String entityName = tableInfo.getEntityName();
+        String entityInsertDTOPath = getPathInfo(OutputFile.entityInsertDTO);
+        String entityUpdateDTOPath = getPathInfo(OutputFile.entityUpdateDTO);
+        String entityQueryDTOPath = getPathInfo(OutputFile.entityQueryDTO);
+        String entityVOPath = getPathInfo(OutputFile.entityVO);
+        ModelConfig modelConfig = this.configAdapter.getModelConfig();
+        GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
+        TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
+        if (globalConfig.isGenerateQuery() || globalConfig.isGenerateExport()) {
+            // query dto
+            String entityQueryDTOFile = String.format((entityQueryDTOPath + File.separator + tableInfo.getEntityQueryDTOName() + suffixJavaOrKt()), entityName);
+            outputFile(
+                    getOutputFile(entityQueryDTOFile, OutputFile.mapper),
+                    objectMap,
+                    templateFilePath(templateConfig.getEntityQueryDTO()),
+                    modelConfig.isFileOverride() || globalConfig.isFileOverride()
+            );
+            // vo
+            String entityVOFile = String.format((entityVOPath + File.separator + tableInfo.getEntityVOName() + suffixJavaOrKt()), entityName);
+            outputFile(
+                    getOutputFile(entityVOFile, OutputFile.entityVO),
+                    objectMap,
+                    templateFilePath(templateConfig.getEntityVO()),
+                    modelConfig.isFileOverride() || globalConfig.isFileOverride()
+            );
+        }
+        if (globalConfig.isGenerateInsert() || globalConfig.isGenerateImport()) {
+            String entityInsertDTOFile = String.format((entityInsertDTOPath + File.separator + tableInfo.getEntityInsertDTOName() + suffixJavaOrKt()), entityName);
+            outputFile(
+                    getOutputFile(entityInsertDTOFile, OutputFile.entityInsertDTO),
+                    objectMap,
+                    templateFilePath(templateConfig.getEntityInsertDTO()),
+                    modelConfig.isFileOverride() || globalConfig.isFileOverride()
+            );
+        }
+        if (globalConfig.isGenerateUpdate()) {
+            String entityUpdateDTOFile = String.format((entityUpdateDTOPath + File.separator + tableInfo.getEntityUpdateDTOName() + suffixJavaOrKt()), entityName);
+            outputFile(
+                    getOutputFile(entityUpdateDTOFile, OutputFile.entityUpdateDTO),
+                    objectMap,
+                    templateFilePath(templateConfig.getEntityUpdateDTO()),
+                    modelConfig.isFileOverride() || globalConfig.isFileOverride()
+            );
+        }
+     
     }
 
     /**
@@ -211,6 +261,8 @@ public abstract class AbstractTemplateEngine {
         }
     }
 
+
+
     /**
      * 输出文件
      *
@@ -265,16 +317,19 @@ public abstract class AbstractTemplateEngine {
                 outputEntity(tableInfo, objectMap);
                 // mapper and xml
                 outputMapper(tableInfo, objectMap);
-                // service
+                // service and impl
                 outputService(tableInfo, objectMap);
                 // controller
                 outputController(tableInfo, objectMap);
+                // dto and vo
+                outputModel(tableInfo, objectMap);
             });
         } catch (Exception e) {
             throw new RuntimeException("无法创建文件，请检查配置信息！", e);
         }
         return this;
     }
+
 
     /**
      * 将模板转化成为字符串

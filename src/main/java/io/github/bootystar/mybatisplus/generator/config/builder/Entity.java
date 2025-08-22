@@ -6,13 +6,13 @@ import io.github.bootystar.mybatisplus.generator.config.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.IFill;
-import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * @author bootystar
@@ -280,7 +280,7 @@ public class Entity extends EntityConfig {
          * @return this
          * @since 3.5.0
          */
-        public Builder convertFileName(ConverterFileName converter) {
+        public Builder convertFileName(Function<String, String> converter) {
             this.config.converterFileName = converter;
             return this;
         }
