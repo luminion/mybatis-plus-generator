@@ -17,7 +17,6 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.handler.IGenerateMapperMethodHandler;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
@@ -133,20 +132,6 @@ public class MapperConfig implements ITemplate {
      */
     protected String mapperXmlTemplatePath = ConstVal.TEMPLATE_XML;
 
-    /**
-     * Mapper层方法生成
-     *
-     * @since 3.5.10
-     */
-    protected IGenerateMapperMethodHandler generateMapperMethodHandler;
-
-    /**
-     * 导包处理方法
-     *
-     * @since 3.5.11
-     */
-    protected Function<Set<String>, List<String>> importPackageFunction;
-
     // =============自定义项==============
 
     /**
@@ -173,29 +158,20 @@ public class MapperConfig implements ITemplate {
             data.put("cacheClassName", cacheClass.getName());
         }
         data.put("superMapperClass", ClassUtils.getSimpleName(this.superClass));
-        data.put("generateMapperXml", this.generateMapperXml);
-        data.put("generateMapper", this.generateMapper);
-        List<MapperMethod> methodList = null;
-        Set<String> importPackages = new HashSet<>();
-        if (generateMapperMethodHandler != null) {
-            methodList = generateMapperMethodHandler.getMethodList(tableInfo);
-            importPackages.addAll(generateMapperMethodHandler.getImportPackages(tableInfo));
-        }
+//        data.put("generateMapperXml", this.generateMapperXml);
+//        data.put("generateMapper", this.generateMapper);
+        Set<String> importPackages = new TreeSet<>();
         if (StringUtils.isNotBlank(superClass)) {
             importPackages.add(superClass);
         }
         if (mapperAnnotationClass != null) {
             importPackages.add(mapperAnnotationClass.getName());
         }
-        PackageConfig packageConfig = tableInfo.getConfigAdapter().getPackageConfig();
-        String entityPackage = packageConfig.getPackageInfo(null, ConstVal.ENTITY) + StringPool.DOT + tableInfo.getEntityName();
-        importPackages.add(entityPackage);
+        importPackages.add(tableInfo.getConfigAdapter().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName());
         Set<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toSet());
         Set<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toSet());
-        data.put("importPackages", importPackageFunction != null ? importPackageFunction.apply(importPackages) : importPackages.stream().sorted().collect(Collectors.toList()));
-        data.put("importMapperFrameworkPackages", importPackageFunction != null ? importPackageFunction.apply(frameworkPackages) : frameworkPackages.stream().sorted().collect(Collectors.toList()));
-        data.put("importMapperJavaPackages", importPackageFunction != null ? importPackageFunction.apply(javaPackages) : javaPackages.stream().sorted().collect(Collectors.toList()));
-        data.put("mapperMethodList", methodList == null ? Collections.emptyList() : methodList);
+        data.put("importMapperFrameworkPackages", frameworkPackages.stream().sorted().collect(Collectors.toList()));
+        data.put("importMapperJavaPackages", javaPackages.stream().sorted().collect(Collectors.toList()));
 
         // 排序字段sql
         List<TableField> sortFields = tableInfo.getFields();
