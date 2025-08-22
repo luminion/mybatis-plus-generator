@@ -1,5 +1,7 @@
 package io.github.bootystar.mybatisplus.generator;
 
+import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
+
 /**
  * @author booty
  */
@@ -14,12 +16,17 @@ public class Generator4Mysql {
                 .create(url, username, password)
                 .initialize()
                 .global(e -> e
-                                .disableOpenDir()
+                                
                                 .outputDir(System.getProperty("user.dir") + "/src/test/java")
+                                .author("bootystar")
+                                .dateType(DateType.SQL_PACK)
+//                                .commentDate("yyyy-MM-dd HH:mm:ss")
+                                .commentDate(()->"1.0.0")
                                 .enableFileOverwrite()
-                                .enableJavaxApi()
                                 .enableSwagger()
                                 .enableSpringdoc()
+                                
+                                .enableJavaxApi()
                                 .enableLombok()
                                 .enableCommentLink()
                                 .enableCommentUUID()
@@ -28,6 +35,7 @@ public class Generator4Mysql {
 //                                .disableUpdate()
                                 .disableQuery()
                                 .disableExport()
+                                .disableOpenDir()
 
                 )
                 .pkg(e -> e
