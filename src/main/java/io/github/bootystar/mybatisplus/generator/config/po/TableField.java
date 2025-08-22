@@ -16,30 +16,23 @@
 package io.github.bootystar.mybatisplus.generator.config.po;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
+import io.github.bootystar.mybatisplus.generator.config.IKeyWordsHandler;
 import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.IKeyWordsHandler;
-import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.Column;
 import io.github.bootystar.mybatisplus.generator.fill.Property;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
-import io.github.bootystar.mybatisplus.generator.model.AnnotationAttributes;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.ibatis.type.JdbcType;
 
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * 表字段信息
@@ -150,20 +143,6 @@ public class TableField {
      * 全局配置
      */
     private final GlobalConfig globalConfig;
-
-    /**
-     * 字段注解
-     *
-     * @since 3.5.10
-     */
-    private final List<AnnotationAttributes> annotationAttributesList = new ArrayList<>();
-
-    /**
-     * 字段注解处理
-     *
-     * @since 3.5.11
-     */
-    private Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction;
 
     /**
      * 构造方法
@@ -335,47 +314,6 @@ public class TableField {
                 .findFirst().ifPresent(tf -> this.fill = tf.getFieldFill().name());
         }
         return fill;
-    }
-
-    /**
-     * 添加字段注解属性
-     *
-     * @param annotationAttributesList 注解属性集合
-     * @since 3.5.10
-     */
-    public void addAnnotationAttributesList(List<AnnotationAttributes> annotationAttributesList) {
-        this.addAnnotationAttributesList(annotationAttributesList, null);
-    }
-
-    /**
-     * @param annotationAttributesList 注解属性集合
-     * @since 3.5.11
-     */
-    public void addAnnotationAttributesList(List<AnnotationAttributes> annotationAttributesList, Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction) {
-        this.annotationAttributesList.addAll(annotationAttributesList);
-        this.annotationAttributesFunction = annotationAttributesFunction;
-    }
-
-    /**
-     * 添加字段注解属性
-     *
-     * @param annotationAttributes 注解属性
-     * @since 3.5.10
-     */
-    public void addAnnotationAttributesList(AnnotationAttributes annotationAttributes) {
-        this.annotationAttributesList.add(annotationAttributes);
-    }
-
-    /**
-     * 获取字段注解属性(默认按{@link AnnotationAttributes#getDisplayName()}长度进行升序)
-     *
-     * @return 字段注解属性
-     * @since 3.5.10
-     */
-    public List<AnnotationAttributes> getAnnotationAttributesList() {
-        return annotationAttributesFunction != null ? annotationAttributesFunction.apply(this.annotationAttributesList) : this.annotationAttributesList.stream()
-            .sorted(Comparator.comparingInt(s -> s.getDisplayName().length()))
-            .collect(Collectors.toList());
     }
 
     /**
