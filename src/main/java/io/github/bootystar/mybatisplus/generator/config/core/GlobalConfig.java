@@ -187,6 +187,10 @@ public class GlobalConfig implements ITemplate {
     public String resolveJavaApiPackage(String suffix) {
         return javaApiPackagePrefix + "." + suffix;
     }
+    
+    public String resolveExcelApiPackage(String suffix) {
+        return excelApiPackagePrefix + "." + suffix;
+    }
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
@@ -208,7 +212,6 @@ public class GlobalConfig implements ITemplate {
         data.put("javaApiPackagePrefix", this.javaApiPackagePrefix);
         data.put("excelApiPackagePrefix", this.excelApiPackagePrefix);
         data.put("excelClass", this.excelClass);
-
         data.put("lombok", this.lombok);
         data.put("lombokChainModel", this.chainModel);
         

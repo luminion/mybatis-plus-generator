@@ -46,22 +46,27 @@ public class ${entity} {
 #end
 #if(${entitySerialVersionUID})
 
+    #if(${entitySerialAnnotation})
+    @Serial
+    #end
     private static final long serialVersionUID = 1L;
 #end
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
 
-#if(${field.keyFlag})
+    #if(${field.keyFlag})
     #set($keyPropertyName=${field.propertyName})
-#end
-    #if(${springdoc})
+    #end
+    #if("$!field.comment" != "")
+        #if(${springdoc})
     @Schema(description = "${field.comment}")
-    #elseif(${swagger})
+        #elseif(${swagger})
     @ApiModelProperty("${field.comment}")
-    #else
+        #else
     /**
      * ${field.comment}
      */
+        #end
     #end
     #if(${field.keyFlag})
         #if(${field.keyIdentityFlag})
