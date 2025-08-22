@@ -22,10 +22,10 @@ public class Generator4Mysql {
                 )
                 .pkg(e -> e
                         .parent("com.example.test")
-                        .queryDTO("entity")
-                        .insertDTO("entity")
-                        .updateDTO("entity")
-                        .vo("entity")
+                        .entityQueryDTO("entity")
+                        .entityInsertDTO("entity")
+                        .entityUpdateDTO("entity")
+                        .entityVO("entity")
                 )
                 .strategy(e->e
                 )
