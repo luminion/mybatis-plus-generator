@@ -93,7 +93,6 @@ public class Global extends GlobalConfig{
             return commentDate(() -> new SimpleDateFormat(pattern).format(new Date()));
         }
 
-
         /**
          * 启用全局文件覆盖
          */
@@ -173,7 +172,7 @@ public class Global extends GlobalConfig{
         }
 
         /**
-         * 禁用注释UUID
+         * 启用注释UUID(防止swagger等文档因为重复模型名称而无法识别)
          *
          * @return this
          */
@@ -207,17 +206,6 @@ public class Global extends GlobalConfig{
         }
 
         /**
-         * 开启链式模型
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableChainModel() {
-            this.config.chain = true;
-            return this;
-        }
-
-        /**
          * 开启lombok模型
          *
          * @return this
@@ -228,7 +216,16 @@ public class Global extends GlobalConfig{
             return this;
         }
 
-
+        /**
+         * 开启lombok链式模型
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder enableChainModel() {
+            this.config.chain = true;
+            return this;
+        }
 
     }
 }
