@@ -157,6 +157,16 @@ public class Pkg extends PackageConfig {
             this.config.updateDTO = updateDTO;
             return this;
         }
+        /**
+         * 指定vo包名
+         *
+         * @param vo vo包名
+         * @return this
+         */
+        public Builder vo(String vo) {
+            this.config.vo = vo;
+            return this;
+        }
 
         /**
          * 路径配置信息
