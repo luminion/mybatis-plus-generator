@@ -18,10 +18,13 @@ import ${pkg};
 #end
  * @since ${date}
  */
-#if(${entityLombokModel})
+#if(${lombok})
 @Data
     #if(${chainModel})
 @Accessors(chain = true)
+    #end
+    #if(${superEntityClass})
+@EqualsAndHashCode(callSuper = true)
     #end
 #end
 #if(${table.convert})
@@ -86,7 +89,7 @@ public class ${entity} {
     private ${field.propertyType} ${field.propertyName};
 #end
 ## ----------  END 字段循环遍历  ----------
-#if(!${entityLombokModel})
+#if(!${lombok})
 #foreach($field in ${table.fields})
   #if(${field.propertyType.equals("boolean")})
     #set($getprefix="is")
@@ -111,7 +114,7 @@ public class ${entity} {
 #end
 ## --foreach end---
 #end
-## --end of #if(!${entityLombokModel})--
+## --end of #if(!${lombok})--
 #if(${entityColumnConstant})
   #foreach($field in ${table.fields})
 
@@ -129,7 +132,7 @@ public class ${entity} {
   #end
     }
 #end
-#if(!${entityLombokModel})
+#if(!${lombok})
 
     @Override
     public String toString() {

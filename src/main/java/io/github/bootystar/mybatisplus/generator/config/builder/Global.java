@@ -225,13 +225,13 @@ public class Global extends GlobalConfig{
         }
 
         /**
-         * 开启lombok链式模型
+         * 开启链式getter和setter
          *
          * @return this
          * @since 3.5.0
          */
-        public Builder enableLombokChainModel() {
-            this.config.lombokChainModel = true;
+        public Builder enableChainModel() {
+            this.config.chainModel = true;
             return this;
         }
 

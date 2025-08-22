@@ -64,7 +64,7 @@ public class ModelConfig implements ITemplate {
             importPackages.add("io.swagger.annotations.ApiModelProperty");
         }
         if (!globalConfig.isKotlin() && globalConfig.isLombok()) {
-            if (globalConfig.isLombokChainModel()) {
+            if (globalConfig.isChainModel()) {
                 importPackages.add("lombok.experimental.Accessors");
             }
             importPackages.add("lombok.Data");

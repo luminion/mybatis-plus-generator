@@ -255,7 +255,7 @@ public class EntityConfig implements ITemplate {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
         }
         if (!globalConfig.isKotlin() && globalConfig.isLombok()) {
-            if (globalConfig.isLombokChainModel()) {
+            if (globalConfig.isChainModel()) {
                 importPackages.add("lombok.experimental.Accessors");
             }
             if (this.superClass != null) {
