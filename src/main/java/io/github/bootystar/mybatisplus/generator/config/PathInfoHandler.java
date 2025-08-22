@@ -79,6 +79,16 @@ class PathInfoHandler {
         if (entity.isGenerate()) {
             putPathInfo(injectionConfig, globalConfig.isKotlin() ? templateConfig.getEntityKt() : templateConfig.getEntity(), OutputFile.entity, ConstVal.ENTITY);
         }
+        if (globalConfig.isGenerateInsert() || globalConfig.isGenerateImport()){
+            putPathInfo(injectionConfig, templateConfig.getEntityInsertDTO(), OutputFile.entityInsertDTO, ConstVal.ENTITY_INSERT_DTO);
+        }
+        if (globalConfig.isGenerateUpdate()){
+            putPathInfo(injectionConfig, templateConfig.getEntityUpdateDTO(), OutputFile.entityUpdateDTO, ConstVal.ENTITY_UPDATE_DTO);
+        }
+        if (globalConfig.isGenerateQuery() || globalConfig.isGenerateExport()) {
+            putPathInfo(injectionConfig, templateConfig.getEntityQueryDTO(), OutputFile.entityQueryDTO, ConstVal.ENTITY_QUERY_DTO);
+            putPathInfo(injectionConfig, templateConfig.getEntityVO(), OutputFile.entityVO, ConstVal.ENTITY_VO);
+        }
         MapperConfig mapper = configAdapter.getMapperConfig();
         if (mapper.isGenerateMapper()) {
             putPathInfo(injectionConfig, templateConfig.getMapper(), OutputFile.mapper, ConstVal.MAPPER);
