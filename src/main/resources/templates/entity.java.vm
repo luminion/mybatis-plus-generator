@@ -53,10 +53,9 @@ public class ${entity} {
 #end
     #if(${springdoc})
     @Schema(description = "${field.comment}")
-    #else
+    #elseif(${swagger})
     @ApiModelProperty("${field.comment}")
-    #end
-    #if(${entityFieldUseJavaDoc})
+    #else
     /**
      * ${field.comment}
      */

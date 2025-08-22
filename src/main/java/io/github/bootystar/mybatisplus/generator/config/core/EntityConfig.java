@@ -25,12 +25,6 @@ import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.IFill;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
-import io.github.bootystar.mybatisplus.generator.handler.DefaultTableAnnotationHandler;
-import io.github.bootystar.mybatisplus.generator.handler.DefaultTableFieldAnnotationHandler;
-import io.github.bootystar.mybatisplus.generator.handler.ITableAnnotationHandler;
-import io.github.bootystar.mybatisplus.generator.handler.ITableFieldAnnotationHandler;
-import io.github.bootystar.mybatisplus.generator.model.AnnotationAttributes;
-import io.github.bootystar.mybatisplus.generator.model.ClassAnnotationAttributes;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -203,59 +197,6 @@ public class EntityConfig implements ITemplate {
      */
     protected boolean generate = true;
 
-//    /**
-//     * 是否生成ToString
-//     * <p>低版本下,lombok没有处理ToString逻辑,现在处理生成@ToString</p>
-//     * <p>支持控制toString方法是否生成</p>
-//     *
-//     * @since 3.5.10
-//     */
-//    protected boolean toString = true;
-//
-//
-    /**
-     * 启用字段文档注释 (当注释字段注释不为空才生效)
-     * <p>低版本下,如果是启用swagger或者springdoc时,不会生成,现在统一修改为生成文档注释</p>
-     *
-     * @since 3.5.10
-     */
-    protected boolean fieldUseJavaDoc ;
-
-//    /**
-//     * 实体类注解
-//     *
-//     * @since 3.5.10
-//     */
-//    protected final List<ClassAnnotationAttributes> classAnnotations = new ArrayList<>();
-
-    /**
-     * 表注解处理器
-     *
-     * @since 3.5.10
-     */
-    protected ITableAnnotationHandler tableAnnotationHandler = new DefaultTableAnnotationHandler();
-
-    /**
-     * 字段注解处理器
-     *
-     * @since 3.5.10
-     */
-    protected ITableFieldAnnotationHandler tableFieldAnnotationHandler = new DefaultTableFieldAnnotationHandler();
-
-//    /**
-//     * 导包处理方法
-//     *
-//     * @since 3.5.11
-//     */
-//    protected Function<Collection<String>, Collection<String>> importPackageFunction;
-//
-//    /**
-//     * 处理类注解方法 (含类与字段)
-//     *
-//     * @since 3.5.11
-//     */
-//    protected Function<List<? extends AnnotationAttributes>, List<AnnotationAttributes>> annotationAttributesFunction;
-
     /**
      * Java模板默认路径
      *
@@ -293,23 +234,6 @@ public class EntityConfig implements ITemplate {
      * @param clazz 实体父类 Class
      */
     public void convertSuperEntityColumns(Class<?> clazz) {
-        // 3.5.12版本
-//        List<Field> fields = TableInfoHelper.getAllFields(clazz);
-//        this.superEntityColumns.addAll(fields.stream().map(field -> {
-//            TableId tableId = annotationHandler.getAnnotation(field, TableId.class);
-//            if (tableId != null && StringUtils.isNotBlank(tableId.value())) {
-//                return tableId.value();
-//            }
-//            TableField tableField = annotationHandler.getAnnotation(field, TableField.class);
-//            if (tableField != null && StringUtils.isNotBlank(tableField.value())) {
-//                return tableField.value();
-//            }
-//            if (null == columnNaming || columnNaming == NamingStrategy.no_change) {
-//                return field.getName();
-//            }
-//            return StringUtils.camelToUnderline(field.getName());
-//        }).collect(Collectors.toSet()));
-        // 3.5.0 版本
         List<Field> fields = TableInfoHelper.getAllFields(clazz);
         this.superEntityColumns.addAll(fields.stream().map(field -> {
             TableId tableId = field.getAnnotation(TableId.class);
@@ -368,9 +292,15 @@ public class EntityConfig implements ITemplate {
         GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
 
         Collection<String> importPackages = new TreeSet<>(tableInfo.getImportPackages());
-        for (io.github.bootystar.mybatisplus.generator.config.po.TableField field : tableInfo.getFields()) {
-            
-        }
+//        if(tableInfo.isConvert()){
+//            importPackages.add(TableName.class.getCanonicalName());
+//        }
+//        for (io.github.bootystar.mybatisplus.generator.config.po.TableField field : tableInfo.getFields()) {
+//            boolean keyFlag = field.isKeyFlag();
+//            boolean versionField = field.isVersionField();
+//            boolean logicDeleteField = field.isLogicDeleteField();
+//            String fill = field.getFill();
+//        }
         if (globalConfig.isSwagger()) {
             importPackages.add("io.swagger.annotations.ApiModel");
             importPackages.add("io.swagger.annotations.ApiModelProperty");

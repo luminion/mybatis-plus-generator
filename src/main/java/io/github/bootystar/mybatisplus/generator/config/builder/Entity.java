@@ -2,20 +2,17 @@ package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.fill.IFill;
-import io.github.bootystar.mybatisplus.generator.handler.ITableAnnotationHandler;
-import io.github.bootystar.mybatisplus.generator.handler.ITableFieldAnnotationHandler;
 import io.github.bootystar.mybatisplus.generator.config.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
+import io.github.bootystar.mybatisplus.generator.fill.IFill;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
-import io.github.bootystar.mybatisplus.generator.model.AnnotationAttributes;
-import io.github.bootystar.mybatisplus.generator.model.ClassAnnotationAttributes;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author bootystar
@@ -390,18 +387,6 @@ public class Entity extends EntityConfig {
          */
         public Builder disable() {
             this.config.generate = false;
-            return this;
-        }
-
-        /**
-         * 设置字段是否生成文档注释
-         *
-         * @param fieldUseJavaDoc 是否生成文档注释
-         * @return this
-         * @since 3.5.10
-         */
-        public Builder disableFieldUseJavaDoc() {
-            this.config.fieldUseJavaDoc = false;
             return this;
         }
 

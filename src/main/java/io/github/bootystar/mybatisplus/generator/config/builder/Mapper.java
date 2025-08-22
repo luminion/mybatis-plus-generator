@@ -1,6 +1,5 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
-import io.github.bootystar.mybatisplus.generator.handler.IGenerateMapperMethodHandler;
 import io.github.bootystar.mybatisplus.generator.config.core.MapperConfig;
 import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import org.apache.ibatis.cache.Cache;
@@ -200,31 +199,6 @@ public class Mapper extends MapperConfig{
          */
         public Builder disableMapperXml() {
             this.config.generateMapperXml = false;
-            return this;
-        }
-
-        /**
-         * Mapper层方法生成处理器
-         *
-         * @param generateMapperMethodHandler 处理器
-         * @return this
-         * @since 3.5.10
-         */
-        public Builder generateMapperMethodHandler(IGenerateMapperMethodHandler generateMapperMethodHandler) {
-            this.config.generateMapperMethodHandler = generateMapperMethodHandler;
-            return this;
-        }
-
-
-        /**
-         * 导包处理方法
-         *
-         * @param importPackageFunction 导包处理
-         * @return this
-         * @since 3.5.11
-         */
-        public Builder importPackageFunction(Function<Set<String>, List<String>> importPackageFunction) {
-            this.config.importPackageFunction = importPackageFunction;
             return this;
         }
 
