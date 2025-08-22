@@ -36,29 +36,11 @@ import java.util.stream.Collectors;
  */
 public class TableInfo {
 
+    /**
+     * 配置适配器
+     */
     @Getter
     private final ConfigAdapter configAdapter;
-
-//    /**
-//     * 策略配置
-//     */
-//    @Getter
-//    private final StrategyConfig strategyConfig;
-//
-//    /**
-//     * 全局配置信息
-//     */
-//    @Getter
-//    private final GlobalConfig globalConfig;
-//    /**
-//     * @since 3.5.11
-//     */
-//    @Getter
-//    private PackageConfig packageConfig;
-//    /**
-//     * 实体
-//     */
-//    private final EntityConfig entity;
 
     /**
      * 包导入信息
@@ -89,6 +71,30 @@ public class TableInfo {
      */
     @Getter
     private String entityName;
+
+    /**
+     * 实体插入dto名称
+     */
+    @Getter
+    private String entityInsertDTOName;
+
+    /**
+     * 实体修改dto名称
+     */
+    @Getter
+    private String entityUpdateDTOName;
+
+    /**
+     * 实体查询dto名称
+     */
+    @Getter
+    private String entityQueryDTOName;
+
+    /**
+     * 实体vo名称
+     */
+    @Getter
+    private String entityVOName;
 
     /**
      * mapper名称
@@ -177,10 +183,6 @@ public class TableInfo {
      */
     public TableInfo(ConfigAdapter configBuilder, String name) {
         this.configAdapter = configBuilder;
-//        this.strategyConfig = configBuilder.getStrategyConfig();
-//        this.globalConfig = configBuilder.getGlobalConfig();
-//        this.entity = configBuilder.getEntityConfig();
-//        this.packageConfig = configBuilder.getPackageConfig();
         this.name = name;
     }
 
@@ -324,12 +326,16 @@ public class TableInfo {
      */
     public void processTable() {
         String entityName = this.getConfigAdapter().getEntityConfig().getNameConvert().entityNameConvert(this);
-        this.setEntityName(this.getConfigAdapter().getEntityConfig().getConverterFileName().convert(entityName));
-        this.mapperName = this.getConfigAdapter().getMapperConfig().getConverterMapperFileName().convert(entityName);
-        this.xmlName = this.getConfigAdapter().getMapperConfig().getConverterXmlFileName().convert(entityName);
-        this.serviceName = this.getConfigAdapter().getServiceConfig().getConverterServiceFileName().convert(entityName);
-        this.serviceImplName = this.getConfigAdapter().getServiceConfig().getConverterServiceImplFileName().convert(entityName);
-        this.controllerName = this.getConfigAdapter().getControllerConfig().getConverterFileName().convert(entityName);
+        this.setEntityName(this.getConfigAdapter().getEntityConfig().getConverterFileName().apply(entityName));
+        this.entityInsertDTOName = this.getConfigAdapter().getModelConfig().getConverterEntityInsertDTOName().apply(entityName);
+        this.entityUpdateDTOName = this.getConfigAdapter().getModelConfig().getConverterEntityUpdateDTOName().apply(entityName);
+        this.entityQueryDTOName = this.getConfigAdapter().getModelConfig().getConverterEntityQueryDTOName().apply(entityName);
+        this.entityVOName = this.getConfigAdapter().getModelConfig().getConverterEntityVOName().apply(entityName);
+        this.mapperName = this.getConfigAdapter().getMapperConfig().getConverterMapperFileName().apply(entityName);
+        this.xmlName = this.getConfigAdapter().getMapperConfig().getConverterXmlFileName().apply(entityName);
+        this.serviceName = this.getConfigAdapter().getServiceConfig().getConverterServiceFileName().apply(entityName);
+        this.serviceImplName = this.getConfigAdapter().getServiceConfig().getConverterServiceImplFileName().apply(entityName);
+        this.controllerName = this.getConfigAdapter().getControllerConfig().getConverterFileName().apply(entityName);
         this.importPackage();
     }
 
@@ -348,22 +354,6 @@ public class TableInfo {
     public TableInfo setConvert(boolean convert) {
         this.convert = convert;
         return this;
-    }
-
-    public String getEntityQueryDTOName() {
-        return entityName + "QueryDTO";
-    }
-
-    public String getEntityInsertDTOName() {
-        return entityName + "InsertDTO";
-    }
-
-    public String getEntityUpdateDTOName() {
-        return entityName + "UpdateDTO";
-    }
-
-    public String getEntityVOName() {
-        return entityName + "VO";
     }
 
 }

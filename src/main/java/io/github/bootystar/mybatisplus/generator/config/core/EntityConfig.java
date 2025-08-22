@@ -24,7 +24,6 @@ import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.IFill;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
-import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -163,7 +163,7 @@ public class EntityConfig implements ITemplate {
      *
      * @since 3.5.0
      */
-    protected ConverterFileName converterFileName = (entityName -> entityName);
+    protected Function<String, String> converterFileName = (entityName -> entityName);
 
     /**
      * 是否覆盖已有文件（默认 false）

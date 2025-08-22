@@ -18,13 +18,13 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
-import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Service属性配置
@@ -69,14 +69,14 @@ public class ServiceConfig implements ITemplate {
      *
      * @since 3.5.0
      */
-    protected ConverterFileName converterServiceFileName = (entityName -> "I" + entityName + ConstVal.SERVICE);
+    protected Function<String, String> converterServiceFileName = (entityName -> "I" + entityName + ConstVal.SERVICE);
 
     /**
      * 转换输出ServiceImpl文件名称
      *
      * @since 3.5.0
      */
-    protected ConverterFileName converterServiceImplFileName = (entityName -> entityName + ConstVal.SERVICE_IMPL);
+    protected Function<String, String> converterServiceImplFileName = (entityName -> entityName + ConstVal.SERVICE_IMPL);
 
     /**
      * 是否覆盖已有文件（默认 false）

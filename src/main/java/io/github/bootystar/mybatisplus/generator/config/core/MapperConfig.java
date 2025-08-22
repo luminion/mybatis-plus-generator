@@ -21,8 +21,6 @@ import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
-import io.github.bootystar.mybatisplus.generator.function.ConverterFileName;
-import io.github.bootystar.mybatisplus.generator.model.MapperMethod;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -78,14 +76,14 @@ public class MapperConfig implements ITemplate {
      *
      * @since 3.5.0
      */
-    protected ConverterFileName converterMapperFileName = (entityName -> entityName + ConstVal.MAPPER);
+    protected Function<String, String> converterMapperFileName = (entityName -> entityName + ConstVal.MAPPER);
 
     /**
      * 转换输出Xml文件名称
      *
      * @since 3.5.0
      */
-    protected ConverterFileName converterXmlFileName = (entityName -> entityName + ConstVal.MAPPER);
+    protected Function<String, String> converterXmlFileName = (entityName -> entityName + ConstVal.MAPPER);
 
     /**
      * 是否覆盖已有文件（默认 false）

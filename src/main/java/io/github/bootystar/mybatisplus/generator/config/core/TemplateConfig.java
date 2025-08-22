@@ -44,12 +44,6 @@ public class TemplateConfig {
     protected String entityKt = ConstVal.TEMPLATE_ENTITY_KT;
 
     /**
-     * 实体查询dto
-     */
-    @Getter
-    protected String entityQueryDTO = ConstVal.TEMPLATE_ENTITY_QUERY_DTO_JAVA;
-
-    /**
      * 实体插入dto
      */
     @Getter
@@ -60,6 +54,12 @@ public class TemplateConfig {
      */
     @Getter
     protected String entityUpdateDTO = ConstVal.TEMPLATE_ENTITY_UPDATE_DTO_JAVA;
+
+    /**
+     * 实体查询dto
+     */
+    @Getter
+    protected String entityQueryDTO = ConstVal.TEMPLATE_ENTITY_QUERY_DTO_JAVA;
 
     /**
      * 实体vo

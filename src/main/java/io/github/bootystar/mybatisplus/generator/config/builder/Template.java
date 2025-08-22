@@ -36,16 +36,6 @@ public class Template extends TemplateConfig {
 //        }
 
         /**
-         * 查询dto
-         *
-         * @param template 模板
-         */
-        public Builder entityQueryDTO(String template) {
-            this.config.entityQueryDTO = template;
-            return this;
-        }
-
-        /**
          * 新增dto
          *
          * @param template 模板
@@ -62,6 +52,16 @@ public class Template extends TemplateConfig {
          */
         public Builder entityUpdateDTO(String template) {
             this.config.entityUpdateDTO = template;
+            return this;
+        }
+
+        /**
+         * 查询dto
+         *
+         * @param template 模板
+         */
+        public Builder entityQueryDTO(String template) {
+            this.config.entityQueryDTO = template;
             return this;
         }
 

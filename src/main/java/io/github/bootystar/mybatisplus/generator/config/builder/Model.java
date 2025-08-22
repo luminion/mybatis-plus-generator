@@ -15,8 +15,6 @@ public class Model extends ModelConfig {
         protected ModelConfig build() {
             return this.config;
         }
-
-       
         
         /**
          * 禁用查询dto继承实体类
