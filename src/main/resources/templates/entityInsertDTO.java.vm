@@ -1,46 +1,10 @@
 package ${basePackage}.${package4DTO};
 
-#if(${generateImport})
-import ${excelBasePackage}.annotation.ExcelIgnoreUnannotated;
-import ${excelBasePackage}.annotation.ExcelProperty;
-#end
-#if(${springdoc})
-import io.swagger.v3.oas.annotations.media.Schema;
-#elseif(${swagger})
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-#end
-#if(${entityLombokModel})
-import lombok.Data;
-    #if(${chainModel}&&${generateImport})
-import lombok.experimental.Accessors;
-    #end
+#foreach($pkg in ${importDTOFrameworkPackages})
+import ${pkg};
 #end
 
-#if(${validated})
-## ---字段非空验证---
-    #foreach($field in ${table.fields})
-        #if(!${field.metaInfo.nullable} && !${field.metaInfo.defaultValue} && !${field.keyFlag} &&${field.propertyType}!="String")
-import ${javaApiPackage}.validation.constraints.NotNull;
-            #break
-        #end
-    #end
-## ---字符串非空验证---
-    #foreach($field in ${table.fields})
-        #if(!${field.metaInfo.nullable} && !${field.metaInfo.defaultValue} && !${field.keyFlag} &&${field.propertyType}=="String")
-import ${javaApiPackage}.validation.constraints.NotBlank;
-            #break
-        #end
-    #end
-## ---字符串长度验证---
-    #foreach($field in ${table.fields})
-        #if(${field.propertyType}=="String")
-import ${javaApiPackage}.validation.constraints.Size;
-            #break
-        #end
-    #end
-#end
-#foreach($pkg in ${importPackages4DTO})
+#foreach($pkg in ${importDTOJavaPackages})
 import ${pkg};
 #end
 
@@ -48,27 +12,22 @@ import ${pkg};
  * $!{table.comment}-新增DTO
  *
  * @author ${author}
- * @since ${date}
-#if(${extraClassLinkComment})
+#if(${commnetLink})
  * @see ${package.Entity}.${entity}
-## * @see ${package.Mapper}.${table.mapperName}
  * @see ${package.ServiceImpl}.${table.serviceImplName}
 #end
+ * @since ${date}
  */
 #if(${entityLombokModel})
 @Data
-  #if(${chainModel}&&!${generateImport})
+    #if(${chainModel}&&!${generateImport})
 @Accessors(chain = true)
-  #end
+    #end
 #end
-#if(${swaggerModelWithAnnotation})
 #if(${springdoc})
-##@Schema(name = "${entity}InsertDTO ", description = "$!{table.comment}-新增DTO")
-@Schema(name = "${entity}InsertDTO$!{swaggerUUID}", description = "$!{table.comment}-新增DTO")
+@Schema(description = "$!{table.comment}-新增DTO")
 #elseif(${swagger})
-##@ApiModel(value = "${entity}InsertDTO", description = "$!{table.comment}-新增DTO")
-@ApiModel(value = "${entity}InsertDTO$!{swaggerUUID}", description = "$!{table.comment}-新增DTO")
-#end
+@ApiModel(description = "$!{table.comment}-新增DTO")
 #end
 #if(${generateImport})
 @ExcelIgnoreUnannotated
