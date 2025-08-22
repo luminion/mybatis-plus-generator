@@ -162,7 +162,7 @@ public class GlobalConfig implements ITemplate {
      *
      * @since 3.3.2
      */
-    protected boolean lombokChainModel;
+    protected boolean chainModel;
 
     /**
      * 【实体】是否为lombok模型（默认 false）<br>
@@ -210,7 +210,7 @@ public class GlobalConfig implements ITemplate {
         data.put("excelClass", this.excelClass);
 
         data.put("lombok", this.lombok);
-        data.put("lombokChainModel", this.lombokChainModel);
+        data.put("lombokChainModel", this.chainModel);
         
         return data;
     }

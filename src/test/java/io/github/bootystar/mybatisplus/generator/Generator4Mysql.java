@@ -12,13 +12,13 @@ public class Generator4Mysql {
         String password = "root";
         FastGenerator
                 .create(url, username, password)
-                .initialize()
+//                .initialize()
                 .global(e -> e
                                 .disableOpenDir()
                                 .enableFileOverwrite()
                                 .outputDir(System.getProperty("user.dir") + "/src/test/java")
                             .enableSwagger()
-//                            .enableSpringdoc()
+                            .enableSpringdoc()
                 )
                 .pkg(e -> e
                         .parent("com.example.test")
