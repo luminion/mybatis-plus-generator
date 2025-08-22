@@ -109,20 +109,6 @@ public class Controller extends ControllerConfig {
         }
 
         /**
-         * 指定模板路径
-         *
-         * @param template 模板路径
-         * @return this
-         * @since 3.5.6
-         */
-        public Builder template(String template) {
-            this.config.templatePath = template;
-            return this;
-        }
-
-        // ============自定义项==============
-
-        /**
          * controller请求前缀
          *
          * @param url url

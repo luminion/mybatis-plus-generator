@@ -60,7 +60,6 @@ public class FastGenerator {
                         .logicDeleteColumnName("deleted")
                         .versionColumnName("version")
                         .disableSerialVersionUID()
-                        .enableLombok()
                         .addTableFills(
                                         new Column("create_time", FieldFill.INSERT),
                                         new Column("update_time", FieldFill.INSERT_UPDATE),

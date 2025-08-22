@@ -15,6 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.config;
 
+import io.github.bootystar.mybatisplus.generator.config.builder.Template;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
@@ -76,6 +77,14 @@ public class ConfigAdapter {
      * 控制器配置
      */
     private ControllerConfig controllerConfig;
+    /**
+     * 模型配置
+     */
+    private ModelConfig modelConfig;
+    /**
+     * 模板配置
+     */
+    private TemplateConfig templateConfig;
 
     /**
      * 过滤正则
@@ -118,7 +127,9 @@ public class ConfigAdapter {
                          EntityConfig entityConfig,
                          MapperConfig mapperConfig,
                          ServiceConfig serviceConfig,
-                         ControllerConfig controllerConfig
+                         ControllerConfig controllerConfig,
+                         ModelConfig modelConfig, 
+                         TemplateConfig templateConfig
     ) {
         this.dataSourceConfig = dataSourceConfig;
         this.globalConfig = globalConfig;
@@ -129,6 +140,8 @@ public class ConfigAdapter {
         this.mapperConfig = mapperConfig;
         this.serviceConfig = serviceConfig;
         this.controllerConfig = controllerConfig;
+        this.modelConfig = modelConfig;
+        this.templateConfig = templateConfig;
         
         // 设置默认名称转换
         INameConvert nameConvert = entityConfig.getNameConvert();

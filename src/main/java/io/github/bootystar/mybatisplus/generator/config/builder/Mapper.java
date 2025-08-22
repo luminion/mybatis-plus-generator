@@ -136,35 +136,12 @@ public class Mapper extends MapperConfig{
         public Builder formatXmlFileName(String format) {
             return convertXmlFileName((entityName) -> String.format(format, entityName));
         }
-
-
+        
         /**
          * 覆盖已有文件
          */
         public Builder enableFileOverride() {
             this.config.fileOverride = true;
-            return this;
-        }
-
-        /**
-         * mapper模板路径
-         *
-         * @return this
-         * @since 3.5.6
-         */
-        public Builder mapperTemplate(String template) {
-            this.config.mapperTemplatePath = template;
-            return this;
-        }
-
-        /**
-         * mapper.xml模板路径
-         *
-         * @return this
-         * @since 3.5.6
-         */
-        public Builder mapperXmlTemplate(String template) {
-            this.config.mapperXmlTemplatePath = template;
             return this;
         }
 

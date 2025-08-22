@@ -41,13 +41,6 @@ public class ServiceConfig implements ITemplate {
     }
 
     /**
-     * 是否生成serviceImpl
-     *
-     * @since 3.5.6
-     */
-    protected boolean generateServiceImpl = true;
-
-    /**
      * 是否生成service
      *
      * @since 3.5.6
@@ -55,14 +48,11 @@ public class ServiceConfig implements ITemplate {
     protected boolean generateService = true;
 
     /**
+     * 是否生成serviceImpl
+     *
      * @since 3.5.6
      */
-    protected String serviceTemplate = ConstVal.TEMPLATE_SERVICE;
-
-    /**
-     * @since 3.5.6
-     */
-    protected String serviceImplTemplate = ConstVal.TEMPLATE_SERVICE_IMPL;
+    protected boolean generateServiceImpl = true;
 
     /**
      * 自定义继承的Service类全称，带包名

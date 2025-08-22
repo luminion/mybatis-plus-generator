@@ -147,27 +147,5 @@ public class Service extends ServiceConfig {
             return this;
         }
 
-        /**
-         * Service模板路径
-         *
-         * @return this
-         * @since 3.5.6
-         */
-        public Builder serviceTemplate(String template) {
-            this.config.serviceTemplate = template;
-            return this;
-        }
-
-        /**
-         * ServiceImpl模板路径
-         *
-         * @return this
-         * @since 3.5.6
-         */
-        public Builder serviceImplTemplate(String template) {
-            this.config.serviceImplTemplate = template;
-            return this;
-        }
-
     }
 }
