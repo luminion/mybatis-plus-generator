@@ -394,33 +394,34 @@ public abstract class AbstractTemplateEngine {
                 tableInfo.setConvert(true);
             }
         }
-        Map<String, Object> map = strategyConfig.renderData(tableInfo);
-        objectMap.putAll(map);
         objectMap.put("schemaName", schemaName);
-        Map<String, Object> controllerData = config.getControllerConfig().renderData(tableInfo);
-        objectMap.putAll(controllerData);
-        Map<String, Object> mapperData = config.getMapperConfig().renderData(tableInfo);
-        objectMap.putAll(mapperData);
-        Map<String, Object> serviceData = config.getServiceConfig().renderData(tableInfo);
-        objectMap.putAll(serviceData);
-        Map<String, Object> entityData = config.getEntityConfig().renderData(tableInfo);
-        objectMap.putAll(entityData);
         objectMap.put("config", config);
         objectMap.put("package", config.getPackageConfig().getPackageInfo(config.getInjectionConfig()));
-       
-
         objectMap.put("table", tableInfo);
         objectMap.put("entity", tableInfo.getEntityName());
+        objectMap.put("entityInsertDTO", tableInfo.getEntityInsertDTOName());
+        objectMap.put("entityUpdateDTO", tableInfo.getEntityUpdateDTOName());
+        objectMap.put("entityQueryDTO", tableInfo.getEntityQueryDTOName());
+        objectMap.put("entityVO", tableInfo.getEntityVOName());
         
-//        objectMap.put("table", tableInfo);
-//        objectMap.put("global", config.getGlobalConfig());
-//        objectMap.put("package", config.getPackageConfig().getPackageInfo(config.getInjectionConfig()));
-//        objectMap.put("strategy", config.getStrategyConfig().renderData(tableInfo));
-//        objectMap.put("injection", config.getInjectionConfig().renderData(tableInfo));
-//        objectMap.put("entity", config.getEntityConfig().renderData(tableInfo));
-//        objectMap.put("mapper", config.getMapperConfig().renderData(tableInfo));
-//        objectMap.put("service", config.getServiceConfig().renderData(tableInfo));
-//        objectMap.put("controller", config.getControllerConfig().renderData(tableInfo));
+        Map<String, Object> map = strategyConfig.renderData(tableInfo);
+        objectMap.putAll(map);
+        
+        Map<String, Object> entityData = config.getEntityConfig().renderData(tableInfo);
+        objectMap.putAll(entityData);
+        
+        Map<String, Object> modelData = config.getModelConfig().renderData(tableInfo);
+        objectMap.putAll(modelData);
+        
+        Map<String, Object> mapperData = config.getMapperConfig().renderData(tableInfo);
+        objectMap.putAll(mapperData);
+        
+        Map<String, Object> serviceData = config.getServiceConfig().renderData(tableInfo);
+        objectMap.putAll(serviceData);
+        
+        Map<String, Object> controllerData = config.getControllerConfig().renderData(tableInfo);
+        objectMap.putAll(controllerData);
+        
         return objectMap;
     }
 

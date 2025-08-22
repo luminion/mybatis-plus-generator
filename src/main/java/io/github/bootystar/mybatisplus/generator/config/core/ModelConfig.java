@@ -5,9 +5,11 @@ import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
 
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author bootystar
@@ -51,11 +53,13 @@ public class ModelConfig implements ITemplate {
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
-        Map<String, Object> map = ITemplate.super.renderData(tableInfo);
-        map.put("extendsQueryDTO", this.extendsQueryDTO);
-        map.put("extendsVO", this.extendsVO);
+        Map<String, Object> data = ITemplate.super.renderData(tableInfo);
+        data.put("extendsQueryDTO", this.extendsQueryDTO);
+        data.put("extendsVO", this.extendsVO);
         GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
-        Set<String> importPackages = tableInfo.getImportPackages();
+        TreeSet<String> importPackages = tableInfo.getImportPackages().stream()
+                .filter(e -> !e.startsWith("com.baomidou.mybatisplus.annotation"))
+                .collect(Collectors.toCollection(TreeSet::new));
         if (globalConfig.isSpringdoc()) {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
         }
@@ -68,8 +72,13 @@ public class ModelConfig implements ITemplate {
                 importPackages.add("lombok.experimental.Accessors");
             }
             importPackages.add("lombok.Data");
+            importPackages.add("lombok.EqualsAndHashCode");
         }
-
-        return map;
+        Collection<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        Collection<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importDTOJavaPackages", javaPackages);
+        data.put("importDTOFrameworkPackages", frameworkPackages);
+        
+        return data;
     }
 }
