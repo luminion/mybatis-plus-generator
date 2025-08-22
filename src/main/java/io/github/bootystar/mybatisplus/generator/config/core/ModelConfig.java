@@ -25,19 +25,19 @@ public class ModelConfig implements ITemplate {
     /**
      * 新增dto名称转换
      */
-    protected Function<String, String> converterEntityInsertDTOName = name -> name;
+    protected Function<String, String> converterEntityInsertDTOName = name -> name + ConstVal.ENTITY_INSERT_DTO;
     /**
      * 修改dto名称转换
      */
-    protected Function<String, String> converterEntityUpdateDTOName = name -> name;
+    protected Function<String, String> converterEntityUpdateDTOName = name -> name + ConstVal.ENTITY_UPDATE_DTO ;
     /**
      * 查询dto名称转换
      */
-    protected Function<String, String> converterEntityQueryDTOName = name -> name;
+    protected Function<String, String> converterEntityQueryDTOName = name -> name + ConstVal.ENTITY_QUERY_DTO;
     /**
      * vo名称转换
      */
-    protected Function<String, String> converterEntityVOName = name -> name;
+    protected Function<String, String> converterEntityVOName = name -> name + ConstVal.ENTITY_VO;
 
     /**
      * 查询dto继承实体类
@@ -64,7 +64,7 @@ public class ModelConfig implements ITemplate {
             importPackages.add("io.swagger.annotations.ApiModelProperty");
         }
         if (!globalConfig.isKotlin() && globalConfig.isLombok()) {
-            if (globalConfig.isChain()) {
+            if (globalConfig.isLombokChainModel()) {
                 importPackages.add("lombok.experimental.Accessors");
             }
             importPackages.add("lombok.Data");
