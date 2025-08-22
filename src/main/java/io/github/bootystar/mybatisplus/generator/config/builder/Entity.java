@@ -108,28 +108,6 @@ public class Entity extends EntityConfig {
         }
 
         /**
-         * 开启链式模型
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableChainModel() {
-            this.config.chain = true;
-            return this;
-        }
-
-        /**
-         * 开启lombok模型
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableLombok() {
-            this.config.lombok = true;
-            return this;
-        }
-
-        /**
          * 开启Boolean类型字段移除is前缀
          *
          * @return this
@@ -329,57 +307,6 @@ public class Entity extends EntityConfig {
         }
 
         /**
-         * 指定模板路径
-         *
-         * @param template 模板路径
-         * @return this
-         * @since 3.5.6
-         */
-        public Builder javaTemplate(String template) {
-            this.config.javaTemplate = template;
-            return this;
-        }
-
-        /**
-         * 查询dto模板路径
-         *
-         * @param template 模板
-         */
-        public Builder javaQueryDTOTemplate(String template) {
-            this.config.javaQueryDTOTemplate = template;
-            return this;
-        }
-        /**
-         * 新增dto模板路径
-         *
-         * @param template 模板
-         */
-        public Builder javaInsertDTOTemplate(String template) {
-            this.config.javaInsertDTOTemplate = template;
-            return this;
-        }
-        
-        /**
-         * 修改dto模板路径
-         *
-         * @param template 模板
-         */
-        public Builder javaUpdateDTOTemplate(String template) {
-            this.config.javaUpdateDTOTemplate = template;
-            return this;
-        }
-        
-        /**
-         * vo模板路径
-         *
-         * @param template 模板
-         */
-        public Builder javaVOTemplate(String template) {
-            this.config.javaVOTemplate = template;
-            return this;
-        }
-
-        /**
          * 禁用实体生成
          *
          * @return this
@@ -387,26 +314,6 @@ public class Entity extends EntityConfig {
          */
         public Builder disable() {
             this.config.generate = false;
-            return this;
-        }
-
-        /**
-         * 查询dto继承实体类
-         *
-         * @return this
-         */
-        public Builder enableExtendsEntity() {
-            this.config.extendsEntityQueryDTO = true;
-            return this;
-        }
-
-        /**
-         * vo继承实体类
-         *
-         * @return this
-         */
-        public Builder enableVOExtendsEntity() {
-            this.config.extendsEntityVO = true;
             return this;
         }
 

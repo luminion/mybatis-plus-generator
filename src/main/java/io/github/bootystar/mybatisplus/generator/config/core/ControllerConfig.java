@@ -91,15 +91,6 @@ public class ControllerConfig implements ITemplate {
     protected boolean generate = true;
 
     /**
-     * 模板路径
-     *
-     * @since 3.5.6
-     */
-    protected String templatePath = ConstVal.TEMPLATE_CONTROLLER;
-
-    // =============自定义项==============
-
-    /**
      * 请求基础url
      */
     protected String baseUrl;

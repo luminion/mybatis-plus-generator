@@ -105,13 +105,6 @@ public class MapperConfig implements ITemplate {
     }
 
     /**
-     * 是否生成XML
-     *
-     * @since 3.5.6
-     */
-    protected boolean generateMapperXml = true;
-
-    /**
      * 是否生成Mapper
      *
      * @since 3.5.6
@@ -119,20 +112,11 @@ public class MapperConfig implements ITemplate {
     protected boolean generateMapper = true;
 
     /**
-     * Mapper模板路径
+     * 是否生成XML
      *
      * @since 3.5.6
      */
-    protected String mapperTemplatePath = ConstVal.TEMPLATE_MAPPER;
-
-    /**
-     * MapperXml模板路径
-     *
-     * @since 3.5.6
-     */
-    protected String mapperXmlTemplatePath = ConstVal.TEMPLATE_XML;
-
-    // =============自定义项==============
+    protected boolean generateMapperXml = true;
 
     /**
      * 排序字段map

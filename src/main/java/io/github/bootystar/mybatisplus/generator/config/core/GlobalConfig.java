@@ -140,6 +140,19 @@ public class GlobalConfig implements ITemplate {
     protected boolean commentUUID;
 
     /**
+     * 【实体】是否为链式模型（默认 false）
+     *
+     * @since 3.3.2
+     */
+    protected boolean chain;
+
+    /**
+     * 【实体】是否为lombok模型（默认 false）<br>
+     * <a href="https://projectlombok.org/">document</a>
+     */
+    protected boolean lombok;
+
+    /**
      * javaEE api包(jakarta或javax)
      * <p>
      * 涉及HttpServletRequest,HttpServletResponse,@Resource
@@ -182,7 +195,6 @@ public class GlobalConfig implements ITemplate {
         data.put("kotlin", this.kotlin);
         data.put("swagger", this.isSwagger());
         data.put("springdoc", this.springdoc);
-        
         data.put("generateQuery", this.generateQuery);
         data.put("generateInsert", this.generateInsert);
         data.put("generateUpdate", this.generateUpdate);
@@ -198,6 +210,10 @@ public class GlobalConfig implements ITemplate {
         data.put("javaApiPackagePrefix", this.javaApiPackagePrefix);
         data.put("excelApiPackagePrefix", this.excelApiPackagePrefix);
         data.put("excelClass", this.excelClass);
+
+        data.put("entityBuilderModel", this.chain);
+        data.put("chainModel", this.chain);
+        data.put("entityLombokModel", this.lombok);
         
         return data;
     }

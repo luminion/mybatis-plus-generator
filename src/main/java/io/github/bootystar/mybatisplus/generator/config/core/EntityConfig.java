@@ -78,19 +78,6 @@ public class EntityConfig implements ITemplate {
     protected boolean columnConstant;
 
     /**
-     * 【实体】是否为链式模型（默认 false）
-     *
-     * @since 3.3.2
-     */
-    protected boolean chain;
-
-    /**
-     * 【实体】是否为lombok模型（默认 false）<br>
-     * <a href="https://projectlombok.org/">document</a>
-     */
-    protected boolean lombok;
-
-    /**
      * Boolean类型字段是否移除is前缀（默认 false）<br>
      * 比如 : 数据库字段名称 : 'is_xxx',类型为 : tinyint. 在映射实体的时候则会去掉is,在实体类中映射最终结果为 xxx
      */
@@ -140,11 +127,6 @@ public class EntityConfig implements ITemplate {
      */
     @Setter
     protected NamingStrategy columnNaming = null;
-
-    public NamingStrategy getColumnNaming() {
-        // 未指定以 naming 策略为准
-        return Optional.ofNullable(columnNaming).orElse(naming);
-    }
 
     /**
      * 自定义基础的Entity类，公共字段
@@ -197,34 +179,10 @@ public class EntityConfig implements ITemplate {
      */
     protected boolean generate = true;
 
-    /**
-     * Java模板默认路径
-     *
-     * @since 3.5.6
-     */
-    protected String javaTemplate = ConstVal.TEMPLATE_ENTITY_JAVA;
-    protected String javaQueryDTOTemplate = ConstVal.TEMPLATE_ENTITY_QUERY_DTO_JAVA;
-    protected String javaInsertDTOTemplate = ConstVal.TEMPLATE_ENTITY_INSERT_DTO_JAVA;
-    protected String javaUpdateDTOTemplate = ConstVal.TEMPLATE_ENTITY_UPDATE_DTO_JAVA;
-    protected String javaVOTemplate = ConstVal.TEMPLATE_ENTITY_VO_JAVA;
-    
-
-    /**
-     * Kotlin模板默认路径
-     */
-    private String kotlinTemplate = ConstVal.TEMPLATE_ENTITY_KT;
-
-
-    /**
-     * 查询dto继承实体类
-     */
-    protected boolean extendsEntityQueryDTO;
-
-    /**
-     * vo继承实体类
-     */
-    protected boolean extendsEntityVO;
-
+    public NamingStrategy getColumnNaming() {
+        // 未指定以 naming 策略为准
+        return Optional.ofNullable(columnNaming).orElse(naming);
+    }
 
     /**
      * <p>
@@ -284,23 +242,12 @@ public class EntityConfig implements ITemplate {
         data.put("entitySerialVersionUID", this.serialVersionUID);
         data.put("entitySerialAnnotation", this.serialAnnotation);
         data.put("entityColumnConstant", this.columnConstant);
-        data.put("entityBuilderModel", this.chain);
-        data.put("chainModel", this.chain);
-        data.put("entityLombokModel", this.lombok);
+
         data.put("entityBooleanColumnRemoveIsPrefix", this.booleanColumnRemoveIsPrefix);
         data.put("superEntityClass", ClassUtils.getSimpleName(this.superClass));
         GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
 
         Collection<String> importPackages = new TreeSet<>(tableInfo.getImportPackages());
-//        if(tableInfo.isConvert()){
-//            importPackages.add(TableName.class.getCanonicalName());
-//        }
-//        for (io.github.bootystar.mybatisplus.generator.config.po.TableField field : tableInfo.getFields()) {
-//            boolean keyFlag = field.isKeyFlag();
-//            boolean versionField = field.isVersionField();
-//            boolean logicDeleteField = field.isLogicDeleteField();
-//            String fill = field.getFill();
-//        }
         if (globalConfig.isSwagger()) {
             importPackages.add("io.swagger.annotations.ApiModel");
             importPackages.add("io.swagger.annotations.ApiModelProperty");
@@ -308,9 +255,8 @@ public class EntityConfig implements ITemplate {
         if (globalConfig.isSpringdoc()) {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
         }
-        boolean kotlin = globalConfig.isKotlin();
-        if (!kotlin && this.lombok) {
-            if (this.chain) {
+        if (!globalConfig.isKotlin() && globalConfig.isLombok()) {
+            if (globalConfig.isChain()) {
                 importPackages.add("lombok.experimental.Accessors");
             }
             if (this.superClass != null) {
@@ -322,9 +268,6 @@ public class EntityConfig implements ITemplate {
         Collection<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
         data.put("importEntityJavaPackages", javaPackages);
         data.put("importEntityFrameworkPackages", frameworkPackages);
-
-        List<String> importDTOPackages = importPackages.stream().filter(e -> !e.startsWith("com.baomidou.mybatisplus")).collect(Collectors.toList());
-        data.put("importDTOPackages", importDTOPackages);
         return data;
     }
 

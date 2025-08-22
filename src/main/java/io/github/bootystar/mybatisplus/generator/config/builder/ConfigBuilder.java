@@ -18,6 +18,8 @@ public class ConfigBuilder {
     private final Service.Builder serviceBuilder = new Service.Builder();
     private final Entity.Builder entityBuilder = new Entity.Builder();
     private final Controller.Builder controllerBuilder = new Controller.Builder();
+    private final Model.Builder modelBuilder = new Model.Builder();
+    private final Template.Builder templateBuilder = new Template.Builder();
     
     public ConfigBuilder(String url, String username, String password) {
         datasourceBuilder = new Datasource.Builder(url, username, password);
@@ -33,7 +35,9 @@ public class ConfigBuilder {
                 entityBuilder.build(),
                 mapperBuilder.build(),
                 serviceBuilder.build(),
-                controllerBuilder.build()
+                controllerBuilder.build(),
+                modelBuilder.build(),
+                templateBuilder.build()
         );
     }
 

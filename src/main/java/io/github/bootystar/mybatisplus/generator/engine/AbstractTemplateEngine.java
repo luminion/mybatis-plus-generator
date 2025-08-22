@@ -77,10 +77,19 @@ public abstract class AbstractTemplateEngine {
             }
             Function<TableInfo, String> formatNameFunction = file.getFormatNameFunction();
             String fileName = filePath + File.separator + (null != formatNameFunction ? formatNameFunction.apply(tableInfo) : entityName) + file.getFileName();
-            outputFile(new File(fileName), objectMap, file.getTemplatePath(), file.isFileOverride()  || globalConfig.isFileOverride());
+            outputFile(
+                    new File(fileName), 
+                    objectMap, 
+                    file.getTemplatePath(), 
+                    file.isFileOverride()  || globalConfig.isFileOverride()
+            );
         });
     }
 
+    protected File getOutputFile(String filePath, OutputFile outputFile) {
+        return getConfigAdapter().getStrategyConfig().getOutputFile().createFile(filePath, outputFile);
+    }
+    
     /**
      * 输出实体文件
      *
@@ -92,15 +101,16 @@ public abstract class AbstractTemplateEngine {
         String entityName = tableInfo.getEntityName();
         String entityPath = getPathInfo(OutputFile.entity);
         EntityConfig entityConfig = this.getConfigAdapter().getEntityConfig();
-        GlobalConfig globalConfig = configAdapter.getGlobalConfig();
+        GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
+        TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
         if (entityConfig.isGenerate()) {
             String entityFile = String.format((entityPath + File.separator + "%s" + suffixJavaOrKt()), entityName);
-            outputFile(getOutputFile(entityFile, OutputFile.entity), objectMap, templateFilePath(globalConfig.isKotlin() ? entityConfig.getKotlinTemplate() : entityConfig.getJavaTemplate()), entityConfig.isFileOverride() || globalConfig.isFileOverride());
+            outputFile(
+                    getOutputFile(entityFile, OutputFile.entity),
+                    objectMap, 
+                    templateFilePath(globalConfig.isKotlin() ? templateConfig.getEntityKt() : templateConfig.getEntity()), 
+                    entityConfig.isFileOverride() || globalConfig.isFileOverride());
         }
-    }
-
-    protected File getOutputFile(String filePath, OutputFile outputFile) {
-        return getConfigAdapter().getStrategyConfig().getOutputFile().createFile(filePath, outputFile);
     }
 
     /**
@@ -115,15 +125,27 @@ public abstract class AbstractTemplateEngine {
         String entityName = tableInfo.getEntityName();
         String mapperPath = getPathInfo(OutputFile.mapper);
         MapperConfig mapperConfig = this.getConfigAdapter().getMapperConfig();
+        GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
+        TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
         if (mapperConfig.isGenerateMapper()) {
             String mapperFile = String.format((mapperPath + File.separator + tableInfo.getMapperName() + suffixJavaOrKt()), entityName);
-            outputFile(getOutputFile(mapperFile, OutputFile.mapper), objectMap, templateFilePath(mapperConfig.getMapperTemplatePath()), mapperConfig.isFileOverride());
+            outputFile(
+                    getOutputFile(mapperFile, OutputFile.mapper), 
+                    objectMap, 
+                    templateFilePath(templateConfig.getMapper()), 
+                    mapperConfig.isFileOverride() || globalConfig.isFileOverride()
+            );
         }
         // MpMapper.xml
         String xmlPath = getPathInfo(OutputFile.xml);
         if (mapperConfig.isGenerateMapperXml()) {
             String xmlFile = String.format((xmlPath + File.separator + tableInfo.getXmlName() + ConstVal.XML_SUFFIX), entityName);
-            outputFile(getOutputFile(xmlFile, OutputFile.xml), objectMap, templateFilePath(mapperConfig.getMapperXmlTemplatePath()), mapperConfig.isFileOverride());
+            outputFile(
+                    getOutputFile(xmlFile, OutputFile.xml),
+                    objectMap, 
+                    templateFilePath(templateConfig.getMapperXml()),
+                    mapperConfig.isFileOverride() || globalConfig.isFileOverride()
+            );
         }
     }
 
@@ -140,16 +162,27 @@ public abstract class AbstractTemplateEngine {
         // 判断是否要生成service接口
         ServiceConfig serviceConfig = this.getConfigAdapter().getServiceConfig();
         GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
+        TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
         if (serviceConfig.isGenerateService()) {
             String servicePath = getPathInfo(OutputFile.service);
             String serviceFile = String.format((servicePath + File.separator + tableInfo.getServiceName() + suffixJavaOrKt()), entityName);
-            outputFile(getOutputFile(serviceFile, OutputFile.service), objectMap, templateFilePath(serviceConfig.getServiceTemplate()), serviceConfig.isFileOverride() || globalConfig.isFileOverride());
+            outputFile(
+                    getOutputFile(serviceFile, OutputFile.service),
+                    objectMap, 
+                    templateFilePath(templateConfig.getService()), 
+                    serviceConfig.isFileOverride() || globalConfig.isFileOverride()
+            );
         }
         // MpServiceImpl.java
         String serviceImplPath = getPathInfo(OutputFile.serviceImpl);
         if (serviceConfig.isGenerateServiceImpl()) {
             String implFile = String.format((serviceImplPath + File.separator + tableInfo.getServiceImplName() + suffixJavaOrKt()), entityName);
-            outputFile(getOutputFile(implFile, OutputFile.serviceImpl), objectMap, templateFilePath(serviceConfig.getServiceImplTemplate()), serviceConfig.isFileOverride() || globalConfig.isFileOverride());
+            outputFile(
+                    getOutputFile(implFile, OutputFile.serviceImpl),
+                    objectMap, 
+                    templateFilePath(templateConfig.getServiceImpl()), 
+                    serviceConfig.isFileOverride() || globalConfig.isFileOverride()
+            );
         }
     }
 
@@ -164,11 +197,17 @@ public abstract class AbstractTemplateEngine {
         // MpController.java
         ControllerConfig controllerConfig = this.getConfigAdapter().getControllerConfig();
         GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
+        TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
         String controllerPath = getPathInfo(OutputFile.controller);
         if (controllerConfig.isGenerate()) {
             String entityName = tableInfo.getEntityName();
             String controllerFile = String.format((controllerPath + File.separator + tableInfo.getControllerName() + suffixJavaOrKt()), entityName);
-            outputFile(getOutputFile(controllerFile, OutputFile.controller), objectMap, templateFilePath(controllerConfig.getTemplatePath()), controllerConfig.isFileOverride() || globalConfig.isFileOverride());
+            outputFile(
+                    getOutputFile(controllerFile, OutputFile.controller),
+                    objectMap, 
+                    templateFilePath(templateConfig.getController()), 
+                    controllerConfig.isFileOverride() || globalConfig.isFileOverride()
+            );
         }
     }
 
