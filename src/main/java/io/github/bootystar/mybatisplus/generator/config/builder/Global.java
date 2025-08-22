@@ -22,14 +22,6 @@ public class Global extends GlobalConfig{
         }
 
         /**
-         * 禁止打开输出目录
-         */
-        public Builder disableOpenDir() {
-            this.config.open = false;
-            return this;
-        }
-
-        /**
          * 输出目录
          */
         public Builder outputDir(String outputDir) {
@@ -42,22 +34,6 @@ public class Global extends GlobalConfig{
          */
         public Builder author(String author) {
             this.config.author = author;
-            return this;
-        }
-
-        /**
-         * 开启 swagger 模式
-         */
-        public Builder enableSwagger() {
-            this.config.swagger = true;
-            return this;
-        }
-
-        /**
-         * 开启 springdoc 模式
-         */
-        public Builder enableSpringdoc() {
-            this.config.springdoc = true;
             return this;
         }
 
@@ -93,81 +69,20 @@ public class Global extends GlobalConfig{
             return commentDate(() -> new SimpleDateFormat(pattern).format(new Date()));
         }
 
+
         /**
-         * 启用全局文件覆盖
+         * 开启 swagger 模式
          */
-        public Builder enableFileOverwrite() {
-            this.config.fileOverride = true;
+        public Builder enableSwagger() {
+            this.config.swagger = true;
             return this;
         }
 
         /**
-         * 不生成查询方法
-         *
-         * @return this
+         * 开启 springdoc 模式
          */
-        public Builder disableQuery() {
-            this.config.generateQuery = false;
-            return this;
-        }
-        
-        /**
-         * 不生成新增方法
-         *
-         * @return this
-         */
-        public Builder disableInsert() {
-            this.config.generateInsert = false;
-            return this;
-        }
-
-        /**
-         * 不生成更新方法
-         *
-         * @return this
-         */
-        public Builder disableUpdate() {
-            this.config.generateUpdate = false;
-            return this;
-        }
-
-        /**
-         * 不生成删除方法
-         *
-         * @return this
-         */
-        public Builder disableDelete() {
-            this.config.generateDelete = false;
-            return this;
-        }
-
-        /**
-         * 不生成导入方法
-         *
-         * @return this
-         */
-        public Builder disableImport() {
-            this.config.generateImport = false;
-            return this;
-        }
-
-        /**
-         * 不生成导出方法
-         *
-         * @return this
-         */
-        public Builder disableExport() {
-            this.config.generateExport = false;
-            return this;
-        }
-
-        /**
-         * 禁用参数校验
-         *
-         * @return this
-         */
-        public Builder disableValidated() {
-            this.config.validated = false;
+        public Builder enableSpringdoc() {
+            this.config.springdoc = true;
             return this;
         }
 
@@ -232,6 +147,93 @@ public class Global extends GlobalConfig{
          */
         public Builder enableChainModel() {
             this.config.chainModel = true;
+            return this;
+        }
+
+
+        /**
+         * 启用全局文件覆盖
+         */
+        public Builder enableFileOverwrite() {
+            this.config.fileOverride = true;
+            return this;
+        }
+
+        /**
+         * 禁止打开输出目录
+         */
+        public Builder disableOpenDir() {
+            this.config.open = false;
+            return this;
+        }
+        
+        /**
+         * 不生成查询方法
+         *
+         * @return this
+         */
+        public Builder disableQuery() {
+            this.config.generateQuery = false;
+            return this;
+        }
+        
+        /**
+         * 不生成新增方法
+         *
+         * @return this
+         */
+        public Builder disableInsert() {
+            this.config.generateInsert = false;
+            return this;
+        }
+
+        /**
+         * 不生成更新方法
+         *
+         * @return this
+         */
+        public Builder disableUpdate() {
+            this.config.generateUpdate = false;
+            return this;
+        }
+
+        /**
+         * 不生成删除方法
+         *
+         * @return this
+         */
+        public Builder disableDelete() {
+            this.config.generateDelete = false;
+            return this;
+        }
+
+        /**
+         * 不生成导入方法
+         *
+         * @return this
+         */
+        public Builder disableImport() {
+            this.config.generateImport = false;
+            return this;
+        }
+
+        /**
+         * 不生成导出方法
+         *
+         * @return this
+         */
+        public Builder disableExport() {
+            this.config.generateExport = false;
+            return this;
+        }
+
+        /**
+         * 禁用新增和修改的入参校验
+         *
+         * @return this
+         */
+        public Builder disableValidated() {
+            this.config.validated = false;
             return this;
         }
 

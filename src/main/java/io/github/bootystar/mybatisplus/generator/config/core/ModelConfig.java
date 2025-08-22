@@ -1,15 +1,14 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
+import io.github.bootystar.mybatisplus.generator.fill.IFill;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -62,6 +61,7 @@ public class ModelConfig implements ITemplate {
         String superClass = tableInfo.getConfigAdapter().getEntityConfig().getSuperClass();
         TreeSet<String> importPackages = tableInfo.getImportPackages().stream()
                 .filter(e -> !e.startsWith("com.baomidou.mybatisplus.annotation"))
+                .filter(e -> !e.startsWith("java.io.Serializable"))
                 .filter(e -> superClass==null || !e.startsWith(superClass))
                 .collect(Collectors.toCollection(TreeSet::new));
         if (globalConfig.isSpringdoc()) {
@@ -83,6 +83,8 @@ public class ModelConfig implements ITemplate {
         TreeSet<String> importUpdateDTOPackages = new TreeSet<>(importPackages);
         TreeSet<String> importQueryDTOPackages = new TreeSet<>(importPackages);
         TreeSet<String> importVOPackages = new TreeSet<>(importPackages);
+        HashSet<String> insertExcludeColumns = new HashSet<>();
+        HashSet<String> updateExcludeColumns = new HashSet<>();
 
         for (TableField field : tableInfo.getFields()) {
             if(field.isLogicDeleteField()){
@@ -96,11 +98,20 @@ public class ModelConfig implements ITemplate {
                 importUpdateDTOPackages.add(globalConfig.resolveJavaApiPackage("validation.constraints.NotNull"));
                 continue;
             }
-            boolean isString = "".equals(field.getPropertyType());
+            if ("INSERT".equals(field.getFill()) || "INSERT_UPDATE".equals(field.getFill())){
+                insertExcludeColumns.add(field.getColumnName());
+                continue;
+            }
+            if ("UPDATE".equals(field.getFill()) || "INSERT_UPDATE".equals(field.getFill())){
+                updateExcludeColumns.add(field.getColumnName());
+                continue;
+            }
+            boolean isString = "String".equals(field.getPropertyType());
             boolean isNullable = field.getMetaInfo().isNullable();
             boolean hasDefaultValue = field.getMetaInfo().getDefaultValue()!=null;
             if (isString){
                 importInsertDTOPackages.add(globalConfig.resolveJavaApiPackage("validation.constraints.Size"));
+                importUpdateDTOPackages.add(globalConfig.resolveJavaApiPackage("validation.constraints.Size"));
             }
             if (!isNullable && !hasDefaultValue){
                 if(isString){
@@ -153,6 +164,10 @@ public class ModelConfig implements ITemplate {
         data.put("importVOFrameworkPackages", importVOFrameworkPackages);
         List<String> importVOJavaPackages = importVOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
         data.put("importVOJavaPackages", importVOJavaPackages);
+        
+        data.put("insertExcludeColumns", insertExcludeColumns);
+        data.put("updateExcludeColumns", updateExcludeColumns);
+        
         
         return data;
     }

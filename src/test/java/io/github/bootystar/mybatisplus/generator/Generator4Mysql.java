@@ -12,19 +12,23 @@ public class Generator4Mysql {
         String password = "root";
         FastGenerator
                 .create(url, username, password)
-//                .initialize()
+                .initialize()
                 .global(e -> e
-                        .disableOpenDir()
-                        .enableFileOverwrite()
-                        .outputDir(System.getProperty("user.dir") + "/src/test/java")
-                        .enableSwagger()
-                        .enableSpringdoc()
-                        .disableInsert()
-                        .disableUpdate()
-                        .disableQuery()
-//                        .disableImport()
-                        .disableExport()
-                        
+                                .disableOpenDir()
+                                .outputDir(System.getProperty("user.dir") + "/src/test/java")
+                                .enableFileOverwrite()
+                                .enableJavaxApi()
+                                .enableSwagger()
+                                .enableSpringdoc()
+                                .enableLombok()
+                                .enableCommentLink()
+                                .enableCommentUUID()
+//                                .disableInsert()
+//                                .disableImport()
+//                                .disableUpdate()
+                                .disableQuery()
+                                .disableExport()
+
                 )
                 .pkg(e -> e
                         .parent("com.example.test")
