@@ -41,22 +41,18 @@ public class ConfigAdapter {
      * 数据库配置信息
      */
     private DataSourceConfig dataSourceConfig;
-    
     /**
      * 全局配置信息
      */
     private GlobalConfig globalConfig;
-    
     /**
      * 包配置信息
      */
     private PackageConfig packageConfig;
-
     /**
      * 策略配置信息
      */
     private StrategyConfig strategyConfig;
-    
     /**
      * 注入配置信息
      */

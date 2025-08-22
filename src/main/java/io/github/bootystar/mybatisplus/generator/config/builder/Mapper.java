@@ -4,8 +4,6 @@ import io.github.bootystar.mybatisplus.generator.config.core.MapperConfig;
 import org.apache.ibatis.cache.Cache;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -177,8 +175,6 @@ public class Mapper extends MapperConfig{
             this.config.generateMapperXml = false;
             return this;
         }
-
-        // =============自定义项==============
 
         /**
          * 清空排序字段

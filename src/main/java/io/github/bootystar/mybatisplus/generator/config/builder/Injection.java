@@ -1,6 +1,5 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.core.InjectionConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;

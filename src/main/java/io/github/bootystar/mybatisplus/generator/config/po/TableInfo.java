@@ -18,6 +18,8 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
+import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import lombok.Getter;
@@ -52,6 +54,7 @@ public class TableInfo {
      * 是否转换
      */
     @Getter
+    @Setter
     private boolean convert;
 
     /**
@@ -136,6 +139,7 @@ public class TableInfo {
      * 是否有主键
      */
     @Getter
+    @Setter
     private boolean havePrimaryKey;
 
     /**
@@ -340,19 +344,13 @@ public class TableInfo {
     }
 
     public TableInfo setComment(String comment) {
-        //TODO 待重构此处
-        this.comment = (this.getConfigAdapter().getGlobalConfig().isSwagger() || this.getConfigAdapter().getGlobalConfig().isSpringdoc())
-                && StringUtils.isNotBlank(comment) ? comment.replace("\"", "\\\"") : comment;
-        return this;
-    }
-
-    public TableInfo setHavePrimaryKey(boolean havePrimaryKey) {
-        this.havePrimaryKey = havePrimaryKey;
-        return this;
-    }
-
-    public TableInfo setConvert(boolean convert) {
-        this.convert = convert;
+        GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
+        boolean swagger = globalConfig.isSwagger();
+        boolean springdoc = globalConfig.isSpringdoc();
+        boolean notBlank = StringUtils.isNotBlank(comment);
+        boolean commentUUID = globalConfig.isCommentUUID();
+        String uuid = commentUUID ? UUID.randomUUID().toString().substring(0, 4).toUpperCase() : "";
+        this.comment = (swagger || springdoc) &&  notBlank ? comment.replace("\"", "\\\"") + uuid : comment;
         return this;
     }
 
