@@ -42,16 +42,6 @@ public class StrategyConfig implements ITemplate {
     }
 
     /**
-     * 是否大写命名（默认 false）
-     */
-    protected boolean isCapitalMode;
-
-    /**
-     * 是否跳过视图（默认 false）
-     */
-    protected boolean skipView;
-
-    /**
      * 过滤表前缀
      * example: addTablePrefix("t_")
      * result: t_simple -> Simple
@@ -92,18 +82,6 @@ public class StrategyConfig implements ITemplate {
     protected final Set<String> exclude = new HashSet<>();
 
     /**
-     * 启用sql过滤，语法不能支持使用sql过滤表的话，可以考虑关闭此开关.
-     *
-     * @since 3.3.1
-     */
-    protected boolean enableSqlFilter = true;
-
-    /**
-     * 启用 schema 默认 false
-     */
-    protected boolean enableSchema;
-
-    /**
      * 包含表名
      *
      * @since 3.3.0
@@ -120,12 +98,10 @@ public class StrategyConfig implements ITemplate {
      */
     protected LikeTable notLikeTable;
 
+    /**
+     * 输出文件处理
+     */
     protected IOutputFile outputFile = (path, ot) -> new File(path);
-
-
-    // =============自定义项==============
-
-
 
     /**
      * 额外字段后缀
@@ -136,6 +112,29 @@ public class StrategyConfig implements ITemplate {
      * 额外字段策略
      */
     protected BiFunction<String, TableField, Boolean> extraFieldStrategy = new ExtraFieldStrategy();
+
+
+    /**
+     * 启用 schema 默认 false
+     */
+    protected boolean enableSchema;
+
+    /**
+     * 是否大写命名（默认 false）
+     */
+    protected boolean isCapitalMode;
+
+    /**
+     * 是否跳过视图（默认 false）
+     */
+    protected boolean skipView;
+
+    /**
+     * 启用sql过滤，语法不能支持使用sql过滤表的话，可以考虑关闭此开关.
+     *
+     * @since 3.3.1
+     */
+    protected boolean enableSqlFilter = true;
 
     /**
      * 大写命名、字段符合大写字母数字下划线命名
