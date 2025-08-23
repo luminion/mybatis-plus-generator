@@ -27,34 +27,13 @@ public class Model extends ModelConfig {
         }
         
         /**
-         * 新增dto名称转换
-         *
-         * @param converter 　转换处理
-         * @return this
-         */
-        public Builder convertEntityInsertDTOName(Function<String, String> converter) {
-            this.config.converterEntityInsertDTOName = converter;
-            return this;
-        }
-        
-        /**
          * 格式化新增dto名称
          *
          * @param format 　格式
          * @return this
          */
         public Builder formatEntityInsertDTOName(String format) {
-            return convertEntityInsertDTOName((entityName) -> String.format(format, entityName));
-        }
-        
-        /**
-         * 修改dto名称转换
-         *
-         * @param converter 　转换处理
-         * @return this
-         */
-        public Builder convertEntityUpdateDTOName(Function<String, String> converter) {
-            this.config.converterEntityUpdateDTOName = converter;
+            this.config.converterEntityInsertDTOName = entityName -> String.format(format, entityName);
             return this;
         }
         
@@ -65,17 +44,7 @@ public class Model extends ModelConfig {
          * @return this
          */
         public Builder formatEntityUpdateDTOName(String format) {
-            return convertEntityUpdateDTOName((entityName) -> String.format(format, entityName));
-        }
-        
-        /**
-         * 查询dto名称转换
-         *
-         * @param converter 　转换处理
-         * @return this
-         */
-        public Builder convertEntityQueryDTOName(Function<String, String> converter) {
-            this.config.converterEntityQueryDTOName = converter;
+            this.config.converterEntityUpdateDTOName = entityName -> String.format(format, entityName);
             return this;
         }
         
@@ -86,17 +55,7 @@ public class Model extends ModelConfig {
          * @return this
          */
         public Builder formatEntityQueryDTOName(String format) {
-            return convertEntityQueryDTOName((entityName) -> String.format(format, entityName));
-        }
-        
-        /**
-         * vo名称转换
-         *
-         * @param converter 　转换处理
-         * @return this
-         */
-        public Builder convertEntityVOName(Function<String, String> converter) {
-            this.config.converterEntityVOName = converter;
+            this.config.converterEntityQueryDTOName = entityName -> String.format(format, entityName);
             return this;
         }
         
@@ -107,7 +66,8 @@ public class Model extends ModelConfig {
          * @return this
          */
         public Builder formatEntityVOName(String format) {
-            return convertEntityVOName((entityName) -> String.format(format, entityName));
+            this.config.converterEntityVOName = entityName -> String.format(format, entityName);
+            return this;
         }
         
         /**
@@ -115,7 +75,7 @@ public class Model extends ModelConfig {
          *
          * @return this
          */
-        public Builder disableQueryDTOExtendsEntity() {
+        public Builder enableQueryDTOExtendsEntity() {
             this.config.extendsQueryDTO = true;
             return this;
         }
@@ -125,7 +85,7 @@ public class Model extends ModelConfig {
          *
          * @return this
          */
-        public Builder disableVOExtendsEntity() {
+        public Builder enableVOExtendsEntity() {
             this.config.extendsVO = true;
             return this;
         }

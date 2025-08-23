@@ -58,36 +58,6 @@ public class EntityConfig implements ITemplate {
     protected String superClass;
 
     /**
-     * 实体是否生成 serialVersionUID
-     */
-    protected boolean serialVersionUID = true;
-
-    /**
-     * 是否启用 {@link java.io.Serial} (需JAVA 14) 注解
-     *
-     * @since 3.5.11
-     */
-    protected boolean serialAnnotation;
-
-    /**
-     * 【实体】是否生成字段常量（默认 false）<br>
-     * -----------------------------------<br>
-     * public static final String ID = "test_id";
-     */
-    protected boolean columnConstant;
-
-    /**
-     * Boolean类型字段是否移除is前缀（默认 false）<br>
-     * 比如 : 数据库字段名称 : 'is_xxx',类型为 : tinyint. 在映射实体的时候则会去掉is,在实体类中映射最终结果为 xxx
-     */
-    protected boolean booleanColumnRemoveIsPrefix;
-
-    /**
-     * 是否生成实体时，生成字段注解（默认 false）
-     */
-    protected boolean tableFieldAnnotationEnable;
-
-    /**
      * 乐观锁字段名称(数据库字段)
      *
      * @since 3.5.0
@@ -144,13 +114,6 @@ public class EntityConfig implements ITemplate {
     protected final List<IFill> tableFillList = new ArrayList<>();
 
     /**
-     * 开启 ActiveRecord 模式（默认 false）
-     *
-     * @since 3.5.0
-     */
-    protected boolean activeRecord;
-
-    /**
      * 指定生成的主键的ID类型
      *
      * @since 3.5.0
@@ -170,6 +133,43 @@ public class EntityConfig implements ITemplate {
      * @since 3.5.2
      */
     protected boolean fileOverride;
+
+    /**
+     * 实体是否生成 serialVersionUID
+     */
+    protected boolean serialVersionUID = true;
+
+    /**
+     * 是否启用 {@link java.io.Serial} (需JAVA 14) 注解
+     *
+     * @since 3.5.11
+     */
+    protected boolean serialAnnotation;
+
+    /**
+     * 【实体】是否生成字段常量（默认 false）<br>
+     * -----------------------------------<br>
+     * public static final String ID = "test_id";
+     */
+    protected boolean columnConstant;
+
+    /**
+     * Boolean类型字段是否移除is前缀（默认 false）<br>
+     * 比如 : 数据库字段名称 : 'is_xxx',类型为 : tinyint. 在映射实体的时候则会去掉is,在实体类中映射最终结果为 xxx
+     */
+    protected boolean booleanColumnRemoveIsPrefix;
+
+    /**
+     * 是否生成实体时，生成字段注解（默认 false）
+     */
+    protected boolean tableFieldAnnotationEnable;
+
+    /**
+     * 开启 ActiveRecord 模式（默认 false）
+     *
+     * @since 3.5.0
+     */
+    protected boolean activeRecord;
 
     /**
      * 是否生成

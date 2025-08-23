@@ -74,73 +74,6 @@ public class Entity extends EntityConfig {
         }
 
         /**
-         * 禁用生成serialVersionUID
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder disableSerialVersionUID() {
-            this.config.serialVersionUID = false;
-            return this;
-        }
-
-        /**
-         * 启用生成 {@link java.io.Serial} (需JAVA 14)
-         * <p>当开启了 {@link #serialVersionUID} 时,会增加 {@link java.io.Serial} 注解在此字段上</p>
-         *
-         * @return this
-         * @since 3.5.11
-         */
-        public Builder enableSerialAnnotation() {
-            this.config.serialAnnotation = true;
-            return this;
-        }
-
-        /**
-         * 开启生成字段常量
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableColumnConstant() {
-            this.config.columnConstant = true;
-            return this;
-        }
-
-        /**
-         * 开启Boolean类型字段移除is前缀
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableRemoveIsPrefix() {
-            this.config.booleanColumnRemoveIsPrefix = true;
-            return this;
-        }
-
-        /**
-         * 开启生成实体时生成字段注解
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableTableFieldAnnotation() {
-            this.config.tableFieldAnnotationEnable = true;
-            return this;
-        }
-
-        /**
-         * 开启 ActiveRecord 模式
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableActiveRecord() {
-            this.config.activeRecord = true;
-            return this;
-        }
-
-        /**
          * 设置乐观锁数据库表字段名称
          *
          * @param versionColumnName 乐观锁数据库字段名称
@@ -274,18 +207,6 @@ public class Entity extends EntityConfig {
         }
 
         /**
-         * 转换输出文件名称
-         *
-         * @param converter 　转换处理
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder convertFileName(Function<String, String> converter) {
-            this.config.converterFileName = converter;
-            return this;
-        }
-
-        /**
          * 格式化文件名称
          *
          * @param format 　格式
@@ -293,7 +214,8 @@ public class Entity extends EntityConfig {
          * @since 3.5.0
          */
         public Builder formatFileName(String format) {
-            return convertFileName((entityName) -> String.format(format, entityName));
+            this.config.converterFileName = entityName -> String.format(format, entityName);
+            return this;
         }
 
         /**
@@ -303,6 +225,73 @@ public class Entity extends EntityConfig {
          */
         public Builder enableFileOverride() {
             this.config.fileOverride = true;
+            return this;
+        }
+
+        /**
+         * 启用生成 {@link java.io.Serial} (需JAVA 14)
+         * <p>当开启了 {@link #serialVersionUID} 时,会增加 {@link java.io.Serial} 注解在此字段上</p>
+         *
+         * @return this
+         * @since 3.5.11
+         */
+        public Builder enableSerialAnnotation() {
+            this.config.serialAnnotation = true;
+            return this;
+        }
+
+        /**
+         * 开启生成字段常量
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder enableColumnConstant() {
+            this.config.columnConstant = true;
+            return this;
+        }
+
+        /**
+         * 开启Boolean类型字段移除is前缀
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder enableRemoveIsPrefix() {
+            this.config.booleanColumnRemoveIsPrefix = true;
+            return this;
+        }
+
+        /**
+         * 开启生成实体时生成字段注解
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder enableTableFieldAnnotation() {
+            this.config.tableFieldAnnotationEnable = true;
+            return this;
+        }
+
+        /**
+         * 开启 ActiveRecord 模式
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder enableActiveRecord() {
+            this.config.activeRecord = true;
+            return this;
+        }
+
+        /**
+         * 禁用生成serialVersionUID
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder disableSerialVersionUID() {
+            this.config.serialVersionUID = false;
             return this;
         }
 
