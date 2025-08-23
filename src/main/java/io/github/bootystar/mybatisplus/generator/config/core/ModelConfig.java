@@ -21,11 +21,6 @@ public class ModelConfig implements ITemplate {
     }
 
     /**
-     * 文件覆盖
-     */
-    protected boolean fileOverride;
-    
-    /**
      * 新增dto名称转换
      */
     protected Function<String, String> converterEntityInsertDTOName = name -> name + ConstVal.ENTITY_INSERT_DTO;
@@ -42,6 +37,11 @@ public class ModelConfig implements ITemplate {
      */
     protected Function<String, String> converterEntityVOName = name -> name + ConstVal.ENTITY_VO;
 
+    /**
+     * 文件覆盖
+     */
+    protected boolean fileOverride;
+    
     /**
      * 查询dto继承实体类
      */
