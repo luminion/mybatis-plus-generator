@@ -44,7 +44,6 @@ public class ${entityInsertDTO} {
 #elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
 #elseif(${field.versionField})
 #elseif(${field.logicDeleteField})
-#elseif($insertExcludeColumns.contains(${field.columnName}))
 #else
 
     #if("$!field.comment" != "")

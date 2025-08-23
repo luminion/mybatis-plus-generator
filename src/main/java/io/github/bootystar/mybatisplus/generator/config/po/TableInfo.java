@@ -19,7 +19,6 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import lombok.Getter;
@@ -331,10 +330,10 @@ public class TableInfo {
     public void processTable() {
         String entityName = this.getConfigAdapter().getEntityConfig().getNameConvert().entityNameConvert(this);
         this.setEntityName(this.getConfigAdapter().getEntityConfig().getConverterFileName().apply(entityName));
-        this.entityInsertDTOName = this.getConfigAdapter().getModelConfig().getConverterEntityInsertDTOName().apply(entityName);
-        this.entityUpdateDTOName = this.getConfigAdapter().getModelConfig().getConverterEntityUpdateDTOName().apply(entityName);
-        this.entityQueryDTOName = this.getConfigAdapter().getModelConfig().getConverterEntityQueryDTOName().apply(entityName);
-        this.entityVOName = this.getConfigAdapter().getModelConfig().getConverterEntityVOName().apply(entityName);
+        this.entityInsertDTOName = this.getConfigAdapter().getModelConfig().getConverterInsertDTOName().apply(entityName);
+        this.entityUpdateDTOName = this.getConfigAdapter().getModelConfig().getConverterUpdateDTOName().apply(entityName);
+        this.entityQueryDTOName = this.getConfigAdapter().getModelConfig().getConverterQueryDTOName().apply(entityName);
+        this.entityVOName = this.getConfigAdapter().getModelConfig().getConverterQueryVOName().apply(entityName);
         this.mapperName = this.getConfigAdapter().getMapperConfig().getConverterMapperFileName().apply(entityName);
         this.xmlName = this.getConfigAdapter().getMapperConfig().getConverterXmlFileName().apply(entityName);
         this.serviceName = this.getConfigAdapter().getServiceConfig().getConverterServiceFileName().apply(entityName);

@@ -80,21 +80,21 @@ class PathInfoHandler {
             putPathInfo(injectionConfig, globalConfig.isKotlin() ? templateConfig.getEntityKt() : templateConfig.getEntity(), OutputFile.entity, ConstVal.ENTITY);
         }
         if (globalConfig.isGenerateInsert() || globalConfig.isGenerateImport()){
-            putPathInfo(injectionConfig, templateConfig.getEntityInsertDTO(), OutputFile.entityInsertDTO, ConstVal.ENTITY_INSERT_DTO);
+            putPathInfo(injectionConfig, templateConfig.getEntityInsertDTO(), OutputFile.createDTO, ConstVal.CREATE_DTO);
         }
         if (globalConfig.isGenerateUpdate()){
-            putPathInfo(injectionConfig, templateConfig.getEntityUpdateDTO(), OutputFile.entityUpdateDTO, ConstVal.ENTITY_UPDATE_DTO);
+            putPathInfo(injectionConfig, templateConfig.getEntityUpdateDTO(), OutputFile.updateDTO, ConstVal.UPDATE_DTO);
         }
         if (globalConfig.isGenerateQuery() || globalConfig.isGenerateExport()) {
-            putPathInfo(injectionConfig, templateConfig.getEntityQueryDTO(), OutputFile.entityQueryDTO, ConstVal.ENTITY_QUERY_DTO);
-            putPathInfo(injectionConfig, templateConfig.getEntityVO(), OutputFile.entityVO, ConstVal.ENTITY_VO);
+            putPathInfo(injectionConfig, templateConfig.getEntityQueryDTO(), OutputFile.queryDTO, ConstVal.QUERY_DTO);
+            putPathInfo(injectionConfig, templateConfig.getEntityVO(), OutputFile.queryVO, ConstVal.QUERY_VO);
         }
         MapperConfig mapper = configAdapter.getMapperConfig();
         if (mapper.isGenerateMapper()) {
             putPathInfo(injectionConfig, templateConfig.getMapper(), OutputFile.mapper, ConstVal.MAPPER);
         }
         if (mapper.isGenerateMapperXml()) {
-            putPathInfo(injectionConfig, templateConfig.getMapperXml(), OutputFile.xml, ConstVal.XML);
+            putPathInfo(injectionConfig, templateConfig.getMapperXml(), OutputFile.mapperXml, ConstVal.XML);
         }
         ServiceConfig service = configAdapter.getServiceConfig();
         if (service.isGenerateService()) {

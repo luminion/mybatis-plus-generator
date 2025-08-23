@@ -20,7 +20,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.OutputFile;
-import io.github.bootystar.mybatisplus.generator.config.builder.Model;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
 import io.github.bootystar.mybatisplus.generator.config.po.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -117,10 +116,10 @@ public abstract class AbstractTemplateEngine {
 
     private void outputModel(TableInfo tableInfo, Map<String, Object> objectMap) {
         String entityName = tableInfo.getEntityName();
-        String entityInsertDTOPath = getPathInfo(OutputFile.entityInsertDTO);
-        String entityUpdateDTOPath = getPathInfo(OutputFile.entityUpdateDTO);
-        String entityQueryDTOPath = getPathInfo(OutputFile.entityQueryDTO);
-        String entityVOPath = getPathInfo(OutputFile.entityVO);
+        String entityInsertDTOPath = getPathInfo(OutputFile.createDTO);
+        String entityUpdateDTOPath = getPathInfo(OutputFile.updateDTO);
+        String entityQueryDTOPath = getPathInfo(OutputFile.queryDTO);
+        String entityVOPath = getPathInfo(OutputFile.queryVO);
         ModelConfig modelConfig = this.configAdapter.getModelConfig();
         GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
         TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
@@ -136,7 +135,7 @@ public abstract class AbstractTemplateEngine {
             // vo
             String entityVOFile = String.format((entityVOPath + File.separator + tableInfo.getEntityVOName() + suffixJavaOrKt()), entityName);
             outputFile(
-                    getOutputFile(entityVOFile, OutputFile.entityVO),
+                    getOutputFile(entityVOFile, OutputFile.queryVO),
                     objectMap,
                     templateFilePath(templateConfig.getEntityVO()),
                     modelConfig.isFileOverride() || globalConfig.isFileOverride()
@@ -145,7 +144,7 @@ public abstract class AbstractTemplateEngine {
         if (globalConfig.isGenerateInsert() || globalConfig.isGenerateImport()) {
             String entityInsertDTOFile = String.format((entityInsertDTOPath + File.separator + tableInfo.getEntityInsertDTOName() + suffixJavaOrKt()), entityName);
             outputFile(
-                    getOutputFile(entityInsertDTOFile, OutputFile.entityInsertDTO),
+                    getOutputFile(entityInsertDTOFile, OutputFile.createDTO),
                     objectMap,
                     templateFilePath(templateConfig.getEntityInsertDTO()),
                     modelConfig.isFileOverride() || globalConfig.isFileOverride()
@@ -154,7 +153,7 @@ public abstract class AbstractTemplateEngine {
         if (globalConfig.isGenerateUpdate()) {
             String entityUpdateDTOFile = String.format((entityUpdateDTOPath + File.separator + tableInfo.getEntityUpdateDTOName() + suffixJavaOrKt()), entityName);
             outputFile(
-                    getOutputFile(entityUpdateDTOFile, OutputFile.entityUpdateDTO),
+                    getOutputFile(entityUpdateDTOFile, OutputFile.updateDTO),
                     objectMap,
                     templateFilePath(templateConfig.getEntityUpdateDTO()),
                     modelConfig.isFileOverride() || globalConfig.isFileOverride()
@@ -187,11 +186,11 @@ public abstract class AbstractTemplateEngine {
             );
         }
         // MpMapper.xml
-        String xmlPath = getPathInfo(OutputFile.xml);
+        String xmlPath = getPathInfo(OutputFile.mapperXml);
         if (mapperConfig.isGenerateMapperXml()) {
             String xmlFile = String.format((xmlPath + File.separator + tableInfo.getXmlName() + ConstVal.XML_SUFFIX), entityName);
             outputFile(
-                    getOutputFile(xmlFile, OutputFile.xml),
+                    getOutputFile(xmlFile, OutputFile.mapperXml),
                     objectMap, 
                     templateFilePath(templateConfig.getMapperXml()),
                     mapperConfig.isFileOverride() || globalConfig.isFileOverride()

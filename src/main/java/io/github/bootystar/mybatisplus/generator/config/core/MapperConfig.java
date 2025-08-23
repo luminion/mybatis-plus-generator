@@ -15,7 +15,6 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.core;
 
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;

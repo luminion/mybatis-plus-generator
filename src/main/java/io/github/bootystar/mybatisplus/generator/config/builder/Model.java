@@ -2,8 +2,6 @@ package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import io.github.bootystar.mybatisplus.generator.config.core.ModelConfig;
 
-import java.util.function.Function;
-
 /**
  * @author bootystar
  */
@@ -25,7 +23,7 @@ public class Model extends ModelConfig {
          * @return this
          */
         public Builder formatEntityInsertDTOName(String format) {
-            this.config.converterEntityInsertDTOName = entityName -> String.format(format, entityName);
+            this.config.converterInsertDTOName = entityName -> String.format(format, entityName);
             return this;
         }
         
@@ -36,7 +34,7 @@ public class Model extends ModelConfig {
          * @return this
          */
         public Builder formatEntityUpdateDTOName(String format) {
-            this.config.converterEntityUpdateDTOName = entityName -> String.format(format, entityName);
+            this.config.converterUpdateDTOName = entityName -> String.format(format, entityName);
             return this;
         }
         
@@ -47,7 +45,7 @@ public class Model extends ModelConfig {
          * @return this
          */
         public Builder formatEntityQueryDTOName(String format) {
-            this.config.converterEntityQueryDTOName = entityName -> String.format(format, entityName);
+            this.config.converterQueryDTOName = entityName -> String.format(format, entityName);
             return this;
         }
         
@@ -58,7 +56,7 @@ public class Model extends ModelConfig {
          * @return this
          */
         public Builder formatEntityVOName(String format) {
-            this.config.converterEntityVOName = entityName -> String.format(format, entityName);
+            this.config.converterQueryVOName = entityName -> String.format(format, entityName);
             return this;
         }
 
@@ -76,7 +74,7 @@ public class Model extends ModelConfig {
          * @return this
          */
         public Builder enableQueryDTOExtendsEntity() {
-            this.config.extendsQueryDTO = true;
+            this.config.queryDTOExtendsEntity = true;
             return this;
         }
 
@@ -85,8 +83,8 @@ public class Model extends ModelConfig {
          *
          * @return this
          */
-        public Builder enableVOExtendsEntity() {
-            this.config.extendsVO = true;
+        public Builder enableQueryVOExtendsEntity() {
+            this.config.queryVOExtendsEntity = true;
             return this;
         }
     }

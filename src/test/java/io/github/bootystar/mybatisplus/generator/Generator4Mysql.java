@@ -19,8 +19,7 @@ public class Generator4Mysql {
                                 .outputDir(System.getProperty("user.dir") + "/src/test/java")
                                 .author("bootystar")
                                 .dateType(DateType.SQL_PACK)
-//                                .commentDate("yyyy-MM-dd HH:mm:ss")
-                                .commentDate(()->"1.0.0")
+                                .commentDate("yyyy-MM-dd HH:mm:ss")
                                 .enableFileOverwrite()
                                 .enableLombok()
                                 .enableChainModel()
@@ -43,7 +42,7 @@ public class Generator4Mysql {
                         .entityQueryDTO("entity")
                         .entityInsertDTO("entity")
                         .entityUpdateDTO("entity")
-                        .entityVO("entity")
+                        .entityQueryVO("entity")
                 )
                 .strategy(e -> e
                 )
