@@ -23,49 +23,7 @@ public class Strategy extends StrategyConfig {
             return this.config;
         }
 
-        /**
-         * 开启大写命名
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableCapitalMode() {
-            this.config.isCapitalMode = true;
-            return this;
-        }
 
-        /**
-         * 开启跳过视图
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder enableSkipView() {
-            this.config.skipView = true;
-            return this;
-        }
-
-        /**
-         * 禁用sql过滤
-         *
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder disableSqlFilter() {
-            this.config.enableSqlFilter = false;
-            return this;
-        }
-
-        /**
-         * 启用 schema
-         *
-         * @return this
-         * @since 3.5.1
-         */
-        public Builder enableSchema() {
-            this.config.enableSchema = true;
-            return this;
-        }
 
         /**
          * 增加过滤表前缀
@@ -199,8 +157,6 @@ public class Strategy extends StrategyConfig {
             return this;
         }
 
-        // =============自定义项==============
-
         /**
          * 额外字段后缀
          *
@@ -214,6 +170,16 @@ public class Strategy extends StrategyConfig {
         }
 
         /**
+         * 清除额外字段后缀
+         *
+         * @return this
+         */
+        public Builder clearExtraFieldSuffix() {
+            this.config.extraFieldSuffixMap.clear();
+            return this;
+        }
+        
+        /**
          * 额外字段策略
          *
          * @param extraFieldStrategy 额外字段策略, BiFunction<String, TableField, Boolean>, 3个泛型参数分别为sql运算符,表字段信息,是否生成
@@ -225,12 +191,46 @@ public class Strategy extends StrategyConfig {
         }
 
         /**
-         * 清除额外字段后缀
+         * 开启大写命名
          *
          * @return this
+         * @since 3.5.0
          */
-        public Builder clearExtraFieldSuffix() {
-            this.config.extraFieldSuffixMap.clear();
+        public Builder enableCapitalMode() {
+            this.config.isCapitalMode = true;
+            return this;
+        }
+
+        /**
+         * 开启跳过视图
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder enableSkipView() {
+            this.config.skipView = true;
+            return this;
+        }
+
+        /**
+         * 启用 schema
+         *
+         * @return this
+         * @since 3.5.1
+         */
+        public Builder enableSchema() {
+            this.config.enableSchema = true;
+            return this;
+        }
+
+        /**
+         * 禁用sql过滤
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Builder disableSqlFilter() {
+            this.config.enableSqlFilter = false;
             return this;
         }
     }
