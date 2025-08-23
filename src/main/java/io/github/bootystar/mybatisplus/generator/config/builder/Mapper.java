@@ -89,30 +89,6 @@ public class Mapper extends MapperConfig{
         }
 
         /**
-         * 输出Mapper文件名称转换
-         *
-         * @param converter 　转换处理
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder convertMapperFileName(Function<String, String> converter) {
-            this.config.converterMapperFileName = converter;
-            return this;
-        }
-
-        /**
-         * 转换Xml文件名称处理
-         *
-         * @param converter 　转换处理
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder convertXmlFileName(Function<String, String> converter) {
-            this.config.converterXmlFileName = converter;
-            return this;
-        }
-
-        /**
          * 格式化Mapper文件名称
          *
          * @param format 　格式
@@ -120,7 +96,8 @@ public class Mapper extends MapperConfig{
          * @since 3.5.0
          */
         public Builder formatMapperFileName(String format) {
-            return convertMapperFileName((entityName) -> String.format(format, entityName));
+            this.config.converterMapperFileName = entityName -> String.format(format, entityName);
+            return this;
         }
 
         /**
@@ -131,7 +108,8 @@ public class Mapper extends MapperConfig{
          * @since 3.5.0
          */
         public Builder formatXmlFileName(String format) {
-            return convertXmlFileName((entityName) -> String.format(format, entityName));
+            this.config.converterXmlFileName = entityName -> String.format(format, entityName);
+            return this;
         }
         
         /**
@@ -187,7 +165,7 @@ public class Mapper extends MapperConfig{
         }
 
         /**
-         * 添加排序字段,越先添加优先级越高
+         * 添加排序字段
          *
          * @param columnName 字段名
          * @param isDesc     是否倒排

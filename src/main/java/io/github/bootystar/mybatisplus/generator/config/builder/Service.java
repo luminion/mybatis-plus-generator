@@ -61,30 +61,6 @@ public class Service extends ServiceConfig {
         }
 
         /**
-         * 转换输出service接口文件名称
-         *
-         * @param converter 　转换处理
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder convertServiceFileName(Function<String, String> converter) {
-            this.config.converterServiceFileName = converter;
-            return this;
-        }
-
-        /**
-         * 转换输出service实现类文件名称
-         *
-         * @param converter 　转换处理
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder convertServiceImplFileName(Function<String, String> converter) {
-            this.config.converterServiceImplFileName = converter;
-            return this;
-        }
-
-        /**
          * 格式化service接口文件名称
          *
          * @param format 　格式
@@ -92,7 +68,8 @@ public class Service extends ServiceConfig {
          * @since 3.5.0
          */
         public Builder formatServiceFileName(String format) {
-            return convertServiceFileName((entityName) -> String.format(format, entityName));
+            this.config.converterServiceFileName = entityName -> String.format(format, entityName);
+            return this;
         }
 
         /**
@@ -103,7 +80,8 @@ public class Service extends ServiceConfig {
          * @since 3.5.0
          */
         public Builder formatServiceImplFileName(String format) {
-            return convertServiceImplFileName((entityName) -> String.format(format, entityName));
+            this.config.converterServiceImplFileName = entityName -> String.format(format, entityName);
+            return this;
         }
 
         /**
