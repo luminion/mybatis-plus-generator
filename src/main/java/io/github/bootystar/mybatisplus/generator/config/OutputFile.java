@@ -23,15 +23,17 @@ package io.github.bootystar.mybatisplus.generator.config;
  */
 public enum OutputFile {
     entity,
-    entityUpdateDTO,
-    entityInsertDTO,
-    entityQueryDTO,
-    entityVO,
     service,
     serviceImpl,
     mapper,
-    xml,
+    mapperXml,
     controller,
     parent,
+    createDTO,
+    updateDTO,
+    queryDTO,
+    queryVO,
+    excelImportDTO,
+    excelExportVO,
     ;
 }

@@ -62,7 +62,7 @@ public class Pkg extends PackageConfig {
          * @return this
          */
         public Builder entityInsertDTO(String packageName) {
-            this.config.entityInsertDTO = packageName;
+            this.config.createDTO = packageName;
             return this;
         }
 
@@ -73,7 +73,7 @@ public class Pkg extends PackageConfig {
          * @return this
          */
         public Builder entityUpdateDTO(String packageName) {
-            this.config.entityUpdateDTO = packageName;
+            this.config.updateDTO = packageName;
             return this;
         }
 
@@ -84,7 +84,7 @@ public class Pkg extends PackageConfig {
          * @return this
          */
         public Builder entityQueryDTO(String packageName) {
-            this.config.entityQueryDTO = packageName;
+            this.config.queryDTO = packageName;
             return this;
         }
     
@@ -94,8 +94,8 @@ public class Pkg extends PackageConfig {
          * @param packageName 包名
          * @return this
          */
-        public Builder entityVO(String packageName) {
-            this.config.entityVO = packageName;
+        public Builder entityQueryVO(String packageName) {
+            this.config.queryVO = packageName;
             return this;
         }
 

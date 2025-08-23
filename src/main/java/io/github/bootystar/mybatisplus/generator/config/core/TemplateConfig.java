@@ -47,25 +47,25 @@ public class TemplateConfig {
      * 实体插入dto
      */
     @Getter
-    protected String entityInsertDTO = ConstVal.TEMPLATE_ENTITY_INSERT_DTO_JAVA;
+    protected String entityInsertDTO = ConstVal.TEMPLATE_CREATE_DTO_JAVA;
 
     /**
      * 实体更新dto
      */
     @Getter
-    protected String entityUpdateDTO = ConstVal.TEMPLATE_ENTITY_UPDATE_DTO_JAVA;
+    protected String entityUpdateDTO = ConstVal.TEMPLATE_UPDATE_DTO_JAVA;
 
     /**
      * 实体查询dto
      */
     @Getter
-    protected String entityQueryDTO = ConstVal.TEMPLATE_ENTITY_QUERY_DTO_JAVA;
+    protected String entityQueryDTO = ConstVal.TEMPLATE_QUERY_DTO_JAVA;
 
     /**
      * 实体vo
      */
     @Getter
-    protected String entityVO = ConstVal.TEMPLATE_ENTITY_VO_JAVA;
+    protected String entityVO = ConstVal.TEMPLATE_QUERY_VO_JAVA;
 
     /**
      * 设置Mapper模板路径

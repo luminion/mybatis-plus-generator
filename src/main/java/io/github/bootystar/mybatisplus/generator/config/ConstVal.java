@@ -30,10 +30,12 @@ public interface ConstVal {
     String MODULE_NAME = "ModuleName";
 
     String ENTITY = "Entity";
-    String ENTITY_INSERT_DTO = "InsertDTO";
-    String ENTITY_UPDATE_DTO = "UpdateDTO";
-    String ENTITY_QUERY_DTO = "QueryDTO";
-    String ENTITY_VO = "VO";
+    String CREATE_DTO = "InsertDTO";
+    String UPDATE_DTO = "UpdateDTO";
+    String QUERY_DTO = "QueryDTO";
+    String QUERY_VO = "QueryVO";
+    String EXCEL_IMPORT_DTO = "ImportDTO";
+    String EXCEL_EXPORT_VO = "ExportVO";
     String SERVICE = "Service";
     String SERVICE_IMPL = "ServiceImpl";
     String MAPPER = "Mapper";
@@ -53,10 +55,12 @@ public interface ConstVal {
      * 实体模板路径
      */
     String TEMPLATE_ENTITY_JAVA = "/templates/entity.java";
-    String TEMPLATE_ENTITY_QUERY_DTO_JAVA = "/templates/entityQueryDTO.java";
-    String TEMPLATE_ENTITY_INSERT_DTO_JAVA = "/templates/entityInsertDTO.java";
-    String TEMPLATE_ENTITY_UPDATE_DTO_JAVA = "/templates/entityUpdateDTO.java";
-    String TEMPLATE_ENTITY_VO_JAVA = "/templates/entityVO.java";
+    String TEMPLATE_CREATE_DTO_JAVA = "/templates/entityInsertDTO.java";
+    String TEMPLATE_UPDATE_DTO_JAVA = "/templates/entityUpdateDTO.java";
+    String TEMPLATE_QUERY_DTO_JAVA = "/templates/entityQueryDTO.java";
+    String TEMPLATE_QUERY_VO_JAVA = "/templates/entityQueryVO.java";
+    String TEMPLATE_EXCEL_IMPORT_DTO_JAVA = "/templates/entityImportDTO.java";
+    String TEMPLATE_EXCEL_EXPORT_VO_JAVA = "/templates/entityExportVO.java";
  
 
     /**
@@ -97,7 +101,7 @@ public interface ConstVal {
     String SUPER_SERVICE_IMPL_CLASS = "com.baomidou.mybatisplus.extension.service.impl.ServiceImpl";
 
     /**
-     * @see com.baomidou.mybatisplus.core.metadata.TableInfoHelper.DEFAULT_ID_NAME
+     * @see com.baomidou.mybatisplus.core.metadata.TableInfoHelper
      */
     String DEFAULT_ID_NAME = "id";
 

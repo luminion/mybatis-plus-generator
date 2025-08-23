@@ -202,7 +202,7 @@ public class ControllerConfig implements ITemplate {
             }
         }
         if (globalConfig.isGenerateQuery() || globalConfig.isGenerateExport()) {
-            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_VO) + "." + tableInfo.getEntityVOName());
+            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.QUERY_VO) + "." + tableInfo.getEntityVOName());
             String entityQueryDTOStr = tableInfo.getEntityQueryDTOName();
             if (this.queryDTO != null && this.queryDTO.isRegistered()) {
                 if (Map.class.isAssignableFrom(this.queryDTO.getClazz()) && !postQuery) {
@@ -212,7 +212,7 @@ public class ControllerConfig implements ITemplate {
                     importControllerFrameworkPackages.add(queryDTO.getClassFullName());
                 }
             } else {
-                importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_QUERY_DTO) + "." + tableInfo.getEntityQueryDTOName());
+                importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.QUERY_DTO) + "." + tableInfo.getEntityQueryDTOName());
             }
             data.put("entityQueryDTOStr", entityQueryDTOStr);
           
@@ -239,10 +239,10 @@ public class ControllerConfig implements ITemplate {
             importControllerFrameworkPackages.add("org.springframework.validation.annotation.Validated");
         }
         if (globalConfig.isGenerateInsert()) {
-            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_INSERT_DTO) + "." + tableInfo.getEntityInsertDTOName());
+            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.CREATE_DTO) + "." + tableInfo.getEntityInsertDTOName());
         }
         if (globalConfig.isGenerateUpdate()) {
-            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.ENTITY_UPDATE_DTO) + "." + tableInfo.getEntityUpdateDTOName());
+            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.UPDATE_DTO) + "." + tableInfo.getEntityUpdateDTOName());
         }
 
         if (globalConfig.generateImport || globalConfig.generateExport) {

@@ -15,7 +15,6 @@
  */
 package io.github.bootystar.mybatisplus.generator.config;
 
-import io.github.bootystar.mybatisplus.generator.config.builder.Template;
 import io.github.bootystar.mybatisplus.generator.config.core.*;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;

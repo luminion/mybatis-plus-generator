@@ -78,26 +78,36 @@ public class PackageConfig {
      * Controller包名
      */
     protected String controller = "controller";
-
-    /**
-     * 查询DTO包名
-     */
-    protected String entityQueryDTO = "dto";
     
     /**
      * 新增DTO包名
      */
-    protected String entityInsertDTO = "dto";
+    protected String createDTO = "model.dto";
     
     /**
      * 修改DTO包名
      */
-    protected String entityUpdateDTO = "dto";
+    protected String updateDTO = "model.dto";
+
+    /**
+     * 查询DTO包名
+     */
+    protected String queryDTO = "model.dto";
     
     /**
-     * VO包名
+     * 查询VO包名
      */
-    protected String entityVO = "vo";
+    protected String queryVO = "model.vo";
+
+    /**
+     * 导入DTO包名
+     */
+    protected String excelImportDTO = "model.dto";
+
+    /**
+     * 导出DTO包名
+     */
+    protected String exportExportVO = "model.vo";
 
     /**
      * 路径配置信息
@@ -149,10 +159,12 @@ public class PackageConfig {
             packageInfo.put(ConstVal.SERVICE_IMPL, this.joinPackage(this.getServiceImpl()));
             packageInfo.put(ConstVal.CONTROLLER, this.joinPackage(this.getController()));
             packageInfo.put(ConstVal.PARENT, this.getParent());
-            packageInfo.put(ConstVal.ENTITY_INSERT_DTO, this.joinPackage(this.getEntityInsertDTO()));
-            packageInfo.put(ConstVal.ENTITY_UPDATE_DTO, this.joinPackage(this.getEntityUpdateDTO()));
-            packageInfo.put(ConstVal.ENTITY_QUERY_DTO, this.joinPackage(this.getEntityQueryDTO()));
-            packageInfo.put(ConstVal.ENTITY_VO, this.joinPackage(this.getEntityVO()));
+            packageInfo.put(ConstVal.CREATE_DTO, this.joinPackage(this.getCreateDTO()));
+            packageInfo.put(ConstVal.UPDATE_DTO, this.joinPackage(this.getUpdateDTO()));
+            packageInfo.put(ConstVal.QUERY_DTO, this.joinPackage(this.getQueryDTO()));
+            packageInfo.put(ConstVal.QUERY_VO, this.joinPackage(this.getQueryVO()));
+            packageInfo.put(ConstVal.EXCEL_IMPORT_DTO, this.joinPackage(this.getExcelImportDTO()));
+            packageInfo.put(ConstVal.EXCEL_EXPORT_VO, this.joinPackage(this.getExportExportVO()));
             if (injectionConfig != null) {
                 List<CustomFile> customFiles = injectionConfig.getCustomFiles();
                 for (CustomFile customFile : customFiles) {
