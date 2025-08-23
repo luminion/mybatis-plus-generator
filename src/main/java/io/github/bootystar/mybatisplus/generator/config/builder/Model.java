@@ -19,14 +19,6 @@ public class Model extends ModelConfig {
         }
         
         /**
-         * 覆盖已有文件
-         */
-        public Builder enableFileOverride() {
-            this.config.fileOverride = true;
-            return this;
-        }
-        
-        /**
          * 格式化新增dto名称
          *
          * @param format 　格式
@@ -69,9 +61,17 @@ public class Model extends ModelConfig {
             this.config.converterEntityVOName = entityName -> String.format(format, entityName);
             return this;
         }
+
+        /**
+         * 覆盖已有文件
+         */
+        public Builder enableFileOverride() {
+            this.config.fileOverride = true;
+            return this;
+        }
         
         /**
-         * 禁用查询dto继承实体类
+         * 查询dto继承实体类
          *
          * @return this
          */
@@ -81,7 +81,7 @@ public class Model extends ModelConfig {
         }
 
         /**
-         * 禁用vo继承实体类
+         * vo继承实体类
          *
          * @return this
          */
