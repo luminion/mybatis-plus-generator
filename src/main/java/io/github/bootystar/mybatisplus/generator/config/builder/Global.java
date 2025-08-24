@@ -22,14 +22,6 @@ public class Global extends GlobalConfig{
         }
 
         /**
-         * 输出目录
-         */
-        public Builder outputDir(String outputDir) {
-            this.config.outputDir = outputDir;
-            return this;
-        }
-
-        /**
          * 作者
          */
         public Builder author(String author) {
@@ -54,14 +46,6 @@ public class Global extends GlobalConfig{
          */
         public Builder commentDate(String pattern) {
             this.config.commentDate = () -> new SimpleDateFormat(pattern).format(new Date());
-            return this;
-        }
-
-        /**
-         * 启用全局文件覆盖
-         */
-        public Builder enableFileOverwrite() {
-            this.config.fileOverride = true;
             return this;
         }
 

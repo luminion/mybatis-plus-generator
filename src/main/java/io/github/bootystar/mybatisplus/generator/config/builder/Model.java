@@ -22,8 +22,8 @@ public class Model extends ModelConfig {
          * @param format 　格式
          * @return this
          */
-        public Builder formatEntityInsertDTOName(String format) {
-            this.config.converterInsertDTOName = entityName -> String.format(format, entityName);
+        public Builder formatCreateDTOName(String format) {
+            this.config.converterCreateDTOName = entityName -> String.format(format, entityName);
             return this;
         }
         

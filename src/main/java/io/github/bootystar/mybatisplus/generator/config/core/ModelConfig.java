@@ -22,7 +22,7 @@ public class ModelConfig implements ITemplate {
     /**
      * 新增dto名称转换
      */
-    protected Function<String, String> converterInsertDTOName = name -> name + ConstVal.CREATE_DTO;
+    protected Function<String, String> converterCreateDTOName = name -> name + ConstVal.CREATE_DTO;
     /**
      * 修改dto名称转换
      */

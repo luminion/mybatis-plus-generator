@@ -154,7 +154,7 @@ public class ControllerConfig implements ITemplate {
         EntityConfig entityConfig = configAdapter.getEntityConfig();
         StrategyConfig strategyConfig = configAdapter.getStrategyConfig();
         ServiceConfig serviceConfig = configAdapter.getServiceConfig();
-        PackageConfig packageConfig = configAdapter.getPackageConfig();
+        FileConfig packageConfig = configAdapter.getPackageConfig();
         GlobalConfig globalConfig = configAdapter.getGlobalConfig();
 
         Collection<String> importControllerFrameworkPackages = new TreeSet<>();

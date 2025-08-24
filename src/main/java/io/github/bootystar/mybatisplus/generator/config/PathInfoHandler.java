@@ -52,7 +52,7 @@ class PathInfoHandler {
     /**
      * 包配置信息
      */
-    private final PackageConfig packageConfig;
+    private final FileConfig packageConfig;
 
     PathInfoHandler(ConfigAdapter configAdapter) {
         this.outputDir = configAdapter.getGlobalConfig().getOutputDir();
