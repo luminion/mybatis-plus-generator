@@ -41,11 +41,6 @@ public class GlobalConfig implements ITemplate {
     }
 
     /**
-     * 生成文件的输出目录【 windows:C://tmp  linux or mac:/tmp 】
-     */
-    protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "C://tmp" : "/tmp";
-
-    /**
      * 作者
      */
     protected String author = "bootystar";
@@ -61,11 +56,6 @@ public class GlobalConfig implements ITemplate {
      * @since 3.5.0
      */
     protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-
-    /**
-     * 全局文件覆盖
-     */
-    protected boolean fileOverride;
 
     /**
      * 【实体】是否为lombok模型（默认 false）<br>

@@ -330,7 +330,7 @@ public class TableInfo {
     public void processTable() {
         String entityName = this.getConfigAdapter().getEntityConfig().getNameConvert().entityNameConvert(this);
         this.setEntityName(this.getConfigAdapter().getEntityConfig().getConverterFileName().apply(entityName));
-        this.entityInsertDTOName = this.getConfigAdapter().getModelConfig().getConverterInsertDTOName().apply(entityName);
+        this.entityInsertDTOName = this.getConfigAdapter().getModelConfig().getConverterCreateDTOName().apply(entityName);
         this.entityUpdateDTOName = this.getConfigAdapter().getModelConfig().getConverterUpdateDTOName().apply(entityName);
         this.entityQueryDTOName = this.getConfigAdapter().getModelConfig().getConverterQueryDTOName().apply(entityName);
         this.entityVOName = this.getConfigAdapter().getModelConfig().getConverterQueryVOName().apply(entityName);
