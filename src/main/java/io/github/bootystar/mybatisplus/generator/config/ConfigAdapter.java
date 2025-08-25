@@ -47,7 +47,7 @@ public class ConfigAdapter {
     /**
      * 包配置信息
      */
-    private FileConfig packageConfig;
+    private PackageConfig packageConfig;
     /**
      * 策略配置信息
      */
@@ -116,7 +116,7 @@ public class ConfigAdapter {
     
     public ConfigAdapter(DataSourceConfig dataSourceConfig,
                          GlobalConfig globalConfig,
-                         FileConfig packageConfig,
+                         PackageConfig packageConfig,
                          StrategyConfig strategyConfig,
                          InjectionConfig injectionConfig,
                          EntityConfig entityConfig,

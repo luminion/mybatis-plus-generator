@@ -1,7 +1,7 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import io.github.bootystar.mybatisplus.generator.config.OutputFile;
-import io.github.bootystar.mybatisplus.generator.config.core.FileConfig;
+import io.github.bootystar.mybatisplus.generator.config.core.PackageConfig;
 
 import java.util.Collections;
 import java.util.Map;
@@ -9,14 +9,14 @@ import java.util.Map;
 /**
  * @author bootystar
  */
-public class Pkg extends FileConfig {
+public class Pkg extends PackageConfig {
     public static class Builder {
         protected final Pkg config = new Pkg();
 
         protected Builder() {
         }
 
-        protected FileConfig build() {
+        protected PackageConfig build() {
             return this.config;
         }
 
@@ -117,7 +117,7 @@ public class Pkg extends FileConfig {
          * @return this
          */
         public Builder mapperXml(String packageName) {
-            this.config.mapperXml = packageName;
+            this.config.xml = packageName;
             return this;
         }
 
