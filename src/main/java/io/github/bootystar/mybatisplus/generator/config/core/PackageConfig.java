@@ -154,7 +154,7 @@ public class PackageConfig {
             packageInfo.put(ConstVal.MODULE_NAME, this.getModuleName());
             packageInfo.put(ConstVal.ENTITY, this.joinPackage(this.getEntity()));
             packageInfo.put(ConstVal.MAPPER, this.joinPackage(this.getMapper()));
-            packageInfo.put(ConstVal.XML, this.joinPackage(this.getXml()));
+            packageInfo.put(ConstVal.MAPPER_XML, this.joinPackage(this.getXml()));
             packageInfo.put(ConstVal.SERVICE, this.joinPackage(this.getService()));
             packageInfo.put(ConstVal.SERVICE_IMPL, this.joinPackage(this.getServiceImpl()));
             packageInfo.put(ConstVal.CONTROLLER, this.joinPackage(this.getController()));

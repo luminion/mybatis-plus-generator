@@ -94,7 +94,7 @@ class PathInfoHandler {
             putPathInfo(injectionConfig, templateConfig.getMapper(), OutputFile.mapper, ConstVal.MAPPER);
         }
         if (mapper.isGenerateMapperXml()) {
-            putPathInfo(injectionConfig, templateConfig.getMapperXml(), OutputFile.mapperXml, ConstVal.XML);
+            putPathInfo(injectionConfig, templateConfig.getMapperXml(), OutputFile.mapperXml, ConstVal.MAPPER_XML);
         }
         ServiceConfig service = configAdapter.getServiceConfig();
         if (service.isGenerateService()) {

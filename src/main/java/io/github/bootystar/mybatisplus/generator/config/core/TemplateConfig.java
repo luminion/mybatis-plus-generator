@@ -77,7 +77,7 @@ public class TemplateConfig {
      * 设置MapperXml模板路径
      */
     @Getter
-    protected String mapperXml = ConstVal.TEMPLATE_XML;
+    protected String mapperXml = ConstVal.TEMPLATE_MAPPER_XML;
 
     /**
      * 设置Service模板路径
