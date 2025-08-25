@@ -16,11 +16,10 @@ public class Generator4Mysql {
                 .create(url, username, password)
                 .initialize()
                 .global(e -> e
-                                .outputDir(System.getProperty("user.dir") + "/src/test/java")
+                                
                                 .author("bootystar")
                                 .dateType(DateType.SQL_PACK)
                                 .commentDate("yyyy-MM-dd HH:mm:ss")
-                                .enableFileOverwrite()
                                 .enableLombok()
                                 .enableChainModel()
                                 .enableSwagger()
@@ -29,7 +28,6 @@ public class Generator4Mysql {
                                 .enableCommentUUID()
                                 .enableJavaxApi()
                                 .enableEasyExcel()
-                                .disableOpenDir()
 //                                .disableQuery()
 //                                .disableInsert()
 //                                .disableUpdate()
@@ -37,12 +35,15 @@ public class Generator4Mysql {
 //                                .disableExport()
 
                 )
-                .pkg(e -> e
-                        .parent("com.example.test")
-                        .entityQueryDTO("entity")
-                        .entityInsertDTO("entity")
-                        .entityUpdateDTO("entity")
-                        .entityQueryVO("entity")
+                .output(e -> e
+                        .outputDir(System.getProperty("user.dir") + "/src/test/java")
+                        .enableGlobalFileOverride()
+//                        .disableOpenOutputDir()
+                        .parentPackage("com.example.test")
+                        .createDTOPackage("entity")
+                        .updateDTOPackage("entity")
+                        .queryDTOPackage("entity")
+                        .queryVOPackage("entity")
                 )
                 .strategy(e -> e
                 )
@@ -52,13 +53,10 @@ public class Generator4Mysql {
                                 .versionColumnName("version")
                 )
                 .mapper(e -> e
-                        .disable()
                 )
                 .service(e -> e
-                        .disable()
                 )
                 .controller(e -> e
-                        .disable()
                 )
 
                 .execute("sys_user")

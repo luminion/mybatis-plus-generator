@@ -305,7 +305,7 @@ public class TableInfo {
      */
     public void processTable() {
         String entityName = this.getConfigAdapter().getEntityConfig().getNameConvert().entityNameConvert(this);
-        this.setEntityName(this.getConfigAdapter().getEntityConfig().getConverterFileName().apply(entityName));
+        this.setEntityName(entityName);
         this.importPackage();
     }
 

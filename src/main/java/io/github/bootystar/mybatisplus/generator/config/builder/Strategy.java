@@ -1,6 +1,5 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
-import io.github.bootystar.mybatisplus.generator.config.IOutputFile;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
@@ -144,16 +143,6 @@ public class Strategy extends StrategyConfig {
          */
         public Builder notLikeTable(LikeTable notLikeTable) {
             this.config.notLikeTable = notLikeTable;
-            return this;
-        }
-
-        /**
-         * 输出文件处理
-         *
-         * @return this
-         */
-        public Builder outputFile(IOutputFile outputFile) {
-            this.config.outputFile = outputFile;
             return this;
         }
 

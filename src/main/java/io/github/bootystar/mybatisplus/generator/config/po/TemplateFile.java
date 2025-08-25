@@ -45,7 +45,7 @@ public class TemplateFile {
     /**
      * 是否生成
      */
-    private boolean generate;
+    private boolean generate = true;
 
     /**
      * 根据表信息转化输出文件名称

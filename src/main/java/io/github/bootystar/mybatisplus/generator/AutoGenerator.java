@@ -79,7 +79,7 @@ public class AutoGenerator {
                 "`------'`------'`------'`------'`------'`------'`------'`------'`------'\n";
         System.out.println(banner);
         System.out.println("execute success! check files in following folder:");
-        String path = config.getPathInfo().get(OutputFile.parent);
+        String path = config.getOutputConfig().getOutputDir();
         System.out.println(new File(path).getAbsolutePath());
     }
     

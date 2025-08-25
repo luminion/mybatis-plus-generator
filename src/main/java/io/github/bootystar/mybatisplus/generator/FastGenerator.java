@@ -88,7 +88,6 @@ public class FastGenerator {
                         .sortColumn("id", true)
                 )
                 .service(e->e
-                        .formatServiceFileName("%sService")
                 )
                 .controller(e->e
                 )
