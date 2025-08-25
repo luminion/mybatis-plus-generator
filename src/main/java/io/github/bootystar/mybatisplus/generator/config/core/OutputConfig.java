@@ -8,8 +8,6 @@ import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.po.TemplateFile;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.io.File;
 import java.util.List;
@@ -22,8 +20,6 @@ import java.util.stream.Stream;
  *
  * @author bootystar
  */
-@Setter
-@Accessors(chain = true)
 public class OutputConfig implements ITemplate {
 
     /**
@@ -35,7 +31,7 @@ public class OutputConfig implements ITemplate {
     /**
      * 父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名
      */
-    protected String parent = "io.github.bootystar";
+    protected String parentPackage = "io.github.bootystar";
 
     /**
      * 父包模块名
@@ -55,84 +51,84 @@ public class OutputConfig implements ITemplate {
     protected boolean open = true;
 
     @Getter
-    TemplateFile entity = new TemplateFile()
+    protected TemplateFile entity = new TemplateFile()
             .setKey("entity")
             .setFormatPattern("%s")
             .setSubPackage("entity")
             .setTemplatePath("/templates/entity.java")
             .setOutputFileSuffix(".java");
     @Getter
-    TemplateFile mapper = new TemplateFile()
+    protected TemplateFile mapper = new TemplateFile()
             .setKey("mapper")
             .setFormatPattern("%sMapper")
             .setSubPackage("mapper")
             .setTemplatePath("/templates/mapper.java")
             .setOutputFileSuffix(".java");
     @Getter
-    TemplateFile mapperXml = new TemplateFile()
+    protected TemplateFile mapperXml = new TemplateFile()
             .setKey("mapperXml")
             .setFormatPattern("%sMapper")
             .setSubPackage("mapper.xml")
             .setTemplatePath("/templates/mapper.xml")
             .setOutputFileSuffix(".xml");
     @Getter
-    TemplateFile service = new TemplateFile()
+    protected TemplateFile service = new TemplateFile()
             .setKey("service")
             .setFormatPattern("%sService")
             .setSubPackage("service")
             .setTemplatePath("/templates/service.java")
             .setOutputFileSuffix(".java");
     @Getter
-    TemplateFile serviceImpl = new TemplateFile()
+    protected TemplateFile serviceImpl = new TemplateFile()
             .setKey("serviceImpl")
             .setFormatPattern("%sServiceImpl")
             .setSubPackage("service.impl")
             .setTemplatePath("/templates/serviceImpl.java")
             .setOutputFileSuffix(".java");
     @Getter
-    TemplateFile controller = new TemplateFile()
+    protected TemplateFile controller = new TemplateFile()
             .setKey("controller")
             .setFormatPattern("%sController")
             .setSubPackage("controller")
             .setTemplatePath("/templates/controller.java")
             .setOutputFileSuffix(".java");
     @Getter
-    TemplateFile createDTO = new TemplateFile()
+    protected TemplateFile createDTO = new TemplateFile()
             .setKey("createDTO")
             .setFormatPattern("%sCreateDTO")
             .setSubPackage("dto")
             .setTemplatePath("/templates/createDTO.java")
             .setOutputFileSuffix(".java");
     @Getter
-    TemplateFile updateDTO = new TemplateFile()
+    protected TemplateFile updateDTO = new TemplateFile()
             .setKey("updateDTO")
             .setFormatPattern("%sUpdateDTO")
             .setSubPackage("dto")
             .setTemplatePath("/templates/updateDTO.java")
             .setOutputFileSuffix(".java");
     @Getter
-    TemplateFile queryDTO = new TemplateFile()
+    protected TemplateFile queryDTO = new TemplateFile()
             .setKey("queryDTO")
             .setFormatPattern("%s")
             .setSubPackage("dto")
             .setTemplatePath("/templates/queryDTO.java")
             .setOutputFileSuffix(".java");
     @Getter
-    TemplateFile queryVO = new TemplateFile()
+    protected TemplateFile queryVO = new TemplateFile()
             .setKey("queryVO")
             .setFormatPattern("%s")
             .setSubPackage("vo")
             .setTemplatePath("/templates/queryVO.java")
             .setOutputFileSuffix(".java");
     @Getter
-    TemplateFile importDTO = new TemplateFile()
+    protected TemplateFile importDTO = new TemplateFile()
             .setKey("importDTO")
             .setFormatPattern("%sImportDTO")
             .setSubPackage("dto")
             .setTemplatePath("/templates/importDTO.java")
             .setOutputFileSuffix(".java");
     @Getter
-    TemplateFile exportVO = new TemplateFile()
+    protected TemplateFile exportVO = new TemplateFile()
             .setKey("exportVO")
             .setFormatPattern("%sExportVO")
             .setSubPackage("vo")
@@ -148,9 +144,9 @@ public class OutputConfig implements ITemplate {
      */
     public String getParentPackage() {
         if (StringUtils.isNotBlank(moduleName)) {
-            return parent + StringPool.DOT + moduleName;
+            return parentPackage + StringPool.DOT + moduleName;
         }
-        return parent;
+        return parentPackage;
     }
 
     /**
