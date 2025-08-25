@@ -75,30 +75,6 @@ public class TableInfo {
     private String entityName;
 
     /**
-     * 实体插入dto名称
-     */
-    @Getter
-    private String entityInsertDTOName;
-
-    /**
-     * 实体修改dto名称
-     */
-    @Getter
-    private String entityUpdateDTOName;
-
-    /**
-     * 实体查询dto名称
-     */
-    @Getter
-    private String entityQueryDTOName;
-
-    /**
-     * 实体vo名称
-     */
-    @Getter
-    private String entityVOName;
-
-    /**
      * mapper名称
      */
     @Getter
@@ -330,15 +306,6 @@ public class TableInfo {
     public void processTable() {
         String entityName = this.getConfigAdapter().getEntityConfig().getNameConvert().entityNameConvert(this);
         this.setEntityName(this.getConfigAdapter().getEntityConfig().getConverterFileName().apply(entityName));
-        this.entityInsertDTOName = this.getConfigAdapter().getModelConfig().getConverterInsertDTOName().apply(entityName);
-        this.entityUpdateDTOName = this.getConfigAdapter().getModelConfig().getConverterUpdateDTOName().apply(entityName);
-        this.entityQueryDTOName = this.getConfigAdapter().getModelConfig().getConverterQueryDTOName().apply(entityName);
-        this.entityVOName = this.getConfigAdapter().getModelConfig().getConverterQueryVOName().apply(entityName);
-        this.mapperName = this.getConfigAdapter().getMapperConfig().getConverterMapperFileName().apply(entityName);
-        this.xmlName = this.getConfigAdapter().getMapperConfig().getConverterXmlFileName().apply(entityName);
-        this.serviceName = this.getConfigAdapter().getServiceConfig().getConverterServiceFileName().apply(entityName);
-        this.serviceImplName = this.getConfigAdapter().getServiceConfig().getConverterServiceImplFileName().apply(entityName);
-        this.controllerName = this.getConfigAdapter().getControllerConfig().getConverterFileName().apply(entityName);
         this.importPackage();
     }
 

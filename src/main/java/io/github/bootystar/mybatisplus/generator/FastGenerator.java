@@ -109,7 +109,7 @@ public class FastGenerator {
     }
 
     public FastGenerator pkg(Function<Pkg.Builder, Pkg.Builder> builder) {
-        builder.apply(this.configBuilder.getPackageBuilder());
+        builder.apply(this.configBuilder.getOutputBuilder());
         return this;
     }
 

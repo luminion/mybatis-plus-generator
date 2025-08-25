@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.function.Function;
+
 /**
  * @author bootystar
  */
@@ -23,6 +25,7 @@ public class TemplateFile {
      * 格式化文件名称
      */
     private String formatPattern;
+    private Function<TableInfo, String> formatNameFunction;
     /**
      * 模板路径
      */
@@ -39,5 +42,14 @@ public class TemplateFile {
      * 文件覆盖
      */
     private boolean fileOverride;
+
+    /**
+     * 根据表信息转化输出文件名称
+     *
+     * @param tableInfo 表信息
+     */
+    public String convertFormatName(TableInfo tableInfo) {
+        return String.format(formatPattern, tableInfo.getEntityName());
+    }
     
 }

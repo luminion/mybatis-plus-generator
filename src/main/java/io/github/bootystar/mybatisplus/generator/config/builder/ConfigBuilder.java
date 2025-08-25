@@ -11,7 +11,7 @@ import lombok.Getter;
 public class ConfigBuilder {
     private final Datasource.Builder datasourceBuilder;
     private final Global.Builder globalBuilder = new Global.Builder();
-    private final Pkg.Builder packageBuilder = new Pkg.Builder();
+    private final Output.Builder outputBuilder = new Output.Builder();
     private final Strategy.Builder strategyBuilder = new Strategy.Builder();
     private final Injection.Builder injectionBuilder = new Injection.Builder();
     private final Mapper.Builder mapperBuilder = new Mapper.Builder();
@@ -19,7 +19,6 @@ public class ConfigBuilder {
     private final Entity.Builder entityBuilder = new Entity.Builder();
     private final Controller.Builder controllerBuilder = new Controller.Builder();
     private final Model.Builder modelBuilder = new Model.Builder();
-    private final Template.Builder templateBuilder = new Template.Builder();
     
     public ConfigBuilder(String url, String username, String password) {
         datasourceBuilder = new Datasource.Builder(url, username, password);
@@ -29,15 +28,14 @@ public class ConfigBuilder {
         return new ConfigAdapter(
                 datasourceBuilder.build(),
                 globalBuilder.build(),
-                packageBuilder.build(),
+                outputBuilder.build(),
                 strategyBuilder.build(),
                 injectionBuilder.build(),
                 entityBuilder.build(),
                 mapperBuilder.build(),
                 serviceBuilder.build(),
                 controllerBuilder.build(),
-                modelBuilder.build(),
-                templateBuilder.build()
+                modelBuilder.build()
         );
     }
 
