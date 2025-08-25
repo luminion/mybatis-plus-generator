@@ -30,19 +30,48 @@ public interface ConstVal {
     String MODULE_NAME = "ModuleName";
 
     String ENTITY = "Entity";
-    String CREATE_DTO = "InsertDTO";
-    String UPDATE_DTO = "UpdateDTO";
-    String QUERY_DTO = "QueryDTO";
-    String QUERY_VO = "QueryVO";
-    String EXCEL_IMPORT_DTO = "ImportDTO";
-    String EXCEL_EXPORT_VO = "ExportVO";
-    String SERVICE = "Service";
-    String SERVICE_IMPL = "ServiceImpl";
-    String MAPPER = "Mapper";
-    String XML = "MapperXml";
-    String CONTROLLER = "Controller";
-    String PARENT = "Parent";
+    String TEMPLATE_ENTITY_JAVA = "/templates/entity.java";
+    String TEMPLATE_ENTITY_KT = "/templates/entity.kt";
 
+    String MAPPER = "Mapper";
+    String TEMPLATE_MAPPER = "/templates/mapper.java";
+    String SUPER_MAPPER_CLASS = "com.baomidou.mybatisplus.core.mapper.BaseMapper";
+
+    String MAPPER_XML = "MapperXml";
+    String TEMPLATE_MAPPER_XML = "/templates/mapper.xml";
+
+    String SERVICE = "Service";
+    String TEMPLATE_SERVICE = "/templates/service.java";
+    String SUPER_SERVICE_CLASS = "com.baomidou.mybatisplus.extension.service.IService";
+    
+    String SERVICE_IMPL = "ServiceImpl";
+    String TEMPLATE_SERVICE_IMPL = "/templates/serviceImpl.java";
+    String SUPER_SERVICE_IMPL_CLASS = "com.baomidou.mybatisplus.extension.service.impl.ServiceImpl";
+    
+    String CONTROLLER = "Controller";
+    String TEMPLATE_CONTROLLER = "/templates/controller.java";
+
+    String CREATE_DTO = "CreateDTO";
+    String TEMPLATE_CREATE_DTO_JAVA = "/templates/entityCreateDTO.java";
+
+    String UPDATE_DTO = "UpdateDTO";
+    String TEMPLATE_UPDATE_DTO_JAVA = "/templates/entityUpdateDTO.java";
+
+    String QUERY_DTO = "QueryDTO";
+    String TEMPLATE_QUERY_DTO_JAVA = "/templates/entityQueryDTO.java";
+
+    String QUERY_VO = "QueryVO";
+    String TEMPLATE_QUERY_VO_JAVA = "/templates/entityQueryVO.java";
+
+    String EXCEL_IMPORT_DTO = "ImportDTO";
+    String TEMPLATE_EXCEL_IMPORT_DTO_JAVA = "/templates/entityImportDTO.java";
+
+    String EXCEL_EXPORT_VO = "ExportVO";
+    String TEMPLATE_EXCEL_EXPORT_VO_JAVA = "/templates/entityExportVO.java";
+
+
+
+    String PARENT = "Parent";
     String JAVA_TMPDIR = "java.io.tmpdir";
     String UTF8 = StandardCharsets.UTF_8.name();
     String UNDERLINE = "_";
@@ -51,55 +80,9 @@ public interface ConstVal {
     String KT_SUFFIX = ".kt";
     String XML_SUFFIX = ".xml";
 
-    /**
-     * 实体模板路径
-     */
-    String TEMPLATE_ENTITY_JAVA = "/templates/entity.java";
-    String TEMPLATE_CREATE_DTO_JAVA = "/templates/entityInsertDTO.java";
-    String TEMPLATE_UPDATE_DTO_JAVA = "/templates/entityUpdateDTO.java";
-    String TEMPLATE_QUERY_DTO_JAVA = "/templates/entityQueryDTO.java";
-    String TEMPLATE_QUERY_VO_JAVA = "/templates/entityQueryVO.java";
-    String TEMPLATE_EXCEL_IMPORT_DTO_JAVA = "/templates/entityImportDTO.java";
-    String TEMPLATE_EXCEL_EXPORT_VO_JAVA = "/templates/entityExportVO.java";
- 
-
-    /**
-     * 实体模板路径(kotlin模板)
-     */
-    String TEMPLATE_ENTITY_KT = "/templates/entity.kt";
-
-    /**
-     * 控制器模板路径
-     */
-    String TEMPLATE_CONTROLLER = "/templates/controller.java";
-
-    /**
-     * Mapper模板路径
-     */
-    String TEMPLATE_MAPPER = "/templates/mapper.java";
-
-    /**
-     * MapperXml模板路径
-     */
-    String TEMPLATE_XML = "/templates/mapper.xml";
-
-    /**
-     * Service模板路径
-     */
-    String TEMPLATE_SERVICE = "/templates/service.java";
-
-    /**
-     * ServiceImpl模板路径
-     */
-    String TEMPLATE_SERVICE_IMPL = "/templates/serviceImpl.java";
-
     String VM_LOAD_PATH_KEY = "file.resource.loader.class";
     String VM_LOAD_PATH_VALUE = "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader";
-
-    String SUPER_MAPPER_CLASS = "com.baomidou.mybatisplus.core.mapper.BaseMapper";
-    String SUPER_SERVICE_CLASS = "com.baomidou.mybatisplus.extension.service.IService";
-    String SUPER_SERVICE_IMPL_CLASS = "com.baomidou.mybatisplus.extension.service.impl.ServiceImpl";
-
+    
     /**
      * @see com.baomidou.mybatisplus.core.metadata.TableInfoHelper
      */
