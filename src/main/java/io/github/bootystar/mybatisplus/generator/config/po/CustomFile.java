@@ -113,7 +113,7 @@ public class CustomFile {
         }
 
         /**
-         * 文件路径，默认为 FileConfig.parent 路径
+         * 文件路径，默认为 PackageConfig.parent 路径
          */
         public Builder filePath(String filePath) {
             this.customFile.filePath = filePath;
