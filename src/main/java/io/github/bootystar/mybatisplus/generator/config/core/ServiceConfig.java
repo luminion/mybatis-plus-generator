@@ -36,54 +36,18 @@ import java.util.function.Function;
 @Getter
 public class ServiceConfig implements ITemplate {
 
-
     protected ServiceConfig() {
     }
 
     /**
-     * 是否生成service
-     *
-     * @since 3.5.6
-     */
-    protected boolean generateService = true;
-
-    /**
-     * 是否生成serviceImpl
-     *
-     * @since 3.5.6
-     */
-    protected boolean generateServiceImpl = true;
-
-    /**
      * 自定义继承的Service类全称，带包名
      */
-    protected String superServiceClass = ConstVal.SUPER_SERVICE_CLASS;
+    protected String superServiceClass = "com.baomidou.mybatisplus.extension.service.IService";
 
     /**
      * 自定义继承的ServiceImpl类全称，带包名
      */
-    protected String superServiceImplClass = ConstVal.SUPER_SERVICE_IMPL_CLASS;
-
-    /**
-     * 转换输出Service文件名称
-     *
-     * @since 3.5.0
-     */
-    protected Function<String, String> converterServiceFileName = (entityName -> "I" + entityName + ConstVal.SERVICE);
-
-    /**
-     * 转换输出ServiceImpl文件名称
-     *
-     * @since 3.5.0
-     */
-    protected Function<String, String> converterServiceImplFileName = (entityName -> entityName + ConstVal.SERVICE_IMPL);
-
-    /**
-     * 是否覆盖已有文件（默认 false）
-     *
-     * @since 3.5.2
-     */
-    protected boolean fileOverride;
+    protected String superServiceImplClass = "com.baomidou.mybatisplus.extension.service.impl.ServiceImpl";
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
@@ -92,8 +56,6 @@ public class ServiceConfig implements ITemplate {
         data.put("superServiceClass", ClassUtils.getSimpleName(this.superServiceClass));
         data.put("superServiceImplClassPackage", this.superServiceImplClass);
         data.put("superServiceImplClass", ClassUtils.getSimpleName(this.superServiceImplClass));
-        data.put("generateServiceImpl", this.generateServiceImpl);
-        data.put("generateService", this.generateService);
         return data;
     }
 

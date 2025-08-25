@@ -16,10 +16,10 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
+import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,6 @@ import org.apache.ibatis.cache.decorators.LoggingCache;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +46,7 @@ public class MapperConfig implements ITemplate {
     /**
      * 自定义继承的Mapper类全称，带包名
      */
-    protected String superClass = ConstVal.SUPER_MAPPER_CLASS;
+    protected String superClass = "com.baomidou.mybatisplus.core.mapper.BaseMapper";
 
     /**
      * Mapper标记注解
@@ -71,57 +70,21 @@ public class MapperConfig implements ITemplate {
     protected boolean baseColumnList;
 
     /**
-     * 转换输出Mapper文件名称
-     *
-     * @since 3.5.0
-     */
-    protected Function<String, String> converterMapperFileName = (entityName -> entityName + ConstVal.MAPPER);
-
-    /**
-     * 转换输出Xml文件名称
-     *
-     * @since 3.5.0
-     */
-    protected Function<String, String> converterXmlFileName = (entityName -> entityName + ConstVal.MAPPER);
-
-    /**
-     * 是否覆盖已有文件（默认 false）
-     *
-     * @since 3.5.2
-     */
-    protected boolean fileOverride;
-
-    /**
      * 设置缓存实现类
      *
      * @since 3.5.0
      */
     protected Class<? extends Cache> cache;
-    public Class<? extends Cache> getCache() {
-        return this.cache == null ? LoggingCache.class : this.cache;
-    }
-
-    /**
-     * 是否生成Mapper
-     *
-     * @since 3.5.6
-     */
-    protected boolean generateMapper = true;
-
-    /**
-     * 是否生成XML
-     *
-     * @since 3.5.6
-     */
-    protected boolean generateMapperXml = true;
 
     /**
      * 排序字段map
      * 字段名 -> 是否倒序
      */
     protected Map<String, Boolean> sortColumnMap = new LinkedHashMap<>();
-    
 
+    public Class<? extends Cache> getCache() {
+        return this.cache == null ? LoggingCache.class : this.cache;
+    }
     
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
@@ -139,8 +102,6 @@ public class MapperConfig implements ITemplate {
             data.put("cacheClassName", cacheClass.getName());
         }
         data.put("superMapperClass", ClassUtils.getSimpleName(this.superClass));
-//        data.put("generateMapperXml", this.generateMapperXml);
-//        data.put("generateMapper", this.generateMapper);
         Set<String> importPackages = new TreeSet<>();
         if (StringUtils.isNotBlank(superClass)) {
             importPackages.add(superClass);
@@ -148,7 +109,7 @@ public class MapperConfig implements ITemplate {
         if (mapperAnnotationClass != null) {
             importPackages.add(mapperAnnotationClass.getName());
         }
-        importPackages.add(tableInfo.getConfigAdapter().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName());
+        importPackages.add(tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY));
         Set<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toSet());
         Set<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toSet());
         data.put("importMapperFrameworkPackages", frameworkPackages.stream().sorted().collect(Collectors.toList()));

@@ -66,50 +66,6 @@ public class Controller extends ControllerConfig {
         }
 
         /**
-         * 转换输出文件名称
-         *
-         * @param converter 　转换处理
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder convertFileName(Function<String, String> converter) {
-            this.config.converterFileName = converter;
-            return this;
-        }
-
-        /**
-         * 格式化文件名称
-         *
-         * @param format 　格式
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder formatFileName(String format) {
-            return convertFileName((entityName) -> String.format(format, entityName));
-        }
-
-        /**
-         * 覆盖已有文件
-         *
-         * @since 3.5.3
-         */
-        public Builder enableFileOverride() {
-            this.config.fileOverride = true;
-            return this;
-        }
-
-        /**
-         * 禁用生成
-         *
-         * @return this
-         * @since 3.5.6
-         */
-        public Builder disable() {
-            this.config.generate = false;
-            return this;
-        }
-
-        /**
          * controller请求前缀
          *
          * @param url url

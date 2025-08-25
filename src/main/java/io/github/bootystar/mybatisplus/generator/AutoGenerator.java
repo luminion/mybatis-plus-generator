@@ -15,8 +15,8 @@
  */
 package io.github.bootystar.mybatisplus.generator;
 
-import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
-import io.github.bootystar.mybatisplus.generator.config.OutputFile;
+import io.github.bootystar.mybatisplus.generator.config.core.ConfigAdapter;
+import io.github.bootystar.mybatisplus.generator.config.enums.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.core.InjectionConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.engine.AbstractTemplateEngine;

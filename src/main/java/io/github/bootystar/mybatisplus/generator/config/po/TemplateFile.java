@@ -42,6 +42,10 @@ public class TemplateFile {
      * 文件覆盖
      */
     private boolean fileOverride;
+    /**
+     * 是否生成
+     */
+    private boolean generate;
 
     /**
      * 根据表信息转化输出文件名称

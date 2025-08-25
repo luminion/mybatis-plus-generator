@@ -13,24 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config;
+package io.github.bootystar.mybatisplus.generator.config.enums;
 
-import java.io.File;
+import lombok.Getter;
 
 /**
- * 输出文件接口
+ * 模板文件加载方式
  *
  * @author hubin
- * @since 2023-08-04
+ * @since 3.5.9
  */
-public interface IOutputFile {
+@Getter
+public enum TemplateLoadWay {
+    STRING("string"),
+    FILE("file");
 
-    /**
-     * 创建文件
-     *
-     * @param filePath   默认文件路径
-     * @param outputFile 输出文件类型
-     * @return {@link File}
-     */
-    File createFile(String filePath, OutputFile outputFile);
+    private final String value;
+
+    TemplateLoadWay(String value) {
+        this.value = value;
+    }
+
+    public boolean isFile() {
+        return FILE == this;
+    }
 }

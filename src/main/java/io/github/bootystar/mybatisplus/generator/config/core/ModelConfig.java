@@ -7,8 +7,10 @@ import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -18,36 +20,6 @@ import java.util.stream.Collectors;
 public class ModelConfig implements ITemplate {
     protected ModelConfig() {
     }
-
-    /**
-     * 新增dto名称转换
-     */
-    protected Function<String, String> converterInsertDTOName = name -> name + ConstVal.CREATE_DTO;
-    /**
-     * 修改dto名称转换
-     */
-    protected Function<String, String> converterUpdateDTOName = name -> name + ConstVal.UPDATE_DTO;
-    /**
-     * 查询dto名称转换
-     */
-    protected Function<String, String> converterQueryDTOName = name -> name + ConstVal.QUERY_DTO;
-    /**
-     * 查询vo名称转换
-     */
-    protected Function<String, String> converterQueryVOName = name -> name + ConstVal.QUERY_VO;
-    /**
-     * 导入dto名称转换
-     */
-    protected Function<String, String> converterImportDTOName = name -> name + ConstVal.EXCEL_IMPORT_DTO;
-    /**
-     * 导出vo名称转换
-     */
-    protected Function<String, String> converterExportVOName = name -> name + ConstVal.EXCEL_EXPORT_VO;
-
-    /**
-     * 文件覆盖
-     */
-    protected boolean fileOverride;
     
     /**
      * 查询dto继承实体类
@@ -72,8 +44,8 @@ public class ModelConfig implements ITemplate {
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> data = ITemplate.super.renderData(tableInfo);
-        data.put("extendsQueryDTO", this.queryDTOExtendsEntity);
-        data.put("extendsVO", this.queryVOExtendsEntity);
+        data.put("queryDTOExtendsEntity", this.queryDTOExtendsEntity);
+        data.put("queryVOExtendsEntity", this.queryVOExtendsEntity);
         GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
         String superClass = tableInfo.getConfigAdapter().getEntityConfig().getSuperClass();
         TreeSet<String> importPackages = tableInfo.getImportPackages().stream()
@@ -88,7 +60,7 @@ public class ModelConfig implements ITemplate {
             importPackages.add("io.swagger.annotations.ApiModel");
             importPackages.add("io.swagger.annotations.ApiModelProperty");
         }
-        if (!globalConfig.isKotlin() && globalConfig.isLombok()) {
+        if (globalConfig.isLombok()) {
             if (globalConfig.isChainModel()) {
                 importPackages.add("lombok.experimental.Accessors");
             }
@@ -150,7 +122,7 @@ public class ModelConfig implements ITemplate {
             importPackages.add("io.swagger.annotations.ApiModel");
             importPackages.add("io.swagger.annotations.ApiModelProperty");
         }
-        if (!globalConfig.isKotlin() && globalConfig.isLombok()) {
+        if (globalConfig.isLombok()) {
             if (globalConfig.isChainModel()) {
                 importPackages.add("lombok.experimental.Accessors");
             }
@@ -171,7 +143,7 @@ public class ModelConfig implements ITemplate {
             importPackages.add("io.swagger.annotations.ApiModel");
             importPackages.add("io.swagger.annotations.ApiModelProperty");
         }
-        if (!globalConfig.isKotlin() && globalConfig.isLombok()) {
+        if (globalConfig.isLombok()) {
             if (globalConfig.isChainModel()) {
                 importPackages.add("lombok.experimental.Accessors");
             }
@@ -181,7 +153,7 @@ public class ModelConfig implements ITemplate {
             }
         }
         if (queryDTOExtendsEntity){
-            importPackages.add(tableInfo.getConfigAdapter().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName());
+            importPackages.add(tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName());
         }
         for (TableField field : tableInfo.getFields()) {
             IColumnType columnType = field.getColumnType();

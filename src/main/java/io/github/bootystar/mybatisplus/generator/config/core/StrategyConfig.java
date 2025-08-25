@@ -17,7 +17,6 @@ package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
-import io.github.bootystar.mybatisplus.generator.config.IOutputFile;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -99,11 +98,6 @@ public class StrategyConfig implements ITemplate {
     protected LikeTable notLikeTable;
 
     /**
-     * 输出文件处理
-     */
-    protected IOutputFile outputFile = (path, ot) -> new File(path);
-
-    /**
      * 额外字段后缀
      */
     protected Map<String, String> extraFieldSuffixMap = new LinkedHashMap<>();
@@ -112,7 +106,6 @@ public class StrategyConfig implements ITemplate {
      * 额外字段策略
      */
     protected BiFunction<String, TableField, Boolean> extraFieldStrategy = new ExtraFieldStrategy();
-
 
     /**
      * 启用 schema 默认 false
