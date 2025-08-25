@@ -71,12 +71,12 @@ public abstract class AbstractTemplateEngine {
         GlobalConfig globalConfig = configAdapter.getGlobalConfig();
         String parentPath = getPathInfo(OutputFile.parent);
         customFiles.forEach(file -> {
-            String filePath = StringUtils.isNotBlank(file.getFilePath()) ? file.getFilePath() : parentPath;
+            String filePath = StringUtils.isNotBlank(file.getOutputDir()) ? file.getOutputDir() : parentPath;
             if (StringUtils.isNotBlank(file.getPackageName())) {
                 filePath = filePath + File.separator + file.getPackageName().replaceAll("\\.", StringPool.BACK_SLASH + File.separator);
             }
             Function<TableInfo, String> formatNameFunction = file.getFormatNameFunction();
-            String fileName = filePath + File.separator + (null != formatNameFunction ? formatNameFunction.apply(tableInfo) : entityName) + file.getFileName();
+            String fileName = filePath + File.separator + (null != formatNameFunction ? formatNameFunction.apply(tableInfo) : entityName) + file.getOutputFileSuffix();
             outputFile(
                     new File(fileName), 
                     objectMap, 

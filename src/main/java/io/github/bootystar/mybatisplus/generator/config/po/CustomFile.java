@@ -15,8 +15,9 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.po;
 
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.function.Function;
 
@@ -27,110 +28,45 @@ import java.util.function.Function;
  * @since 3.5.3
  */
 @Getter
+@Setter
+@Accessors(chain = true)
 public class CustomFile {
-
-    /**
-     * 文件名称格式化函数
-     */
-    private Function<TableInfo, String> formatNameFunction;
-
-    /**
-     * 文件名称
-     */
-    private String fileName;
-
     /**
      * 模板路径
      */
     private String templatePath;
-
     /**
-     * 自定义文件包名
+     * 输出文件所在文件夹
      */
-    private String packageName;
-
+    private String outputDir;
     /**
-     * 文件路径
+     * 文件名称格式化函数
      */
-    private String filePath;
-
+    private Function<TableInfo, String> formatNameFunction;
+    /**
+     * 输出文件后缀
+     */
+    private String outputFileSuffix;
     /**
      * 是否覆盖已有文件（默认 false）
      */
     private boolean fileOverride;
+    
+    public CustomFile validate() {
+        if (templatePath == null) {
+            throw new IllegalArgumentException("模板路径不能为空");
+        }
+        if (outputDir == null) {
+            throw new IllegalArgumentException("文件输出文件夹不能为空");
+        }
+        if (formatNameFunction == null) {
+            throw new IllegalArgumentException("文件名称格式化函数不能为空");
+        }
+        if (outputFileSuffix == null) {
+            throw new IllegalArgumentException("文件名称后缀不能为空");
+        }
 
-    /**
-     * 获取文件短名称(去除后缀)
-     *
-     * @return 文件名
-     * @since 3.5.10
-     */
-    public String getShortName() {
-        return fileName.substring(0, fileName.lastIndexOf("."));
+        return this;
     }
-
-    /**
-     * 构建者
-     */
-    public static class Builder implements IConfigBuilder<CustomFile> {
-
-        private final CustomFile customFile;
-
-        public Builder() {
-            this.customFile = new CustomFile();
-        }
-
-        /**
-         * 文件名称格式化函数
-         */
-        public Builder formatNameFunction(Function<TableInfo, String> formatNameFunction) {
-            this.customFile.formatNameFunction = formatNameFunction;
-            return this;
-        }
-
-        /**
-         * 文件名称
-         */
-        public Builder fileName(String fileName) {
-            this.customFile.fileName = fileName;
-            return this;
-        }
-
-        /**
-         * 模板路径
-         */
-        public Builder templatePath(String templatePath) {
-            this.customFile.templatePath = templatePath;
-            return this;
-        }
-
-        /**
-         * 包路径
-         */
-        public Builder packageName(String packageName) {
-            this.customFile.packageName = packageName;
-            return this;
-        }
-
-        /**
-         * 文件路径，默认为 PackageConfig.parent 路径
-         */
-        public Builder filePath(String filePath) {
-            this.customFile.filePath = filePath;
-            return this;
-        }
-
-        /**
-         * 覆盖已有文件
-         */
-        public Builder enableFileOverride() {
-            this.customFile.fileOverride = true;
-            return this;
-        }
-
-        @Override
-        public CustomFile build() {
-            return this.customFile;
-        }
-    }
+    
 }
