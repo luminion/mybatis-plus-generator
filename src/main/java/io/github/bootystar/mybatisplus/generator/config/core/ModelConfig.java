@@ -14,6 +14,8 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
+ * 领域模型配置
+ *
  * @author bootystar
  */
 @Getter
