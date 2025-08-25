@@ -41,11 +41,6 @@ public class GlobalConfig implements ITemplate {
     }
 
     /**
-     * 生成文件的输出目录【 windows:C://tmp  linux or mac:/tmp 】
-     */
-    protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "C://tmp" : "/tmp";
-
-    /**
      * 作者
      */
     protected String author = "bootystar";
@@ -62,10 +57,7 @@ public class GlobalConfig implements ITemplate {
      */
     protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-    /**
-     * 全局文件覆盖
-     */
-    protected boolean fileOverride;
+
 
     /**
      * 【实体】是否为lombok模型（默认 false）<br>
@@ -79,11 +71,6 @@ public class GlobalConfig implements ITemplate {
      * @since 3.3.2
      */
     protected boolean chainModel;
-
-    /**
-     * 开启 Kotlin 模式（默认 false）
-     */
-    protected boolean kotlin;
 
     /**
      * 开启 swagger 模式（默认 false 与 springdoc 不可同时使用）
@@ -124,11 +111,6 @@ public class GlobalConfig implements ITemplate {
      * excel类
      */
     protected String excelClass = "FastExcel";
-
-    /**
-     * 是否打开输出目录
-     */
-    protected boolean open = true;
     
     /**
      * 生成查询方法
