@@ -31,7 +31,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 控制器属性配置
+ * Mapper属性配置
  *
  * @author nieqiurong 2020/10/11.
  * @since 3.5.0

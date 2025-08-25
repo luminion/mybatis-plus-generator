@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * 输出文件配置
+ *
  * @author bootystar
  */
 @Setter
