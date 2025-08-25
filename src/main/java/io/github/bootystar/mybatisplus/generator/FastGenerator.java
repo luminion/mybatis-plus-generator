@@ -45,11 +45,10 @@ public class FastGenerator {
                         })
                 )
                 .global(e->e
-                        .disableOpenDir()
                         .dateType(DateType.TIME_PACK)
                 )
-                .pkg(e->e
-                        .mapperXmlResourcePath("mapper")
+                .output(e->e
+//                        .outputDir()
                 )
                 .strategy(e->e
                 )
@@ -108,7 +107,7 @@ public class FastGenerator {
         return this;
     }
 
-    public FastGenerator pkg(Function<Pkg.Builder, Pkg.Builder> builder) {
+    public FastGenerator output(Function<Output.Builder, Output.Builder> builder) {
         builder.apply(this.configBuilder.getOutputBuilder());
         return this;
     }
@@ -140,6 +139,11 @@ public class FastGenerator {
 
     public FastGenerator controller(Function<Controller.Builder, Controller.Builder> builder) {
         builder.apply(this.configBuilder.getControllerBuilder());
+        return this;
+    }
+    
+    public FastGenerator model(Function<Model.Builder, Model.Builder> builder) {
+        builder.apply(this.configBuilder.getModelBuilder());
         return this;
     }
 
