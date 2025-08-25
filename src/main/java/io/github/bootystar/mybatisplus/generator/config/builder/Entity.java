@@ -271,17 +271,5 @@ public class Entity extends EntityConfig {
             this.config.serialVersionUID = false;
             return this;
         }
-
-        /**
-         * 禁用实体生成
-         *
-         * @return this
-         * @since 3.5.6
-         */
-        public Builder disable() {
-            this.config.generate = false;
-            return this;
-        }
-
     }
 }

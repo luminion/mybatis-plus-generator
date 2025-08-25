@@ -39,8 +39,8 @@ public interface ConstVal {
     String UPDATE_DTO = "UpdateDTO";
     String QUERY_DTO = "QueryDTO";
     String QUERY_VO = "QueryVO";
-    String EXCEL_IMPORT_DTO = "ImportDTO";
-    String EXCEL_EXPORT_VO = "ExportVO";
+    String IMPORT_DTO = "ImportDTO";
+    String EXPORT_VO = "ExportVO";
 
 
     String JAVA_TMPDIR = "java.io.tmpdir";

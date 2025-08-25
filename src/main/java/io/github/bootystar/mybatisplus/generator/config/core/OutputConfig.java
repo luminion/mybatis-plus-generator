@@ -52,84 +52,84 @@ public class OutputConfig implements ITemplate {
 
     @Getter
     protected TemplateFile entity = new TemplateFile()
-            .setKey("entity")
+            .setKey(ConstVal.ENTITY)
             .setFormatPattern("%s")
             .setSubPackage("entity")
             .setTemplatePath("/templates/entity.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile mapper = new TemplateFile()
-            .setKey("mapper")
+            .setKey(ConstVal.MAPPER)
             .setFormatPattern("%sMapper")
             .setSubPackage("mapper")
             .setTemplatePath("/templates/mapper.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile mapperXml = new TemplateFile()
-            .setKey("mapperXml")
+            .setKey(ConstVal.MAPPER_XML)
             .setFormatPattern("%sMapper")
             .setSubPackage("mapper.xml")
             .setTemplatePath("/templates/mapper.xml")
             .setOutputFileSuffix(".xml");
     @Getter
     protected TemplateFile service = new TemplateFile()
-            .setKey("service")
+            .setKey(ConstVal.SERVICE)
             .setFormatPattern("%sService")
             .setSubPackage("service")
             .setTemplatePath("/templates/service.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile serviceImpl = new TemplateFile()
-            .setKey("serviceImpl")
+            .setKey(ConstVal.SERVICE_IMPL)
             .setFormatPattern("%sServiceImpl")
             .setSubPackage("service.impl")
             .setTemplatePath("/templates/serviceImpl.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile controller = new TemplateFile()
-            .setKey("controller")
+            .setKey(ConstVal.CONTROLLER)
             .setFormatPattern("%sController")
             .setSubPackage("controller")
             .setTemplatePath("/templates/controller.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile createDTO = new TemplateFile()
-            .setKey("createDTO")
+            .setKey(ConstVal.CREATE_DTO)
             .setFormatPattern("%sCreateDTO")
             .setSubPackage("dto")
             .setTemplatePath("/templates/createDTO.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile updateDTO = new TemplateFile()
-            .setKey("updateDTO")
+            .setKey(ConstVal.UPDATE_DTO)
             .setFormatPattern("%sUpdateDTO")
             .setSubPackage("dto")
             .setTemplatePath("/templates/updateDTO.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile queryDTO = new TemplateFile()
-            .setKey("queryDTO")
+            .setKey(ConstVal.QUERY_DTO)
             .setFormatPattern("%s")
             .setSubPackage("dto")
             .setTemplatePath("/templates/queryDTO.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile queryVO = new TemplateFile()
-            .setKey("queryVO")
+            .setKey(ConstVal.QUERY_VO)
             .setFormatPattern("%s")
             .setSubPackage("vo")
             .setTemplatePath("/templates/queryVO.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile importDTO = new TemplateFile()
-            .setKey("importDTO")
+            .setKey(ConstVal.IMPORT_DTO)
             .setFormatPattern("%sImportDTO")
             .setSubPackage("dto")
             .setTemplatePath("/templates/importDTO.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile exportVO = new TemplateFile()
-            .setKey("exportVO")
+            .setKey(ConstVal.EXPORT_VO)
             .setFormatPattern("%sExportVO")
             .setSubPackage("vo")
             .setTemplatePath("/templates/exportVO.java")
