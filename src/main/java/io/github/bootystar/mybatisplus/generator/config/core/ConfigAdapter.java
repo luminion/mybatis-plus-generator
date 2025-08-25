@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config;
+package io.github.bootystar.mybatisplus.generator.config.core;
 
-import io.github.bootystar.mybatisplus.generator.config.core.*;
+import io.github.bootystar.mybatisplus.generator.config.INameConvert;
+import io.github.bootystar.mybatisplus.generator.config.enums.TemplateLoadWay;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
 import lombok.Getter;

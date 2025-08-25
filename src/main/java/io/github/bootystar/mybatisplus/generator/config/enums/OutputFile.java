@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config;
-
-import lombok.Getter;
+package io.github.bootystar.mybatisplus.generator.config.enums;
 
 /**
- * 模板文件加载方式
+ * 输出文件类型
  *
  * @author hubin
- * @since 3.5.9
+ * @since 2021-06-01
  */
-@Getter
-public enum TemplateLoadWay {
-    STRING("string"),
-    FILE("file");
-
-    private final String value;
-
-    TemplateLoadWay(String value) {
-        this.value = value;
-    }
-
-    public boolean isFile() {
-        return FILE == this;
-    }
+public enum OutputFile {
+    entity,
+    service,
+    serviceImpl,
+    mapper,
+    mapperXml,
+    controller,
+    parent,
+    createDTO,
+    updateDTO,
+    queryDTO,
+    queryVO,
+    excelImportDTO,
+    excelExportVO,
+    ;
 }

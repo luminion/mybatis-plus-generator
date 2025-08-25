@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
-import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
+import io.github.bootystar.mybatisplus.generator.config.core.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 
 import lombok.Getter;

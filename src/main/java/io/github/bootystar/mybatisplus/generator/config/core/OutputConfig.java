@@ -33,7 +33,7 @@ public class OutputConfig implements ITemplate {
     /**
      * 父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名
      */
-    protected String parent = "com.baomidou";
+    protected String parent = "io.github.bootystar";
 
     /**
      * 父包模块名
@@ -43,7 +43,8 @@ public class OutputConfig implements ITemplate {
     /**
      * 全局文件覆盖
      */
-    protected boolean fileOverride;
+    @Getter
+    protected boolean globalFileOverride;
 
     /**
      * 是否打开输出目录
@@ -193,22 +194,24 @@ public class OutputConfig implements ITemplate {
      * 获取输出文件
      */
     public List<CustomFile> getCustomFiles() {
-        return templateFileStream().map(e -> {
-            CustomFile customFile = new CustomFile();
-            String outputDir1 = e.getOutputDir();
-            if (outputDir1 == null) {
-                String joinPackage = joinPackage(e.getSubPackage());
-                outputDir1 = joinPath(outputDir, joinPackage);
-            }
-            customFile
-                    .setFormatNameFunction(e::convertFormatName)
-                    .setTemplatePath(e.getTemplatePath())
-                    .setOutputFileSuffix(e.getOutputFileSuffix())
-                    .setOutputDir(outputDir1)
-                    .setFileOverride(e.isFileOverride() || this.fileOverride)
-            ;
-            return customFile;
-        }).collect(Collectors.toList());
+        return templateFileStream()
+                .filter(TemplateFile::isGenerate)
+                .map(e -> {
+                    CustomFile customFile = new CustomFile();
+                    String fileOutputDir = e.getOutputDir();
+                    if (fileOutputDir == null) {
+                        String joinPackage = joinPackage(e.getSubPackage());
+                        fileOutputDir = joinPath(outputDir, joinPackage);
+                    }
+                    customFile
+                            .setFormatNameFunction(e::convertFormatName)
+                            .setTemplatePath(e.getTemplatePath())
+                            .setOutputFileSuffix(e.getOutputFileSuffix())
+                            .setOutputDir(fileOutputDir)
+                            .setFileOverride(e.isFileOverride() || this.globalFileOverride)
+                    ;
+                    return customFile;
+                }).collect(Collectors.toList());
     }
 
     @Override

@@ -16,7 +16,6 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
 import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.MethodPayload;
@@ -72,27 +71,6 @@ public class ControllerConfig implements ITemplate {
     protected boolean hyphenStyle = true;
 
     /**
-     * 转换输出控制器文件名称
-     *
-     * @since 3.5.0
-     */
-    protected Function<String, String> converterFileName = (entityName -> entityName + ConstVal.CONTROLLER);
-
-    /**
-     * 是否覆盖已有文件（默认 false）
-     *
-     * @since 3.5.2
-     */
-    protected boolean fileOverride;
-
-    /**
-     * 是否生成
-     *
-     * @since 3.5.6
-     */
-    protected boolean generate = true;
-
-    /**
      * 请求基础url
      */
     protected String baseUrl;
@@ -145,119 +123,119 @@ public class ControllerConfig implements ITemplate {
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> data = ITemplate.super.renderData(tableInfo);
-//        data.put("controllerMappingHyphen", StringUtils.camelToHyphen(tableInfo.getEntityPath()));
-//        data.put("controllerMappingHyphenStyle", this.hyphenStyle);
+        data.put("controllerMappingHyphen", StringUtils.camelToHyphen(tableInfo.getEntityPath()));
+        data.put("controllerMappingHyphenStyle", this.hyphenStyle);
         data.put("restControllerStyle", this.restController);
-//        data.put("superControllerClassPackage", StringUtils.isBlank(superClass) ? null : superClass);
+        data.put("superControllerClassPackage", StringUtils.isBlank(superClass) ? null : superClass);
         data.put("superControllerClass", ClassUtils.getSimpleName(this.superClass));
-        ConfigAdapter configAdapter = tableInfo.getConfigAdapter();
-        EntityConfig entityConfig = configAdapter.getEntityConfig();
-        StrategyConfig strategyConfig = configAdapter.getStrategyConfig();
-        ServiceConfig serviceConfig = configAdapter.getServiceConfig();
-        PackageConfig packageConfig = configAdapter.getPackageConfig();
-        GlobalConfig globalConfig = configAdapter.getGlobalConfig();
-
-        Collection<String> importControllerFrameworkPackages = new TreeSet<>();
-        Collection<String> importControllerJavaPackages = new TreeSet<>();
-        data.put("importFrameworkPackages", importControllerFrameworkPackages);
-        data.put("importJavaPackages", importControllerJavaPackages);
-        if (!StringUtils.isBlank(superClass)) {
-            importControllerFrameworkPackages.add(superClass);
-        }
-        if (globalConfig.isSpringdoc()) {
-            importControllerFrameworkPackages.add("io.swagger.v3.oas.annotations.tags.Tag");
-            importControllerFrameworkPackages.add("io.swagger.v3.oas.annotations.*");
-        } else if (globalConfig.isSwagger()) {
-            importControllerFrameworkPackages.add("io.swagger.annotations.Api");
-            importControllerFrameworkPackages.add("io.swagger.annotations.ApiOperation");
-        }
-        if (!restController) {
-            importControllerFrameworkPackages.add("org.springframework.stereotype.Controller");
-        }
-        if (serviceConfig.generateService) {
-            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.SERVICE) + "." + tableInfo.getServiceName());
-        } else {
-            importControllerFrameworkPackages.add(packageConfig.getPackageInfo().get(ConstVal.SERVICE_IMPL) + "." + tableInfo.getServiceImplName());
-        }
-        if (returnMethod.isRegistered()) {
-            importControllerFrameworkPackages.add(returnMethod.getClassFullName());
-        }
-
-        String requestBaseUrl = Stream.of(this.baseUrl,
-                        packageConfig.getModuleName(),
-                        this.hyphenStyle ? StringUtils.camelToHyphen(tableInfo.getEntityPath()) : tableInfo.getEntityPath()
-                ).filter(StringUtils::isNotBlank)
-                .collect(Collectors.joining("/"));
-        data.put("requestBaseUrl", requestBaseUrl);
-        String requestBodyStr = "@RequestBody ";
-        String optionalBodyStr = postQuery ? "@RequestBody(required = false) " : "";
-        String validatedStr = globalConfig.isValidated() ? "@Validated " : "";
-        data.put("requestBodyStr", requestBodyStr);
-        data.put("optionalBodyStr", optionalBodyStr);
-        data.put("validatedStr", validatedStr);
-        for (TableField field : tableInfo.getFields()) {
-            if (field.isKeyFlag()) {
-                data.put("primaryKeyPropertyType", field.getPropertyType());
-                break;
-            }
-        }
-        if (globalConfig.isGenerateQuery() || globalConfig.isGenerateExport()) {
-            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.QUERY_VO) + "." + tableInfo.getEntityVOName());
-            String entityQueryDTOStr = tableInfo.getEntityQueryDTOName();
-            if (this.queryDTO != null && this.queryDTO.isRegistered()) {
-                if (Map.class.isAssignableFrom(this.queryDTO.getClazz()) && !postQuery) {
-                    entityQueryDTOStr = "@RequestParam " + entityQueryDTOStr;
-                    importControllerJavaPackages.add(queryDTO.getClassFullName());
-                } else {
-                    importControllerFrameworkPackages.add(queryDTO.getClassFullName());
-                }
-            } else {
-                importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.QUERY_DTO) + "." + tableInfo.getEntityQueryDTOName());
-            }
-            data.put("entityQueryDTOStr", entityQueryDTOStr);
-          
-
-
-            if (this.pathVariable) {
-                data.put("pagePathParams", "/{current}/{size}");
-                data.put("pageMethodParams", "@PathVariable(\"current\") Long current, @PathVariable(\"size\") Long size");
-                data.put("idPathParams", "/{id}");
-                data.put("idMethodParams", "@PathVariable(\"id\") ");
-            } else {
-                data.put("pageMethodParams", "Long current, Long size");
-            }
-            importControllerJavaPackages.add("java.util.List");
-            if (pageMethod.isRegistered()) {
-                importControllerFrameworkPackages.add(pageMethod.getClassFullName());
-                data.put("pageClazz4return", pageMethod.clazz(tableInfo.getEntityVOName()));
-            } else {
-                importControllerFrameworkPackages.add("com.baomidou.mybatisplus.core.metadata.IPage");
-                data.put("pageClazz4return", "IPage<" + tableInfo.getEntityVOName() + ">");
-            }
-        }
-        if (globalConfig.isValidated() && (globalConfig.isGenerateInsert() || globalConfig.isGenerateUpdate())) {
-            importControllerFrameworkPackages.add("org.springframework.validation.annotation.Validated");
-        }
-        if (globalConfig.isGenerateInsert()) {
-            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.CREATE_DTO) + "." + tableInfo.getEntityInsertDTOName());
-        }
-        if (globalConfig.isGenerateUpdate()) {
-            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.UPDATE_DTO) + "." + tableInfo.getEntityUpdateDTOName());
-        }
-
-        if (globalConfig.generateImport || globalConfig.generateExport) {
-            if (globalConfig.generateImport) {
-                importControllerJavaPackages.add("org.springframework.web.multipart.MultipartFile");
-            }
-            importControllerJavaPackages.add("java.io.IOException");
-            String pkg = globalConfig.resolveJavaApiPackage("servlet.http.HttpServletResponse");
-            if (pkg.startsWith("java")) {
-                importControllerJavaPackages.add(pkg);
-            } else {
-                importControllerFrameworkPackages.add(pkg);
-            }
-        }
-
+//        ConfigAdapter configAdapter = tableInfo.getConfigAdapter();
+//        EntityConfig entityConfig = configAdapter.getEntityConfig();
+//        StrategyConfig strategyConfig = configAdapter.getStrategyConfig();
+//        ServiceConfig serviceConfig = configAdapter.getServiceConfig();
+//        PackageConfig packageConfig = configAdapter.getPackageConfig();
+//        GlobalConfig globalConfig = configAdapter.getGlobalConfig();
+//
+//        Collection<String> importControllerFrameworkPackages = new TreeSet<>();
+//        Collection<String> importControllerJavaPackages = new TreeSet<>();
+//        data.put("importFrameworkPackages", importControllerFrameworkPackages);
+//        data.put("importJavaPackages", importControllerJavaPackages);
+//        if (!StringUtils.isBlank(superClass)) {
+//            importControllerFrameworkPackages.add(superClass);
+//        }
+//        if (globalConfig.isSpringdoc()) {
+//            importControllerFrameworkPackages.add("io.swagger.v3.oas.annotations.tags.Tag");
+//            importControllerFrameworkPackages.add("io.swagger.v3.oas.annotations.*");
+//        } else if (globalConfig.isSwagger()) {
+//            importControllerFrameworkPackages.add("io.swagger.annotations.Api");
+//            importControllerFrameworkPackages.add("io.swagger.annotations.ApiOperation");
+//        }
+//        if (!restController) {
+//            importControllerFrameworkPackages.add("org.springframework.stereotype.Controller");
+//        }
+//        if (serviceConfig.generateService) {
+//            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.SERVICE) + "." + tableInfo.getServiceName());
+//        } else {
+//            importControllerFrameworkPackages.add(packageConfig.getPackageInfo().get(ConstVal.SERVICE_IMPL) + "." + tableInfo.getServiceImplName());
+//        }
+//        if (returnMethod.isRegistered()) {
+//            importControllerFrameworkPackages.add(returnMethod.getClassFullName());
+//        }
+//
+//        String requestBaseUrl = Stream.of(this.baseUrl,
+//                        packageConfig.getModuleName(),
+//                        this.hyphenStyle ? StringUtils.camelToHyphen(tableInfo.getEntityPath()) : tableInfo.getEntityPath()
+//                ).filter(StringUtils::isNotBlank)
+//                .collect(Collectors.joining("/"));
+//        data.put("requestBaseUrl", requestBaseUrl);
+//        String requestBodyStr = "@RequestBody ";
+//        String optionalBodyStr = postQuery ? "@RequestBody(required = false) " : "";
+//        String validatedStr = globalConfig.isValidated() ? "@Validated " : "";
+//        data.put("requestBodyStr", requestBodyStr);
+//        data.put("optionalBodyStr", optionalBodyStr);
+//        data.put("validatedStr", validatedStr);
+//        for (TableField field : tableInfo.getFields()) {
+//            if (field.isKeyFlag()) {
+//                data.put("primaryKeyPropertyType", field.getPropertyType());
+//                break;
+//            }
+//        }
+//        if (globalConfig.isGenerateQuery() || globalConfig.isGenerateExport()) {
+//            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.QUERY_VO) + "." + tableInfo.getEntityVOName());
+//            String entityQueryDTOStr = tableInfo.getEntityQueryDTOName();
+//            if (this.queryDTO != null && this.queryDTO.isRegistered()) {
+//                if (Map.class.isAssignableFrom(this.queryDTO.getClazz()) && !postQuery) {
+//                    entityQueryDTOStr = "@RequestParam " + entityQueryDTOStr;
+//                    importControllerJavaPackages.add(queryDTO.getClassFullName());
+//                } else {
+//                    importControllerFrameworkPackages.add(queryDTO.getClassFullName());
+//                }
+//            } else {
+//                importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.QUERY_DTO) + "." + tableInfo.getEntityQueryDTOName());
+//            }
+//            data.put("entityQueryDTOStr", entityQueryDTOStr);
+//          
+//
+//
+//            if (this.pathVariable) {
+//                data.put("pagePathParams", "/{current}/{size}");
+//                data.put("pageMethodParams", "@PathVariable(\"current\") Long current, @PathVariable(\"size\") Long size");
+//                data.put("idPathParams", "/{id}");
+//                data.put("idMethodParams", "@PathVariable(\"id\") ");
+//            } else {
+//                data.put("pageMethodParams", "Long current, Long size");
+//            }
+//            importControllerJavaPackages.add("java.util.List");
+//            if (pageMethod.isRegistered()) {
+//                importControllerFrameworkPackages.add(pageMethod.getClassFullName());
+//                data.put("pageClazz4return", pageMethod.clazz(tableInfo.getEntityVOName()));
+//            } else {
+//                importControllerFrameworkPackages.add("com.baomidou.mybatisplus.core.metadata.IPage");
+//                data.put("pageClazz4return", "IPage<" + tableInfo.getEntityVOName() + ">");
+//            }
+//        }
+//        if (globalConfig.isValidated() && (globalConfig.isGenerateInsert() || globalConfig.isGenerateUpdate())) {
+//            importControllerFrameworkPackages.add("org.springframework.validation.annotation.Validated");
+//        }
+//        if (globalConfig.isGenerateInsert()) {
+//            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.CREATE_DTO) + "." + tableInfo.getEntityInsertDTOName());
+//        }
+//        if (globalConfig.isGenerateUpdate()) {
+//            importControllerFrameworkPackages.add(configAdapter.getPackageInfo().get(ConstVal.UPDATE_DTO) + "." + tableInfo.getEntityUpdateDTOName());
+//        }
+//
+//        if (globalConfig.generateImport || globalConfig.generateExport) {
+//            if (globalConfig.generateImport) {
+//                importControllerJavaPackages.add("org.springframework.web.multipart.MultipartFile");
+//            }
+//            importControllerJavaPackages.add("java.io.IOException");
+//            String pkg = globalConfig.resolveJavaApiPackage("servlet.http.HttpServletResponse");
+//            if (pkg.startsWith("java")) {
+//                importControllerJavaPackages.add(pkg);
+//            } else {
+//                importControllerFrameworkPackages.add(pkg);
+//            }
+//        }
+//
         return data;
     }
 

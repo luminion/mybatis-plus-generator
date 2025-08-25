@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * @author bootystar
@@ -203,28 +202,6 @@ public class Entity extends EntityConfig {
          */
         public Builder idType(IdType idType) {
             this.config.idType = idType;
-            return this;
-        }
-
-        /**
-         * 格式化文件名称
-         *
-         * @param format 　格式
-         * @return this
-         * @since 3.5.0
-         */
-        public Builder formatFileName(String format) {
-            this.config.converterFileName = entityName -> String.format(format, entityName);
-            return this;
-        }
-
-        /**
-         * 覆盖已有文件
-         *
-         * @since 3.5.3
-         */
-        public Builder enableFileOverride() {
-            this.config.fileOverride = true;
             return this;
         }
 

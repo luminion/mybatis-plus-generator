@@ -1,6 +1,6 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
-import io.github.bootystar.mybatisplus.generator.config.ConfigAdapter;
+import io.github.bootystar.mybatisplus.generator.config.core.ConfigAdapter;
 import lombok.Getter;
 
 /**

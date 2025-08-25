@@ -15,7 +15,9 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.core;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.INameConvert;
@@ -30,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -121,20 +122,6 @@ public class EntityConfig implements ITemplate {
     protected IdType idType;
 
     /**
-     * 转换输出文件名称
-     *
-     * @since 3.5.0
-     */
-    protected Function<String, String> converterFileName = (entityName -> entityName);
-
-    /**
-     * 是否覆盖已有文件（默认 false）
-     *
-     * @since 3.5.2
-     */
-    protected boolean fileOverride;
-
-    /**
      * 实体是否生成 serialVersionUID
      */
     protected boolean serialVersionUID = true;
@@ -170,13 +157,6 @@ public class EntityConfig implements ITemplate {
      * @since 3.5.0
      */
     protected boolean activeRecord;
-
-    /**
-     * 是否生成
-     *
-     * @since 3.5.6
-     */
-    protected boolean generate = true;
 
     public NamingStrategy getColumnNaming() {
         // 未指定以 naming 策略为准
@@ -253,7 +233,7 @@ public class EntityConfig implements ITemplate {
         if (globalConfig.isSpringdoc()) {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
         }
-        if (!globalConfig.isKotlin() && globalConfig.isLombok()) {
+        if (globalConfig.isLombok()) {
             if (globalConfig.isChainModel()) {
                 importPackages.add("lombok.experimental.Accessors");
             }

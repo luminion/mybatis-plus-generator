@@ -46,18 +46,6 @@ public class Injection extends InjectionConfig {
             return this;
         }
 
-        /**
-         * 自定义配置模板文件
-         *
-         * @param customFile key为文件名称，value为文件路径
-         * @return this
-         */
-        public Builder customFile(Map<String, String> customFile) {
-            return customFile(customFile.entrySet().stream()
-                    .map(e -> new CustomFile.Builder().fileName(e.getKey()).templatePath(e.getValue()).build())
-                    .collect(Collectors.toList()));
-        }
-
         public Builder customFile(CustomFile customFile) {
             this.config.customFiles.add(customFile);
             return this;
@@ -65,13 +53,6 @@ public class Injection extends InjectionConfig {
 
         public Builder customFile(List<CustomFile> customFiles) {
             this.config.customFiles.addAll(customFiles);
-            return this;
-        }
-
-        public Builder customFile(Consumer<CustomFile.Builder> consumer) {
-            CustomFile.Builder builder = new CustomFile.Builder();
-            consumer.accept(builder);
-            this.config.customFiles.add(builder.build());
             return this;
         }
     }

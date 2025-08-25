@@ -57,8 +57,6 @@ public class GlobalConfig implements ITemplate {
      */
     protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-
-
     /**
      * 【实体】是否为lombok模型（默认 false）<br>
      * <a href="https://projectlombok.org/">document</a>
@@ -179,7 +177,6 @@ public class GlobalConfig implements ITemplate {
         Map<String, Object> data = ITemplate.super.renderData(tableInfo);
         data.put("author", this.author);
         data.put("date", this.getCommentDate());
-        data.put("kotlin", this.kotlin);
         data.put("swagger", this.isSwagger());
         data.put("springdoc", this.springdoc);
         data.put("generateQuery", this.generateQuery);

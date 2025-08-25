@@ -16,9 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.toolkit.ClassUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.IConfigBuilder;
 import io.github.bootystar.mybatisplus.generator.config.IDbQuery;
 import io.github.bootystar.mybatisplus.generator.config.IKeyWordsHandler;
 import io.github.bootystar.mybatisplus.generator.config.ITypeConvert;
