@@ -67,199 +67,14 @@ public abstract class AbstractTemplateEngine {
      * @since 3.5.3
      */
     protected void outputCustomFile(List<CustomFile> customFiles, TableInfo tableInfo, Map<String, Object> objectMap) {
-        String entityName = tableInfo.getEntityName();
-        GlobalConfig globalConfig = configAdapter.getGlobalConfig();
-        String parentPath = getPathInfo(OutputFile.parent);
         customFiles.forEach(file -> {
-            String filePath = StringUtils.isNotBlank(file.getOutputDir()) ? file.getOutputDir() : parentPath;
-            if (StringUtils.isNotBlank(file.getPackageName())) {
-                filePath = filePath + File.separator + file.getPackageName().replaceAll("\\.", StringPool.BACK_SLASH + File.separator);
-            }
+            file.validate();
+            String outputDir = file.getOutputDir();
             Function<TableInfo, String> formatNameFunction = file.getFormatNameFunction();
-            String fileName = filePath + File.separator + (null != formatNameFunction ? formatNameFunction.apply(tableInfo) : entityName) + file.getOutputFileSuffix();
-            outputFile(
-                    new File(fileName), 
-                    objectMap, 
-                    file.getTemplatePath(), 
-                    file.isFileOverride()  || globalConfig.isFileOverride()
-            );
+            String fileName = outputDir + File.separator + formatNameFunction.apply(tableInfo) + file.getOutputFileSuffix();
+            outputFile(new File(fileName), objectMap, file.getTemplatePath(), file.isFileOverride());
         });
     }
-
-    protected File getOutputFile(String filePath, OutputFile outputFile) {
-        return getConfigAdapter().getStrategyConfig().getOutputFile().createFile(filePath, outputFile);
-    }
-    
-    /**
-     * 输出实体文件
-     *
-     * @param tableInfo 表信息
-     * @param objectMap 渲染数据
-     * @since 3.5.0
-     */
-    protected void outputEntity(TableInfo tableInfo, Map<String, Object> objectMap) {
-        String entityName = tableInfo.getEntityName();
-        String entityPath = getPathInfo(OutputFile.entity);
-        EntityConfig entityConfig = this.getConfigAdapter().getEntityConfig();
-        GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
-        TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
-        if (entityConfig.isGenerate()) {
-            String entityFile = String.format((entityPath + File.separator + "%s" + suffixJavaOrKt()), entityName);
-            outputFile(
-                    getOutputFile(entityFile, OutputFile.entity),
-                    objectMap, 
-                    templateFilePath(globalConfig.isKotlin() ? templateConfig.getEntityKt() : templateConfig.getEntity()), 
-                    entityConfig.isFileOverride() || globalConfig.isFileOverride());
-        }
-    }
-
-
-    private void outputModel(TableInfo tableInfo, Map<String, Object> objectMap) {
-        String entityName = tableInfo.getEntityName();
-        String entityInsertDTOPath = getPathInfo(OutputFile.createDTO);
-        String entityUpdateDTOPath = getPathInfo(OutputFile.updateDTO);
-        String entityQueryDTOPath = getPathInfo(OutputFile.queryDTO);
-        String entityVOPath = getPathInfo(OutputFile.queryVO);
-        ModelConfig modelConfig = this.configAdapter.getModelConfig();
-        GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
-        TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
-        if (globalConfig.isGenerateQuery() || globalConfig.isGenerateExport()) {
-            // query dto
-            String entityQueryDTOFile = String.format((entityQueryDTOPath + File.separator + tableInfo.getEntityQueryDTOName() + suffixJavaOrKt()), entityName);
-            outputFile(
-                    getOutputFile(entityQueryDTOFile, OutputFile.mapper),
-                    objectMap,
-                    templateFilePath(templateConfig.getEntityQueryDTO()),
-                    modelConfig.isFileOverride() || globalConfig.isFileOverride()
-            );
-            // vo
-            String entityVOFile = String.format((entityVOPath + File.separator + tableInfo.getEntityVOName() + suffixJavaOrKt()), entityName);
-            outputFile(
-                    getOutputFile(entityVOFile, OutputFile.queryVO),
-                    objectMap,
-                    templateFilePath(templateConfig.getEntityVO()),
-                    modelConfig.isFileOverride() || globalConfig.isFileOverride()
-            );
-        }
-        if (globalConfig.isGenerateInsert() || globalConfig.isGenerateImport()) {
-            String entityInsertDTOFile = String.format((entityInsertDTOPath + File.separator + tableInfo.getEntityInsertDTOName() + suffixJavaOrKt()), entityName);
-            outputFile(
-                    getOutputFile(entityInsertDTOFile, OutputFile.createDTO),
-                    objectMap,
-                    templateFilePath(templateConfig.getEntityInsertDTO()),
-                    modelConfig.isFileOverride() || globalConfig.isFileOverride()
-            );
-        }
-        if (globalConfig.isGenerateUpdate()) {
-            String entityUpdateDTOFile = String.format((entityUpdateDTOPath + File.separator + tableInfo.getEntityUpdateDTOName() + suffixJavaOrKt()), entityName);
-            outputFile(
-                    getOutputFile(entityUpdateDTOFile, OutputFile.updateDTO),
-                    objectMap,
-                    templateFilePath(templateConfig.getEntityUpdateDTO()),
-                    modelConfig.isFileOverride() || globalConfig.isFileOverride()
-            );
-        }
-     
-    }
-
-    /**
-     * 输出Mapper文件(含xml)
-     *
-     * @param tableInfo 表信息
-     * @param objectMap 渲染数据
-     * @since 3.5.0
-     */
-    protected void outputMapper(TableInfo tableInfo, Map<String, Object> objectMap) {
-        // MpMapper.java
-        String entityName = tableInfo.getEntityName();
-        String mapperPath = getPathInfo(OutputFile.mapper);
-        MapperConfig mapperConfig = this.getConfigAdapter().getMapperConfig();
-        GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
-        TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
-        if (mapperConfig.isGenerateMapper()) {
-            String mapperFile = String.format((mapperPath + File.separator + tableInfo.getMapperName() + suffixJavaOrKt()), entityName);
-            outputFile(
-                    getOutputFile(mapperFile, OutputFile.mapper), 
-                    objectMap, 
-                    templateFilePath(templateConfig.getMapper()), 
-                    mapperConfig.isFileOverride() || globalConfig.isFileOverride()
-            );
-        }
-        // MpMapper.xml
-        String xmlPath = getPathInfo(OutputFile.mapperXml);
-        if (mapperConfig.isGenerateMapperXml()) {
-            String xmlFile = String.format((xmlPath + File.separator + tableInfo.getXmlName() + ConstVal.XML_SUFFIX), entityName);
-            outputFile(
-                    getOutputFile(xmlFile, OutputFile.mapperXml),
-                    objectMap, 
-                    templateFilePath(templateConfig.getMapperXml()),
-                    mapperConfig.isFileOverride() || globalConfig.isFileOverride()
-            );
-        }
-    }
-
-    /**
-     * 输出service文件
-     *
-     * @param tableInfo 表信息
-     * @param objectMap 渲染数据
-     * @since 3.5.0
-     */
-    protected void outputService(TableInfo tableInfo, Map<String, Object> objectMap) {
-        // IMpService.java
-        String entityName = tableInfo.getEntityName();
-        // 判断是否要生成service接口
-        ServiceConfig serviceConfig = this.getConfigAdapter().getServiceConfig();
-        GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
-        TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
-        if (serviceConfig.isGenerateService()) {
-            String servicePath = getPathInfo(OutputFile.service);
-            String serviceFile = String.format((servicePath + File.separator + tableInfo.getServiceName() + suffixJavaOrKt()), entityName);
-            outputFile(
-                    getOutputFile(serviceFile, OutputFile.service),
-                    objectMap, 
-                    templateFilePath(templateConfig.getService()), 
-                    serviceConfig.isFileOverride() || globalConfig.isFileOverride()
-            );
-        }
-        // MpServiceImpl.java
-        String serviceImplPath = getPathInfo(OutputFile.serviceImpl);
-        if (serviceConfig.isGenerateServiceImpl()) {
-            String implFile = String.format((serviceImplPath + File.separator + tableInfo.getServiceImplName() + suffixJavaOrKt()), entityName);
-            outputFile(
-                    getOutputFile(implFile, OutputFile.serviceImpl),
-                    objectMap, 
-                    templateFilePath(templateConfig.getServiceImpl()), 
-                    serviceConfig.isFileOverride() || globalConfig.isFileOverride()
-            );
-        }
-    }
-
-    /**
-     * 输出controller文件
-     *
-     * @param tableInfo 表信息
-     * @param objectMap 渲染数据
-     * @since 3.5.0
-     */
-    protected void outputController(TableInfo tableInfo, Map<String, Object> objectMap) {
-        // MpController.java
-        ControllerConfig controllerConfig = this.getConfigAdapter().getControllerConfig();
-        GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
-        TemplateConfig templateConfig = this.getConfigAdapter().getTemplateConfig();
-        String controllerPath = getPathInfo(OutputFile.controller);
-        if (controllerConfig.isGenerate()) {
-            String entityName = tableInfo.getEntityName();
-            String controllerFile = String.format((controllerPath + File.separator + tableInfo.getControllerName() + suffixJavaOrKt()), entityName);
-            outputFile(
-                    getOutputFile(controllerFile, OutputFile.controller),
-                    objectMap, 
-                    templateFilePath(templateConfig.getController()), 
-                    controllerConfig.isFileOverride() || globalConfig.isFileOverride()
-            );
-        }
-    }
-
 
 
     /**
@@ -288,16 +103,6 @@ public abstract class AbstractTemplateEngine {
     }
 
     /**
-     * 获取路径信息
-     *
-     * @param outputFile 输出文件
-     * @return 路径信息
-     */
-    protected String getPathInfo(OutputFile outputFile) {
-        return getConfigAdapter().getPathInfo().get(outputFile);
-    }
-
-    /**
      * 批量输出 java xml 文件
      */
     public AbstractTemplateEngine batchOutput() {
@@ -306,22 +111,16 @@ public abstract class AbstractTemplateEngine {
             List<TableInfo> tableInfoList = config.getTableInfo();
             tableInfoList.forEach(tableInfo -> {
                 Map<String, Object> objectMap = this.getObjectMap(config, tableInfo);
-                Optional.ofNullable(config.getInjectionConfig()).ifPresent(t -> {
+                Optional.ofNullable(config.getInjectionConfig()).ifPresent(injectionConfig -> {
                     // 添加自定义属性
-                    t.beforeOutputFile(tableInfo, objectMap);
+                    injectionConfig.beforeOutputFile(tableInfo, objectMap);
+                    
+                    // 输出预定义文件
+                    outputCustomFile(config.getOutputConfig().getCustomFiles(), tableInfo, objectMap);
+                    
                     // 输出自定义文件
-                    outputCustomFile(t.getCustomFiles(), tableInfo, objectMap);
+                    outputCustomFile(injectionConfig.getCustomFiles(), tableInfo, objectMap);
                 });
-                // entity
-                outputEntity(tableInfo, objectMap);
-                // mapper and xml
-                outputMapper(tableInfo, objectMap);
-                // service and impl
-                outputService(tableInfo, objectMap);
-                // controller
-                outputController(tableInfo, objectMap);
-                // dto and vo
-                outputModel(tableInfo, objectMap);
             });
         } catch (Exception e) {
             throw new RuntimeException("无法创建文件，请检查配置信息！", e);
@@ -355,10 +154,10 @@ public abstract class AbstractTemplateEngine {
      * 打开输出目录
      */
     public void open() {
-        String outDir = getConfigAdapter().getGlobalConfig().getOutputDir();
+        String outDir = getConfigAdapter().getOutputConfig().getOutputDir();
         if (StringUtils.isBlank(outDir) || !new File(outDir).exists()) {
             System.err.println("未找到输出目录：" + outDir);
-        } else if (getConfigAdapter().getGlobalConfig().isOpen()) {
+        } else if (getConfigAdapter().getOutputConfig().isOpen()) {
             try {
                 RuntimeUtils.openDir(outDir);
             } catch (IOException e) {
@@ -379,7 +178,6 @@ public abstract class AbstractTemplateEngine {
         Map<String, Object> globalMap = config.getGlobalConfig().renderData(tableInfo);
         objectMap.putAll(globalMap);
         
-        
         StrategyConfig strategyConfig = config.getStrategyConfig();
         // 启用 schema 处理逻辑
         String schemaName = "";
@@ -395,29 +193,33 @@ public abstract class AbstractTemplateEngine {
         }
         objectMap.put("schemaName", schemaName);
         objectMap.put("config", config);
-        objectMap.put("package", config.getPackageConfig().getPackageInfo(config.getInjectionConfig()));
         objectMap.put("table", tableInfo);
-        objectMap.put("entity", tableInfo.getEntityName());
-        objectMap.put("entityInsertDTO", tableInfo.getEntityInsertDTOName());
-        objectMap.put("entityUpdateDTO", tableInfo.getEntityUpdateDTOName());
-        objectMap.put("entityQueryDTO", tableInfo.getEntityQueryDTOName());
-        objectMap.put("entityVO", tableInfo.getEntityVOName());
+
+        // 策略配置
+        Map<String, Object> strategyData = strategyConfig.renderData(tableInfo);
+        objectMap.putAll(strategyData);
+
+        // 包及输出文件
+        Map<String, Object> outputData = config.getOutputConfig().renderData(tableInfo);
+        objectMap.putAll(outputData);
         
-        Map<String, Object> map = strategyConfig.renderData(tableInfo);
-        objectMap.putAll(map);
-        
+        // 实体配置
         Map<String, Object> entityData = config.getEntityConfig().renderData(tableInfo);
         objectMap.putAll(entityData);
         
+        // 模型配置
         Map<String, Object> modelData = config.getModelConfig().renderData(tableInfo);
         objectMap.putAll(modelData);
         
+        // mapper配置
         Map<String, Object> mapperData = config.getMapperConfig().renderData(tableInfo);
         objectMap.putAll(mapperData);
         
+        // service配置
         Map<String, Object> serviceData = config.getServiceConfig().renderData(tableInfo);
         objectMap.putAll(serviceData);
         
+        // controller配置
         Map<String, Object> controllerData = config.getControllerConfig().renderData(tableInfo);
         objectMap.putAll(controllerData);
         
@@ -445,12 +247,5 @@ public abstract class AbstractTemplateEngine {
             LOGGER.warn("文件[{}]已存在，且未开启文件覆盖配置，需要开启配置可到策略配置中设置！！！", file.getName());
         }
         return !file.exists() || fileOverride;
-    }
-
-    /**
-     * 文件后缀
-     */
-    protected String suffixJavaOrKt() {
-        return getConfigAdapter().getGlobalConfig().isKotlin() ? ConstVal.KT_SUFFIX : ConstVal.JAVA_SUFFIX;
     }
 }
