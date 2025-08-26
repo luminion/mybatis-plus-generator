@@ -15,6 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.config;
 
+import io.github.bootystar.mybatisplus.generator.config.interfaces.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.support.*;
 import io.github.bootystar.mybatisplus.generator.config.enums.TemplateLoadWay;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;

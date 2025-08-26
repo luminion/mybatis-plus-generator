@@ -19,6 +19,7 @@ import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +45,7 @@ public class GlobalConfig implements ITemplate {
     /**
      * 时间类型对应策略
      */
+    @Getter
     protected DateType dateType = DateType.TIME_PACK;
 
     /**

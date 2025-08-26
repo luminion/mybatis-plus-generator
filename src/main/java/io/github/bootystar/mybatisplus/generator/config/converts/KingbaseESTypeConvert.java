@@ -15,11 +15,11 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.converts;
 
-import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
-import ITypeConvert;
+import io.github.bootystar.mybatisplus.generator.config.interfaces.ITypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 import io.github.bootystar.mybatisplus.generator.config.rules.DbColumnType;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
+import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
 
 import static io.github.bootystar.mybatisplus.generator.config.converts.TypeConverts.contains;
 import static io.github.bootystar.mybatisplus.generator.config.converts.TypeConverts.containsAny;
