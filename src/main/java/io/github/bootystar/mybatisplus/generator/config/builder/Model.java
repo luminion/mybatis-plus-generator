@@ -16,6 +16,46 @@ public class Model extends ModelConfig {
             return this.config;
         }
         
+        /**
+         * 查询dto继承实体类
+         *
+         * @return this
+         */
+        public Builder enableQueryDTOExtendsEntity() {
+            this.config.queryDTOExtendsEntity = true;
+            return this;
+        }
+        
+        /**
+         * 查询vo继承实体类
+         *
+         * @return this
+         */
+        public Builder enableQueryVOExtendsEntity() {
+            this.config.queryVOExtendsEntity = true;
+            return this;
+        }
+        
+        /**
+         * 使用新增dto作为导入dto
+         *
+         * @return this
+         */
+        public Builder enableImportOnCreateDTO() {
+            this.config.importOnCreateDTO = true;
+            return this;
+        }
+        
+        /**
+         * 使用vo作为导出vo
+         *
+         * @return this
+         */
+        public Builder enableExportOnQueryVO() {
+            this.config.exportOnQueryVO = true;
+            return this;
+        }
+        
     }
     
 }

@@ -75,36 +75,6 @@ public class TableInfo {
     private String entityName;
 
     /**
-     * mapper名称
-     */
-    @Getter
-    private String mapperName;
-
-    /**
-     * xml名称
-     */
-    @Getter
-    private String xmlName;
-
-    /**
-     * service名称
-     */
-    @Getter
-    private String serviceName;
-
-    /**
-     * serviceImpl名称
-     */
-    @Getter
-    private String serviceImplName;
-
-    /**
-     * controller名称
-     */
-    @Getter
-    private String controllerName;
-
-    /**
      * 表字段
      */
     @Getter
@@ -315,8 +285,8 @@ public class TableInfo {
         boolean springdoc = globalConfig.isSpringdoc();
         boolean notBlank = StringUtils.isNotBlank(comment);
         boolean commentUUID = globalConfig.isCommentUUID();
-        String uuid = commentUUID ? UUID.randomUUID().toString().substring(0, 4).toUpperCase() : "";
-        this.comment = (swagger || springdoc) &&  notBlank ? comment.replace("\"", "\\\"") +"@" +uuid : comment;
+        String uuid = commentUUID ? "@" + UUID.randomUUID().toString().substring(0, 4).toUpperCase() : "";
+        this.comment = (swagger || springdoc) && notBlank ? comment.replace("\"", "\\\"") + uuid : comment;
         return this;
     }
 

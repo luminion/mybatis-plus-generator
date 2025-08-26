@@ -16,16 +16,18 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import io.github.bootystar.mybatisplus.generator.config.po.ExtraField;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.ExtraFieldStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
-import org.apache.ibatis.type.JdbcType;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 /**
  * 策略配置项
@@ -211,28 +213,64 @@ public class StrategyConfig implements ITemplate {
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> map = ITemplate.super.renderData(tableInfo);
-        // DTO及VO导入的包
-        Set<String> importPackages = tableInfo.getImportPackages();
-        Set<String> importPackages4DTO = new HashSet<>();
-        for (String importPackage : importPackages) {
-            if (!importPackage.startsWith("com.baomidou.mybatisplus.annotation")) {
-                importPackages4DTO.add(importPackage);
+        List<ExtraField> extraFields = new ArrayList<>();
+        Set<String> existPropertyNames = tableInfo.getFields().stream().map(e -> e.getPropertyName()).collect(Collectors.toSet());
+        for (TableField field : tableInfo.getFields()) {
+            if (field.isLogicDeleteField()) {
+                continue;
+            }
+            for (Entry<String, String> entry : extraFieldSuffixMap.entrySet()) {
+                String suffix = entry.getKey();
+                String sqlOperator = entry.getValue().toUpperCase();
+                if (extraFieldStrategy.apply(entry.getValue(), field)) {
+                    String suffixPropertyName = field.getPropertyName() + suffix;
+                    if (existPropertyNames.contains(suffixPropertyName)) {
+                        continue;
+                    }
+                    existPropertyNames.add(suffixPropertyName);
+                    ExtraField extraField = new ExtraField();
+                    if (sqlOperator.equalsIgnoreCase("IN") || sqlOperator.equalsIgnoreCase("NOT IN")) {
+                        extraField.setPropertyType("List<" + field.getPropertyType() + ">");
+                    } else {
+                        extraField.setPropertyType(field.getPropertyType());
+                    }
+                    extraField.setPropertyName(suffixPropertyName);
+                    extraField.setCapitalName(field.getCapitalName() + suffix);
+                    extraField.setColumnName(field.getColumnName());
+                    extraField.setComment(this.replaceComment(field.getComment(), sqlOperator));
+                    extraField.setSqlOperator(sqlOperator);
+                    extraFields.add(extraField);
+                }
             }
         }
-        if (!importPackages4DTO.isEmpty()) {
-            map.put("importPackages4DTO", importPackages4DTO);
-        }
-        List<JdbcType> jdbcTimeTypes = Arrays.asList(
-                JdbcType.DATE,
-                JdbcType.TIME,
-                JdbcType.TIMESTAMP,
-                JdbcType.DATETIMEOFFSET,// SQL Server 2008
-                JdbcType.TIME_WITH_TIMEZONE,// JDBC 4.2 JDK8
-                JdbcType.TIMESTAMP_WITH_TIMEZONE // JDBC 4.2 JDK8
-        );
-        map.put("jdbcTimeTypes", jdbcTimeTypes);
-
+        map.put("extraFields", extraFields);
         return map;
+    }
+
+    /**
+     * 替换注释并检查sql运算符是否合规
+     *
+     * @param comment     评论
+     * @param sqlOperator sql运算符
+     */
+    public String replaceComment(String comment, String sqlOperator) {
+        switch (sqlOperator){
+            case "LIKE": return comment + "(模糊匹配)";
+            case "NOT LIKE": return comment + "(模糊匹配的反结果)";
+            case "IN": return comment + "(包含值)";
+            case "NOT IN": return comment + "(不包含值)";
+            case "IS NULL": return comment + "(为空)";
+            case "IS NOT NULL": return comment + "(非空)";
+            case ">": return comment + "(大于)";
+            case "<": return comment + "(小于)";
+            case ">=": return comment + "(大于等于)";
+            case "<=": return comment + "(小于等于)";
+            case "!=":
+            case "<>": return comment + "(不等于)";
+            case "&>": return comment + "(包含指定bit位)";
+            case "&=": return comment + "(不包含指定bit位)";
+            default: throw new IllegalArgumentException(String.format("不支持的后缀字段操作符:%s, 支持的操作符:LIKE,NOT LIKE,IN,NOT IN,IS NULL,IS NOT NULL,>,<,>=,<=,!=,<>,&>,&=",sqlOperator));
+        }
     }
 
 }
