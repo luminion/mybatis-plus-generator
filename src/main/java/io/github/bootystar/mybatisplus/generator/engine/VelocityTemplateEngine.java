@@ -74,7 +74,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
 
     @Override
     public void writer(Map<String, Object> objectMap, String templatePath, File outputFile) throws Exception {
-        Template template = velocityEngine.getTemplate(templatePath, ConstVal.UTF8);
+        Template template = velocityEngine.getTemplate(this.templateFilePath(templatePath), ConstVal.UTF8);
         try (FileOutputStream fos = new FileOutputStream(outputFile);
              OutputStreamWriter ow = new OutputStreamWriter(fos, ConstVal.UTF8);
              BufferedWriter writer = new BufferedWriter(ow)) {
