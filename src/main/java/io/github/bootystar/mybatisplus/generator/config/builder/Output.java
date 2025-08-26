@@ -1,6 +1,9 @@
 package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import io.github.bootystar.mybatisplus.generator.config.core.OutputConfig;
+import io.github.bootystar.mybatisplus.generator.config.po.TemplateFile;
+
+import java.util.function.Function;
 
 /**
  * @author bootystar
@@ -70,650 +73,122 @@ public class Output extends OutputConfig {
         }
 
         /**
-         * 实体类名称格式
+         * 实体类配置
          *
-         * @param formatPattern 格式
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder entityNameFormat(String formatPattern) {
-            this.config.entity.setFormatPattern(formatPattern);
+        public Builder entity(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.entity.adapter());
             return this;
         }
-
+        
         /**
-         * 实体类包名
+         * mapper配置
          *
-         * @param subPackage 子包名
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder entityPackage(String subPackage) {
-            this.config.entity.setSubPackage(subPackage);
+        public Builder mapper(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.mapper.adapter());
             return this;
         }
-
+        
         /**
-         * 实体类模板路径
+         * mapperXml配置
          *
-         * @param templatePath 模板路径
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder entityTemplatePath(String templatePath) {
-            this.config.entity.setTemplatePath(templatePath);
+        public Builder mapperXml(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.mapperXml.adapter());
             return this;
         }
-
+        
         /**
-         * 实体类输出目录
+         * service配置
          *
-         * @param outputDir 输出目录
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder entityOutputDir(String outputDir) {
-            this.config.entity.setOutputDir(outputDir);
+        public Builder service(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.service.adapter());
             return this;
         }
-
+        
         /**
-         * 禁用实体类生成
+         * serviceImpl配置
          *
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder entityDisable() {
-            this.config.entity.setGenerate(false);
+        public Builder serviceImpl(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.serviceImpl.adapter());
             return this;
         }
-
+        
         /**
-         * mapper名称格式
+         * controller配置
          *
-         * @param formatPattern 格式
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder mapperNameFormat(String formatPattern) {
-            this.config.mapper.setFormatPattern(formatPattern);
+        public Builder controller(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.controller.adapter());
             return this;
         }
-
+        
         /**
-         * mapper包名
+         * createDTO配置
          *
-         * @param subPackage 子包名
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder mapperPackage(String subPackage) {
-            this.config.mapper.setSubPackage(subPackage);
+        public Builder createDTO(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.createDTO.adapter());
             return this;
         }
-
+        
         /**
-         * mapper模板路径
+         * updateDTO配置
          *
-         * @param templatePath 模板路径
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder mapperTemplatePath(String templatePath) {
-            this.config.mapper.setTemplatePath(templatePath);
+        public Builder updateDTO(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.updateDTO.adapter());
             return this;
         }
-
+        
         /**
-         * mapper输出目录
+         * queryDTO配置
          *
-         * @param outputDir 输出目录
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder mapperOutputDir(String outputDir) {
-            this.config.mapper.setOutputDir(outputDir);
+        public Builder queryDTO(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.queryDTO.adapter());
             return this;
         }
-
+        
         /**
-         * 禁用mapper生成
+         * queryVO配置
          *
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder mapperDisable() {
-            this.config.mapper.setGenerate(false);
+        public Builder queryVO(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.queryVO.adapter());
             return this;
         }
-
+        
         /**
-         * mapperXml名称格式
+         * importDTO配置
          *
-         * @param formatPattern 格式
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder mapperXmlNameFormat(String formatPattern) {
-            this.config.mapperXml.setFormatPattern(formatPattern);
+        public Builder importDTO(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.importDTO.adapter());
             return this;
         }
-
+        
         /**
-         * mapperXml包名
+         * exportVO配置
          *
-         * @param subPackage 子包名
-         * @return this
+         * @param adapter 适配器
          */
-        public Builder mapperXmlPackage(String subPackage) {
-            this.config.mapperXml.setSubPackage(subPackage);
-            return this;
-        }
-
-        /**
-         * mapperXml模板路径
-         *
-         * @param templatePath 模板路径
-         * @return this
-         */
-        public Builder mapperXmlTemplatePath(String templatePath) {
-            this.config.mapperXml.setTemplatePath(templatePath);
-            return this;
-        }
-
-        /**
-         * mapperXml输出目录
-         *
-         * @param outputDir 输出目录
-         * @return this
-         */
-        public Builder mapperXmlOutputDir(String outputDir) {
-            this.config.mapperXml.setOutputDir(outputDir);
-            return this;
-        }
-
-        /**
-         * 禁用mapperXml生成
-         *
-         * @return this
-         */
-        public Builder mapperXmlDisable() {
-            this.config.mapperXml.setGenerate(false);
-            return this;
-        }
-
-        /**
-         * service名称格式
-         *
-         * @param formatPattern 格式
-         * @return this
-         */
-        public Builder serviceNameFormat(String formatPattern) {
-            this.config.service.setFormatPattern(formatPattern);
-            return this;
-        }
-
-        /**
-         * service包名
-         *
-         * @param subPackage 子包名
-         * @return this
-         */
-        public Builder servicePackage(String subPackage) {
-            this.config.service.setSubPackage(subPackage);
-            return this;
-        }
-
-        /**
-         * service模板路径
-         *
-         * @param templatePath 模板路径
-         * @return this
-         */
-        public Builder serviceTemplatePath(String templatePath) {
-            this.config.service.setTemplatePath(templatePath);
-            return this;
-        }
-
-        /**
-         * service输出目录
-         *
-         * @param outputDir 输出目录
-         * @return this
-         */
-        public Builder serviceOutputDir(String outputDir) {
-            this.config.service.setOutputDir(outputDir);
-            return this;
-        }
-
-        /**
-         * 禁用service生成
-         *
-         * @return this
-         */
-        public Builder serviceDisable() {
-            this.config.service.setGenerate(false);
-            return this;
-        }
-
-        /**
-         * serviceImpl名称格式
-         *
-         * @param formatPattern 格式
-         * @return this
-         */
-        public Builder serviceImplNameFormat(String formatPattern) {
-            this.config.serviceImpl.setFormatPattern(formatPattern);
-            return this;
-        }
-
-        /**
-         * serviceImpl包名
-         *
-         * @param subPackage 子包名
-         * @return this
-         */
-        public Builder serviceImplPackage(String subPackage) {
-            this.config.serviceImpl.setSubPackage(subPackage);
-            return this;
-        }
-
-        /**
-         * serviceImpl模板路径
-         *
-         * @param templatePath 模板路径
-         * @return this
-         */
-        public Builder serviceImplTemplatePath(String templatePath) {
-            this.config.serviceImpl.setTemplatePath(templatePath);
-            return this;
-        }
-
-        /**
-         * serviceImpl输出目录
-         *
-         * @param outputDir 输出目录
-         * @return this
-         */
-        public Builder serviceImplOutputDir(String outputDir) {
-            this.config.serviceImpl.setOutputDir(outputDir);
-            return this;
-        }
-
-        /**
-         * 禁用serviceImpl生成
-         *
-         * @return this
-         */
-        public Builder serviceImplDisable() {
-            this.config.serviceImpl.setGenerate(false);
-            return this;
-        }
-
-        /**
-         * controller名称格式
-         *
-         * @param formatPattern 格式
-         * @return this
-         */
-        public Builder controllerNameFormat(String formatPattern) {
-            this.config.controller.setFormatPattern(formatPattern);
-            return this;
-        }
-
-        /**
-         * controller包名
-         *
-         * @param subPackage 子包名
-         * @return this
-         */
-        public Builder controllerPackage(String subPackage) {
-            this.config.controller.setSubPackage(subPackage);
-            return this;
-        }
-
-        /**
-         * controller模板路径
-         *
-         * @param templatePath 模板路径
-         * @return this
-         */
-        public Builder controllerTemplatePath(String templatePath) {
-            this.config.controller.setTemplatePath(templatePath);
-            return this;
-        }
-
-        /**
-         * controller输出目录
-         *
-         * @param outputDir 输出目录
-         * @return this
-         */
-        public Builder controllerOutputDir(String outputDir) {
-            this.config.controller.setOutputDir(outputDir);
-            return this;
-        }
-
-        /**
-         * 禁用controller生成
-         *
-         * @return this
-         */
-        public Builder controllerDisable() {
-            this.config.controller.setGenerate(false);
-            return this;
-        }
-
-        /**
-         * createDTO名称格式
-         *
-         * @param formatPattern 格式
-         * @return this
-         */
-        public Builder createDTONameFormat(String formatPattern) {
-            this.config.createDTO.setFormatPattern(formatPattern);
-            return this;
-        }
-
-        /**
-         * createDTO包名
-         *
-         * @param subPackage 子包名
-         * @return this
-         */
-        public Builder createDTOPackage(String subPackage) {
-            this.config.createDTO.setSubPackage(subPackage);
-            return this;
-        }
-
-        /**
-         * createDTO模板路径
-         *
-         * @param templatePath 模板路径
-         * @return this
-         */
-        public Builder createDTOTemplatePath(String templatePath) {
-            this.config.createDTO.setTemplatePath(templatePath);
-            return this;
-        }
-
-        /**
-         * createDTO输出目录
-         *
-         * @param outputDir 输出目录
-         * @return this
-         */
-        public Builder createDTOOutputDir(String outputDir) {
-            this.config.createDTO.setOutputDir(outputDir);
-            return this;
-        }
-
-        /**
-         * 禁用createDTO生成
-         *
-         * @return this
-         */
-        public Builder createDTODisable() {
-            this.config.createDTO.setGenerate(false);
-            return this;
-        }
-
-        /**
-         * updateDTO名称格式
-         *
-         * @param formatPattern 格式
-         * @return this
-         */
-        public Builder updateDTONameFormat(String formatPattern) {
-            this.config.updateDTO.setFormatPattern(formatPattern);
-            return this;
-        }
-
-        /**
-         * updateDTO包名
-         *
-         * @param subPackage 子包名
-         * @return this
-         */
-        public Builder updateDTOPackage(String subPackage) {
-            this.config.updateDTO.setSubPackage(subPackage);
-            return this;
-        }
-
-        /**
-         * updateDTO模板路径
-         *
-         * @param templatePath 模板路径
-         * @return this
-         */
-        public Builder updateDTOTemplatePath(String templatePath) {
-            this.config.updateDTO.setTemplatePath(templatePath);
-            return this;
-        }
-
-        /**
-         * updateDTO输出目录
-         *
-         * @param outputDir 输出目录
-         * @return this
-         */
-        public Builder updateDTOOutputDir(String outputDir) {
-            this.config.updateDTO.setOutputDir(outputDir);
-            return this;
-        }
-
-        /**
-         * 禁用updateDTO生成
-         *
-         * @return this
-         */
-        public Builder updateDTODisable() {
-            this.config.updateDTO.setGenerate(false);
-            return this;
-        }
-
-        /**
-         * queryDTO名称格式
-         *
-         * @param formatPattern 格式
-         * @return this
-         */
-        public Builder queryDTONameFormat(String formatPattern) {
-            this.config.queryDTO.setFormatPattern(formatPattern);
-            return this;
-        }
-
-        /**
-         * queryDTO包名
-         *
-         * @param subPackage 子包名
-         * @return this
-         */
-        public Builder queryDTOPackage(String subPackage) {
-            this.config.queryDTO.setSubPackage(subPackage);
-            return this;
-        }
-
-        /**
-         * queryDTO模板路径
-         *
-         * @param templatePath 模板路径
-         * @return this
-         */
-        public Builder queryDTOTemplatePath(String templatePath) {
-            this.config.queryDTO.setTemplatePath(templatePath);
-            return this;
-        }
-
-        /**
-         * queryDTO输出目录
-         *
-         * @param outputDir 输出目录
-         * @return this
-         */
-        public Builder queryDTOOutputDir(String outputDir) {
-            this.config.queryDTO.setOutputDir(outputDir);
-            return this;
-        }
-
-        /**
-         * 禁用queryDTO生成
-         *
-         * @return this
-         */
-        public Builder queryDTODisable() {
-            this.config.queryDTO.setGenerate(false);
-            return this;
-        }
-
-        /**
-         * queryVO名称格式
-         *
-         * @param formatPattern 格式
-         * @return this
-         */
-        public Builder queryVONameFormat(String formatPattern) {
-            this.config.queryVO.setFormatPattern(formatPattern);
-            return this;
-        }
-
-        /**
-         * queryVO包名
-         *
-         * @param subPackage 子包名
-         * @return this
-         */
-        public Builder queryVOPackage(String subPackage) {
-            this.config.queryVO.setSubPackage(subPackage);
-            return this;
-        }
-
-        /**
-         * queryVO模板路径
-         *
-         * @param templatePath 模板路径
-         * @return this
-         */
-        public Builder queryVOTemplatePath(String templatePath) {
-            this.config.queryVO.setTemplatePath(templatePath);
-            return this;
-        }
-
-        /**
-         * queryVO输出目录
-         *
-         * @param outputDir 输出目录
-         * @return this
-         */
-        public Builder queryVOOutputDir(String outputDir) {
-            this.config.queryVO.setOutputDir(outputDir);
-            return this;
-        }
-
-        /**
-         * 禁用queryVO生成
-         *
-         * @return this
-         */
-        public Builder queryVODisable() {
-            this.config.queryVO.setGenerate(false);
-            return this;
-        }
-
-        /**
-         * importDTO名称格式
-         *
-         * @param formatPattern 格式
-         * @return this
-         */
-        public Builder importDTONameFormat(String formatPattern) {
-            this.config.importDTO.setFormatPattern(formatPattern);
-            return this;
-        }
-
-        /**
-         * importDTO包名
-         *
-         * @param subPackage 子包名
-         * @return this
-         */
-        public Builder importDTOPackage(String subPackage) {
-            this.config.importDTO.setSubPackage(subPackage);
-            return this;
-        }
-
-        /**
-         * importDTO模板路径
-         *
-         * @param templatePath 模板路径
-         * @return this
-         */
-        public Builder importDTOTemplatePath(String templatePath) {
-            this.config.importDTO.setTemplatePath(templatePath);
-            return this;
-        }
-
-        /**
-         * importDTO输出目录
-         *
-         * @param outputDir 输出目录
-         * @return this
-         */
-        public Builder importDTOOutputDir(String outputDir) {
-            this.config.importDTO.setOutputDir(outputDir);
-            return this;
-        }
-
-        /**
-         * 禁用importDTO生成
-         *
-         * @return this
-         */
-        public Builder importDTODisable() {
-            this.config.importDTO.setGenerate(false);
-            return this;
-        }
-
-        /**
-         * exportVO名称格式
-         *
-         * @param formatPattern 格式
-         * @return this
-         */
-        public Builder exportVONameFormat(String formatPattern) {
-            this.config.exportVO.setFormatPattern(formatPattern);
-            return this;
-        }
-
-        /**
-         * exportVO包名
-         *
-         * @param subPackage 子包名
-         * @return this
-         */
-        public Builder exportVOPackage(String subPackage) {
-            this.config.exportVO.setSubPackage(subPackage);
-            return this;
-        }
-
-        /**
-         * exportVO模板路径
-         *
-         * @param templatePath 模板路径
-         * @return this
-         */
-        public Builder exportVOTemplatePath(String templatePath) {
-            this.config.exportVO.setTemplatePath(templatePath);
-            return this;
-        }
-
-        /**
-         * exportVO输出目录
-         *
-         * @param outputDir 输出目录
-         * @return this
-         */
-        public Builder exportVOOutputDir(String outputDir) {
-            this.config.exportVO.setOutputDir(outputDir);
-            return this;
-        }
-
-        /**
-         * 禁用exportVO生成
-         *
-         * @return this
-         */
-        public Builder exportVODisable() {
-            this.config.exportVO.setGenerate(false);
+        public Builder exportVO(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.exportVO.adapter());
             return this;
         }
 
