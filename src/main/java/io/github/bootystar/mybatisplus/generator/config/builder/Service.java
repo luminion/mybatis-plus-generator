@@ -2,8 +2,6 @@ package io.github.bootystar.mybatisplus.generator.config.builder;
 
 import io.github.bootystar.mybatisplus.generator.config.core.ServiceConfig;
 
-import java.util.function.Function;
-
 /**
  * @author bootystar
  */

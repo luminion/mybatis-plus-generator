@@ -16,15 +16,14 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.ExtraFieldStrategy;
+import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
 import org.apache.ibatis.type.JdbcType;
 
-import java.io.File;
 import java.util.*;
 import java.util.function.BiFunction;
 

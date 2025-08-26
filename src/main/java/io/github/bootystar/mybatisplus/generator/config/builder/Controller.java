@@ -6,8 +6,6 @@ import io.github.bootystar.mybatisplus.generator.config.core.ControllerConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.util.ReflectUtil;
 
-import java.util.function.Function;
-
 /**
  * @author bootystar
  */
