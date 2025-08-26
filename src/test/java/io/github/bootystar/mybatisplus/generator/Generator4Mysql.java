@@ -65,19 +65,19 @@ public class Generator4Mysql {
                         )
                         .createDTO(f -> f
                                 .subPackage("dto")
-                                .disable()
+//                                .disable()
                         )
                         .updateDTO(f -> f
                                 .subPackage("dto")
-                                .disable()
+//                                .disable()
                         )
                         .queryDTO(f -> f
                                 .subPackage("dto")
-                                .disable()
+//                                .disable()
                         )
                         .queryVO(f -> f
                                 .subPackage("vo")
-                                .disable()
+//                                .disable()
                         )
                         .importDTO(f -> f
                                 .subPackage("excel")
