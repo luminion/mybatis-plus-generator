@@ -118,7 +118,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder entityDisableGenerate() {
+        public Builder entityDisable() {
             this.config.entity.setGenerate(false);
             return this;
         }
@@ -172,7 +172,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder mapperDisableGenerate() {
+        public Builder mapperDisable() {
             this.config.mapper.setGenerate(false);
             return this;
         }
@@ -226,7 +226,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder mapperXmlDisableGenerate() {
+        public Builder mapperXmlDisable() {
             this.config.mapperXml.setGenerate(false);
             return this;
         }
@@ -280,7 +280,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder serviceDisableGenerate() {
+        public Builder serviceDisable() {
             this.config.service.setGenerate(false);
             return this;
         }
@@ -334,7 +334,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder serviceImplDisableGenerate() {
+        public Builder serviceImplDisable() {
             this.config.serviceImpl.setGenerate(false);
             return this;
         }
@@ -388,7 +388,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder controllerDisableGenerate() {
+        public Builder controllerDisable() {
             this.config.controller.setGenerate(false);
             return this;
         }
@@ -442,7 +442,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder createDTODisableGenerate() {
+        public Builder createDTODisable() {
             this.config.createDTO.setGenerate(false);
             return this;
         }
@@ -496,7 +496,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder updateDTODisableGenerate() {
+        public Builder updateDTODisable() {
             this.config.updateDTO.setGenerate(false);
             return this;
         }
@@ -550,7 +550,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder queryDTODisableGenerate() {
+        public Builder queryDTODisable() {
             this.config.queryDTO.setGenerate(false);
             return this;
         }
@@ -604,7 +604,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder queryVODisableGenerate() {
+        public Builder queryVODisable() {
             this.config.queryVO.setGenerate(false);
             return this;
         }
@@ -658,7 +658,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder importDTODisableGenerate() {
+        public Builder importDTODisable() {
             this.config.importDTO.setGenerate(false);
             return this;
         }
@@ -712,7 +712,7 @@ public class Output extends OutputConfig {
          *
          * @return this
          */
-        public Builder exportVODisableGenerate() {
+        public Builder exportVODisable() {
             this.config.exportVO.setGenerate(false);
             return this;
         }

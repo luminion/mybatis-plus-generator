@@ -275,6 +275,8 @@ public class DataSourceConfig {
                     properties.put("remarks", "true");
                     properties.put("remarksReporting", "true");
                     break;
+                default:
+                    break;
             }
         }
     }

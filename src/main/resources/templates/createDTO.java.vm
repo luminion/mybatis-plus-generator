@@ -1,10 +1,10 @@
-package ${package.InsertDTO};
+package ${package.CreateDTO};
 
-#foreach($pkg in ${importInsertDTOFrameworkPackages})
+#foreach($pkg in ${importCreateDTOFrameworkPackages})
 import ${pkg};
 #end
 
-#foreach($pkg in ${importInsertDTOJavaPackages})
+#foreach($pkg in ${importCreateDTOJavaPackages})
 import ${pkg};
 #end
 
@@ -12,31 +12,30 @@ import ${pkg};
  * $!{table.comment}-新增DTO
  *
  * @author ${author}
-#if(${commnetLink})
+#if(${commentLink})
  * @see ${package.Entity}.${entity}
- * @see ${package.ServiceImpl}.${table.serviceImplName}
+ * @see ${package.ServiceImpl}.${serviceImpl}
 #end
  * @since ${date}
  */
 #if(${lombok})
 @Data
-    #if(${chainModel}&&!${generateImport})
+    #if(${chainModel})
 @Accessors(chain = true)
     #end
-@EqualsAndHashCode
 #end
 #if(${springdoc})
 @Schema(description = "$!{table.comment}-新增DTO")
 #elseif(${swagger})
 @ApiModel(description = "$!{table.comment}-新增DTO")
 #end
-#if(${generateImport})
+#if(${generateImport} && ${importOnCreateDTO})
 @ExcelIgnoreUnannotated
 #end
 #if(${extendsQueryDTO})
-public class ${entityInsertDTO} extends ${entity} {
+public class ${createDTO} extends ${entity} {
 #else
-public class ${entityInsertDTO} {
+public class ${createDTO} {
 #end
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
@@ -69,7 +68,7 @@ public class ${entityInsertDTO} {
     @Size(message = "${field.comment}长度不能超过${field.metaInfo.length}", max = ${field.metaInfo.length})
         #end
     #end
-    #if(${generateImport})## excel导入
+    #if(${generateImport} && ${importOnCreateDTO})## excel导入
     @ExcelProperty(value = "${field.comment}")
     #end
     private ${field.propertyType} ${field.propertyName};
@@ -94,8 +93,8 @@ public class ${entityInsertDTO} {
         return ${field.propertyName};
     }
 
-        #if(${chainModel}&&!${generateImport})
-    public ${entity}InsertDTO set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+        #if(${chainModel})
+    public ${createDTO} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
         #else
     public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
         #end

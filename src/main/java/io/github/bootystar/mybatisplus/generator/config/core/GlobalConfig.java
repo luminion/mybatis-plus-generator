@@ -192,7 +192,7 @@ public class GlobalConfig implements ITemplate {
         data.put("excelApiPackagePrefix", this.excelApiPackagePrefix);
         data.put("excelClass", this.excelClass);
         data.put("lombok", this.lombok);
-        data.put("lombokChainModel", this.chainModel);
+        data.put("chainModel", this.chainModel);
         
         return data;
     }
