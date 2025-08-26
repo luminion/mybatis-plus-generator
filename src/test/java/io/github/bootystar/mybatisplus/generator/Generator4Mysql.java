@@ -63,6 +63,7 @@ public class Generator4Mysql {
 //                        .enableQueryVOExtendsEntity()
                         .enableExportOnQueryVO()
                         .enableImportOnCreateDTO()
+                        
                 )
                 .strategy(e -> e
                         .extraFieldSuffix("In", "IN")
@@ -86,6 +87,7 @@ public class Generator4Mysql {
                                 .versionColumnName("version")
                 )
                 .mapper(e -> e
+                        
                 )
                 .service(e -> e
                 )
