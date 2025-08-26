@@ -17,8 +17,8 @@ package io.github.bootystar.mybatisplus.generator.engine;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
-import ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.enums.TemplateLoadWay;
+import io.github.bootystar.mybatisplus.generator.config.interfaces.ConstVal;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
