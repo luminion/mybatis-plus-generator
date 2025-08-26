@@ -16,13 +16,10 @@
 package io.github.bootystar.mybatisplus.generator.fill;
 
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
-import io.github.bootystar.mybatisplus.generator.util.ReflectUtil;
 import lombok.SneakyThrows;
 
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 

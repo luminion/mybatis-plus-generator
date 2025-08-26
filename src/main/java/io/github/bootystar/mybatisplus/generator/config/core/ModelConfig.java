@@ -1,14 +1,14 @@
 package io.github.bootystar.mybatisplus.generator.config.core;
 
-import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
-import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
+import io.github.bootystar.mybatisplus.generator.config.po.TableField.MetaInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class ModelConfig implements ITemplate {
     protected ModelConfig() {
     }
-    
+
     /**
      * 查询dto继承实体类
      */
@@ -48,74 +48,82 @@ public class ModelConfig implements ITemplate {
         Map<String, Object> data = ITemplate.super.renderData(tableInfo);
         data.put("queryDTOExtendsEntity", this.queryDTOExtendsEntity);
         data.put("queryVOExtendsEntity", this.queryVOExtendsEntity);
-        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
-        String superClass = tableInfo.getConfigAdapter().getEntityConfig().getSuperClass();
-        TreeSet<String> importPackages = tableInfo.getImportPackages().stream()
-                .filter(e -> !e.startsWith("com.baomidou.mybatisplus.annotation"))
-                .filter(e -> !e.startsWith("java.io.Serializable"))
-                .filter(e -> superClass==null || !e.startsWith(superClass))
-                .collect(Collectors.toCollection(TreeSet::new));
-        if (globalConfig.isSpringdoc()) {
-            importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
-        }
-        if (globalConfig.isSwagger()) {
-            importPackages.add("io.swagger.annotations.ApiModel");
-            importPackages.add("io.swagger.annotations.ApiModelProperty");
-        }
-        if (globalConfig.isLombok()) {
-            if (globalConfig.isChainModel()) {
-                importPackages.add("lombok.experimental.Accessors");
-            }
-            importPackages.add("lombok.Data");
-            importPackages.add("lombok.EqualsAndHashCode");
-        }
+        data.put("importOnCreateDTO", this.importOnCreateDTO);
+        data.put("exportOnQueryVO", this.exportOnQueryVO);
+     
+        Set<String> importCreateDTOPackages = this.importCreateDTOPackages(tableInfo);
+        Set<String> importUpdateDTOPackages = this.importUpdateDTOPackages(tableInfo);
 
-        TreeSet<String> importCreateDTOPackages = new TreeSet<>(importPackages);
-        TreeSet<String> importUpdateDTOPackages = new TreeSet<>(importPackages);
-        
+        List<String> importCreateDTOFrameworkPackages = importCreateDTOPackages.stream()
+                .filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importCreateDTOFrameworkPackages", importCreateDTOFrameworkPackages);
+        List<String> importCreateDTOJavaPackages = importCreateDTOPackages.stream()
+                .filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importCreateDTOJavaPackages", importCreateDTOJavaPackages);
 
-        List<String> importInsertDTOFrameworkPackages = importCreateDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importInsertDTOFrameworkPackages", importInsertDTOFrameworkPackages);
-        List<String> importInsertDTOJavaPackages = importCreateDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importInsertDTOJavaPackages", importInsertDTOJavaPackages);
-        
-        List<String> importUpdateDTOFrameworkPackages = importUpdateDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importUpdateDTOFrameworkPackages", importUpdateDTOFrameworkPackages);
-        List<String> importUpdateDTOJavaPackages = importUpdateDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        List<String> importUpdateDTOFrameworkPackages = importUpdateDTOPackages.stream()
+                .filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importUpdateDTOFrameworkPackages",
+                importUpdateDTOFrameworkPackages);
+        List<String> importUpdateDTOJavaPackages = importUpdateDTOPackages.stream()
+                .filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
         data.put("importUpdateDTOJavaPackages", importUpdateDTOJavaPackages);
-//        
-//        List<String> importQueryDTOFrameworkPackages = importQueryDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-//        data.put("importQueryDTOFrameworkPackages", importQueryDTOFrameworkPackages);
-//        List<String> importQueryDTOJavaPackages = importQueryDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-//        data.put("importQueryDTOJavaPackages", importQueryDTOJavaPackages);
-//        
-//        List<String> importVOFrameworkPackages = importVOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-//        data.put("importVOFrameworkPackages", importVOFrameworkPackages);
-//        List<String> importVOJavaPackages = importVOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-//        data.put("importVOJavaPackages", importVOJavaPackages);
-//        
-//        
+
+        // List<String> importQueryDTOFrameworkPackages =
+        // importQueryDTOPackages.stream().filter(pkg ->
+        // !pkg.startsWith("java")).collect(Collectors.toList());
+        // data.put("importQueryDTOFrameworkPackages", importQueryDTOFrameworkPackages);
+        // List<String> importQueryDTOJavaPackages =
+        // importQueryDTOPackages.stream().filter(pkg ->
+        // pkg.startsWith("java")).collect(Collectors.toList());
+        // data.put("importQueryDTOJavaPackages", importQueryDTOJavaPackages);
+        //
+        // List<String> importVOFrameworkPackages = importVOPackages.stream().filter(pkg
+        // -> !pkg.startsWith("java")).collect(Collectors.toList());
+        // data.put("importVOFrameworkPackages", importVOFrameworkPackages);
+        // List<String> importVOJavaPackages = importVOPackages.stream().filter(pkg ->
+        // pkg.startsWith("java")).collect(Collectors.toList());
+        // data.put("importVOJavaPackages", importVOJavaPackages);
+        //
+        //
         return data;
     }
-    
+
     private Set<String> importCreateDTOPackages(TableInfo tableInfo) {
         GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
         TreeSet<String> importPackages = new TreeSet<>();
         List<TableField> fields = tableInfo.getFields();
+
+        String size = globalConfig.resolveJavaApiPackage("validation.constraints.Size");
+        String notBlank = globalConfig.resolveJavaApiPackage("validation.constraints.NotBlank");
+        String notNull = globalConfig.resolveJavaApiPackage("validation.constraints.NotNull");
         for (TableField field : fields) {
-            if (field.isKeyFlag()){
+            if (field.isKeyFlag()) {
                 continue;
             }
-            if (field.isVersionField()){
+            if (field.isVersionField()) {
                 continue;
             }
-            if (field.isLogicDeleteField()){
+            if (field.isLogicDeleteField()) {
                 continue;
             }
-            if ("INSERT".equals(field.getFill()) || "INSERT_UPDATE".equals(field.getFill())){
+            if ("INSERT".equals(field.getFill()) || "INSERT_UPDATE".equals(field.getFill())) {
                 continue;
             }
-            importPackages.add(field.getColumnType().getPkg());
+            Optional.ofNullable(field.getColumnType().getPkg()).ifPresent(importPackages::add);
+            MetaInfo metaInfo = field.getMetaInfo();
+            boolean isString = "String".equals(field.getPropertyType());
+            boolean notnullFlag = !metaInfo.isNullable() && metaInfo.getDefaultValue() == null;
+            if (notnullFlag) {
+                if (isString) {
+                    importPackages.add(notBlank);
+                }else{
+                    importPackages.add(notNull);
+                }
+            } 
+            if (isString) {
+                importPackages.add(size);    
+            }
         }
         if (globalConfig.isSpringdoc()) {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
@@ -130,14 +138,20 @@ public class ModelConfig implements ITemplate {
             }
             importPackages.add("lombok.Data");
         }
-        
+        if (importOnCreateDTO) {
+            String excelIgnoreUnannotated = globalConfig
+                    .resolveExcelApiPackage("excel.annotation.ExcelIgnoreUnannotated");
+            String excelProperty = globalConfig.resolveExcelApiPackage("excel.annotation.ExcelProperty");
+            importPackages.add(excelIgnoreUnannotated);
+            importPackages.add(excelProperty);
+        }
+
         return importPackages;
     }
-    
-    private Set<String> importQueryDTOPackages(TableInfo tableInfo) {
+
+    private Set<String> importUpdateDTOPackages(TableInfo tableInfo) {
         GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
         TreeSet<String> importPackages = new TreeSet<>();
-        importPackages.add("java.util.List");
         if (globalConfig.isSpringdoc()) {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
         }
@@ -150,20 +164,32 @@ public class ModelConfig implements ITemplate {
                 importPackages.add("lombok.experimental.Accessors");
             }
             importPackages.add("lombok.Data");
-            if (queryDTOExtendsEntity){
-                importPackages.add("lombok.EqualsAndHashCode");
-            }
         }
-        if (queryDTOExtendsEntity){
-            importPackages.add(tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName());
-        }
+        String size = globalConfig.resolveJavaApiPackage("validation.constraints.Size");
+        String notBlank = globalConfig.resolveJavaApiPackage("validation.constraints.NotBlank");
+        String notNull = globalConfig.resolveJavaApiPackage("validation.constraints.NotNull");
         for (TableField field : tableInfo.getFields()) {
-            IColumnType columnType = field.getColumnType();
-            if (null != columnType && null != columnType.getPkg()) {
-                importPackages.add(columnType.getPkg());
+            if (field.isLogicDeleteField()) {
+                continue;
+            }
+            if ("INSERT".equals(field.getFill()) || "INSERT_UPDATE".equals(field.getFill())) {
+                continue;
+            }
+            Optional.ofNullable(field.getColumnType().getPkg()).ifPresent(importPackages::add);
+            boolean notnullFlag = field.isKeyFlag() || field.isVersionField();
+            boolean isString = "String".equals(field.getPropertyType());
+            if (notnullFlag) {
+                if (isString) {
+                    importPackages.add(notBlank);
+                }else{
+                    importPackages.add(notNull);
+                }
+            }
+            if (isString) {
+                importPackages.add(size);    
             }
         }
         return importPackages;
     }
-        
+
 }

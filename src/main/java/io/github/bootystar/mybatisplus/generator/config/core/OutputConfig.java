@@ -109,14 +109,14 @@ public class OutputConfig implements ITemplate {
     @Getter
     protected TemplateFile queryDTO = new TemplateFile()
             .setKey(ConstVal.QUERY_DTO)
-            .setFormatPattern("%s")
+            .setFormatPattern("%sQueryDTO")
             .setSubPackage("dto")
             .setTemplatePath("/templates/queryDTO.java")
             .setOutputFileSuffix(".java");
     @Getter
     protected TemplateFile queryVO = new TemplateFile()
             .setKey(ConstVal.QUERY_VO)
-            .setFormatPattern("%s")
+            .setFormatPattern("%sQueryVO")
             .setSubPackage("vo")
             .setTemplatePath("/templates/queryVO.java")
             .setOutputFileSuffix(".java");

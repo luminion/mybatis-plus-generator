@@ -61,8 +61,9 @@ public class TypeConverts {
                 return FirebirdTypeConvert.INSTANCE;
             case CLICK_HOUSE:
                 return ClickHouseTypeConvert.INSTANCE;
+            default:
+                return null;
         }
-        return null;
     }
 
     /**

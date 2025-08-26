@@ -316,7 +316,7 @@ public class TableInfo {
         boolean notBlank = StringUtils.isNotBlank(comment);
         boolean commentUUID = globalConfig.isCommentUUID();
         String uuid = commentUUID ? UUID.randomUUID().toString().substring(0, 4).toUpperCase() : "";
-        this.comment = (swagger || springdoc) &&  notBlank ? comment.replace("\"", "\\\"") + uuid : comment;
+        this.comment = (swagger || springdoc) &&  notBlank ? comment.replace("\"", "\\\"") +"@" +uuid : comment;
         return this;
     }
 

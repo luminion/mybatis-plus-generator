@@ -9,12 +9,12 @@ import ${pkg};
 #end
 
 /**
- * $!{table.comment}$!{commentUUID}
+ * $!{table.comment}
  *
  * @author ${author}
-#if(${extraComment})
- * @see ${package.Mapper}.${table.mapperName}
- * @see ${package.ServiceImpl}.${table.serviceImplName}
+#if(${commentLink})
+ * @see ${package.Mapper}.${mapper}
+ * @see ${package.ServiceImpl}.${serviceImpl}
 #end
  * @since ${date}
  */

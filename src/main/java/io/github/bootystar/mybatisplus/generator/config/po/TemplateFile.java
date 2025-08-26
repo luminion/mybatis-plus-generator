@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.function.Function;
-
 /**
  * @author bootystar
  */
@@ -25,7 +23,6 @@ public class TemplateFile {
      * 格式化文件名称
      */
     private String formatPattern;
-    private Function<TableInfo, String> formatNameFunction;
     /**
      * 模板路径
      */
