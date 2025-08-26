@@ -5,7 +5,6 @@ import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.function.Supplier;
 
 /**
  * @author bootystar

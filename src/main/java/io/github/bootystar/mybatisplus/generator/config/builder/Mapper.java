@@ -4,7 +4,6 @@ import io.github.bootystar.mybatisplus.generator.config.core.MapperConfig;
 import org.apache.ibatis.cache.Cache;
 
 import java.lang.annotation.Annotation;
-import java.util.function.Function;
 
 /**
  * @author bootystar

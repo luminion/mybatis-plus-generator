@@ -15,16 +15,14 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.core;
 
-import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
-import io.github.bootystar.mybatisplus.generator.config.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
+import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Service属性配置
