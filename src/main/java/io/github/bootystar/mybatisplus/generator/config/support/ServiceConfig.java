@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.core;
+package io.github.bootystar.mybatisplus.generator.config.support;
 
+import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -31,11 +31,8 @@ import java.util.Map;
  * @since 3.5.0
  */
 @Slf4j
-@Getter
 public class ServiceConfig implements ITemplate {
 
-    protected ServiceConfig() {
-    }
 
     /**
      * 自定义继承的Service类全称，带包名
@@ -55,6 +52,60 @@ public class ServiceConfig implements ITemplate {
         data.put("superServiceImplClassPackage", this.superServiceImplClass);
         data.put("superServiceImplClass", ClassUtils.getSimpleName(this.superServiceImplClass));
         return data;
+    }
+
+    public Adapter adapter() {
+        return new Adapter();
+    }
+
+    public static class Adapter {
+        private final ServiceConfig config;
+
+        public Adapter() {
+            this.config = new ServiceConfig();
+        }
+
+        /**
+         * Service接口父类
+         *
+         * @param clazz 类
+         * @return this
+         */
+        public Adapter superServiceClass(Class<?> clazz) {
+            return superServiceClass(clazz.getName());
+        }
+
+        /**
+         * Service接口父类
+         *
+         * @param superServiceClass 类名
+         * @return this
+         */
+        public Adapter superServiceClass(String superServiceClass) {
+            this.config.superServiceClass = superServiceClass;
+            return this;
+        }
+
+        /**
+         * Service实现类父类
+         *
+         * @param clazz 类
+         * @return this
+         */
+        public Adapter superServiceImplClass(Class<?> clazz) {
+            return superServiceImplClass(clazz.getName());
+        }
+
+        /**
+         * Service实现类父类
+         *
+         * @param superServiceImplClass 类名
+         * @return this
+         */
+        public Adapter superServiceImplClass(String superServiceImplClass) {
+            this.config.superServiceImplClass = superServiceImplClass;
+            return this;
+        }
     }
 
 }

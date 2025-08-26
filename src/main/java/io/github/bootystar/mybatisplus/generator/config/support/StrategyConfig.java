@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.core;
+package io.github.bootystar.mybatisplus.generator.config.support;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.ExtraField;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
@@ -35,11 +36,7 @@ import java.util.stream.Collectors;
  * @author YangHu, tangguo, hubin
  * @since 2016/8/30
  */
-@Getter
 public class StrategyConfig implements ITemplate {
-
-    protected StrategyConfig() {
-    }
 
     /**
      * 过滤表前缀
@@ -128,6 +125,7 @@ public class StrategyConfig implements ITemplate {
      *
      * @since 3.3.1
      */
+    @Getter
     protected boolean enableSqlFilter = true;
 
     /**
@@ -155,12 +153,12 @@ public class StrategyConfig implements ITemplate {
      * @since 3.5.0
      */
     public void validate() {
-        boolean isInclude = !this.getInclude().isEmpty();
-        boolean isExclude = !this.getExclude().isEmpty();
+        boolean isInclude = !this.include.isEmpty();
+        boolean isExclude = !this.exclude.isEmpty();
         if (isInclude && isExclude) {
             throw new IllegalArgumentException("<strategy> 标签中 <include> 与 <exclude> 只能配置一项！");
         }
-        if (this.getNotLikeTable() != null && this.getLikeTable() != null) {
+        if (this.notLikeTable != null && this.likeTable != null) {
             throw new IllegalArgumentException("<strategy> 标签中 <likeTable> 与 <notLikeTable> 只能配置一项！");
         }
     }
@@ -173,7 +171,7 @@ public class StrategyConfig implements ITemplate {
      * @since 3.5.0
      */
     public boolean matchIncludeTable(String tableName) {
-        return matchTable(tableName, this.getInclude());
+        return matchTable(tableName, this.include);
     }
 
     /**
@@ -184,7 +182,7 @@ public class StrategyConfig implements ITemplate {
      * @since 3.5.0
      */
     public boolean matchExcludeTable(String tableName) {
-        return matchTable(tableName, this.getExclude());
+        return matchTable(tableName, this.exclude);
     }
 
     /**
@@ -254,22 +252,247 @@ public class StrategyConfig implements ITemplate {
      * @param sqlOperator sql运算符
      */
     public String replaceComment(String comment, String sqlOperator) {
-        switch (sqlOperator){
-            case "LIKE": return comment + "(模糊匹配)";
-            case "NOT LIKE": return comment + "(模糊匹配的反结果)";
-            case "IN": return comment + "(包含值)";
-            case "NOT IN": return comment + "(不包含值)";
-            case "IS NULL": return comment + "(为空)";
-            case "IS NOT NULL": return comment + "(非空)";
-            case ">": return comment + "(大于)";
-            case "<": return comment + "(小于)";
-            case ">=": return comment + "(大于等于)";
-            case "<=": return comment + "(小于等于)";
+        switch (sqlOperator) {
+            case "LIKE":
+                return comment + "(模糊匹配)";
+            case "NOT LIKE":
+                return comment + "(模糊匹配的反结果)";
+            case "IN":
+                return comment + "(包含值)";
+            case "NOT IN":
+                return comment + "(不包含值)";
+            case "IS NULL":
+                return comment + "(为空)";
+            case "IS NOT NULL":
+                return comment + "(非空)";
+            case ">":
+                return comment + "(大于)";
+            case "<":
+                return comment + "(小于)";
+            case ">=":
+                return comment + "(大于等于)";
+            case "<=":
+                return comment + "(小于等于)";
             case "!=":
-            case "<>": return comment + "(不等于)";
-            case "&>": return comment + "(包含指定bit位)";
-            case "&=": return comment + "(不包含指定bit位)";
-            default: throw new IllegalArgumentException(String.format("不支持的后缀字段操作符:%s, 支持的操作符:LIKE,NOT LIKE,IN,NOT IN,IS NULL,IS NOT NULL,>,<,>=,<=,!=,<>,&>,&=",sqlOperator));
+            case "<>":
+                return comment + "(不等于)";
+            case "&>":
+                return comment + "(包含指定bit位)";
+            case "&=":
+                return comment + "(不包含指定bit位)";
+            default:
+                throw new IllegalArgumentException(String.format("不支持的后缀字段操作符:%s, 支持的操作符:LIKE,NOT LIKE,IN,NOT IN,IS NULL,IS NOT NULL,>,<,>=,<=,!=,<>,&>,&=", sqlOperator));
+        }
+    }
+
+    public Adapter adapter() {
+        return new Adapter(this);
+    }
+
+    public static class Adapter {
+        private final StrategyConfig config;
+
+        public Adapter(StrategyConfig config) {
+            this.config = config;
+        }
+
+        /**
+         * 增加过滤表前缀
+         *
+         * @param tablePrefix 过滤表前缀
+         * @return this
+         * @since 3.5.0
+         */
+        public Adapter addTablePrefix(String... tablePrefix) {
+            return addTablePrefix(Arrays.asList(tablePrefix));
+        }
+
+        public Adapter addTablePrefix(List<String> tablePrefixList) {
+            this.config.tablePrefix.addAll(tablePrefixList);
+            return this;
+        }
+
+        /**
+         * 增加过滤表后缀
+         *
+         * @param tableSuffix 过滤表后缀
+         * @return this
+         * @since 3.5.1
+         */
+        public Adapter addTableSuffix(String... tableSuffix) {
+            return addTableSuffix(Arrays.asList(tableSuffix));
+        }
+
+        public Adapter addTableSuffix(List<String> tableSuffixList) {
+            this.config.tableSuffix.addAll(tableSuffixList);
+            return this;
+        }
+
+        /**
+         * 增加过滤字段前缀
+         *
+         * @param fieldPrefix 过滤字段前缀
+         * @return this
+         * @since 3.5.0
+         */
+        public Adapter addFieldPrefix(String... fieldPrefix) {
+            return addFieldPrefix(Arrays.asList(fieldPrefix));
+        }
+
+        public Adapter addFieldPrefix(List<String> fieldPrefix) {
+            this.config.fieldPrefix.addAll(fieldPrefix);
+            return this;
+        }
+
+        /**
+         * 增加过滤字段后缀
+         *
+         * @param fieldSuffix 过滤字段后缀
+         * @return this
+         * @since 3.5.1
+         */
+        public Adapter addFieldSuffix(String... fieldSuffix) {
+            return addFieldSuffix(Arrays.asList(fieldSuffix));
+        }
+
+        public Adapter addFieldSuffix(List<String> fieldSuffixList) {
+            this.config.fieldSuffix.addAll(fieldSuffixList);
+            return this;
+        }
+
+        /**
+         * 增加包含的表名
+         *
+         * @param include 包含表
+         * @return this
+         * @since 3.5.0
+         */
+        public Adapter addInclude(String... include) {
+            this.config.include.addAll(Arrays.asList(include));
+            return this;
+        }
+
+        public Adapter addInclude(List<String> includes) {
+            this.config.include.addAll(includes);
+            return this;
+        }
+
+        public Adapter addInclude(String include) {
+            this.config.include.addAll(Arrays.asList(include.split(",")));
+            return this;
+        }
+
+        /**
+         * 增加排除表
+         *
+         * @param exclude 排除表
+         * @return this
+         * @since 3.5.0
+         */
+        public Adapter addExclude(String... exclude) {
+            return addExclude(Arrays.asList(exclude));
+        }
+
+        public Adapter addExclude(List<String> excludeList) {
+            this.config.exclude.addAll(excludeList);
+            return this;
+        }
+
+        /**
+         * 包含表名
+         *
+         * @return this
+         */
+        public Adapter likeTable(LikeTable likeTable) {
+            this.config.likeTable = likeTable;
+            return this;
+        }
+
+        /**
+         * 不包含表名
+         *
+         * @return this
+         */
+        public Adapter notLikeTable(LikeTable notLikeTable) {
+            this.config.notLikeTable = notLikeTable;
+            return this;
+        }
+
+        /**
+         * 额外字段后缀
+         *
+         * @param suffix   后缀
+         * @param operator sql运算符
+         * @return this
+         */
+        public Adapter extraFieldSuffix(String suffix, String operator) {
+            this.config.extraFieldSuffixMap.put(suffix, operator);
+            return this;
+        }
+
+        /**
+         * 清除额外字段后缀
+         *
+         * @return this
+         */
+        public Adapter clearExtraFieldSuffix() {
+            this.config.extraFieldSuffixMap.clear();
+            return this;
+        }
+
+        /**
+         * 额外字段策略
+         *
+         * @param extraFieldStrategy 额外字段策略, BiFunction<String, TableField, Boolean>, 3个泛型参数分别为sql运算符,表字段信息,是否生成
+         * @return this
+         */
+        public Adapter extraFieldStrategy(BiFunction<String, TableField, Boolean> extraFieldStrategy) {
+            this.config.extraFieldStrategy = extraFieldStrategy;
+            return this;
+        }
+
+        /**
+         * 开启大写命名
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Adapter enableCapitalMode() {
+            this.config.isCapitalMode = true;
+            return this;
+        }
+
+        /**
+         * 开启跳过视图
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Adapter enableSkipView() {
+            this.config.skipView = true;
+            return this;
+        }
+
+        /**
+         * 启用 schema
+         *
+         * @return this
+         * @since 3.5.1
+         */
+        public Adapter enableSchema() {
+            this.config.enableSchema = true;
+            return this;
+        }
+
+        /**
+         * 禁用sql过滤
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Adapter disableSqlFilter() {
+            this.config.enableSqlFilter = false;
+            return this;
         }
     }
 

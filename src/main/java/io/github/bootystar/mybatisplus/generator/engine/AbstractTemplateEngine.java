@@ -16,8 +16,8 @@
 package io.github.bootystar.mybatisplus.generator.engine;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.core.ConfigAdapter;
-import io.github.bootystar.mybatisplus.generator.config.core.*;
+import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.*;
 import io.github.bootystar.mybatisplus.generator.config.po.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.util.FileUtils;
@@ -49,9 +49,9 @@ public abstract class AbstractTemplateEngine {
      * 配置信息
      */
     @Getter
-    protected final ConfigAdapter configAdapter;
+    protected final GeneratorConfig configAdapter;
 
-    public AbstractTemplateEngine(ConfigAdapter configAdapter) {
+    public AbstractTemplateEngine(GeneratorConfig configAdapter) {
         this.configAdapter = configAdapter;
     }
 
@@ -104,7 +104,7 @@ public abstract class AbstractTemplateEngine {
      */
     public AbstractTemplateEngine batchOutput() {
         try {
-            ConfigAdapter config = this.getConfigAdapter();
+            GeneratorConfig config = this.getConfigAdapter();
             List<TableInfo> tableInfoList = config.getTableInfo();
             tableInfoList.forEach(tableInfo -> {
                 Map<String, Object> objectMap = this.getObjectMap(config, tableInfo);
@@ -170,7 +170,7 @@ public abstract class AbstractTemplateEngine {
      * @param tableInfo 表信息对象
      * @return ignore
      */
-    public Map<String, Object> getObjectMap(ConfigAdapter config, TableInfo tableInfo) {
+    public Map<String, Object> getObjectMap(GeneratorConfig config, TableInfo tableInfo) {
         Map<String, Object> objectMap = new HashMap<>();
         Map<String, Object> globalMap = config.getGlobalConfig().renderData(tableInfo);
         objectMap.putAll(globalMap);

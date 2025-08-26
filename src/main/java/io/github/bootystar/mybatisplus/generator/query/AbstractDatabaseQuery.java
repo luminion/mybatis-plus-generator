@@ -16,10 +16,10 @@
 package io.github.bootystar.mybatisplus.generator.query;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.ConfigAdapter;
+import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.DataSourceConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 
 import lombok.Getter;
@@ -42,7 +42,7 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Getter
-    protected final ConfigAdapter configAdapter;
+    protected final GeneratorConfig configAdapter;
 
     @Getter
     protected final DataSourceConfig dataSourceConfig;
@@ -52,7 +52,7 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
     protected final GlobalConfig globalConfig;
 
 
-    public AbstractDatabaseQuery(ConfigAdapter configAdapter) {
+    public AbstractDatabaseQuery(GeneratorConfig configAdapter) {
         this.configAdapter = configAdapter;
         this.dataSourceConfig = configAdapter.getDataSourceConfig();
         this.strategyConfig = configAdapter.getStrategyConfig();
@@ -65,7 +65,7 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
         if (isExclude || isInclude) {
             Map<String, String> notExistTables = new HashSet<>(isExclude ? strategyConfig.getExclude() : strategyConfig.getInclude())
                 .stream()
-                .filter(s -> !ConfigAdapter.matcherRegTable(s))
+                .filter(s -> !GeneratorConfig.matcherRegTable(s))
                 .collect(Collectors.toMap(String::toLowerCase, s -> s, (o, n) -> n));
             // 将已经存在的表移除，获取配置中数据库不存在的表
             for (TableInfo tabInfo : tableList) {

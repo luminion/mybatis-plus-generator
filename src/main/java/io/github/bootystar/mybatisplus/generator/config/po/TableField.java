@@ -16,12 +16,12 @@
 package io.github.bootystar.mybatisplus.generator.config.po;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.core.ConfigAdapter;
-import io.github.bootystar.mybatisplus.generator.config.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.IKeyWordsHandler;
-import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.EntityConfig;
-import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
+import ConstVal;
+import IKeyWordsHandler;
+import io.github.bootystar.mybatisplus.generator.config.support.DataSourceConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.EntityConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.Column;
@@ -151,7 +151,7 @@ public class TableField {
      * @param name          数据库字段名称
      * @since 3.5.0
      */
-    public TableField(ConfigAdapter configAdapter, String name) {
+    public TableField(GeneratorConfig configAdapter, String name) {
         this.name = name;
         this.columnName = name;
         this.entity = configAdapter.getEntityConfig();

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.core;
+package io.github.bootystar.mybatisplus.generator.config;
 
-import io.github.bootystar.mybatisplus.generator.config.INameConvert;
+import io.github.bootystar.mybatisplus.generator.config.support.*;
 import io.github.bootystar.mybatisplus.generator.config.enums.TemplateLoadWay;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
@@ -33,48 +33,57 @@ import java.util.regex.Pattern;
  * @author YangHu, tangguo, hubin, Juzi, lanjerry
  * @since 2016-08-30
  */
-@Getter
-public class ConfigAdapter {
+public class GeneratorConfig {
     /**
      * 数据库配置信息
      */
-    private DataSourceConfig dataSourceConfig;
+    @Getter
+    private final DataSourceConfig dataSourceConfig;
     /**
      * 全局配置信息
      */
-    private GlobalConfig globalConfig;
+    @Getter
+    private final GlobalConfig globalConfig = new GlobalConfig();
     /**
      * 输出文件配置
      */
-    private OutputConfig outputConfig;
+    @Getter
+    private final OutputConfig outputConfig = new OutputConfig();
     /**
      * 策略配置信息
      */
-    private StrategyConfig strategyConfig;
+    @Getter
+    private final StrategyConfig strategyConfig = new StrategyConfig();
     /**
      * 注入配置信息
      */
-    private InjectionConfig injectionConfig;
+    @Getter
+    private final InjectionConfig injectionConfig = new InjectionConfig();
     /**
      * 实体配置
      */
-    private EntityConfig entityConfig;
+    @Getter
+    private final EntityConfig entityConfig = new EntityConfig();
     /**
      * 映射器配置
      */
-    private MapperConfig mapperConfig;
+    @Getter
+    private final MapperConfig mapperConfig = new MapperConfig();
     /**
      * 服务配置
      */
-    private ServiceConfig serviceConfig;
+    @Getter
+    private final ServiceConfig serviceConfig = new ServiceConfig();
     /**
      * 控制器配置
      */
-    private ControllerConfig controllerConfig;
+    @Getter
+    private final ControllerConfig controllerConfig = new ControllerConfig();
     /**
      * 模型配置
      */
-    private ModelConfig modelConfig;
+    @Getter
+    private final ModelConfig modelConfig = new ModelConfig();
 
     /**
      * 过滤正则
@@ -88,32 +97,14 @@ public class ConfigAdapter {
 
     /**
      * 资源加载器
+     *
      * @since 3.5.9
      */
     @Setter
     private TemplateLoadWay templateLoadWay = TemplateLoadWay.FILE;
-    
-    public ConfigAdapter(DataSourceConfig dataSourceConfig,
-                         GlobalConfig globalConfig,
-                         OutputConfig outputConfig,
-                         StrategyConfig strategyConfig,
-                         InjectionConfig injectionConfig,
-                         EntityConfig entityConfig,
-                         MapperConfig mapperConfig,
-                         ServiceConfig serviceConfig,
-                         ControllerConfig controllerConfig,
-                         ModelConfig modelConfig 
-    ) {
-        this.dataSourceConfig = dataSourceConfig;
-        this.globalConfig = globalConfig;
-        this.outputConfig = outputConfig;
-        this.strategyConfig = strategyConfig;
-        this.injectionConfig = injectionConfig;
-        this.entityConfig = entityConfig;
-        this.mapperConfig = mapperConfig;
-        this.serviceConfig = serviceConfig;
-        this.controllerConfig = controllerConfig;
-        this.modelConfig = modelConfig;
+
+    public GeneratorConfig(String url, String username, String password) {
+        this.dataSourceConfig = new DataSourceConfig(url, username, password);
         // 设置默认名称转换
         INameConvert nameConvert = entityConfig.getNameConvert();
         if (nameConvert == null) {

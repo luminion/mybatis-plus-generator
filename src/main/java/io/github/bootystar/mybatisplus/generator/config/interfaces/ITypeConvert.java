@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config;
+package io.github.bootystar.mybatisplus.generator.config.interfaces;
 
-import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 

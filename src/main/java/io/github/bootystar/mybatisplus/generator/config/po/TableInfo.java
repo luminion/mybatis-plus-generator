@@ -17,8 +17,8 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.core.ConfigAdapter;
-import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import lombok.Getter;
@@ -41,7 +41,7 @@ public class TableInfo {
      * 配置适配器
      */
     @Getter
-    private final ConfigAdapter configAdapter;
+    private final GeneratorConfig configAdapter;
 
     /**
      * 包导入信息
@@ -130,7 +130,7 @@ public class TableInfo {
      * @param name          表名
      * @since 3.5.0
      */
-    public TableInfo(ConfigAdapter configBuilder, String name) {
+    public TableInfo(GeneratorConfig configBuilder, String name) {
         this.configAdapter = configBuilder;
         this.name = name;
     }
@@ -178,20 +178,6 @@ public class TableInfo {
         } else {
             this.fields.add(field);
         }
-    }
-
-    /**
-     * @param pkgs 包空间
-     * @return this
-     * @since 3.5.0
-     */
-    public TableInfo addImportPackages(String... pkgs) {
-        return addImportPackages(Arrays.asList(pkgs));
-    }
-
-    public TableInfo addImportPackages(List<String> pkgList) {
-        importPackages.addAll(pkgList);
-        return this;
     }
 
     /**

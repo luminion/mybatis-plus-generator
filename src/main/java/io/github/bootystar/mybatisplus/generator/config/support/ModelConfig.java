@@ -1,11 +1,10 @@
-package io.github.bootystar.mybatisplus.generator.config.core;
+package io.github.bootystar.mybatisplus.generator.config.support;
 
-import io.github.bootystar.mybatisplus.generator.config.ConstVal;
+import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField.MetaInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
-import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
@@ -19,10 +18,7 @@ import java.util.stream.Collectors;
  *
  * @author bootystar
  */
-@Getter
 public class ModelConfig implements ITemplate {
-    protected ModelConfig() {
-    }
 
     /**
      * 查询dto继承实体类
@@ -93,19 +89,20 @@ public class ModelConfig implements ITemplate {
     }
 
     private void resolveDocImportPackages(GlobalConfig globalConfig, TreeSet<String> importPackages) {
-        if (globalConfig.isSpringdoc()) {
-            importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
-        }
-        if (globalConfig.isSwagger()) {
-            importPackages.add("io.swagger.annotations.ApiModel");
-            importPackages.add("io.swagger.annotations.ApiModelProperty");
-        }
-        if (globalConfig.isLombok()) {
-            if (globalConfig.isChainModel()) {
-                importPackages.add("lombok.experimental.Accessors");
-            }
-            importPackages.add("lombok.Data");
-        }
+        // todo 
+//        if (globalConfig.isSpringdoc()) {
+//            importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
+//        }
+//        if (globalConfig.isSwagger()) {
+//            importPackages.add("io.swagger.annotations.ApiModel");
+//            importPackages.add("io.swagger.annotations.ApiModelProperty");
+//        }
+//        if (globalConfig.isLombok()) {
+//            if (globalConfig.isChainModel()) {
+//                importPackages.add("lombok.experimental.Accessors");
+//            }
+//            importPackages.add("lombok.Data");
+//        }
     }
 
     private Set<String> importCreateDTOPackages(TableInfo tableInfo) {
@@ -192,11 +189,12 @@ public class ModelConfig implements ITemplate {
         this.resolveDocImportPackages(globalConfig, importPackages);
         importPackages.add("java.util.List");
         if (queryDTOExtendsEntity) {
-            String entityPackage = tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName();
-            importPackages.add(entityPackage);
-            if (globalConfig.isLombok()){
-                importPackages.add("lombok.EqualsAndHashCode");
-            }
+            // todo
+//            String entityPackage = tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName();
+//            importPackages.add(entityPackage);
+//            if (globalConfig.isLombok()){
+//                importPackages.add("lombok.EqualsAndHashCode");
+//            }
         }
         for (TableField field : tableInfo.getFields()) {
             if (field.isLogicDeleteField()) {
@@ -216,24 +214,25 @@ public class ModelConfig implements ITemplate {
             String excelIgnoreUnannotated = globalConfig.resolveExcelApiPackage("annotation.ExcelIgnoreUnannotated");
             importPackages.add(excelIgnoreUnannotated);
         }
-        if (queryVOExtendsEntity){
-            importPackages.add(tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName());
-            if (globalConfig.isLombok()){
-                importPackages.add("lombok.EqualsAndHashCode");
-            }
-        }else{
+        if (queryVOExtendsEntity) {
+            // todo
+//            importPackages.add(tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName());
+//            if (globalConfig.isLombok()){
+//                importPackages.add("lombok.EqualsAndHashCode");
+//            }
+        } else {
             for (TableField field : tableInfo.getFields()) {
                 if (field.isLogicDeleteField()) {
                     continue;
                 }
                 Optional.ofNullable(field.getColumnType().getPkg()).ifPresent(importPackages::add);
             }
-            if (exportOnQueryVO){
+            if (exportOnQueryVO) {
                 String excelProperty = globalConfig.resolveExcelApiPackage("annotation.ExcelProperty");
                 importPackages.add(excelProperty);
             }
         }
-       
+
         return importPackages;
     }
 
@@ -246,6 +245,58 @@ public class ModelConfig implements ITemplate {
     private Set<String> importExportVOPackages(TableInfo tableInfo) {
         TreeSet<String> importPackages = new TreeSet<>();
         return importPackages;
+    }
+
+    public Adapter adapter() {
+        return new Adapter(this);
+    }
+
+    public static class Adapter {
+        private final ModelConfig config;
+
+        public Adapter(ModelConfig config) {
+            this.config = config;
+        }
+
+        /**
+         * 查询dto继承实体类
+         *
+         * @return this
+         */
+        public Adapter enableQueryDTOExtendsEntity() {
+            this.config.queryDTOExtendsEntity = true;
+            return this;
+        }
+
+        /**
+         * 查询vo继承实体类
+         *
+         * @return this
+         */
+        public Adapter enableQueryVOExtendsEntity() {
+            this.config.queryVOExtendsEntity = true;
+            return this;
+        }
+
+        /**
+         * 使用新增dto作为导入dto
+         *
+         * @return this
+         */
+        public Adapter enableImportOnCreateDTO() {
+            this.config.importOnCreateDTO = true;
+            return this;
+        }
+
+        /**
+         * 使用vo作为导出vo
+         *
+         * @return this
+         */
+        public Adapter enableExportOnQueryVO() {
+            this.config.exportOnQueryVO = true;
+            return this;
+        }
     }
 
 }

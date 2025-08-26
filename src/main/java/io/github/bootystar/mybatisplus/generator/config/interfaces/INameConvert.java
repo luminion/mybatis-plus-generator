@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config;
+package io.github.bootystar.mybatisplus.generator.config.interfaces;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.core.ConfigAdapter;
+import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
@@ -54,9 +54,9 @@ public interface INameConvert {
      */
     class DefaultNameConvert implements INameConvert {
 
-        private final ConfigAdapter configAdapter;
+        private final GeneratorConfig configAdapter;
 
-        public DefaultNameConvert(ConfigAdapter configAdapter) {
+        public DefaultNameConvert(GeneratorConfig configAdapter) {
             this.configAdapter = configAdapter;
         }
 

@@ -17,7 +17,7 @@ package io.github.bootystar.mybatisplus.generator.config.rules;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.ConstVal;
+import ConstVal;
 
 import java.util.Arrays;
 import java.util.Set;

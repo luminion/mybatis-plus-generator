@@ -16,9 +16,9 @@
 package io.github.bootystar.mybatisplus.generator.config.converts;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import io.github.bootystar.mybatisplus.generator.config.ITypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.converts.select.BranchBuilder;
 import io.github.bootystar.mybatisplus.generator.config.converts.select.Selector;
+import io.github.bootystar.mybatisplus.generator.config.interfaces.ITypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 
 /**
