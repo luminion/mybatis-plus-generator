@@ -40,9 +40,9 @@ public class ${createDTO} {
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
 #if(${field.keyFlag})
-#elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
 #elseif(${field.versionField})
 #elseif(${field.logicDeleteField})
+#elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
 #else
 
     #if("$!field.comment" != "")
@@ -77,56 +77,32 @@ public class ${createDTO} {
 ## ----------  END 字段循环遍历  ----------
 #if(!${lombok})
 #foreach($field in ${table.fields})
-    #if(${field.keyFlag})
-    #elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
-    #elseif(${field.versionField})
-    #elseif(${field.logicDeleteField})
-    #elseif($insertExcludeColumns.contains(${field.columnName}))
+#if(${field.keyFlag})
+#elseif(${field.versionField})
+#elseif(${field.logicDeleteField})
+#elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
+#else
+    #if(${field.propertyType.equals("boolean")})
+        #set($getprefix="is")
     #else
-        #if(${field.propertyType.equals("boolean")})
-            #set($getprefix="is")
-        #else
-            #set($getprefix="get")
-        #end
+        #set($getprefix="get")
+    #end
 
     public ${field.propertyType} ${getprefix}${field.capitalName}() {
         return ${field.propertyName};
     }
 
-        #if(${chainModel})
+    #if(${chainModel})
     public ${createDTO} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
-        #else
-    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
-        #end
-        this.${field.propertyName} = ${field.propertyName};
-        #if(${chainModel})
-        return this;
-        #end
-    }
-    #end
-#end
-## --foreach end---
-#end
-#if(!${lombok})
-
-    @Override
-    public String toString() {
-        return "${entity}{" +
-#foreach($field in ${table.fields})
-    #if(${field.keyFlag})
-    #elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
-    #elseif(${field.versionField})
-    #elseif(${field.logicDeleteField})
-    #elseif($insertExcludeColumns.contains(${field.columnName}))
     #else
-        #if($!{foreach.index}==0)
-        "${field.propertyName} = " + ${field.propertyName} +
-        #else
-        ", ${field.propertyName} = " + ${field.propertyName} +
-        #end
+    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
     #end
-#end
-        "}";
+        this.${field.propertyName} = ${field.propertyName};
+    #if(${chainModel})
+        return this;
+    #end
     }
+#end
+#end
 #end
 }

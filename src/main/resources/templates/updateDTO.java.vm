@@ -32,8 +32,8 @@ import ${pkg};
 public class ${updateDTO} {
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
-#if(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE"))
-#elseif(${field.logicDeleteField})
+#if(${field.logicDeleteField})
+#elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE"))
 #else
 
     #if("$!field.comment" != "")
@@ -70,54 +70,30 @@ public class ${updateDTO} {
 ## ----------  END 字段循环遍历  ----------
 #if(!${lombok})
 #foreach($field in ${table.fields})
-#if($updateExcludeColumns.contains(${field.columnName}))
+#if(${field.logicDeleteField})
 #elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE"))
-#elseif(${field.logicDeleteField})
 #else
-  #if(${field.propertyType.equals("boolean")})
-    #set($getprefix="is")
-  #else
-    #set($getprefix="get")
-  #end
+    #if(${field.propertyType.equals("boolean")})
+        #set($getprefix="is")
+    #else
+        #set($getprefix="get")
+    #end
 
     public ${field.propertyType} ${getprefix}${field.capitalName}() {
         return ${field.propertyName};
     }
 
-  #if(${chainModel})
-    public ${entity}UpdateDTO set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
-  #else
-    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
-  #end
-        this.${field.propertyName} = ${field.propertyName};
-  #if(${chainModel})
-        return this;
-  #end
-    }
-#end
-#end
-## --foreach end---
-#end
-## --end of #if(!${entityLombokModel})--
-
-#if(!${lombok})
-
-    @Override
-    public String toString() {
-        return "${entity}{" +
-  #foreach($field in ${table.fields})
-  #if($updateExcludeColumns.contains(${field.columnName}))
-  #elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE"))
-  #elseif(${field.logicDeleteField})
-  #else
-    #if($!{foreach.index}==0)
-        "${field.propertyName} = " + ${field.propertyName} +
+    #if(${chainModel})
+    public ${updateDTO} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
     #else
-        ", ${field.propertyName} = " + ${field.propertyName} +
+    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
     #end
-  #end
-  #end
-        "}";
+        this.${field.propertyName} = ${field.propertyName};
+    #if(${chainModel})
+        return this;
+    #end
     }
+#end
+#end
 #end
 }
