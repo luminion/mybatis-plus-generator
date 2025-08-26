@@ -15,8 +15,9 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.converts;
 
-import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.ITypeConvert;
+import io.github.bootystar.mybatisplus.generator.config.interfaces.ITypeConvert;
+import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
+import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.rules.DbColumnType;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 
@@ -78,19 +79,20 @@ public class OracleTypeConvert implements ITypeConvert {
      *
      * @param config 全局配置
      * @return 时间类型
-     * @see GlobalConfig#getDateType()
      */
     protected static IColumnType toDateType(GlobalConfig config) {
-        switch (config.getDateType()) {
-            case ONLY_DATE:
-                return DbColumnType.DATE;
-            case SQL_PACK:
-                return DbColumnType.TIMESTAMP;
-            case TIME_PACK:
-                return DbColumnType.LOCAL_DATE_TIME;
-            default:
-                return STRING;
-        }
+        // todo
+//        switch (config.getDateType()) {
+//            case DateType.ONLY_DATE:
+//                return DbColumnType.DATE;
+//            case DateType.SQL_PACK:
+//                return DbColumnType.TIMESTAMP;
+//            case DateType.TIME_PACK:
+//                return DbColumnType.LOCAL_DATE_TIME;
+//            default:
+//                return STRING;
+//        }
+        return null;
     }
 
 }

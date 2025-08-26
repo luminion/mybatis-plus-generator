@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.type;
 
-import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 

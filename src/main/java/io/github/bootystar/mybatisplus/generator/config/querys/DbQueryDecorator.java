@@ -19,9 +19,9 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.core.DataSourceConfig;
-import io.github.bootystar.mybatisplus.generator.config.IDbQuery;
-import io.github.bootystar.mybatisplus.generator.config.core.StrategyConfig;
+import io.github.bootystar.mybatisplus.generator.config.interfaces.IDbQuery;
+import io.github.bootystar.mybatisplus.generator.config.support.DataSourceConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.LikeTable;
 import lombok.Getter;
 

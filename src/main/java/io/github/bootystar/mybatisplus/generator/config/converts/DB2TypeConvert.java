@@ -15,8 +15,8 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.converts;
 
-import io.github.bootystar.mybatisplus.generator.config.core.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.ITypeConvert;
+import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
+import ITypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 
 import static io.github.bootystar.mybatisplus.generator.config.converts.TypeConverts.contains;

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.core;
+package io.github.bootystar.mybatisplus.generator.config.support;
 
+import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
@@ -34,7 +35,6 @@ import java.util.function.BiConsumer;
  * @since 2016-12-07
  */
 @Slf4j
-@Getter
 public class InjectionConfig implements ITemplate {
 
     /**
@@ -67,6 +67,62 @@ public class InjectionConfig implements ITemplate {
         }
         if (null != beforeOutputFileBiConsumer) {
             beforeOutputFileBiConsumer.accept(tableInfo, objectMap);
+        }
+    }
+
+    public Adapter adapter() {
+        return new Adapter(this);
+    }
+
+    public static class Adapter {
+        private final InjectionConfig config;
+
+        public Adapter(InjectionConfig config) {
+            this.config = config;
+        }
+
+        /**
+         * 输出文件之前消费者
+         *
+         * @param biConsumer 消费者
+         * @return this
+         */
+        public Adapter beforeOutputFile(BiConsumer<TableInfo, Map<String, Object>> biConsumer) {
+            this.config.beforeOutputFileBiConsumer = biConsumer;
+            return this;
+        }
+
+        /**
+         * 自定义配置 Map 对象
+         *
+         * @param customMap Map 对象
+         * @return this
+         */
+        public Adapter customMap(Map<String, Object> customMap) {
+            this.config.customMap = customMap;
+            return this;
+        }
+
+        /**
+         * 添加自定义文件
+         *
+         * @param customFile 自定义文件
+         * @return this
+         */
+        public Adapter customFile(CustomFile customFile) {
+            this.config.customFiles.add(customFile);
+            return this;
+        }
+
+        /**
+         * 添加自定义文件列表
+         *
+         * @param customFiles 自定义文件列表
+         * @return this
+         */
+        public Adapter customFile(List<CustomFile> customFiles) {
+            this.config.customFiles.addAll(customFiles);
+            return this;
         }
     }
 

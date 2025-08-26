@@ -16,8 +16,8 @@
 package io.github.bootystar.mybatisplus.generator.engine;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import io.github.bootystar.mybatisplus.generator.config.core.ConfigAdapter;
-import io.github.bootystar.mybatisplus.generator.config.ConstVal;
+import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
+import ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.enums.TemplateLoadWay;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -46,7 +46,7 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
         }
     }
 
-    public VelocityTemplateEngine(ConfigAdapter configAdapter) {
+    public VelocityTemplateEngine(GeneratorConfig configAdapter) {
         super(configAdapter);
         if (null == velocityEngine) {
             Properties p = new Properties();

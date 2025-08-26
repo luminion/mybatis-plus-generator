@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.core;
+package io.github.bootystar.mybatisplus.generator.config.support;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
@@ -21,7 +21,6 @@ import io.github.bootystar.mybatisplus.generator.config.po.MethodPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -33,12 +32,7 @@ import java.util.Map;
  * @since 3.5.0
  */
 @Slf4j
-@Getter
 public class ControllerConfig implements ITemplate {
-
-
-    protected ControllerConfig() {
-    }
 
     /**
      * 自定义继承的Controller类全称，带包名
@@ -121,7 +115,7 @@ public class ControllerConfig implements ITemplate {
         data.put("restControllerStyle", this.restController);
         data.put("superControllerClassPackage", StringUtils.isBlank(superClass) ? null : superClass);
         data.put("superControllerClass", ClassUtils.getSimpleName(this.superClass));
-//        ConfigAdapter configAdapter = tableInfo.getConfigAdapter();
+//        GeneratorConfig configAdapter = tableInfo.getConfigAdapter();
 //        EntityConfig entityConfig = configAdapter.getEntityConfig();
 //        StrategyConfig strategyConfig = configAdapter.getStrategyConfig();
 //        ServiceConfig serviceConfig = configAdapter.getServiceConfig();
@@ -232,5 +226,161 @@ public class ControllerConfig implements ITemplate {
         return data;
     }
 
-}
+    public Adapter adapter() {
+        return new Adapter(this);
+    }
 
+    public static class Adapter {
+        private final ControllerConfig config;
+
+        public Adapter(ControllerConfig config) {
+            this.config = config;
+        }
+
+        /**
+         * 父类控制器
+         *
+         * @param clazz 父类控制器
+         * @return this
+         */
+        public Adapter superClass(Class<?> clazz) {
+            return superClass(clazz.getName());
+        }
+
+        /**
+         * 父类控制器
+         *
+         * @param superClass 父类控制器类名
+         * @return this
+         */
+        public Adapter superClass(String superClass) {
+            this.config.superClass = superClass;
+            return this;
+        }
+
+        /**
+         * 关闭@RestController控制器
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Adapter disableRestController() {
+            this.config.restController = false;
+            return this;
+        }
+
+        /**
+         * 关闭驼峰转连字符
+         *
+         * @return this
+         * @since 3.5.0
+         */
+        public Adapter disableHyphenStyle() {
+            this.config.hyphenStyle = false;
+            return this;
+        }
+
+        /**
+         * controller请求前缀
+         *
+         * @param url url
+         * @return this
+         */
+        public Adapter baseUrl(String url) {
+            if (url == null || url.isEmpty()) {
+                this.config.baseUrl = null;
+                return this;
+            }
+            if (!url.startsWith("/")) {
+                url = "/" + url;
+            }
+            if (url.endsWith("/")) {
+                url = url.substring(0, url.length() - 1);
+            }
+            this.config.baseUrl = url;
+            return this;
+        }
+
+        /**
+         * 跨域注解
+         *
+         * @return this
+         */
+        public Adapter enableCrossOrigins() {
+            this.config.crossOrigins = true;
+            return this;
+        }
+
+        /**
+         * 复杂参数查询不再使用post, 而是使用get
+         *
+         * @return this
+         */
+        public Adapter disablePostQuery() {
+            this.config.postQuery = false;
+            return this;
+        }
+
+        /**
+         * 增删查改使用restful风格
+         *
+         * @return this
+         */
+        public Adapter enableRestful() {
+            this.config.restful = true;
+            return this;
+        }
+
+        /**
+         * 禁用路径变量
+         *
+         * @return this
+         */
+        public Adapter disablePathVariable() {
+            this.config.pathVariable = false;
+            return this;
+        }
+
+        /**
+         * 禁用消息体接收数据
+         *
+         * @return this
+         */
+        public Adapter disableRequestBody() {
+            this.config.requestBody = false;
+            return this;
+        }
+
+        /**
+         * 指定controller的返回结果包装类及方法
+         *
+         * @param methodReference 方法引用
+         * @return this
+         */
+        public <R> Adapter returnMethod(com.baomidou.mybatisplus.core.toolkit.support.SFunction<Object, R> methodReference) {
+            this.config.returnMethod = io.github.bootystar.mybatisplus.generator.util.ReflectUtil.lambdaMethodInfo(methodReference, Object.class);
+            return this;
+        }
+
+        /**
+         * 指定controller返回的分页包装类及方法
+         *
+         * @param methodReference 方法参考
+         * @return this
+         */
+        public <O, R> Adapter pageMethod(com.baomidou.mybatisplus.core.toolkit.support.SFunction<com.baomidou.mybatisplus.core.metadata.IPage<O>, R> methodReference) {
+            this.config.pageMethod = io.github.bootystar.mybatisplus.generator.util.ReflectUtil.lambdaMethodInfo(methodReference, com.baomidou.mybatisplus.core.metadata.IPage.class);
+            return this;
+        }
+
+        /**
+         * 指定查询的DTO
+         *
+         * @return this
+         */
+        public Adapter queryDTO(Class<?> queryDTO) {
+            this.config.queryDTO = new io.github.bootystar.mybatisplus.generator.config.po.ClassPayload(queryDTO);
+            return this;
+        }
+    }
+}
