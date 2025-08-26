@@ -16,7 +16,7 @@ public class Generator4Mysql {
                 .create(url, username, password)
                 .initialize()
                 .global(e -> e
-                                
+
                                 .author("bootystar")
                                 .dateType(DateType.SQL_PACK)
                                 .commentDate("yyyy-MM-dd HH:mm:ss")
@@ -40,30 +40,60 @@ public class Generator4Mysql {
                         .enableGlobalFileOverride()
                         .parentPackage("com.example.test")
                         .disableOpenOutputDir()
-                        .createDTOPackage("create")
-                        // .createDTODisable()
-                        .updateDTOPackage("update")
-                        // .updateDTODisable()
-                        .queryDTOPackage("query")
-                        // .queryDTODisable()
-                        .queryVOPackage("query")
-//                        .queryVODisable()
-                        .importDTOPackage("excel")
-                        .importDTODisable()
-                        .exportVOPackage("excel")
-                        .exportVODisable()
-                        .mapperDisable()
-                        .mapperXmlDisable()
-                        .serviceDisable()
-                        .serviceImplDisable()
-                        .controllerDisable()
+                        .entity(f -> f
+                                .formatPattern("%sEntity")
+                        )
+                        .mapper(f -> f
+                                .subPackage("mapper")
+                                .disable()
+                        )
+                        .mapperXml(f -> f
+                                .subPackage("mapper.xml")
+                                .disable()
+                        )
+                        .service(f -> f
+                                .subPackage("service")
+                                .disable()
+                        )
+                        .serviceImpl(f -> f
+                                .subPackage("service.impl")
+                                .disable()
+                        )
+                        .controller(f -> f
+                                .subPackage("controller")
+                                .disable()
+                        )
+                        .createDTO(f -> f
+                                .subPackage("dto")
+                                .disable()
+                        )
+                        .updateDTO(f -> f
+                                .subPackage("dto")
+                                .disable()
+                        )
+                        .queryDTO(f -> f
+                                .subPackage("dto")
+                                .disable()
+                        )
+                        .queryVO(f -> f
+                                .subPackage("vo")
+                                .disable()
+                        )
+                        .importDTO(f -> f
+                                .subPackage("excel")
+                                .disable()
+                        )
+                        .exportVO(f -> f
+                                .subPackage("excel")
+                                .disable()
+                        )
                 )
-                .model(e->e
-                        .enableQueryDTOExtendsEntity()
+                .model(e -> e
+                                .enableQueryDTOExtendsEntity()
 //                        .enableQueryVOExtendsEntity()
-                        .enableExportOnQueryVO()
-                        .enableImportOnCreateDTO()
-                        
+                                .enableExportOnQueryVO()
+                                .enableImportOnCreateDTO()
+
                 )
                 .strategy(e -> e
                         .extraFieldSuffix("In", "IN")
@@ -79,7 +109,7 @@ public class Generator4Mysql {
                         .extraFieldSuffix("Gt", ">")
                         .extraFieldSuffix("WithBit", "&>")
                         .extraFieldSuffix("WithoutBit", "&=")
-                        
+
                 )
                 .entity(e -> e
 //                        .disable()
@@ -87,7 +117,7 @@ public class Generator4Mysql {
                                 .versionColumnName("version")
                 )
                 .mapper(e -> e
-                        
+
                 )
                 .service(e -> e
                 )
