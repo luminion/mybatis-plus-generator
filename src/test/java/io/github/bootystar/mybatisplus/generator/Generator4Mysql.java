@@ -44,6 +44,10 @@ public class Generator4Mysql {
                         .updateDTOPackage("entity")
                         .queryDTOPackage("entity")
                         .queryVOPackage("entity")
+                        .importDTOPackage("entity")
+                        .importDTODisableGenerate()
+                        .exportVOPackage("entity")
+                        .exportVODisableGenerate()
                 )
                 .strategy(e -> e
                 )
