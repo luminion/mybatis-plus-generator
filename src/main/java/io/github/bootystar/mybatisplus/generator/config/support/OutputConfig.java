@@ -2,7 +2,6 @@ package io.github.bootystar.mybatisplus.generator.config.support;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
 import io.github.bootystar.mybatisplus.generator.config.interfaces.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -28,7 +27,7 @@ public class OutputConfig implements ITemplate {
      * 生成文件的输出目录【 windows:C://tmp  linux or mac:/tmp 】
      */
     @Getter
-    protected String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "C://tmp" : "/tmp";
+    protected String outputDir = System.getProperty("user.dir") + "/src/main/java";
 
     /**
      * 父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名

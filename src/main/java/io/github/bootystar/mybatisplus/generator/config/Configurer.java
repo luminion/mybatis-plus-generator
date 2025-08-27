@@ -34,97 +34,89 @@ import java.util.regex.Pattern;
  * @author YangHu, tangguo, hubin, Juzi, lanjerry
  * @since 2016-08-30
  */
-public class GeneratorConfig {
-    /**
-     * 数据库配置信息
-     */
-    @Getter
-    private final DataSourceConfig dataSourceConfig;
-    /**
-     * 全局配置信息
-     */
-    @Getter
-    private final GlobalConfig globalConfig = new GlobalConfig();
-    /**
-     * 输出文件配置
-     */
-    @Getter
-    private final OutputConfig outputConfig = new OutputConfig();
-    /**
-     * 策略配置信息
-     */
-    @Getter
-    private final StrategyConfig strategyConfig = new StrategyConfig();
-    /**
-     * 注入配置信息
-     */
-    @Getter
-    private final InjectionConfig injectionConfig = new InjectionConfig();
-    /**
-     * 实体配置
-     */
-    @Getter
-    private final EntityConfig entityConfig = new EntityConfig();
-    /**
-     * 映射器配置
-     */
-    @Getter
-    private final MapperConfig mapperConfig = new MapperConfig();
-    /**
-     * 服务配置
-     */
-    @Getter
-    private final ServiceConfig serviceConfig = new ServiceConfig();
-    /**
-     * 控制器配置
-     */
-    @Getter
-    private final ControllerConfig controllerConfig = new ControllerConfig();
-    /**
-     * 模型配置
-     */
-    @Getter
-    private final ModelConfig modelConfig = new ModelConfig();
+@Getter
+public class Configurer {
 
     /**
      * 过滤正则
      */
     private static final Pattern REGX = Pattern.compile("[~!/@#$%^&*()+\\\\\\[\\]|{};:'\",<.>?]+");
-
+    /**
+     * 数据库配置信息
+     */
+    private final DataSourceConfig dataSourceConfig;
+    /**
+     * 全局配置信息
+     */
+    private final GlobalConfig globalConfig = new GlobalConfig();
+    /**
+     * 输出文件配置
+     */
+    private final OutputConfig outputConfig = new OutputConfig();
+    /**
+     * 策略配置信息
+     */
+    private final StrategyConfig strategyConfig = new StrategyConfig();
+    /**
+     * 注入配置信息
+     */
+    private final InjectionConfig injectionConfig = new InjectionConfig();
+    /**
+     * 实体配置
+     */
+    private final EntityConfig entityConfig = new EntityConfig();
+    /**
+     * 映射器配置
+     */
+    private final MapperConfig mapperConfig = new MapperConfig();
+    /**
+     * 服务配置
+     */
+    private final ServiceConfig serviceConfig = new ServiceConfig();
+    /**
+     * 控制器配置
+     */
+    private final ControllerConfig controllerConfig = new ControllerConfig();
+    /**
+     * 模型配置
+     */
+    private final ModelConfig modelConfig = new ModelConfig();
     /**
      * 数据库表信息
+     * 配置
      */
-    @Getter
     private final List<TableInfo> tableInfo = new ArrayList<>();
-
     /**
      * 资源加载器
      *
      * @since 3.5.9
      */
-    @Setter
-    @Getter
-    private TemplateLoadWay templateLoadWay = TemplateLoadWay.FILE;
+    private final TemplateLoadWay templateLoadWay = TemplateLoadWay.FILE;
 
-    public GeneratorConfig(String url, String username, String password) {
+    public Configurer(String url, String username, String password) {
         this.dataSourceConfig = new DataSourceConfig(url, username, password);
-        // 设置默认名称转换
-        INameConvert nameConvert = entityConfig.getNameConvert();
-        if (nameConvert == null) {
-            entityConfig.setNameConvert(new INameConvert.DefaultNameConvert(this));
-        }
-        Class<? extends IDatabaseQuery> databaseQueryClass = dataSourceConfig.getDatabaseQueryClass();
-        try {
-            Constructor<? extends IDatabaseQuery> declaredConstructor = databaseQueryClass.getDeclaredConstructor(this.getClass());
-            IDatabaseQuery databaseQuery = declaredConstructor.newInstance(this);
-            // 设置表信息
-            List<TableInfo> tableInfos = databaseQuery.queryTables();
-            if (!tableInfos.isEmpty()) {
-                this.tableInfo.addAll(tableInfos);
+    }
+
+    public List<TableInfo> getTableInfo() {
+        if (this.tableInfo.isEmpty()){
+            INameConvert nameConvert = entityConfig.getNameConvert();
+            if (nameConvert == null) {
+                entityConfig.setNameConvert(new INameConvert.DefaultNameConvert(this));
             }
-        } catch (ReflectiveOperationException exception) {
-            throw new RuntimeException("创建IDatabaseQuery实例出现错误:", exception);
+            Class<? extends IDatabaseQuery> databaseQueryClass = dataSourceConfig.getDatabaseQueryClass();
+            try {
+                Constructor<? extends IDatabaseQuery> declaredConstructor = databaseQueryClass.getDeclaredConstructor(this.getClass());
+                IDatabaseQuery databaseQuery = declaredConstructor.newInstance(this);
+                // 设置表信息
+                List<TableInfo> tableInfos = databaseQuery.queryTables();
+                if (!tableInfos.isEmpty()) {
+                    this.tableInfo.addAll(tableInfos);
+                }
+            } catch (ReflectiveOperationException exception) {
+                throw new RuntimeException("创建IDatabaseQuery实例出现错误:", exception);
+            }
         }
+        return tableInfo;
     }
 
     /**

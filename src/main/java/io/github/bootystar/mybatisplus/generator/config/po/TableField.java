@@ -16,7 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.config.po;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
+import io.github.bootystar.mybatisplus.generator.config.Configurer;
 import io.github.bootystar.mybatisplus.generator.config.interfaces.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.interfaces.IKeyWordsHandler;
 import io.github.bootystar.mybatisplus.generator.config.support.DataSourceConfig;
@@ -151,7 +151,7 @@ public class TableField {
      * @param name          数据库字段名称
      * @since 3.5.0
      */
-    public TableField(GeneratorConfig configAdapter, String name) {
+    public TableField(Configurer configAdapter, String name) {
         this.name = name;
         this.columnName = name;
         this.entity = configAdapter.getEntityConfig();
