@@ -43,6 +43,7 @@ public class StrategyConfig implements ITemplate {
      * example: addTablePrefix("t_")
      * result: t_simple -> Simple
      */
+    @Getter
     protected final Set<String> tablePrefix = new HashSet<>();
 
     /**
@@ -50,6 +51,7 @@ public class StrategyConfig implements ITemplate {
      * example: addTableSuffix("_0")
      * result: t_simple_0 -> Simple
      */
+    @Getter
     protected final Set<String> tableSuffix = new HashSet<>();
 
     /**
@@ -57,6 +59,7 @@ public class StrategyConfig implements ITemplate {
      * example: addFieldPrefix("is_")
      * result: is_deleted -> deleted
      */
+    @Getter
     protected final Set<String> fieldPrefix = new HashSet<>();
 
     /**
@@ -64,18 +67,21 @@ public class StrategyConfig implements ITemplate {
      * example: addFieldSuffix("_flag")
      * result: deleted_flag -> deleted
      */
+    @Getter
     protected final Set<String> fieldSuffix = new HashSet<>();
 
     /**
      * 需要包含的表名，允许正则表达式（与exclude二选一配置）<br/>
      * 当{@link #enableSqlFilter}为true时，正则表达式无效.
      */
+    @Getter
     protected final Set<String> include = new HashSet<>();
 
     /**
      * 需要排除的表名，允许正则表达式<br/>
      * 当{@link #enableSqlFilter}为true时，正则表达式无效.
      */
+    @Getter
     protected final Set<String> exclude = new HashSet<>();
 
     /**
@@ -83,6 +89,7 @@ public class StrategyConfig implements ITemplate {
      *
      * @since 3.3.0
      */
+    @Getter
     protected LikeTable likeTable;
 
     /**
@@ -93,6 +100,7 @@ public class StrategyConfig implements ITemplate {
      *
      * @since 3.3.0
      */
+    @Getter
     protected LikeTable notLikeTable;
 
     /**
@@ -108,16 +116,19 @@ public class StrategyConfig implements ITemplate {
     /**
      * 启用 schema 默认 false
      */
+    @Getter
     protected boolean enableSchema;
 
     /**
      * 是否大写命名（默认 false）
      */
+    @Getter
     protected boolean isCapitalMode;
 
     /**
      * 是否跳过视图（默认 false）
      */
+    @Getter
     protected boolean skipView;
 
     /**

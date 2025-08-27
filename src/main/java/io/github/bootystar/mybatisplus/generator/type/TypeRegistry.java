@@ -75,14 +75,14 @@ public class TypeRegistry {
         //bigDecimal
         typeMap.put(Types.NUMERIC, DbColumnType.BIG_DECIMAL);
         typeMap.put(Types.DECIMAL, DbColumnType.BIG_DECIMAL);
-        //TODO 类型需要补充完整
+        // 类型需要补充完整
     }
 
     public IColumnType getColumnType(TableField.MetaInfo metaInfo, DbColumnType defaultType) {
-        //TODO 是否用包装类??? 可以尝试判断字段是否允许为null来判断是否用包装类
+        // 是否用包装类??? 可以尝试判断字段是否允许为null来判断是否用包装类
         int typeCode = metaInfo.getJdbcType().TYPE_CODE;
         switch (typeCode) {
-            // TODO 需要增加类型处理，尚未补充完整
+            //  需要增加类型处理，尚未补充完整
             case Types.BIT:
                 return getBitType(metaInfo);
             case Types.DATE:

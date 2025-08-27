@@ -44,9 +44,8 @@ public class FastGenerator {
         String banner = "\n" + ".------..------..------..------..------..------..------..------..------.\n" + "|B.--. ||O.--. ||O.--. ||T.--. ||Y.--. ||S.--. ||T.--. ||A.--. ||R.--. |\n" + "| :(): || :/\\: || :/\\: || :/\\: || (\\/) || :/\\: || :/\\: || (\\/) || :(): |\n" + "| ()() || :\\/: || :\\/: || (__) || :\\/: || :\\/: || (__) || :\\/: || ()() |\n" + "| '--'B|| '--'O|| '--'O|| '--'T|| '--'Y|| '--'S|| '--'T|| '--'A|| '--'R|\n" + "`------'`------'`------'`------'`------'`------'`------'`------'`------'\n";
         System.out.println(banner);
         System.out.println("execute success! check files in following folder:");
-        // todo 输出路径
-//        String path = generatorConfig.getOutputConfig().getOutputDir();
-//        System.out.println(new File(path).getAbsolutePath());
+        String path = config.getOutputConfig().getOutputDir();
+        System.out.println(new File(path).getAbsolutePath());
     }
 
     public FastGenerator initialize() {

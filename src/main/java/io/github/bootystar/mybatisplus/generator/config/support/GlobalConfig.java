@@ -59,6 +59,7 @@ public class GlobalConfig implements ITemplate {
      * 【实体】是否为lombok模型（默认 false）<br>
      * <a href="https://projectlombok.org/">document</a>
      */
+    @Getter
     protected boolean lombok;
 
     /**
@@ -66,6 +67,7 @@ public class GlobalConfig implements ITemplate {
      *
      * @since 3.3.2
      */
+    @Getter
     protected boolean chainModel;
 
     /**
@@ -76,11 +78,13 @@ public class GlobalConfig implements ITemplate {
     /**
      * 开启 springdoc 模式（默认 false 与 swagger 不可同时使用）
      */
+    @Getter
     protected boolean springdoc;
 
     /**
      * 额外类链接注释
      */
+    
     protected boolean commentLink;
 
     /**
@@ -89,6 +93,7 @@ public class GlobalConfig implements ITemplate {
      * 该属性在{@link TableInfo#setComment(String)} 时自动使用
      * </p>
      */
+    @Getter
     protected boolean commentUUID;
 
     /**

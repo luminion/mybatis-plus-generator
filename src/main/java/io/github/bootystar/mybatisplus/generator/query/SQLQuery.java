@@ -32,8 +32,6 @@ import java.util.*;
  * 这是兼容以前旧版本提供的查询方式，需要每个数据库对接适配。
  *
  * @author nieqiurong 2021/1/6.
- * @see IDbQuery 数据库适配
- * @see ITypeConvert 类型适配处理
  * @since 3.5.0
  */
 public class SQLQuery extends AbstractDatabaseQuery {

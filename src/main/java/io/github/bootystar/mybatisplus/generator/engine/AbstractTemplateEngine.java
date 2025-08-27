@@ -183,7 +183,6 @@ public abstract class AbstractTemplateEngine {
             schemaName = config.getDataSourceConfig().getSchemaName();
             if (StringUtils.isNotBlank(schemaName)) {
                 tableInfo.setSchemaName(schemaName);
-                // todo schemaName mapper设置
                 schemaName += ".";
                 tableInfo.setConvert(true);
             }

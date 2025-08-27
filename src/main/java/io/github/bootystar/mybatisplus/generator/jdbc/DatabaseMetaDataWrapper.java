@@ -45,10 +45,10 @@ public class DatabaseMetaDataWrapper {
 
     private final DatabaseMetaData databaseMetaData;
 
-    //TODO 暂时只支持一种
+    // 暂时只支持一种
     private final String catalog;
 
-    //TODO 暂时只支持一种
+    // 暂时只支持一种
     private final String schema;
 
     public DatabaseMetaDataWrapper(Connection connection, String schemaName) {
@@ -188,7 +188,7 @@ public class DatabaseMetaDataWrapper {
 
     public Table getTableInfo(String catalog, String schema, String tableName) {
         Table table = new Table();
-        //TODO 后面要根据表是否为视图来查询，后面重构表查询策略。
+        // 后面要根据表是否为视图来查询，后面重构表查询策略。
         try (ResultSet resultSet = databaseMetaData.getTables(catalog, schema, tableName, new String[]{"TABLE", "VIEW"})) {
             table.name = tableName;
             while (resultSet.next()) {

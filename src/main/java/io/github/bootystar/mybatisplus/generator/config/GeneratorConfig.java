@@ -94,6 +94,7 @@ public class GeneratorConfig {
     /**
      * 数据库表信息
      */
+    @Getter
     private final List<TableInfo> tableInfo = new ArrayList<>();
 
     /**
@@ -102,6 +103,7 @@ public class GeneratorConfig {
      * @since 3.5.9
      */
     @Setter
+    @Getter
     private TemplateLoadWay templateLoadWay = TemplateLoadWay.FILE;
 
     public GeneratorConfig(String url, String username, String password) {

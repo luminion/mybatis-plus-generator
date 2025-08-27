@@ -76,7 +76,7 @@ public class SybaseQuery extends AbstractDbQuery {
 
     @Override
     public boolean isKeyIdentity(ResultSet results) throws SQLException {
-        // TODO:目前没有找到准确的判断方式，如果有大佬知道，请补充
+        // 目前没有找到准确的判断方式，如果有大佬知道，请补充
         return results.getInt("SORT_INDEX") == 1 && results.getInt("FIELD_STATUS") == 0;
     }
 }
