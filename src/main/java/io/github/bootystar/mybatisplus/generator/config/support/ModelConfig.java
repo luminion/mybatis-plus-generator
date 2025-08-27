@@ -1,6 +1,7 @@
 package io.github.bootystar.mybatisplus.generator.config.support;
 
 import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
+import io.github.bootystar.mybatisplus.generator.config.interfaces.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField.MetaInfo;
@@ -89,20 +90,19 @@ public class ModelConfig implements ITemplate {
     }
 
     private void resolveDocImportPackages(GlobalConfig globalConfig, TreeSet<String> importPackages) {
-        // todo 
-//        if (globalConfig.isSpringdoc()) {
-//            importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
-//        }
-//        if (globalConfig.isSwagger()) {
-//            importPackages.add("io.swagger.annotations.ApiModel");
-//            importPackages.add("io.swagger.annotations.ApiModelProperty");
-//        }
-//        if (globalConfig.isLombok()) {
-//            if (globalConfig.isChainModel()) {
-//                importPackages.add("lombok.experimental.Accessors");
-//            }
-//            importPackages.add("lombok.Data");
-//        }
+        if (globalConfig.isSpringdoc()) {
+            importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
+        }
+        if (globalConfig.isSwagger()) {
+            importPackages.add("io.swagger.annotations.ApiModel");
+            importPackages.add("io.swagger.annotations.ApiModelProperty");
+        }
+        if (globalConfig.isLombok()) {
+            if (globalConfig.isChainModel()) {
+                importPackages.add("lombok.experimental.Accessors");
+            }
+            importPackages.add("lombok.Data");
+        }
     }
 
     private Set<String> importCreateDTOPackages(TableInfo tableInfo) {
@@ -189,12 +189,11 @@ public class ModelConfig implements ITemplate {
         this.resolveDocImportPackages(globalConfig, importPackages);
         importPackages.add("java.util.List");
         if (queryDTOExtendsEntity) {
-            // todo
-//            String entityPackage = tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName();
-//            importPackages.add(entityPackage);
-//            if (globalConfig.isLombok()){
-//                importPackages.add("lombok.EqualsAndHashCode");
-//            }
+            String entityPackage = tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName();
+            importPackages.add(entityPackage);
+            if (globalConfig.isLombok()){
+                importPackages.add("lombok.EqualsAndHashCode");
+            }
         }
         for (TableField field : tableInfo.getFields()) {
             if (field.isLogicDeleteField()) {
@@ -215,11 +214,10 @@ public class ModelConfig implements ITemplate {
             importPackages.add(excelIgnoreUnannotated);
         }
         if (queryVOExtendsEntity) {
-            // todo
-//            importPackages.add(tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName());
-//            if (globalConfig.isLombok()){
-//                importPackages.add("lombok.EqualsAndHashCode");
-//            }
+            importPackages.add(tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName());
+            if (globalConfig.isLombok()){
+                importPackages.add("lombok.EqualsAndHashCode");
+            }
         } else {
             for (TableField field : tableInfo.getFields()) {
                 if (field.isLogicDeleteField()) {

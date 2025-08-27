@@ -44,12 +44,6 @@ public class TableInfo {
     private final GeneratorConfig configAdapter;
 
     /**
-     * 包导入信息
-     */
-    @Getter
-    private final Set<String> importPackages = new TreeSet<>();
-
-    /**
      * 是否转换
      */
     @Getter
@@ -190,69 +184,7 @@ public class TableInfo {
         return this.fieldNames;
     }
 
-    /**
-     * 导包处理
-     *
-     * @since 3.5.0
-     */
-    public void importPackage() {
-        String superEntity = this.getConfigAdapter().getEntityConfig().getSuperClass();
-        if (StringUtils.isNotBlank(superEntity)) {
-            // 自定义父类
-            this.importPackages.add(superEntity);
-        } else {
-            if (this.getConfigAdapter().getEntityConfig().isActiveRecord()) {
-                // 无父类开启 AR 模式
-                this.importPackages.add("com.baomidou.mybatisplus.extension.activerecord.Model");
-            }
-        }
-        if (this.getConfigAdapter().getEntityConfig().isSerialVersionUID() || this.getConfigAdapter().getEntityConfig().isActiveRecord()) {
-            this.importPackages.add(Serializable.class.getCanonicalName());
-            if (this.getConfigAdapter().getEntityConfig().isSerialAnnotation()) {
-                this.importPackages.add("java.io.Serial");
-            }
-        }
-        if (this.isConvert()) {
-            this.importPackages.add(TableName.class.getCanonicalName());
-        }
-        IdType idType = this.getConfigAdapter().getEntityConfig().getIdType();
-        if (null != idType && this.isHavePrimaryKey()) {
-            // 指定需要 IdType 场景
-            this.importPackages.add(IdType.class.getCanonicalName());
-            this.importPackages.add(TableId.class.getCanonicalName());
-        }
-        this.fields.forEach(field -> {
-            IColumnType columnType = field.getColumnType();
-            if (null != columnType && null != columnType.getPkg()) {
-                importPackages.add(columnType.getPkg());
-            }
-            if (field.isKeyFlag()) {
-                // 主键
-                if (field.isConvert() || field.isKeyIdentityFlag()) {
-                    importPackages.add(TableId.class.getCanonicalName());
-                }
-                // 自增
-                if (field.isKeyIdentityFlag()) {
-                    importPackages.add(IdType.class.getCanonicalName());
-                }
-            } else if (field.isConvert()) {
-                // 普通字段
-                importPackages.add(com.baomidou.mybatisplus.annotation.TableField.class.getCanonicalName());
-            }
-            if (null != field.getFill()) {
-                // 填充字段
-                importPackages.add(com.baomidou.mybatisplus.annotation.TableField.class.getCanonicalName());
-                //TODO 好像default的不用处理也行,这个做优化项目.
-                importPackages.add(FieldFill.class.getCanonicalName());
-            }
-            if (field.isVersionField()) {
-                this.importPackages.add(Version.class.getCanonicalName());
-            }
-            if (field.isLogicDeleteField()) {
-                this.importPackages.add(TableLogic.class.getCanonicalName());
-            }
-        });
-    }
+    
 
     /**
      * 处理表信息(文件名与导包)
@@ -262,7 +194,6 @@ public class TableInfo {
     public void processTable() {
         String entityName = this.getConfigAdapter().getEntityConfig().getNameConvert().entityNameConvert(this);
         this.setEntityName(entityName);
-        this.importPackage();
     }
 
     public TableInfo setComment(String comment) {

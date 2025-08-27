@@ -15,20 +15,21 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.support;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.interfaces.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
+import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.IFill;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,6 +46,7 @@ public class EntityConfig implements ITemplate {
     /**
      * 自定义继承的Entity类全称，带包名
      */
+    @Getter
     protected String superClass;
 
     /**
@@ -52,6 +54,7 @@ public class EntityConfig implements ITemplate {
      *
      * @since 3.5.0
      */
+    @Getter
     protected String versionColumnName;
 
     /**
@@ -59,6 +62,7 @@ public class EntityConfig implements ITemplate {
      *
      * @since 3.5.0
      */
+    @Getter
     protected String versionPropertyName;
 
     /**
@@ -66,6 +70,7 @@ public class EntityConfig implements ITemplate {
      *
      * @since 3.5.0
      */
+    @Getter
     protected String logicDeleteColumnName;
 
     /**
@@ -73,13 +78,18 @@ public class EntityConfig implements ITemplate {
      *
      * @since 3.5.0
      */
+    @Getter
     protected String logicDeletePropertyName;
 
     /**
      * 数据库表映射到实体的命名策略，默认下划线转驼峰命名
      */
+    @Getter
     protected NamingStrategy naming = NamingStrategy.underline_to_camel;
 
+    @Getter
+    @Setter
+    protected INameConvert nameConvert;
     /**
      * 数据库表字段映射到实体的命名策略
      * <p>未指定按照 naming 执行</p>
@@ -101,6 +111,7 @@ public class EntityConfig implements ITemplate {
     /**
      * 表填充字段
      */
+    @Getter
     protected final List<IFill> tableFillList = new ArrayList<>();
 
     /**
@@ -108,6 +119,7 @@ public class EntityConfig implements ITemplate {
      *
      * @since 3.5.0
      */
+    @Getter
     protected IdType idType;
 
     /**
@@ -133,11 +145,13 @@ public class EntityConfig implements ITemplate {
      * Boolean类型字段是否移除is前缀（默认 false）<br>
      * 比如 : 数据库字段名称 : 'is_xxx',类型为 : tinyint. 在映射实体的时候则会去掉is,在实体类中映射最终结果为 xxx
      */
+    @Getter
     protected boolean booleanColumnRemoveIsPrefix;
 
     /**
      * 是否生成实体时，生成字段注解（默认 false）
      */
+    @Getter
     protected boolean tableFieldAnnotationEnable;
 
     /**
@@ -145,6 +159,7 @@ public class EntityConfig implements ITemplate {
      *
      * @since 3.5.0
      */
+    @Getter
     protected boolean activeRecord;
 
     public NamingStrategy getColumnNaming() {
@@ -213,25 +228,7 @@ public class EntityConfig implements ITemplate {
 
         data.put("entityBooleanColumnRemoveIsPrefix", this.booleanColumnRemoveIsPrefix);
         data.put("superEntityClass", ClassUtils.getSimpleName(this.superClass));
-        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
-        Collection<String> importPackages = new TreeSet<>(tableInfo.getImportPackages());
-        if (globalConfig.isSwagger()) {
-            importPackages.add("io.swagger.annotations.ApiModel");
-            importPackages.add("io.swagger.annotations.ApiModelProperty");
-        }
-        // todo 
-//        if (globalConfig.isSpringdoc()) {
-//            importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
-//        }
-//        if (globalConfig.isLombok()) {
-//            if (globalConfig.isChainModel()) {
-//                importPackages.add("lombok.experimental.Accessors");
-//            }
-//            if (this.superClass != null) {
-//                importPackages.add("lombok.EqualsAndHashCode");
-//            }
-//            importPackages.add("lombok.Data");
-//        }
+        Collection<String> importPackages = this.importEntityPackages(tableInfo);
         Collection<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
         Collection<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
         data.put("importEntityJavaPackages", javaPackages);
@@ -239,6 +236,85 @@ public class EntityConfig implements ITemplate {
         return data;
     }
 
+    /**
+     * 导包处理
+     *
+     * @since 3.5.0
+     */
+    public Set<String> importEntityPackages(TableInfo tableInfo) {
+        TreeSet<String> importPackages = new TreeSet<>();
+        if (StringUtils.isNotBlank(this.superClass)) {
+            importPackages.add(this.superClass);
+        } else {
+            if (this.activeRecord) {
+                // 无父类开启 AR 模式
+                importPackages.add("com.baomidou.mybatisplus.extension.activerecord.Model");
+            }
+        }
+        if (this.serialVersionUID || this.activeRecord) {
+            importPackages.add(Serializable.class.getCanonicalName());
+            if (this.serialAnnotation) {
+                importPackages.add("java.io.Serial");
+            }
+        }
+        if (tableInfo.isConvert()) {
+            importPackages.add(TableName.class.getCanonicalName());
+        }
+        if (null != this.idType && tableInfo.isHavePrimaryKey()) {
+            // 指定需要 IdType 场景
+            importPackages.add(IdType.class.getCanonicalName());
+            importPackages.add(TableId.class.getCanonicalName());
+        }
+        tableInfo.getFields().forEach(field -> {
+            IColumnType columnType = field.getColumnType();
+            if (null != columnType && null != columnType.getPkg()) {
+                importPackages.add(columnType.getPkg());
+            }
+            if (field.isKeyFlag()) {
+                // 主键
+                if (field.isConvert() || field.isKeyIdentityFlag()) {
+                    importPackages.add(TableId.class.getCanonicalName());
+                }
+                // 自增
+                if (field.isKeyIdentityFlag()) {
+                    importPackages.add(IdType.class.getCanonicalName());
+                }
+            } else if (field.isConvert()) {
+                // 普通字段
+                importPackages.add(com.baomidou.mybatisplus.annotation.TableField.class.getCanonicalName());
+            }
+            if (null != field.getFill()) {
+                // 填充字段
+                importPackages.add(com.baomidou.mybatisplus.annotation.TableField.class.getCanonicalName());
+                importPackages.add(FieldFill.class.getCanonicalName());
+            }
+            if (field.isVersionField()) {
+                importPackages.add(Version.class.getCanonicalName());
+            }
+            if (field.isLogicDeleteField()) {
+                importPackages.add(TableLogic.class.getCanonicalName());
+            }
+        });
+        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
+        if (globalConfig.isSpringdoc()) {
+            importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
+        }
+        if (globalConfig.isLombok()) {
+            if (globalConfig.isChainModel()) {
+                importPackages.add("lombok.experimental.Accessors");
+            }
+            if (this.superClass != null) {
+                importPackages.add("lombok.EqualsAndHashCode");
+            }
+            importPackages.add("lombok.Data");
+        }
+        if (globalConfig.isSwagger()) {
+            importPackages.add("io.swagger.annotations.ApiModel");
+            importPackages.add("io.swagger.annotations.ApiModelProperty");
+        }
+        return importPackages;
+    }
+    
     public Adapter adapter() {
         return new Adapter(this);
     }
