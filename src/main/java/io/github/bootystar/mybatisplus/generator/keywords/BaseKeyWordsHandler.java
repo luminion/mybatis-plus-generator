@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.keywords;
 
-import IKeyWordsHandler;
+import io.github.bootystar.mybatisplus.generator.config.interfaces.IKeyWordsHandler;
 
 
 import java.util.*;

@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.querys;
 
-import IDbQuery;
+import io.github.bootystar.mybatisplus.generator.config.interfaces.IDbQuery;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
