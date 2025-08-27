@@ -17,8 +17,8 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
-import ConstVal;
-import IKeyWordsHandler;
+import io.github.bootystar.mybatisplus.generator.config.interfaces.ConstVal;
+import io.github.bootystar.mybatisplus.generator.config.interfaces.IKeyWordsHandler;
 import io.github.bootystar.mybatisplus.generator.config.support.DataSourceConfig;
 import io.github.bootystar.mybatisplus.generator.config.support.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
