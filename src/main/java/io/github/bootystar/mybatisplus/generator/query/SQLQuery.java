@@ -16,7 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.query;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
+import io.github.bootystar.mybatisplus.generator.config.Configurer;
 import io.github.bootystar.mybatisplus.generator.config.support.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -39,7 +39,7 @@ public class SQLQuery extends AbstractDatabaseQuery {
     protected final DbQueryDecorator dbQuery;
     protected final DatabaseMetaDataWrapper databaseMetaDataWrapper;
 
-    public SQLQuery(GeneratorConfig configBuilder) {
+    public SQLQuery(Configurer configBuilder) {
         super(configBuilder);
         this.dbQuery = new DbQueryDecorator(dataSourceConfig, strategyConfig);
         this.databaseMetaDataWrapper = new DatabaseMetaDataWrapper(dbQuery.getConnection(), dataSourceConfig.getSchemaName());

@@ -1,6 +1,5 @@
 package io.github.bootystar.mybatisplus.generator.config.support;
 
-import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
 import io.github.bootystar.mybatisplus.generator.config.interfaces.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;

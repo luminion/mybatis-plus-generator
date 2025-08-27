@@ -16,7 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.query;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
+import io.github.bootystar.mybatisplus.generator.config.Configurer;
 import io.github.bootystar.mybatisplus.generator.config.support.DataSourceConfig;
 import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
 import io.github.bootystar.mybatisplus.generator.config.support.StrategyConfig;
@@ -42,7 +42,7 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Getter
-    protected final GeneratorConfig configAdapter;
+    protected final Configurer configAdapter;
 
     @Getter
     protected final DataSourceConfig dataSourceConfig;
@@ -52,7 +52,7 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
     protected final GlobalConfig globalConfig;
 
 
-    public AbstractDatabaseQuery(GeneratorConfig configAdapter) {
+    public AbstractDatabaseQuery(Configurer configAdapter) {
         this.configAdapter = configAdapter;
         this.dataSourceConfig = configAdapter.getDataSourceConfig();
         this.strategyConfig = configAdapter.getStrategyConfig();
@@ -65,7 +65,7 @@ public abstract class AbstractDatabaseQuery implements IDatabaseQuery {
         if (isExclude || isInclude) {
             Map<String, String> notExistTables = new HashSet<>(isExclude ? strategyConfig.getExclude() : strategyConfig.getInclude())
                 .stream()
-                .filter(s -> !GeneratorConfig.matcherRegTable(s))
+                .filter(s -> !Configurer.matcherRegTable(s))
                 .collect(Collectors.toMap(String::toLowerCase, s -> s, (o, n) -> n));
             // 将已经存在的表移除，获取配置中数据库不存在的表
             for (TableInfo tabInfo : tableList) {

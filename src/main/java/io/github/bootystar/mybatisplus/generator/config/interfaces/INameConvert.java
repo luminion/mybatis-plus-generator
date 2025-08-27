@@ -16,7 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.config.interfaces;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.GeneratorConfig;
+import io.github.bootystar.mybatisplus.generator.config.Configurer;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
@@ -54,9 +54,9 @@ public interface INameConvert {
      */
     class DefaultNameConvert implements INameConvert {
 
-        private final GeneratorConfig configAdapter;
+        private final Configurer configAdapter;
 
-        public DefaultNameConvert(GeneratorConfig configAdapter) {
+        public DefaultNameConvert(Configurer configAdapter) {
             this.configAdapter = configAdapter;
         }
 

@@ -115,7 +115,7 @@ public class ControllerConfig implements ITemplate {
         data.put("restControllerStyle", this.restController);
         data.put("superControllerClassPackage", StringUtils.isBlank(superClass) ? null : superClass);
         data.put("superControllerClass", ClassUtils.getSimpleName(this.superClass));
-//        GeneratorConfig configAdapter = tableInfo.getConfigAdapter();
+//        Configurer configAdapter = tableInfo.getConfigAdapter();
 //        EntityConfig entityConfig = configAdapter.getEntityConfig();
 //        StrategyConfig strategyConfig = configAdapter.getStrategyConfig();
 //        ServiceConfig serviceConfig = configAdapter.getServiceConfig();
