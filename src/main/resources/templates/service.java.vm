@@ -1,4 +1,4 @@
-package ${package.Service};
+package ${package.service};
 
 import ${package.Entity}.${entity};
 import ${superServiceClassPackage};

@@ -26,22 +26,7 @@ import java.nio.charset.StandardCharsets;
  * @since 2016-08-31
  */
 public interface ConstVal {
-
-    String MODULE_NAME = "ModuleName";
-    String PARENT = "Parent";
-    String ENTITY = "Entity";
-    String MAPPER = "Mapper";
-    String MAPPER_XML = "MapperXml";
-    String SERVICE = "Service";
-    String SERVICE_IMPL = "ServiceImpl";
-    String CONTROLLER = "Controller";
-    String CREATE_DTO = "CreateDTO";
-    String UPDATE_DTO = "UpdateDTO";
-    String QUERY_DTO = "QueryDTO";
-    String QUERY_VO = "QueryVO";
-    String IMPORT_DTO = "ImportDTO";
-    String EXPORT_VO = "ExportVO";
-
+    
 
     String JAVA_TMPDIR = "java.io.tmpdir";
     String UTF8 = StandardCharsets.UTF_8.name();

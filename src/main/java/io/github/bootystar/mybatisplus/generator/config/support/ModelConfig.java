@@ -1,6 +1,6 @@
 package io.github.bootystar.mybatisplus.generator.config.support;
 
-import io.github.bootystar.mybatisplus.generator.config.base.ConstVal;
+import io.github.bootystar.mybatisplus.generator.config.enums.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField.MetaInfo;
@@ -33,34 +33,19 @@ public class ModelConfig implements ITemplate {
     @Getter
     protected boolean queryVOExtendsEntity;
 
-    /**
-     * 使用新增dto作为导入dto
-     */
-    @Getter
-    protected boolean importOnCreateDTO;
-
-    /**
-     * 使用vo作为导出vo
-     */
-    @Getter
-    protected boolean exportOnQueryVO;
-
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> data = ITemplate.super.renderData(tableInfo);
         data.put("queryDTOExtendsEntity", this.queryDTOExtendsEntity);
         data.put("queryVOExtendsEntity", this.queryVOExtendsEntity);
-        data.put("importOnCreateDTO", this.importOnCreateDTO);
-        data.put("exportOnQueryVO", this.exportOnQueryVO);
 
         Set<String> importCreateDTOPackages = this.importCreateDTOPackages(tableInfo);
-        Set<String> importUpdateDTOPackages = this.importUpdateDTOPackages(tableInfo);
-
         List<String> importCreateDTOFrameworkPackages = importCreateDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
         data.put("importCreateDTOFrameworkPackages", importCreateDTOFrameworkPackages);
         List<String> importCreateDTOJavaPackages = importCreateDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
         data.put("importCreateDTOJavaPackages", importCreateDTOJavaPackages);
 
+        Set<String> importUpdateDTOPackages = this.importUpdateDTOPackages(tableInfo);
         List<String> importUpdateDTOFrameworkPackages = importUpdateDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
         data.put("importUpdateDTOFrameworkPackages", importUpdateDTOFrameworkPackages);
         List<String> importUpdateDTOJavaPackages = importUpdateDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
@@ -77,18 +62,6 @@ public class ModelConfig implements ITemplate {
         data.put("importQueryVOFrameworkPackages", importQueryVOFrameworkPackages);
         List<String> importQueryVOJavaPackages = importQueryVOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
         data.put("importQueryVOJavaPackages", importQueryVOJavaPackages);
-
-        Set<String> importImportDTOPackages = this.importImportDTOPackages(tableInfo);
-        List<String> importImportDTOFrameworkPackages = importImportDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importImportDTOFrameworkPackages", importImportDTOFrameworkPackages);
-        List<String> importImportDTOJavaPackages = importImportDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importImportDTOJavaPackages", importImportDTOJavaPackages);
-
-        Set<String> importExportVOPackages = this.importExportVOPackages(tableInfo);
-        List<String> importExportVOFrameworkPackages = importExportVOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importExportVOFrameworkPackages", importExportVOFrameworkPackages);
-        List<String> importExportVOJavaPackages = importExportVOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importExportVOJavaPackages", importExportVOJavaPackages);
 
         return data;
     }
@@ -110,7 +83,7 @@ public class ModelConfig implements ITemplate {
     }
 
     private Set<String> importCreateDTOPackages(TableInfo tableInfo) {
-        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
+        GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
         TreeSet<String> importPackages = new TreeSet<>();
         List<TableField> fields = tableInfo.getFields();
 
@@ -146,7 +119,7 @@ public class ModelConfig implements ITemplate {
             }
         }
         this.resolveDocImportPackages(globalConfig, importPackages);
-        if (importOnCreateDTO) {
+        if (globalConfig.isGenerateImport()) {
             String excelIgnoreUnannotated = globalConfig.resolveExcelApiPackage("annotation.ExcelIgnoreUnannotated");
             String excelProperty = globalConfig.resolveExcelApiPackage("annotation.ExcelProperty");
             importPackages.add(excelIgnoreUnannotated);
@@ -157,7 +130,7 @@ public class ModelConfig implements ITemplate {
 
 
     private Set<String> importUpdateDTOPackages(TableInfo tableInfo) {
-        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
+        GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
         TreeSet<String> importPackages = new TreeSet<>();
         this.resolveDocImportPackages(globalConfig, importPackages);
         String size = globalConfig.resolveJavaApiPackage("validation.constraints.Size");
@@ -188,13 +161,12 @@ public class ModelConfig implements ITemplate {
     }
 
     private Set<String> importQueryDTOPackages(TableInfo tableInfo) {
-        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
+        GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
         TreeSet<String> importPackages = new TreeSet<>();
         this.resolveDocImportPackages(globalConfig, importPackages);
-        importPackages.add("java.util.List");
+        importPackages.add(List.class.getCanonicalName());
         if (queryDTOExtendsEntity) {
-            String entityPackage = tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName();
-            importPackages.add(entityPackage);
+            importPackages.add(tableInfo.getConfigurer().getOutputConfig().getClassCanonicalName(tableInfo).get(OutputFile.entity.name()));
             if (globalConfig.isLombok()){
                 importPackages.add("lombok.EqualsAndHashCode");
             }
@@ -211,14 +183,14 @@ public class ModelConfig implements ITemplate {
 
     private Set<String> importQueryVOPackages(TableInfo tableInfo) {
         TreeSet<String> importPackages = new TreeSet<>();
-        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
+        GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
         this.resolveDocImportPackages(globalConfig, importPackages);
-        if (exportOnQueryVO) {
+        if (globalConfig.isGenerateExport()) {
             String excelIgnoreUnannotated = globalConfig.resolveExcelApiPackage("annotation.ExcelIgnoreUnannotated");
             importPackages.add(excelIgnoreUnannotated);
         }
         if (queryVOExtendsEntity) {
-            importPackages.add(tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY) + "." + tableInfo.getEntityName());
+            importPackages.add(tableInfo.getConfigurer().getOutputConfig().getClassCanonicalName(tableInfo).get(OutputFile.entity.name()));
             if (globalConfig.isLombok()){
                 importPackages.add("lombok.EqualsAndHashCode");
             }
@@ -229,23 +201,12 @@ public class ModelConfig implements ITemplate {
                 }
                 Optional.ofNullable(field.getColumnType().getPkg()).ifPresent(importPackages::add);
             }
-            if (exportOnQueryVO) {
+            if (globalConfig.isGenerateExport()) {
                 String excelProperty = globalConfig.resolveExcelApiPackage("annotation.ExcelProperty");
                 importPackages.add(excelProperty);
             }
         }
 
-        return importPackages;
-    }
-
-    private Set<String> importImportDTOPackages(TableInfo tableInfo) {
-        TreeSet<String> importPackages = new TreeSet<>();
-        return importPackages;
-    }
-
-
-    private Set<String> importExportVOPackages(TableInfo tableInfo) {
-        TreeSet<String> importPackages = new TreeSet<>();
         return importPackages;
     }
 
@@ -279,26 +240,7 @@ public class ModelConfig implements ITemplate {
             this.config.queryVOExtendsEntity = true;
             return this;
         }
-
-        /**
-         * 使用新增dto作为导入dto
-         *
-         * @return this
-         */
-        public Adapter enableImportOnCreateDTO() {
-            this.config.importOnCreateDTO = true;
-            return this;
-        }
-
-        /**
-         * 使用vo作为导出vo
-         *
-         * @return this
-         */
-        public Adapter enableExportOnQueryVO() {
-            this.config.exportOnQueryVO = true;
-            return this;
-        }
+        
     }
 
 }

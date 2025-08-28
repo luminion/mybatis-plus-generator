@@ -225,14 +225,22 @@ public class EntityConfig implements ITemplate {
         data.put("entitySerialVersionUID", this.serialVersionUID);
         data.put("entitySerialAnnotation", this.serialAnnotation);
         data.put("entityColumnConstant", this.columnConstant);
-
         data.put("entityBooleanColumnRemoveIsPrefix", this.booleanColumnRemoveIsPrefix);
         data.put("superEntityClass", ClassUtils.getSimpleName(this.superClass));
-        Collection<String> importPackages = this.importEntityPackages(tableInfo);
+        GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
+        ModelConfig modelConfig = tableInfo.getConfigurer().getModelConfig();
+
+        boolean excelImport = globalConfig.isGenerateImport() && modelConfig.isQueryDTOExtendsEntity();
+        boolean excelExport = globalConfig.isGenerateExport() && modelConfig.isQueryVOExtendsEntity();
+        data.put("excelOnEntity", excelImport || excelExport);
+
+        // 导入包
+        Set<String> importPackages = importEntityPackages(tableInfo);
         Collection<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
         Collection<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
         data.put("importEntityJavaPackages", javaPackages);
         data.put("importEntityFrameworkPackages", frameworkPackages);
+   
         return data;
     }
 
@@ -242,6 +250,8 @@ public class EntityConfig implements ITemplate {
      * @since 3.5.0
      */
     public Set<String> importEntityPackages(TableInfo tableInfo) {
+        GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
+        ModelConfig modelConfig = tableInfo.getConfigurer().getModelConfig();
         TreeSet<String> importPackages = new TreeSet<>();
         if (StringUtils.isNotBlank(this.superClass)) {
             importPackages.add(this.superClass);
@@ -295,7 +305,6 @@ public class EntityConfig implements ITemplate {
                 importPackages.add(TableLogic.class.getCanonicalName());
             }
         });
-        GlobalConfig globalConfig = tableInfo.getConfigAdapter().getGlobalConfig();
         if (globalConfig.isSpringdoc()) {
             importPackages.add("io.swagger.v3.oas.annotations.media.Schema");
         }
@@ -306,11 +315,20 @@ public class EntityConfig implements ITemplate {
             if (this.superClass != null) {
                 importPackages.add("lombok.EqualsAndHashCode");
             }
+            if (superClass!=null || activeRecord){
+                importPackages.add("lombok.EqualsAndHashCode");
+            }
             importPackages.add("lombok.Data");
         }
         if (globalConfig.isSwagger()) {
             importPackages.add("io.swagger.annotations.ApiModel");
             importPackages.add("io.swagger.annotations.ApiModelProperty");
+        }
+        if (globalConfig.isGenerateExport() && modelConfig.isQueryVOExtendsEntity()) {
+            String excelIgnoreUnannotated = globalConfig.resolveExcelApiPackage("annotation.ExcelIgnoreUnannotated");
+            String excelProperty = globalConfig.resolveExcelApiPackage("annotation.ExcelProperty");
+            importPackages.add(excelIgnoreUnannotated);
+            importPackages.add(excelProperty);
         }
         return importPackages;
     }

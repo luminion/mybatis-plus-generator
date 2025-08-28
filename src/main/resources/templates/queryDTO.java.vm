@@ -1,11 +1,13 @@
-package ${package.QueryDTO};
+package ${package.queryDTO};
 
 #foreach($pkg in ${importQueryDTOFrameworkPackages})
 import ${pkg};
 #end
+#if($importQueryDTOJavaPackages.size>0)
 
 #foreach($pkg in ${importQueryDTOJavaPackages})
 import ${pkg};
+#end
 #end
 
 /**
@@ -14,9 +16,9 @@ import ${pkg};
  * @author ${author}
  * @since ${date}
 #if(${commentLink})
- * @see ${package.Entity}.${entity}
- * @see ${package.Mapper}.${mapper}
- * @see ${package.ServiceImpl}.${serviceImpl}
+ * @see ${class.entity}
+ * @see ${class.mapper}
+ * @see ${class.serviceImpl}
 #end
  */
 #if(${lombok})

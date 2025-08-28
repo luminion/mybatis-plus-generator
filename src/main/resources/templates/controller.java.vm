@@ -1,18 +1,24 @@
-package ${package.Controller};
+package ${package.contoller};
 
 #foreach($pkg in ${importControllerFrameworkPackages})
 import ${pkg};
 #end
+#if($importControllerJavaPackages.size()>0)
 
 #foreach($pkg in ${importControllerJavaPackages})
 import ${pkg};
+#end
 #end
 
 /**
  * <p>
  * $!{table.comment} 前端控制器
  * </p>
- *
+#if(${commentLink})
+ * @see ${class.entity}
+ * @see ${class.mapper}
+ * @see ${class.serviceImpl}
+#end
  * @author ${author}
  * @since ${date}
  */

@@ -1,11 +1,13 @@
-package ${package.QueryVO};
+package ${package.queryVO};
 
 #foreach($pkg in ${importQueryVOFrameworkPackages})
 import ${pkg};
 #end
-
+#if($importQueryVOJavaPackages.size()>0)
+    
 #foreach($pkg in ${importQueryVOJavaPackages})
 import ${pkg};
+#end
 #end
 
 /**
@@ -14,9 +16,9 @@ import ${pkg};
  * @author ${author}
  * @since ${date}
 #if(${commentLink})
- * @see ${package.Entity}.${entity}
- * @see ${package.Mapper}.${mapper}
- * @see ${package.ServiceImpl}.${serviceImpl}
+ * @see ${class.entity}
+ * @see ${class.mapper}
+ * @see ${class.serviceImpl}
 #end
  */
 #if(${lombok})
@@ -33,7 +35,7 @@ import ${pkg};
 #elseif(${swagger})
 @ApiModel(description = "$!{table.comment}-VO")
 #end
-#if(${generateExport} && ${exportOnQueryVO})
+#if(${generateExport})
 @ExcelIgnoreUnannotated
 #end
 #if(${queryVOExtendsEntity})
@@ -58,7 +60,7 @@ public class ${queryVO} {
      */
         #end
     #end
-    #if(${generateExport} && ${exportOnQueryVO})## 导出
+    #if(${generateExport})## 导出
     @ExcelProperty(value = "${field.comment}")
     #end
     private ${field.propertyType} ${field.propertyName};

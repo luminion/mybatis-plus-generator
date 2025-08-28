@@ -41,7 +41,7 @@ public class Generator4Mysql {
                         .parentPackage("com.example.test")
                         .disableOpenOutputDir()
                         .entity(f -> f
-                                .formatPattern("%sEntity")
+                                .formatPattern("%sPOJO")
                         )
                         .mapper(f -> f
                                 .subPackage("mapper")
@@ -79,20 +79,10 @@ public class Generator4Mysql {
                                 .subPackage("vo")
 //                                .disable()
                         )
-                        .importDTO(f -> f
-                                .subPackage("excel")
-                                .disable()
-                        )
-                        .exportVO(f -> f
-                                .subPackage("excel")
-                                .disable()
-                        )
                 )
                 .model(e -> e
                                 .enableQueryDTOExtendsEntity()
-//                        .enableQueryVOExtendsEntity()
-                                .enableExportOnQueryVO()
-                                .enableImportOnCreateDTO()
+                        .enableQueryVOExtendsEntity()
 
                 )
                 .strategy(e -> e
@@ -115,6 +105,7 @@ public class Generator4Mysql {
 //                        .disable()
                                 .logicDeleteColumnName("deleted")
                                 .versionColumnName("version")
+                                .enableActiveRecord()
                 )
                 .mapper(e -> e
 

@@ -112,43 +112,51 @@ public class GlobalConfig implements ITemplate {
     protected String excelClass = "FastExcel";
 
     /**
-     * 生成查询方法
+     * 生成查询相关方法及配套类
      */
+    @Getter
     protected boolean generateQuery = true;
 
     /**
-     * 生成新增方法
+     * 生成新增方法及配套类
      */
+    @Getter
     protected boolean generateInsert = true;
 
     /**
-     * 生成更新方法
+     * 生成更新方法及配套类
      */
+    @Getter
     protected boolean generateUpdate = true;
 
     /**
-     * 生成删除方法
+     * 生成删除方法及配套类
      */
+    @Getter
     protected boolean generateDelete = true;
 
     /**
-     * 生成导入方法
+     * 生成导入方法及配套类(需允许新增)
      */
+    @Getter
     protected boolean generateImport = true;
 
     /**
-     * 生成导出方法
+     * 生成导出方法(需允许查询)
      */
+    @Getter
     protected boolean generateExport = true;
 
     /**
      * 是否生成重写父类方法
      */
+    @Getter
     protected boolean methodOverride = true;
 
     /**
      * 参数校验
      */
+    @Getter
     protected boolean validated = true;
 
     public boolean isSwagger() {

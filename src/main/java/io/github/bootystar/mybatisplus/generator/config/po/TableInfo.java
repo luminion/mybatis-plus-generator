@@ -38,7 +38,7 @@ public class TableInfo {
      * 配置适配器
      */
     @Getter
-    private final Configurer configAdapter;
+    private final Configurer configurer;
 
     /**
      * 是否转换
@@ -122,7 +122,7 @@ public class TableInfo {
      * @since 3.5.0
      */
     public TableInfo(Configurer configBuilder, String name) {
-        this.configAdapter = configBuilder;
+        this.configurer = configBuilder;
         this.name = name;
     }
 
@@ -130,7 +130,7 @@ public class TableInfo {
      * @since 3.5.0
      */
     protected TableInfo setConvert() {
-        if (this.getConfigAdapter().getStrategyConfig().startsWithTablePrefix(name) || this.getConfigAdapter().getEntityConfig().isTableFieldAnnotationEnable()) {
+        if (this.getConfigurer().getStrategyConfig().startsWithTablePrefix(name) || this.getConfigurer().getEntityConfig().isTableFieldAnnotationEnable()) {
             this.convert = true;
         } else {
             this.convert = !entityName.equalsIgnoreCase(name);
@@ -159,12 +159,12 @@ public class TableInfo {
      * @since 3.5.0
      */
     public void addField(TableField field) {
-        if (this.getConfigAdapter().getEntityConfig().matchIgnoreColumns(field.getColumnName())) {
+        if (this.getConfigurer().getEntityConfig().matchIgnoreColumns(field.getColumnName())) {
             // 忽略字段不在处理
             return;
         }
         tableFieldMap.put(field.getName(), field);
-        if (this.getConfigAdapter().getEntityConfig().matchSuperEntityColumns(field.getColumnName())) {
+        if (this.getConfigurer().getEntityConfig().matchSuperEntityColumns(field.getColumnName())) {
             this.commonFields.add(field);
         } else {
             this.fields.add(field);
@@ -189,12 +189,12 @@ public class TableInfo {
      * @since 3.5.0
      */
     public void processTable() {
-        String entityName = this.getConfigAdapter().getEntityConfig().getNameConvert().entityNameConvert(this);
+        String entityName = this.getConfigurer().getEntityConfig().getNameConvert().entityNameConvert(this);
         this.setEntityName(entityName);
     }
 
     public TableInfo setComment(String comment) {
-        GlobalConfig globalConfig = this.getConfigAdapter().getGlobalConfig();
+        GlobalConfig globalConfig = this.getConfigurer().getGlobalConfig();
         boolean swagger = globalConfig.isSwagger();
         boolean springdoc = globalConfig.isSpringdoc();
         boolean notBlank = StringUtils.isNotBlank(comment);
