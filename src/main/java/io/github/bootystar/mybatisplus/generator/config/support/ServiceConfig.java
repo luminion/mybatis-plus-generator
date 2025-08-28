@@ -15,13 +15,14 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.support;
 
+import io.github.bootystar.mybatisplus.generator.config.Configurer;
+import io.github.bootystar.mybatisplus.generator.config.enums.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Service属性配置
@@ -50,7 +51,35 @@ public class ServiceConfig implements ITemplate {
         data.put("superServiceClass", ClassUtils.getSimpleName(this.superServiceClass));
         data.put("superServiceImplClassPackage", this.superServiceImplClass);
         data.put("superServiceImplClass", ClassUtils.getSimpleName(this.superServiceImplClass));
+        Configurer configurer = tableInfo.getConfigurer();
+        GlobalConfig globalConfig = configurer.getGlobalConfig();
+        if (globalConfig.isEnhancer()){
+            data.put("enhanceMethod", "EnhancedService.super");
+        }
+
         return data;
+    }
+    
+    
+    private Set<String> importServicePackages(TableInfo tableInfo) {
+        Set<String> importPackages = new TreeSet<>();
+        Configurer configurer = tableInfo.getConfigurer();
+        GlobalConfig globalConfig = configurer.getGlobalConfig();
+        OutputConfig outputConfig = configurer.getOutputConfig();
+        importPackages.add(this.superServiceImplClass);
+        importPackages.add("org.springframework.stereotype.Service");
+        Map<String, String> classCanonicalNameMap = outputConfig.getClassCanonicalName(tableInfo);
+        if (outputConfig.getService().isGenerate()){
+            importPackages.add(classCanonicalNameMap.get(OutputFile.service.name()));
+        }
+        if (globalConfig.isEnhancer()){
+            importPackages.add("io.github.bootystar.mybatisplus.enhancer.EnhancedService");
+        }
+        
+        
+
+
+        return importPackages;
     }
 
     public Adapter adapter() {

@@ -203,6 +203,15 @@ public class OutputConfig implements ITemplate {
     }
 
     /**
+     * 获取类生成信息
+     *
+     * @return {@link Map }<{@link String }, {@link Boolean }>
+     */
+    public Map<String, Boolean> getGenerateMap() {
+        return templateFileStream().collect(Collectors.toMap(TemplateFile::getKey, TemplateFile::isGenerate));
+    }
+
+    /**
      * 获取包信息
      */
     public Map<String, String> getPackageInfo() {
@@ -228,9 +237,10 @@ public class OutputConfig implements ITemplate {
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> map = ITemplate.super.renderData(tableInfo);
+        map.putAll(this.getClassSimpleName(tableInfo));
         map.put("package", this.getPackageInfo());
         map.put("class", this.getClassCanonicalName(tableInfo));
-        map.putAll(this.getClassSimpleName(tableInfo));
+        map.put("generate", this.getGenerateMap());
         return map;
     }
 
