@@ -28,7 +28,7 @@ public class Generator4Mysql {
                                 .enableSpringdoc()
                                 .enableJavaxApi()
                                 .enableEasyExcel()
-                                .enableMybatisPlusEnhancer()
+//                                .enableMybatisPlusEnhancer()
 //                                .disableQuery()
 //                                .disableInsert()
 //                                .disableUpdate()
@@ -36,51 +36,7 @@ public class Generator4Mysql {
 //                                .disableExport()
 
                 )
-                .output(e -> e
-                        .outputDir(System.getProperty("user.dir") + "/src/test/java")
-                        .enableGlobalFileOverride()
-                        .parentPackage("com.example.test")
-                        .disableOpenOutputDir()
-                        .entity(f -> f
-                                .formatPattern("%sPOJO")
-                        )
-                        .mapper(f -> f
-                                .subPackage("mapper")
-//                                .disable()
-                        )
-                        .mapperXml(f -> f
-                                .subPackage("mapper")
-//                                .disable()
-                        )
-                        .service(f -> f
-                                .subPackage("service")
-                                .disable()
-                        )
-                        .serviceImpl(f -> f
-                                .subPackage("service.impl")
-                                .disable()
-                        )
-                        .controller(f -> f
-                                .subPackage("controller")
-                                .disable()
-                        )
-                        .createDTO(f -> f
-                                .subPackage("dto")
-//                                .disable()
-                        )
-                        .updateDTO(f -> f
-                                .subPackage("dto")
-//                                .disable()
-                        )
-                        .queryDTO(f -> f
-                                .subPackage("dto")
-//                                .disable()
-                        )
-                        .queryVO(f -> f
-                                .subPackage("vo")
-//                                .disable()
-                        )
-                )
+
                 .model(e -> e
                                 .enableQueryDTOExtendsEntity()
                         .enableQueryVOExtendsEntity()
@@ -109,13 +65,58 @@ public class Generator4Mysql {
                                 .enableActiveRecord()
                 )
                 .mapper(e -> e
-//                        .enableBaseColumnList()
+                        .enableBaseColumnList()
                         .enableBaseResultMap()
 
                 )
                 .service(e -> e
                 )
                 .controller(e -> e
+                )
+                .output(e -> e
+                                .outputDir(System.getProperty("user.dir") + "/src/test/java")
+                                .enableGlobalFileOverride()
+                                .parentPackage("com.example.test")
+                                .disableOpenOutputDir()
+                                .entity(f -> f
+                                        .formatPattern("%sPOJO")
+                                )
+                                .mapper(f -> f
+                                                .subPackage("mapper")
+//                                .disable()
+                                )
+                                .mapperXml(f -> f
+                                                .subPackage("mapper")
+//                                .disable()
+                                )
+                                .service(f -> f
+                                        .subPackage("service")
+                                        .disable()
+                                )
+                                .serviceImpl(f -> f
+                                        .subPackage("service.impl")
+                                        .disable()
+                                )
+                                .controller(f -> f
+                                        .subPackage("controller")
+                                        .disable()
+                                )
+                                .createDTO(f -> f
+                                                .subPackage("dto")
+//                                .disable()
+                                )
+                                .updateDTO(f -> f
+                                                .subPackage("dto")
+//                                .disable()
+                                )
+                                .queryDTO(f -> f
+                                                .subPackage("dto")
+//                                .disable()
+                                )
+                                .queryVO(f -> f
+                                                .subPackage("vo")
+//                                .disable()
+                                )
                 )
 
                 .execute("sys_user")
