@@ -56,63 +56,63 @@
 #if(!${enhancer})
     <sql id="queryFragment">
         <if test="param1 != null">
-            #foreach($field in ${table.fields})
-                #if(${field.logicDeleteField})
-                #else
-                    <if test="param1.${field.propertyName} != null">
-                        AND a.${field.columnName} = #{param1.${field.propertyName}}
-                    </if>
-                #end
-            #end
-            #if(${table.extraFields.size()}>0)
-                    <!-- 额外后缀查询条件 -->
-            #end
-            #foreach($field in ${table.extraFields})
-                #if(${field.sqlOperator}=="IN" || ${field.sqlOperator}=="NOT IN")
-                    <if test="param1.${field.propertyName} != null and param1.${field.propertyName}.size()>0">
-                        AND a.${field.columnName} ${field.sqlOperator}
-                        <foreach collection="param1.${field.propertyName}" open="("  close=")" separator="," item="item">
-                            #{item}
-                        </foreach>
-                    </if>
-                #elseif(${field.sqlOperator}=="IS NULL" || ${field.sqlOperator}=="IS NOT NULL")
-                    <if test="param1.${field.propertyName} != null">
-                        AND a.${field.columnName} ${field.sqlOperator}
-                    </if>
-                #elseif(${field.sqlOperator}=="<>" || ${field.sqlOperator}=="!=")
-                    <if test="param1.${field.propertyName} != null">
-                        AND a.${field.columnName} &lt;&gt; #{param1.${field.propertyName}}
-                    </if>
-                #elseif(${field.sqlOperator}=="<")
-                    <if test="param1.${field.propertyName} != null">
-                        AND a.${field.columnName} &lt; #{param1.${field.propertyName}}
-                    </if>
-                #elseif(${field.sqlOperator}=="<=")
-                    <if test="param1.${field.propertyName} != null">
-                        AND a.${field.columnName} &lt;= #{param1.${field.propertyName}}
-                    </if>
-                #elseif(${field.sqlOperator}==">")
-                    <if test="param1.${field.propertyName} != null">
-                        AND a.${field.columnName} &gt; #{param1.${field.propertyName}}
-                    </if>
-                #elseif(${field.sqlOperator}==">=")
-                    <if test="param1.${field.propertyName} != null">
-                        AND a.${field.columnName} &gt;= #{param1.${field.propertyName}}
-                    </if>
-                #elseif(${field.sqlOperator}=="&>")
-                    <if test="param1.${field.propertyName} != null">
-                        AND a.${field.columnName} &amp; #{param1.${field.propertyName}} > 0
-                    </if>
-                #elseif(${field.sqlOperator}=="&=")
-                    <if test="param1.${field.propertyName} != null">
-                        AND a.${field.columnName} &amp; #{param1.${field.propertyName}} = 0
-                    </if>
-                #else
-                    <if test="param1.${field.propertyName} != null">
-                        AND a.${field.columnName} ${field.sqlOperator} #{param1.${field.propertyName}}
-                    </if>
-                #end
-            #end
+    #foreach($field in ${table.fields})
+        #if(${field.logicDeleteField})
+        #else
+            <if test="param1.${field.propertyName} != null">
+                AND a.${field.columnName} = #{param1.${field.propertyName}}
+            </if>
+        #end
+    #end
+    #if(${table.extraFields.size()}>0)
+            <!-- 额外后缀查询条件 -->
+    #end
+    #foreach($field in ${table.extraFields})
+        #if(${field.sqlOperator}=="IN" || ${field.sqlOperator}=="NOT IN")
+            <if test="param1.${field.propertyName} != null and param1.${field.propertyName}.size()>0">
+                AND a.${field.columnName} ${field.sqlOperator}
+                <foreach collection="param1.${field.propertyName}" open="("  close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+        #elseif(${field.sqlOperator}=="IS NULL" || ${field.sqlOperator}=="IS NOT NULL")
+            <if test="param1.${field.propertyName} != null">
+                AND a.${field.columnName} ${field.sqlOperator}
+            </if>
+        #elseif(${field.sqlOperator}=="<>" || ${field.sqlOperator}=="!=")
+            <if test="param1.${field.propertyName} != null">
+                AND a.${field.columnName} &lt;&gt; #{param1.${field.propertyName}}
+            </if>
+        #elseif(${field.sqlOperator}=="<")
+            <if test="param1.${field.propertyName} != null">
+                AND a.${field.columnName} &lt; #{param1.${field.propertyName}}
+            </if>
+        #elseif(${field.sqlOperator}=="<=")
+            <if test="param1.${field.propertyName} != null">
+                AND a.${field.columnName} &lt;= #{param1.${field.propertyName}}
+            </if>
+        #elseif(${field.sqlOperator}==">")
+            <if test="param1.${field.propertyName} != null">
+                AND a.${field.columnName} &gt; #{param1.${field.propertyName}}
+            </if>
+        #elseif(${field.sqlOperator}==">=")
+            <if test="param1.${field.propertyName} != null">
+                AND a.${field.columnName} &gt;= #{param1.${field.propertyName}}
+            </if>
+        #elseif(${field.sqlOperator}=="&>")
+            <if test="param1.${field.propertyName} != null">
+                AND a.${field.columnName} &amp; #{param1.${field.propertyName}} > 0
+            </if>
+        #elseif(${field.sqlOperator}=="&=")
+            <if test="param1.${field.propertyName} != null">
+                AND a.${field.columnName} &amp; #{param1.${field.propertyName}} = 0
+            </if>
+        #else
+            <if test="param1.${field.propertyName} != null">
+                AND a.${field.columnName} ${field.sqlOperator} #{param1.${field.propertyName}}
+            </if>
+        #end
+    #end
         </if>
     </sql>
 
