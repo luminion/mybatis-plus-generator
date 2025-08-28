@@ -2,7 +2,6 @@ package io.github.bootystar.mybatisplus.generator.config.support;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.base.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.enums.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.po.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -54,7 +53,7 @@ public class OutputConfig implements ITemplate {
 
     @Getter
     protected TemplateFile entity = new TemplateFile(
-            OutputFile.ENTITY.key,
+            OutputFile.entity.name(),
             "%s",
             "entity",
             "/templates/entity.java",
@@ -62,7 +61,7 @@ public class OutputConfig implements ITemplate {
     );
     @Getter
     protected TemplateFile mapper = new TemplateFile(
-            OutputFile.MAPPER.key,
+            OutputFile.mapper.name(),
             "%sMapper",
             "mapper",
             "/templates/mapper.java",
@@ -71,7 +70,7 @@ public class OutputConfig implements ITemplate {
 
     @Getter
     protected TemplateFile mapperXml = new TemplateFile(
-            OutputFile.MAPPER_XML.key,
+            OutputFile.mapperXml.name(),
             "%sMapper",
             "mapper.xml",
             "/templates/mapper.xml",
@@ -79,7 +78,7 @@ public class OutputConfig implements ITemplate {
     );
     @Getter
     protected TemplateFile service = new TemplateFile(
-            OutputFile.SERVICE.key,
+            OutputFile.service.name(),
             "I%sService",
             "service",
             "/templates/service.java",
@@ -87,7 +86,7 @@ public class OutputConfig implements ITemplate {
     );
     @Getter
     protected TemplateFile serviceImpl = new TemplateFile(
-            OutputFile.SERVICE_IMPL.key,
+            OutputFile.serviceImpl.name(),
             "%sServiceImpl",
             "service.impl",
             "/templates/serviceImpl.java",
@@ -95,7 +94,7 @@ public class OutputConfig implements ITemplate {
     );
     @Getter
     protected TemplateFile controller = new TemplateFile(
-            OutputFile.CONTROLLER.key,
+            OutputFile.controller.name(),
             "%sController",
             "controller",
             "/templates/controller.java",
@@ -103,7 +102,7 @@ public class OutputConfig implements ITemplate {
     );
     @Getter
     protected TemplateFile createDTO = new TemplateFile(
-            OutputFile.CREATE_DTO.key,
+            OutputFile.createDTO.name(),
             "%sCreateDTO",
             "dto",
             "/templates/createDTO.java",
@@ -111,7 +110,7 @@ public class OutputConfig implements ITemplate {
     );
     @Getter
     protected TemplateFile updateDTO = new TemplateFile(
-            OutputFile.UPDATE_DTO.key,
+            OutputFile.updateDTO.name(),
             "%sUpdateDTO",
             "dto",
             "/templates/updateDTO.java",
@@ -119,7 +118,7 @@ public class OutputConfig implements ITemplate {
     );
     @Getter
     protected TemplateFile queryDTO = new TemplateFile(
-            OutputFile.QUERY_DTO.key,
+            OutputFile.queryDTO.name(),
             "%sQueryDTO",
             "dto",
             "/templates/queryDTO.java",
@@ -127,31 +126,15 @@ public class OutputConfig implements ITemplate {
     );
     @Getter
     protected TemplateFile queryVO = new TemplateFile(
-            OutputFile.QUERY_VO.key,
+            OutputFile.queryVO.name(),
             "%sQueryVO",
             "vo",
             "/templates/queryVO.java",
             ".java"
     );
-    @Getter
-    protected TemplateFile importDTO = new TemplateFile(
-            OutputFile.IMPORT_DTO.key,
-            "%sImportDTO",
-            "dto",
-            "/templates/importDTO.java",
-            ".java"
-    );
-    @Getter
-    protected TemplateFile exportVO = new TemplateFile(
-            OutputFile.EXPORT_VO.key,
-            "%sExportVO",
-            "vo",
-            "/templates/exportVO.java",
-            ".java"
-    );
 
     protected Stream<TemplateFile> templateFileStream() {
-        return Stream.of(entity, mapper, mapperXml, service, serviceImpl, controller, createDTO, updateDTO, queryDTO, queryVO, importDTO, exportVO);
+        return Stream.of(entity, mapper, mapperXml, service, serviceImpl, controller, createDTO, updateDTO, queryDTO, queryVO);
     }
 
     /**
@@ -197,7 +180,7 @@ public class OutputConfig implements ITemplate {
      * 获取类规范名称
      *
      * @param tableInfo 表信息
-     * @see OutputFile#key
+     * @see OutputFile#name()
      */
     public Map<String, String> getClassCanonicalName(TableInfo tableInfo) {
         return templateFileStream().collect(Collectors.toMap(
@@ -210,7 +193,7 @@ public class OutputConfig implements ITemplate {
      * 获取类简单名称
      *
      * @param tableInfo 表信息
-     * @see OutputFile#key
+     * @see OutputFile#name() 
      */
     public Map<String, String> getClassSimpleName(TableInfo tableInfo) {
         return templateFileStream().collect(Collectors.toMap(
@@ -246,6 +229,7 @@ public class OutputConfig implements ITemplate {
     public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> map = ITemplate.super.renderData(tableInfo);
         map.put("package", this.getPackageInfo());
+        map.put("class", this.getClassCanonicalName(tableInfo));
         map.putAll(this.getClassSimpleName(tableInfo));
         return map;
     }
@@ -405,7 +389,7 @@ public class OutputConfig implements ITemplate {
         }
 
         /**
-         * queryVO配置
+         * vo配置
          *
          * @param adapter 适配器
          */
@@ -413,25 +397,6 @@ public class OutputConfig implements ITemplate {
             adapter.apply(this.config.queryVO.adapter());
             return this;
         }
-
-        /**
-         * importDTO配置
-         *
-         * @param adapter 适配器
-         */
-        public Adapter importDTO(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
-            adapter.apply(this.config.importDTO.adapter());
-            return this;
-        }
-
-        /**
-         * exportVO配置
-         *
-         * @param adapter 适配器
-         */
-        public Adapter exportVO(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
-            adapter.apply(this.config.exportVO.adapter());
-            return this;
-        }
+        
     }
 }

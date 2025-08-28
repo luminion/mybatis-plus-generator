@@ -16,7 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.config.support;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.base.ConstVal;
+import io.github.bootystar.mybatisplus.generator.config.enums.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
@@ -104,7 +104,7 @@ public class MapperConfig implements ITemplate {
         if (mapperAnnotationClass != null) {
             importPackages.add(mapperAnnotationClass.getName());
         }
-        importPackages.add(tableInfo.getConfigAdapter().getOutputConfig().getPackageInfo().get(ConstVal.ENTITY));
+        importPackages.add(tableInfo.getConfigurer().getOutputConfig().getClassCanonicalName(tableInfo).get(OutputFile.entity.name()));
         Set<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toSet());
         Set<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toSet());
         data.put("importMapperFrameworkPackages", frameworkPackages.stream().sorted().collect(Collectors.toList()));

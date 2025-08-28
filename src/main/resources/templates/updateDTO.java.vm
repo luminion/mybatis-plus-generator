@@ -1,11 +1,13 @@
-package ${package.UpdateDTO};
+package ${package.updateDTO};
 
 #foreach($pkg in ${importUpdateDTOFrameworkPackages})
 import ${pkg};
 #end
+#if($importUpdateDTOJavaPackages.size()>0)
 
 #foreach($pkg in ${importUpdateDTOJavaPackages})
 import ${pkg};
+#end
 #end
 
 /**
@@ -14,8 +16,8 @@ import ${pkg};
  * @author ${author}
  * @since ${date}
 #if(${commentLink})
- * @see ${package.Entity}.${entity}
- * @see ${package.ServiceImpl}.${serviceImpl}
+ * @see ${class.entity}
+ * @see ${class.serviceImpl}
 #end
  */
 #if(${lombok})

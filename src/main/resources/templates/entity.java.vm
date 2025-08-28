@@ -1,11 +1,13 @@
-package ${package.Entity};
+package ${package.entity};
 
 #foreach($pkg in ${importEntityFrameworkPackages})
 import ${pkg};
 #end
+#if($importEntityJavaPackages.size()>0)
 
 #foreach($pkg in ${importEntityJavaPackages})
 import ${pkg};
+#end
 #end
 
 /**
@@ -13,8 +15,8 @@ import ${pkg};
  *
  * @author ${author}
 #if(${commentLink})
- * @see ${package.Mapper}.${mapper}
- * @see ${package.ServiceImpl}.${serviceImpl}
+ * @see ${class.mapper}
+ * @see ${class.serviceImpl}
 #end
  * @since ${date}
  */
@@ -23,7 +25,7 @@ import ${pkg};
     #if(${chainModel})
 @Accessors(chain = true)
     #end
-    #if(${superEntityClass})
+    #if(${superEntityClass}||${activeRecord})
 @EqualsAndHashCode(callSuper = true)
     #end
 #end
@@ -34,6 +36,9 @@ import ${pkg};
 @Schema(description = "$!{table.comment}")
 #elseif(${swagger})
 @ApiModel(description = "$!{table.comment}")
+#end
+#if($generateExport && $queryVOExtendsEntity)
+@ExcelIgnoreUnannotated
 #end
 #if(${superEntityClass})
 public class ${entity} extends ${superEntityClass}#if(${activeRecord})<${entity}>#end {
@@ -90,6 +95,9 @@ public class ${entity} {
     #end
     #if(${field.logicDeleteField})
     @TableLogic
+    #end
+    #if($generateExport && $queryVOExtendsEntity && !${field.logicDeleteField})
+    @ExcelProperty(value = "${field.comment}")
     #end
     private ${field.propertyType} ${field.propertyName};
 #end

@@ -1,4 +1,4 @@
-package ${package.ServiceImpl};
+package ${package.serviceImpl};
 
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};

@@ -73,8 +73,6 @@ public class FastGenerator {
                         .updateDTO(f -> f.formatPattern("%sUO"))
                         .queryDTO(f -> f.formatPattern("%sQO"))
                         .queryVO(f -> f.formatPattern("%sVO"))
-                        .importDTO(f -> f.formatPattern("%sIO"))
-                        .exportVO(f -> f.formatPattern("%sEO"))
                 )
                 .strategy(e -> e)
                 .injection(e -> e)

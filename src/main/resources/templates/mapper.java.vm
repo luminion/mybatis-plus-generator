@@ -1,4 +1,4 @@
-package ${package.Mapper};
+package ${package.mapper};
 
 #foreach($pkg in ${importMapperFrameworkPackages})
 import ${pkg};
@@ -20,9 +20,9 @@ import ${pkg};import com.fasterxml.jackson.databind.ObjectMapper;
 @${mapperAnnotationClass.simpleName}
 #end
 #if(${enhancer})
-public interface ${table.mapperName} extends ${superMapperClass}<${entity}>, EnhancedMapper<${entityVO}> {
+public interface ${mapper} extends ${superMapperClass}<${entity}>, EnhancedMapper<${entityVO}> {
 #else
-public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+public interface ${mapper} extends ${superMapperClass}<${entity}> {
 #end
 
 #foreach($m in ${mapperMethodList})

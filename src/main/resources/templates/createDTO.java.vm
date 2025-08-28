@@ -1,11 +1,13 @@
-package ${package.CreateDTO};
+package ${package.createDTO};
 
 #foreach($pkg in ${importCreateDTOFrameworkPackages})
 import ${pkg};
 #end
-
+#if($importCreateDTOJavaPackages.size()>0)
+    
 #foreach($pkg in ${importCreateDTOJavaPackages})
 import ${pkg};
+#end
 #end
 
 /**
@@ -13,8 +15,8 @@ import ${pkg};
  *
  * @author ${author}
 #if(${commentLink})
- * @see ${package.Entity}.${entity}
- * @see ${package.ServiceImpl}.${serviceImpl}
+ * @see ${class.entity}
+ * @see ${class.serviceImpl}
 #end
  * @since ${date}
  */
@@ -29,7 +31,7 @@ import ${pkg};
 #elseif(${swagger})
 @ApiModel(description = "$!{table.comment}-新增DTO")
 #end
-#if(${generateImport} && ${importOnCreateDTO})
+#if(${generateImport})
 @ExcelIgnoreUnannotated
 #end
 #if(${extendsQueryDTO})
@@ -68,7 +70,7 @@ public class ${createDTO} {
     @Size(message = "${field.comment}长度不能超过${field.metaInfo.length}", max = ${field.metaInfo.length})
         #end
     #end
-    #if(${generateImport} && ${importOnCreateDTO})## excel导入
+    #if(${generateImport})## excel导入
     @ExcelProperty(value = "${field.comment}")
     #end
     private ${field.propertyType} ${field.propertyName};
