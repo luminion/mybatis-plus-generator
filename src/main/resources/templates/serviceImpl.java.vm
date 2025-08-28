@@ -2,7 +2,7 @@ package ${package.serviceImpl};
 
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
-#if(${generateService})
+#if(${generate.service})
 import ${package.Service}.${table.serviceName};
 #end
 import ${superServiceImplClassPackage};
@@ -18,46 +18,51 @@ import org.springframework.stereotype.Service;
  */
 @Service
 #if(${enhancer})
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements#if(${generateService}) ${table.serviceName},#end EnhancedService<${entityVO}> {
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${mapper}, ${entity}> implements#if(${generate.service}) ${service},#end EnhancedService<${queryVO}> {
 #else
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>#if(${generateService}) implements ${table.serviceName}#end {
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${mapper}, ${entity}>#if(${generate.service}) implements ${service}#end {
 #end
-#if(${methodOverride})
     #if(${generateQuery}||${generateExport})
     
-    #if(${showOverrideAnnotation})@Override#end
-    public ${entityVO} voById(Serializable id) {
+    #if(${generate.service} || ${enhancer})
+    @Override
+    #end
+    public ${queryVO} voById(Serializable id) {
         #if(${enhancer})
-        return ${superMehtod}.voById(id);
+        return ${enhanceMethod}.voById(id);
         #else
         HashMap<String, Object> map = new HashMap<>();
         map.put(TableInfoHelper.getTableInfo(getEntityClass()).getKeyProperty(), id);
-        IPage<${entityVO}> page = new Page<>(1L, 1L);
-        List<${entityVO}> vs = getBaseMapper().voQuery(map, page);
+        IPage<${queryVO}> page = new Page<>(1L, 1L);
+        List<${queryVO}> vs = getBaseMapper().voQuery(map, page);
         if (vs == null || vs.isEmpty()) return null;
         if (page.getTotal() > 1) throw new TooManyResultsException("Expected one result (or null) to be returned by id, but found:" + page.getTotal());
         return vs.get(0);
         #end
     }
 
-    #if(${showOverrideAnnotation})@Override#end
-    public List<${entityVO}> voList(${entityQueryDTO} param) {
+    #if(${generate.service} || ${enhancer})
+    @Override
+    #end
+    public List<${queryVO}> voList(${entityQueryDTO} param) {
         #if(${enhancer})
-        return ${superMehtod}.voList(param);
+        return ${enhanceMethod}.voList(param);
         #else
         return getBaseMapper().voQuery(param, null);
         #end
     }
 
-    #if(${showOverrideAnnotation})@Override#end
-    public IPage<${entityVO}> voPage(${entityQueryDTO} param, Long current, Long size) {
+    #if(${generate.service} || ${enhancer})
+    @Override
+    #end
+    public IPage<${queryVO}> voPage(${entityQueryDTO} param, Long current, Long size) {
         #if(${enhancer})
-        return ${superMehtod}.voPage(param, current, size);
+        return ${enhanceMethod}.voPage(param, current, size);
         #else
         if (current == null || current < 1) current = 1L;
         if (size == null) size = 10L;
-        Page<${entityVO}> page = new Page<>(current, size);
-        List<${entityVO}> voList = getBaseMapper().voQuery(param, page);
+        Page<${queryVO}> page = new Page<>(current, size);
+        List<${queryVO}> voList = getBaseMapper().voQuery(param, page);
         page.setRecords(voList);
         return page;
         #end
@@ -65,32 +70,34 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #end
     #if(${generateExport})
 
-    #if(${showOverrideAnnotation})@Override#end
+    #if(${generate.service} || ${enhancer})
+    @Override
+    #end
     public void excelExport(${entityQueryDTO} param, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
         #if(${enhancer})
-        ${superMehtod}.excelExport(param, os, clazz, current, size, includeFields);
+        ${enhanceMethod}.excelExport(param, os, clazz, current, size, includeFields);
         #else
-        List<${entityVO}> voList = this.voPage(param, current, size).getRecords();
+        List<${queryVO}> voList = this.voPage(param, current, size).getRecords();
         ${excelApiClass}.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(voList);
         #end
     }
     #end
     #if(${generateImport})
 
-    #if(${showOverrideAnnotation})@Override#end
+    #if(${generate.service} || ${enhancer})@Override#end
     public void excelTemplate(OutputStream os, Class<?> clazz) {
         #if(${enhancer})
-        ${superMehtod}.excelTemplate(os, clazz);
+        ${enhanceMethod}.excelTemplate(os, clazz);
         #else
         ${excelApiClass}.write(os, clazz).sheet().doWrite(Collections.emptyList());
         #end
     }
 
-    #if(${showOverrideAnnotation})@Override#end
+    #if(${generate.service} || ${enhancer})@Override#end
     public int excelImport(InputStream is, Class<?> clazz) {
         #if(${enhancer})
 //        List<${entityInsertDTO}> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
-        return ${superMehtod}.excelImport(is, clazz);
+        return ${enhanceMethod}.excelImport(is, clazz);
         #else
         List<?> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
         List<${entity}> entityList = dataList.stream().map(e -> {
@@ -106,11 +113,11 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #end
     #if(${generateInsert})
 
-    #if(${showOverrideAnnotation})@Override#end
+    #if(${generate.service} || ${enhancer})@Override#end
     public Object insertByDTO(Object param) {
 //        ${sourceEntityInsertDTO} dto = (${sourceEntityInsertDTO}) param;
         #if(${enhancer})
-        return ${superMehtod}.insertByDTO(param);    
+        return ${enhanceMethod}.insertByDTO(param);    
         #else
         ${entity} entity = new ${entity}();
         BeanUtils.copyProperties(param, entity);
@@ -122,11 +129,11 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     #end
     #if(${generateUpdate})
 
-    #if(${showOverrideAnnotation})@Override#end
+    #if(${generate.service} || ${enhancer})@Override#end
     public boolean updateByDTO(Object param) {
 //        ${sourceEntityUpdateDTO} dto = (${sourceEntityUpdateDTO}) param;
         #if(${enhancer})
-        return ${superMehtod}.updateByDTO(param);
+        return ${enhanceMethod}.updateByDTO(param);
         #else
         ${entity} entity = new ${entity}();
         BeanUtils.copyProperties(param, entity);
@@ -141,5 +148,4 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         return super.removeById(id);
     }
     #end
-#end
 }

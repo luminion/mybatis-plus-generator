@@ -28,7 +28,7 @@ public class Generator4Mysql {
                                 .enableSpringdoc()
                                 .enableJavaxApi()
                                 .enableEasyExcel()
-//                                .enableMybatisPlusEnhancer()
+                                .enableMybatisPlusEnhancer()
 //                                .disableQuery()
 //                                .disableInsert()
 //                                .disableUpdate()
@@ -65,8 +65,8 @@ public class Generator4Mysql {
                                 .enableActiveRecord()
                 )
                 .mapper(e -> e
-                        .enableBaseColumnList()
-                        .enableBaseResultMap()
+//                        .enableBaseColumnList()
+//                        .enableBaseResultMap()
 
                 )
                 .service(e -> e
