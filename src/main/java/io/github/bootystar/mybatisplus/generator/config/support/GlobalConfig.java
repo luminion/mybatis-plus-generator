@@ -158,7 +158,7 @@ public class GlobalConfig implements ITemplate {
      * 结合mybatis-plus-enhancer使用
      */
     @Getter
-    protected boolean enhancer = true;
+    protected boolean enhancer;
 
     public boolean isSwagger() {
         // springdoc 设置优先于 swagger
