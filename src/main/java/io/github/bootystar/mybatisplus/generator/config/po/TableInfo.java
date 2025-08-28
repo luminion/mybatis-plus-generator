@@ -18,6 +18,7 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.Configurer;
 import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
+import io.github.bootystar.mybatisplus.generator.config.support.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
 import lombok.Getter;
 import lombok.Setter;
@@ -70,6 +71,12 @@ public class TableInfo {
      */
     @Getter
     private final List<TableField> fields = new ArrayList<>();
+    
+    /**
+     * 额外字段
+     */
+    @Getter
+    private final List<ExtraField> extraFields = new ArrayList<>();
 
     /**
      * 是否有主键
@@ -172,6 +179,15 @@ public class TableInfo {
     }
 
     /**
+     * 添加额外字段
+     *
+     * @param field 字段
+     */
+    public void addExtraField(ExtraField field) {
+        this.extraFields.add(field);
+    }
+
+    /**
      * 转换filed实体为 xml mapper 中的 base column 字符串信息
      */
     public String getFieldNames() {
@@ -181,16 +197,98 @@ public class TableInfo {
         return this.fieldNames;
     }
 
-    
-
     /**
-     * 处理表信息(文件名与导包)
+     * 处理表信息
      *
      * @since 3.5.0
      */
     public void processTable() {
         String entityName = this.getConfigurer().getEntityConfig().getNameConvert().entityNameConvert(this);
         this.setEntityName(entityName);
+        this.processExtraField();
+    }
+
+    /**
+     * 处理额外字段
+     */
+    private void processExtraField() {
+        Set<String> existPropertyNames = this.getFields().stream()
+                .map(e -> e.getPropertyName())
+                .collect(Collectors.toSet());
+        StrategyConfig strategyConfig = this.getConfigurer().getStrategyConfig();
+        for (TableField field : this.getFields()) {
+            if (field.isLogicDeleteField()) {
+                continue;
+            }
+            for (Map.Entry<String, String> entry : strategyConfig.getExtraFieldSuffixMap().entrySet()) {
+                String suffix = entry.getKey();
+                String sqlOperator = entry.getValue().toUpperCase();
+                if (strategyConfig.getExtraFieldStrategy().apply(entry.getValue(), field)) {
+                    String suffixPropertyName = field.getPropertyName() + suffix;
+                    if (existPropertyNames.contains(suffixPropertyName)) {
+                        continue;
+                    }
+                    existPropertyNames.add(suffixPropertyName);
+                    ExtraField extraField = new ExtraField();
+                    if (sqlOperator.equalsIgnoreCase("IN") || sqlOperator.equalsIgnoreCase("NOT IN")) {
+                        extraField.setPropertyType("List<" + field.getPropertyType() + ">");
+                    } else {
+                        extraField.setPropertyType(field.getPropertyType());
+                    }
+                    extraField.setPropertyName(suffixPropertyName);
+                    extraField.setCapitalName(field.getCapitalName() + suffix);
+                    extraField.setColumnName(field.getColumnName());
+                    extraField.setComment(this.replaceComment(field.getComment(), sqlOperator));
+                    extraField.setSqlOperator(sqlOperator);
+                    extraField.setSqlOperator(sqlOperator);
+                    extraFields.add(extraField);
+                }
+            }
+        }
+    }
+
+    /**
+     * 替换注释并检查sql运算符是否合规
+     *
+     * @param comment     评论
+     * @param sqlOperator sql运算符
+     */
+    public String replaceComment(String comment, String sqlOperator) {
+        switch (sqlOperator) {
+            case "LIKE":
+                return comment + "(模糊匹配)";
+            case "NOT LIKE":
+                return comment + "(模糊匹配的反结果)";
+            case "IN":
+                return comment + "(包含值)";
+            case "NOT IN":
+                return comment + "(不包含值)";
+            case "IS NULL":
+                return comment + "(为空)";
+            case "IS NOT NULL":
+                return comment + "(非空)";
+            case ">":
+                return comment + "(大于)";
+            case "<":
+                return comment + "(小于)";
+            case ">=":
+                return comment + "(大于等于)";
+            case "<=":
+                return comment + "(小于等于)";
+            case "!=":
+            case "<>":
+                return comment + "(不等于)";
+            case "&>":
+                return comment + "(包含指定bit位)";
+            case "&=":
+                return comment + "(不包含指定bit位)";
+            default:
+                throw new IllegalArgumentException(String.format("不支持的后缀字段操作符:%s, 支持的操作符:LIKE,NOT LIKE,IN,NOT IN,IS NULL,IS NOT NULL,>,<,>=,<=,!=,<>,&>,&=", sqlOperator));
+        }
+    }
+
+    public TableField getField(String name) {
+        return tableFieldMap.get(name);
     }
 
     public TableInfo setComment(String comment) {

@@ -105,11 +105,13 @@ public class StrategyConfig implements ITemplate {
     /**
      * 额外字段后缀
      */
+    @Getter
     protected Map<String, String> extraFieldSuffixMap = new LinkedHashMap<>();
 
     /**
      * 额外字段策略
      */
+    @Getter
     protected BiFunction<String, TableField, Boolean> extraFieldStrategy = new ExtraFieldStrategy();
 
     /**
@@ -216,83 +218,6 @@ public class StrategyConfig implements ITemplate {
      */
     protected boolean tableNameMatches(String matchTableName, String dbTableName) {
         return matchTableName.equalsIgnoreCase(dbTableName) || StringUtils.matches(matchTableName, dbTableName);
-    }
-
-    @Override
-    public Map<String, Object> renderData(TableInfo tableInfo) {
-        Map<String, Object> map = ITemplate.super.renderData(tableInfo);
-        List<ExtraField> extraFields = new ArrayList<>();
-        Set<String> existPropertyNames = tableInfo.getFields().stream().map(e -> e.getPropertyName()).collect(Collectors.toSet());
-        for (TableField field : tableInfo.getFields()) {
-            if (field.isLogicDeleteField()) {
-                continue;
-            }
-            for (Entry<String, String> entry : extraFieldSuffixMap.entrySet()) {
-                String suffix = entry.getKey();
-                String sqlOperator = entry.getValue().toUpperCase();
-                if (extraFieldStrategy.apply(entry.getValue(), field)) {
-                    String suffixPropertyName = field.getPropertyName() + suffix;
-                    if (existPropertyNames.contains(suffixPropertyName)) {
-                        continue;
-                    }
-                    existPropertyNames.add(suffixPropertyName);
-                    ExtraField extraField = new ExtraField();
-                    if (sqlOperator.equalsIgnoreCase("IN") || sqlOperator.equalsIgnoreCase("NOT IN")) {
-                        extraField.setPropertyType("List<" + field.getPropertyType() + ">");
-                    } else {
-                        extraField.setPropertyType(field.getPropertyType());
-                    }
-                    extraField.setPropertyName(suffixPropertyName);
-                    extraField.setCapitalName(field.getCapitalName() + suffix);
-                    extraField.setColumnName(field.getColumnName());
-                    extraField.setComment(this.replaceComment(field.getComment(), sqlOperator));
-                    extraField.setSqlOperator(sqlOperator);
-                    extraFields.add(extraField);
-                }
-            }
-        }
-        map.put("extraFields", extraFields);
-        return map;
-    }
-
-    /**
-     * 替换注释并检查sql运算符是否合规
-     *
-     * @param comment     评论
-     * @param sqlOperator sql运算符
-     */
-    public String replaceComment(String comment, String sqlOperator) {
-        switch (sqlOperator) {
-            case "LIKE":
-                return comment + "(模糊匹配)";
-            case "NOT LIKE":
-                return comment + "(模糊匹配的反结果)";
-            case "IN":
-                return comment + "(包含值)";
-            case "NOT IN":
-                return comment + "(不包含值)";
-            case "IS NULL":
-                return comment + "(为空)";
-            case "IS NOT NULL":
-                return comment + "(非空)";
-            case ">":
-                return comment + "(大于)";
-            case "<":
-                return comment + "(小于)";
-            case ">=":
-                return comment + "(大于等于)";
-            case "<=":
-                return comment + "(小于等于)";
-            case "!=":
-            case "<>":
-                return comment + "(不等于)";
-            case "&>":
-                return comment + "(包含指定bit位)";
-            case "&=":
-                return comment + "(不包含指定bit位)";
-            default:
-                throw new IllegalArgumentException(String.format("不支持的后缀字段操作符:%s, 支持的操作符:LIKE,NOT LIKE,IN,NOT IN,IS NULL,IS NOT NULL,>,<,>=,<=,!=,<>,&>,&=", sqlOperator));
-        }
     }
 
     public Adapter adapter() {
