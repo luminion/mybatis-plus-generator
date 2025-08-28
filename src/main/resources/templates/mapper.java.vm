@@ -6,7 +6,7 @@ import ${pkg};
 #if($importMapperJavaPackages.size()>0)
 
 #foreach($pkg in ${importMapperJavaPackages})
-import ${pkg};import com.fasterxml.jackson.databind.ObjectMapper;
+import ${pkg};
 #end
 #end
 
@@ -20,31 +20,25 @@ import ${pkg};import com.fasterxml.jackson.databind.ObjectMapper;
 @${mapperAnnotationClass.simpleName}
 #end
 #if(${enhancer})
-public interface ${mapper} extends ${superMapperClass}<${entity}>, EnhancedMapper<${entityVO}> {
+public interface ${mapper} extends ${superMapperClass}<${entity}>, EnhancedMapper<${queryVO}> {
 #else
 public interface ${mapper} extends ${superMapperClass}<${entity}> {
 #end
+#if(${generateQuery})
 
-#foreach($m in ${mapperMethodList})
-    /**
-     * generate by ${m.indexName}
-     *
-     #foreach($f in ${m.tableFieldList})
-     * @param ${f.propertyName} ${f.comment}
-     #end
-     */
-    ${m.method}
-#end
-#if(${methodOverride})
+    #if(${enhancer})
+    @Override
+    #end
+    List<${queryVO}> voQueryByXml(Object param, IPage<${queryVO}> page);
 
-    List<V> voQueryByXml(Object param, IPage<V> page);
-
-    #if(${showOverrideAnnotation})@Override#end
-    default List<V> voQuery(Object param, IPage<V> page) {
+    #if(${enhancer})
+    @Override
+    #end
+    default List<${queryVO}> voQuery(Object param, IPage<${queryVO}> page) {
         #if(${enhancer})
         return super.voQuery(param, page);
         #else
-        return voQueryByXml(new ObjectMapper().convertValue(param, Map.class), page);      
+        return this.voQueryByXml(param, page);      
         #end
     }
 #end

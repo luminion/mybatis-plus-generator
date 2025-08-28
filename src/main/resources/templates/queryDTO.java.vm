@@ -3,7 +3,7 @@ package ${package.queryDTO};
 #foreach($pkg in ${importQueryDTOFrameworkPackages})
 import ${pkg};
 #end
-#if($importQueryDTOJavaPackages.size>0)
+#if($importQueryDTOJavaPackages.size()>0)
 
 #foreach($pkg in ${importQueryDTOJavaPackages})
 import ${pkg};

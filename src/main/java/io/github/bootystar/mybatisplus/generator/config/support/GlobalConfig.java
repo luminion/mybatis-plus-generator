@@ -386,6 +386,16 @@ public class GlobalConfig implements ITemplate {
         }
 
         /**
+         * 禁用重写父类方法
+         *
+         * @return this
+         */
+        public Adapter disableMethodOverride() {
+            this.config.methodOverride = false;
+            return this;
+        }
+
+        /**
          * 禁用新增和修改的入参校验
          *
          * @return this
