@@ -18,7 +18,7 @@ package io.github.bootystar.mybatisplus.generator.config.support;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.interfaces.INameConvert;
+import io.github.bootystar.mybatisplus.generator.config.base.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;

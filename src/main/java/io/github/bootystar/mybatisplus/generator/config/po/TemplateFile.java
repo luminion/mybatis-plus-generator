@@ -8,21 +8,19 @@ import lombok.experimental.Accessors;
  * @author bootystar
  */
 @Getter
-@Setter
-@Accessors(chain = true)
 public class TemplateFile {
     /**
      * 用于标识文件的key,重复时覆盖
      */
     protected String key;
     /**
-     * 子包名(可空)
-     */
-    protected String subPackage;
-    /**
      * 格式化文件名称
      */
     protected String formatPattern;
+    /**
+     * 子包名(可空)
+     */
+    protected String subPackage;
     /**
      * 模板路径
      */
@@ -43,6 +41,14 @@ public class TemplateFile {
      * 是否生成
      */
     protected boolean generate = true;
+
+    public TemplateFile(String key, String formatPattern,String subPackage, String templatePath, String outputFileSuffix) {
+        this.key = key;
+        this.formatPattern = formatPattern;
+        this.subPackage = subPackage;
+        this.templatePath = templatePath;
+        this.outputFileSuffix = outputFileSuffix;
+    }
 
     /**
      * 根据表信息转化输出文件名称

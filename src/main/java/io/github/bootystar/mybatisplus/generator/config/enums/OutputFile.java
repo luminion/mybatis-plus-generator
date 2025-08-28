@@ -15,25 +15,28 @@
  */
 package io.github.bootystar.mybatisplus.generator.config.enums;
 
+import lombok.AllArgsConstructor;
+
 /**
  * 输出文件类型
  *
  * @author hubin
  * @since 2021-06-01
  */
+@AllArgsConstructor
 public enum OutputFile {
-    entity,
-    service,
-    serviceImpl,
-    mapper,
-    mapperXml,
-    controller,
-    parent,
-    createDTO,
-    updateDTO,
-    queryDTO,
-    queryVO,
-    excelImportDTO,
-    excelExportVO,
+    ENTITY("entity"),
+    SERVICE("service"),
+    SERVICE_IMPL("serviceImpl"),
+    MAPPER("mapper"),
+    MAPPER_XML("mapperXml"),
+    CONTROLLER("controller"),
+    CREATE_DTO("createDTO"),
+    UPDATE_DTO("updateDTO"),
+    QUERY_DTO("queryDTO"),
+    QUERY_VO("queryVO"),
+    IMPORT_DTO("importDTO"),
+    EXPORT_VO("exportVO"),
     ;
+    public final String key;
 }
