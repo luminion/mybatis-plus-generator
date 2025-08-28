@@ -23,16 +23,16 @@ public class Generator4Mysql {
                                 .enableLombok()
                                 .enableChainModel()
 //                                .enableSwagger()
-//                                .enableSpringdoc()
-//                                .enableCommentLink()
-//                                .enableCommentUUID()
+                                .enableSpringdoc()
+                                .enableCommentLink()
+                                .enableCommentUUID()
                                 .enableJavaxApi()
                                 .enableEasyExcel()
-//                                .disableQuery()
-//                                .disableInsert()
-//                                .disableUpdate()
-//                                .disableImport()
-//                                .disableExport()
+                                .disableQuery()
+                                .disableInsert()
+                                .disableUpdate()
+                                .disableImport()
+                                .disableExport()
 
                 )
                 .output(e -> e
@@ -45,11 +45,11 @@ public class Generator4Mysql {
                         )
                         .mapper(f -> f
                                 .subPackage("mapper")
-                                .disable()
+//                                .disable()
                         )
                         .mapperXml(f -> f
-                                .subPackage("mapper.xml")
-                                .disable()
+                                .subPackage("mapper")
+//                                .disable()
                         )
                         .service(f -> f
                                 .subPackage("service")
@@ -108,6 +108,8 @@ public class Generator4Mysql {
                                 .enableActiveRecord()
                 )
                 .mapper(e -> e
+                        .enableBaseColumnList()
+                        .enableBaseResultMap()
 
                 )
                 .service(e -> e

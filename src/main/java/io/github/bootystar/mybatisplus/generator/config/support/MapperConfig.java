@@ -104,11 +104,19 @@ public class MapperConfig implements ITemplate {
         if (mapperAnnotationClass != null) {
             importPackages.add(mapperAnnotationClass.getName());
         }
-        importPackages.add(tableInfo.getConfigurer().getOutputConfig().getClassCanonicalName(tableInfo).get(OutputFile.entity.name()));
-        Set<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toSet());
-        Set<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toSet());
-        data.put("importMapperFrameworkPackages", frameworkPackages.stream().sorted().collect(Collectors.toList()));
-        data.put("importMapperJavaPackages", javaPackages.stream().sorted().collect(Collectors.toList()));
+        GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
+        Map<String, String> classCanonicalNameMap = tableInfo.getConfigurer().getOutputConfig().getClassCanonicalName(tableInfo);
+        importPackages.add(classCanonicalNameMap.get(OutputFile.entity.name()));
+        if (globalConfig.isGenerateQuery()){
+            importPackages.add(List.class.getCanonicalName());
+            importPackages.add(classCanonicalNameMap.get(OutputFile.queryVO.name()));
+            importPackages.add("com.baomidou.mybatisplus.core.metadata.IPage");
+        }
+        
+        Collection<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        Collection<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importMapperJavaPackages", javaPackages);
+        data.put("importMapperFrameworkPackages", frameworkPackages);
 
         // 排序字段sql
         List<TableField> sortFields = tableInfo.getFields();
