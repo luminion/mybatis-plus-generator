@@ -83,7 +83,6 @@ public class GlobalConfig implements ITemplate {
     /**
      * 额外类链接注释
      */
-    
     protected boolean commentLink;
 
     /**

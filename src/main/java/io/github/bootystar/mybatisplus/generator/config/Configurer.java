@@ -15,13 +15,12 @@
  */
 package io.github.bootystar.mybatisplus.generator.config;
 
-import io.github.bootystar.mybatisplus.generator.config.interfaces.INameConvert;
+import io.github.bootystar.mybatisplus.generator.config.base.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.support.*;
 import io.github.bootystar.mybatisplus.generator.config.enums.TemplateLoadWay;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;

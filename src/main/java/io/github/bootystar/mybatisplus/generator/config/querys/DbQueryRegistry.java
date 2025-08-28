@@ -16,7 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.config.querys;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import io.github.bootystar.mybatisplus.generator.config.interfaces.IDbQuery;
+import io.github.bootystar.mybatisplus.generator.config.base.IDbQuery;
 
 import java.util.EnumMap;
 import java.util.Map;

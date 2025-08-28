@@ -1,10 +1,11 @@
 package io.github.bootystar.mybatisplus.generator.config.support;
 
-import io.github.bootystar.mybatisplus.generator.config.interfaces.ConstVal;
+import io.github.bootystar.mybatisplus.generator.config.base.ConstVal;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField.MetaInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
@@ -23,21 +24,25 @@ public class ModelConfig implements ITemplate {
     /**
      * 查询dto继承实体类
      */
+    @Getter
     protected boolean queryDTOExtendsEntity;
 
     /**
      * vo继承实体类
      */
+    @Getter
     protected boolean queryVOExtendsEntity;
 
     /**
      * 使用新增dto作为导入dto
      */
+    @Getter
     protected boolean importOnCreateDTO;
 
     /**
      * 使用vo作为导出vo
      */
+    @Getter
     protected boolean exportOnQueryVO;
 
     @Override

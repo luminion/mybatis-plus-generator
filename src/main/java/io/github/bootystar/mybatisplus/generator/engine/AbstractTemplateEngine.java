@@ -17,9 +17,9 @@ package io.github.bootystar.mybatisplus.generator.engine;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.Configurer;
-import io.github.bootystar.mybatisplus.generator.config.support.*;
 import io.github.bootystar.mybatisplus.generator.config.po.CustomFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
+import io.github.bootystar.mybatisplus.generator.config.support.StrategyConfig;
 import io.github.bootystar.mybatisplus.generator.util.FileUtils;
 import io.github.bootystar.mybatisplus.generator.util.RuntimeUtils;
 import lombok.Getter;
@@ -49,10 +49,10 @@ public abstract class AbstractTemplateEngine {
      * 配置信息
      */
     @Getter
-    protected final Configurer configAdapter;
+    protected final Configurer configurer;
 
-    public AbstractTemplateEngine(Configurer configAdapter) {
-        this.configAdapter = configAdapter;
+    public AbstractTemplateEngine(Configurer configurer) {
+        this.configurer = configurer;
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class AbstractTemplateEngine {
      */
     public AbstractTemplateEngine batchOutput() {
         try {
-            Configurer config = this.getConfigAdapter();
+            Configurer config = this.getConfigurer();
             List<TableInfo> tableInfoList = config.getTableInfo();
             tableInfoList.forEach(tableInfo -> {
                 Map<String, Object> objectMap = this.getObjectMap(config, tableInfo);
@@ -151,10 +151,10 @@ public abstract class AbstractTemplateEngine {
      * 打开输出目录
      */
     public void open() {
-        String outDir = getConfigAdapter().getOutputConfig().getOutputDir();
+        String outDir = getConfigurer().getOutputConfig().getOutputDir();
         if (StringUtils.isBlank(outDir) || !new File(outDir).exists()) {
             System.err.println("未找到输出目录：" + outDir);
-        } else if (getConfigAdapter().getOutputConfig().isOpen()) {
+        } else if (getConfigurer().getOutputConfig().isOpen()) {
             try {
                 RuntimeUtils.openDir(outDir);
             } catch (IOException e) {
