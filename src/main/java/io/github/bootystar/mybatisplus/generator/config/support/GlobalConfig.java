@@ -81,7 +81,7 @@ public class GlobalConfig implements ITemplate {
     protected boolean springdoc;
 
     /**
-     * 额外类链接注释
+     * 文档注释添加相关类链接
      */
     protected boolean commentLink;
 
@@ -147,17 +147,18 @@ public class GlobalConfig implements ITemplate {
     @Getter
     protected boolean generateExport = true;
 
-    /**
-     * 是否生成重写父类方法
-     */
-    @Getter
-    protected boolean methodOverride = true;
 
     /**
      * 参数校验
      */
     @Getter
     protected boolean validated = true;
+
+    /**
+     * 结合mybatis-plus-enhancer使用
+     */
+    @Getter
+    protected boolean enhancer = true;
 
     public boolean isSwagger() {
         // springdoc 设置优先于 swagger
@@ -186,22 +187,25 @@ public class GlobalConfig implements ITemplate {
         Map<String, Object> data = ITemplate.super.renderData(tableInfo);
         data.put("author", this.author);
         data.put("date", this.getCommentDate());
+        data.put("validated", this.validated);
+        data.put("commentLink", this.commentLink);
+        data.put("lombok", this.lombok);
+        data.put("chainModel", this.chainModel);
+        
         data.put("swagger", this.isSwagger());
         data.put("springdoc", this.springdoc);
+        data.put("enhancer", this.enhancer);
+        data.put("javaApiPackagePrefix", this.javaApiPackagePrefix);
+        data.put("excelApiPackagePrefix", this.excelApiPackagePrefix);
+        data.put("excelClass", this.excelClass);
+
+
         data.put("generateQuery", this.generateQuery);
         data.put("generateInsert", this.generateInsert);
         data.put("generateUpdate", this.generateUpdate);
         data.put("generateDelete", this.generateDelete);
         data.put("generateImport", this.generateImport);
         data.put("generateExport", this.generateExport);
-        data.put("methodOverride", this.methodOverride);
-        data.put("validated", this.validated);
-        data.put("commentLink", this.commentLink);
-        data.put("javaApiPackagePrefix", this.javaApiPackagePrefix);
-        data.put("excelApiPackagePrefix", this.excelApiPackagePrefix);
-        data.put("excelClass", this.excelClass);
-        data.put("lombok", this.lombok);
-        data.put("chainModel", this.chainModel);
 
         return data;
     }
@@ -266,25 +270,11 @@ public class GlobalConfig implements ITemplate {
             this.config.chainModel = true;
             return this;
         }
-
+    
         /**
-         * 开启 swagger 模式
-         */
-        public Adapter enableSwagger() {
-            this.config.swagger = true;
-            return this;
-        }
-
-        /**
-         * 开启 springdoc 模式
-         */
-        public Adapter enableSpringdoc() {
-            this.config.springdoc = true;
-            return this;
-        }
-
-        /**
-         * 启用注释链接
+         * 文档注释添加相关类链接
+         *
+         * @return this
          */
         public Adapter enableCommentLink() {
             this.config.commentLink = true;
@@ -292,12 +282,38 @@ public class GlobalConfig implements ITemplate {
         }
 
         /**
-         * 启用注释UUID(防止swagger等文档因为重复模型名称而无法识别)
+         * 启用类注释随机UUID
          *
          * @return this
          */
         public Adapter enableCommentUUID() {
             this.config.commentUUID = true;
+            return this;
+        }
+
+        /**
+         * 禁用新增和修改的入参校验
+         *
+         * @return this
+         */
+        public Adapter disableValidated() {
+            this.config.validated = false;
+            return this;
+        }
+
+        /**
+         * 使用swagger文档
+         */
+        public Adapter enableSwagger() {
+            this.config.swagger = true;
+            return this;
+        }
+
+        /**
+         * 使用springdoc文档
+         */
+        public Adapter enableSpringdoc() {
+            this.config.springdoc = true;
             return this;
         }
 
@@ -322,6 +338,16 @@ public class GlobalConfig implements ITemplate {
         public Adapter enableEasyExcel() {
             this.config.excelApiPackagePrefix = "com.alibaba.excel";
             this.config.excelClass = "EasyExcel";
+            return this;
+        }
+
+        /**
+         * 使用mybatis-plus-enhancer
+         *
+         * @return this
+         */
+        public Adapter enableMybatisPlusEnhancer() {
+            this.config.enhancer = true;
             return this;
         }
 
@@ -384,25 +410,6 @@ public class GlobalConfig implements ITemplate {
             this.config.generateExport = false;
             return this;
         }
-
-        /**
-         * 禁用重写父类方法
-         *
-         * @return this
-         */
-        public Adapter disableMethodOverride() {
-            this.config.methodOverride = false;
-            return this;
-        }
-
-        /**
-         * 禁用新增和修改的入参校验
-         *
-         * @return this
-         */
-        public Adapter disableValidated() {
-            this.config.validated = false;
-            return this;
-        }
+       
     }
 }

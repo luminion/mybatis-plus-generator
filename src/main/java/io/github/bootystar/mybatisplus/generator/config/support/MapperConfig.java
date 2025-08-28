@@ -97,6 +97,13 @@ public class MapperConfig implements ITemplate {
             data.put("cacheClassName", cacheClass.getName());
         }
         data.put("superMapperClass", ClassUtils.getSimpleName(this.superClass));
+        // 排序字段sql
+        List<TableField> sortFields = tableInfo.getFields();
+        List<String> existColumnNames = sortFields.stream().map(TableField::getColumnName).collect(Collectors.toList());
+        if (sortColumnMap != null && !sortColumnMap.isEmpty()) {
+            sortColumnMap.entrySet().stream().filter(e -> existColumnNames.contains(e.getKey())).map(e -> String.format("a.%s%s", e.getKey(), e.getValue() ? " DESC" : "")).reduce((e1, e2) -> e1 + ", " + e2).ifPresent(e -> data.put("orderBySql", e));
+        }
+        
         Set<String> importPackages = new TreeSet<>();
         if (StringUtils.isNotBlank(superClass)) {
             importPackages.add(superClass);
@@ -105,6 +112,9 @@ public class MapperConfig implements ITemplate {
             importPackages.add(mapperAnnotationClass.getName());
         }
         GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
+        if (globalConfig.isEnhancer()){
+            importPackages.add("io.github.bootystar.mybatisplus.enhancer.EnhancedMapper");
+        }
         Map<String, String> classCanonicalNameMap = tableInfo.getConfigurer().getOutputConfig().getClassCanonicalName(tableInfo);
         importPackages.add(classCanonicalNameMap.get(OutputFile.entity.name()));
         if (globalConfig.isGenerateQuery()){
@@ -118,12 +128,7 @@ public class MapperConfig implements ITemplate {
         data.put("importMapperJavaPackages", javaPackages);
         data.put("importMapperFrameworkPackages", frameworkPackages);
 
-        // 排序字段sql
-        List<TableField> sortFields = tableInfo.getFields();
-        List<String> existColumnNames = sortFields.stream().map(TableField::getColumnName).collect(Collectors.toList());
-        if (sortColumnMap != null && !sortColumnMap.isEmpty()) {
-            sortColumnMap.entrySet().stream().filter(e -> existColumnNames.contains(e.getKey())).map(e -> String.format("a.%s%s", e.getKey(), e.getValue() ? " DESC" : "")).reduce((e1, e2) -> e1 + ", " + e2).ifPresent(e -> data.put("orderBySql", e));
-        }
+
         return data;
     }
 

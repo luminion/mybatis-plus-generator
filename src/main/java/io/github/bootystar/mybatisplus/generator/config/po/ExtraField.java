@@ -35,5 +35,5 @@ public class ExtraField {
      * sql运算符
      */
     private String sqlOperator;
-    
+
 }

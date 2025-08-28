@@ -62,7 +62,7 @@ public class ${queryDTO} {
 #end
 #end
 ## ----------  END 字段循环遍历  ----------
-#foreach($field in ${extraFields})
+#foreach($field in ${table.extraFields})
 
     #if("$!field.comment" != "")
         #if(${springdoc})
@@ -107,7 +107,7 @@ public class ${queryDTO} {
 #end
 ## --基础getter/setter end---
 ## --额外字段getter/setter start--
-#foreach($field in ${extraFields})
+#foreach($field in ${table.extraFields})
 #set($isLike = ($field.sqlOperator == "LIKE" || $field.sqlOperator == "NOT LIKE"))
 #if(!${lombok} || $isLike)
 

@@ -36,7 +36,7 @@ public interface ${mapper} extends ${superMapperClass}<${entity}> {
     #end
     default List<${queryVO}> voQuery(Object param, IPage<${queryVO}> page) {
         #if(${enhancer})
-        return super.voQuery(param, page);
+        return EnhancedMapper.super.voQuery(param, page);
         #else
         return this.voQueryByXml(param, page);      
         #end

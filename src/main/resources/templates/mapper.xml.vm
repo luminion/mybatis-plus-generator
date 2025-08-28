@@ -10,30 +10,155 @@
 #if(${baseResultMap})
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="${class.entity}">
-#foreach($field in ${table.fields})
-#if(${field.keyFlag})##生成主键排在第一位
+    #foreach($field in ${table.fields})
+        #if(${field.keyFlag})##生成主键排在第一位
         <id column="${field.name}" property="${field.propertyName}" />
-#end
-#end
-#foreach($field in ${table.commonFields})##生成公共字段
+        #end
+    #end
+    #foreach($field in ${table.commonFields})##生成公共字段
         <result column="${field.name}" property="${field.propertyName}" />
-#end
-#foreach($field in ${table.fields})
-#if(!${field.keyFlag})##生成普通字段
+    #end
+    #foreach($field in ${table.fields})
+        #if(!${field.keyFlag})##生成普通字段
         <result column="${field.name}" property="${field.propertyName}" />
-#end
-#end
+        #end
+    #end
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="voResultMap" type="${class.queryVO}">
+    #foreach($field in ${table.fields})
+        #if(${field.keyFlag})##生成主键排在第一位
+        <id column="${field.name}" property="${field.propertyName}" />
+        #end
+    #end
+    #foreach($field in ${table.commonFields})##生成公共字段
+        <result column="${field.name}" property="${field.propertyName}" />
+    #end
+    #foreach($field in ${table.fields})
+        #if(!${field.keyFlag})##生成普通字段
+        <result column="${field.name}" property="${field.propertyName}" />
+        #end
+    #end
     </resultMap>
 
 #end
 #if(${baseColumnList})
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-#foreach($field in ${table.commonFields})
+    #foreach($field in ${table.commonFields})
         ${field.columnName},
-#end
+    #end
         ${table.fieldNames}
     </sql>
 
+#end
+#if($generateQuery)
+    #if(${baseResultMap})
+    <select id="voQueryByXml" resultMap="voResultMap">
+    #else
+    <select id="voQueryByXml" resultType="${class.queryVO}">
+    #end
+        SELECT
+        a.*
+        FROM
+        ${schemaName}${table.name} a
+    #if(${enhancer})
+        <where>
+            <include refid="io.github.bootystar.mybatisplus.enhancer.EnhancedMapper.queryFragment"/>
+            #foreach($field in ${table.fields})
+                #if(${field.logicDeleteField})
+                    #if(${field.metaInfo.defaultValue})
+            AND a.${field.columnName} = ${field.metaInfo.defaultValue}
+                    #else
+            AND a.${field.columnName} IS NULL
+                    #end
+                    #break
+                #end
+            #end
+        </where>
+        <trim prefix="ORDER BY" prefixOverrides=",">
+            <include refid="io.github.bootystar.mybatisplus.enhancer.EnhancedMapper.sortFragment"/>
+            #if(${orderBySql})
+            , ${orderBySql}
+            #end
+        </trim>
+    #else
+        <where>
+        #foreach($field in ${table.fields})
+            #if(${field.logicDeleteField})
+                #if(${field.metaInfo.defaultValue})
+            a.${field.columnName} = ${field.metaInfo.defaultValue}
+                #else
+            a.${field.columnName} IS NULL
+                #end
+            #break
+            #end
+        #end
+            <if test="param1 != null">
+        #foreach($field in ${table.fields})
+            #if(${field.logicDeleteField})
+            #else
+                <if test="param1.${field.propertyName} != null">
+                    AND a.${field.columnName} = #{param1.${field.propertyName}}
+                </if>
+            #end
+        #end
+        #if(${table.extraFields.size()}>0)
+                <!-- 额外后缀查询条件 -->
+        #end
+        #foreach($field in ${table.extraFields})
+            #if(${field.sqlOperator}=="IN" || ${field.sqlOperator}=="NOT IN")
+                <if test="param1.${field.propertyName} != null and param1.${field.propertyName}.size()>0">
+                    AND a.${field.columnName} ${field.sqlOperator}
+                    <foreach collection="param1.${field.propertyName}" open="("  close=")" separator="," item="item">
+                        #{item}
+                    </foreach>
+                </if>
+            #elseif(${field.sqlOperator}=="IS NULL" || ${field.sqlOperator}=="IS NOT NULL")
+                <if test="param1.${field.propertyName} != null">
+                    AND a.${field.columnName} ${field.sqlOperator}
+                </if>
+            #elseif(${field.sqlOperator}=="<>" || ${field.sqlOperator}=="!=")
+                <if test="param1.${field.propertyName} != null">
+                    AND a.${field.columnName} &lt;&gt; #{param1.${field.propertyName}}
+                </if>
+            #elseif(${field.sqlOperator}=="<")
+                <if test="param1.${field.propertyName} != null">
+                    AND a.${field.columnName} &lt; #{param1.${field.propertyName}}
+                </if>
+            #elseif(${field.sqlOperator}=="<=")
+                <if test="param1.${field.propertyName} != null">
+                    AND a.${field.columnName} &lt;= #{param1.${field.propertyName}}
+                </if>
+            #elseif(${field.sqlOperator}==">")
+                <if test="param1.${field.propertyName} != null">
+                    AND a.${field.columnName} &gt; #{param1.${field.propertyName}}
+                </if>
+            #elseif(${field.sqlOperator}==">=")
+                <if test="param1.${field.propertyName} != null">
+                    AND a.${field.columnName} &gt;= #{param1.${field.propertyName}}
+                </if>
+            #elseif(${field.sqlOperator}=="&>")
+                <if test="param1.${field.propertyName} != null">
+                    AND a.${field.columnName} &amp; #{param1.${field.propertyName}} > 0
+                </if>
+            #elseif(${field.sqlOperator}=="&=")
+                <if test="param1.${field.propertyName} != null">
+                    AND a.${field.columnName} &amp; #{param1.${field.propertyName}} = 0
+                </if>
+            #else
+                <if test="param1.${field.propertyName} != null">
+                    AND a.${field.columnName} ${field.sqlOperator} #{param1.${field.propertyName}}
+                </if>
+            #end
+        #end
+            </if>
+        </where>
+            #if(${orderBySql})
+        ORDER BY ${orderBySql}
+            #end
+    #end
+    </select>
 #end
 </mapper>
