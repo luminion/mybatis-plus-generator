@@ -16,6 +16,7 @@
 package io.github.bootystar.mybatisplus.generator.config.support;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import io.github.bootystar.mybatisplus.generator.config.enums.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.MethodPayload;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -23,7 +24,11 @@ import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * 控制器属性配置
@@ -65,7 +70,7 @@ public class ControllerConfig implements ITemplate {
     /**
      * 跨域注解
      */
-    protected boolean crossOrigins;
+    protected boolean crossOrigin;
 
     /**
      * restful样式
@@ -222,8 +227,81 @@ public class ControllerConfig implements ITemplate {
 //                importControllerFrameworkPackages.add(pkg);
 //            }
 //        }
-//
+        OutputConfig outputConfig = tableInfo.getConfigurer().getOutputConfig();
+        Map<String, Boolean> outputClassGenerateMap = outputConfig.getOutputClassGenerateMap();
+        Map<String, String> outputClassSimpleName = outputConfig.getOutputClassSimpleName(tableInfo);
+        if (outputClassGenerateMap.get(OutputFile.service.name())) {
+            data.put("baseService", outputClassSimpleName.get(OutputFile.service.name()));
+        } else {
+            data.put("baseService", outputClassSimpleName.get(OutputFile.serviceImpl.name()));
+        }
+        Set<String> controllerImportPackages = this.controllerImportPackages(tableInfo);
+        Collection<String> javaPackages = controllerImportPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        Collection<String> frameworkPackages = controllerImportPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("controllerImportPackages4Java", javaPackages);
+        data.put("controllerImportPackages4Framework", frameworkPackages);
+
         return data;
+    }
+
+    public Set<String> controllerImportPackages(TableInfo tableInfo) {
+        TreeSet<String> importPackages = new TreeSet<>();
+        GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
+        OutputConfig outputConfig = tableInfo.getConfigurer().getOutputConfig();
+        if (crossOrigin) {
+            importPackages.add("org.springframework.web.bind.annotation.CrossOrigin");
+        }
+        if (restController) {
+            importPackages.add("org.springframework.web.bind.annotation.RestController");
+        } else {
+            importPackages.add("org.springframework.stereotype.Controller");
+            importPackages.add("org.springframework.web.bind.annotation.ResponseBody");
+        }
+        importPackages.add("org.springframework.web.bind.annotation.RequestMapping");
+        if (globalConfig.isLombok()) {
+            importPackages.add("lombok.RequiredArgsConstructor");
+        }
+        boolean hasDoc = globalConfig.isGenerateQuery() 
+                || globalConfig.isGenerateExport()
+                || globalConfig.isGenerateImport()
+                || globalConfig.isGenerateInsert()
+                || globalConfig.isGenerateUpdate()
+                || globalConfig.isGenerateDelete()
+                ;
+        if (globalConfig.isSpringdoc()) {
+            importPackages.add("io.swagger.v3.oas.annotations.tags.Tag");
+            if (hasDoc){
+                importPackages.add("io.swagger.v3.oas.annotations.Operation");
+                importPackages.add("io.swagger.v3.oas.annotations.Parameter");
+                importPackages.add("io.swagger.v3.oas.annotations.Parameters");
+            }
+
+        }
+        if (globalConfig.isSwagger()) {
+            importPackages.add("io.swagger.annotations.Api");
+            if (hasDoc){
+                importPackages.add("io.swagger.annotations.ApiOperation");
+                importPackages.add("io.swagger.annotations.ApiParam");
+            }
+        }
+        if (superClass != null) {
+            importPackages.add(superClass);
+        }
+        Map<String, Boolean> outputClassGenerateMap = outputConfig.getOutputClassGenerateMap();
+        if (outputClassGenerateMap.get(OutputFile.service.name())) {
+            importPackages.add(outputConfig.getOutputClassCanonicalName(tableInfo).get(OutputFile.service.name()));
+        } else {
+            importPackages.add(outputConfig.getOutputClassCanonicalName(tableInfo).get(OutputFile.serviceImpl.name()));
+        }
+        if (globalConfig.isGenerateQuery()){
+            importPackages.add("org.springframework.web.bind.annotation.GetMapping");
+            if (pathVariable){
+                importPackages.add("org.springframework.web.bind.annotation.PathVariable");
+            }
+        }
+
+
+        return importPackages;
     }
 
     public Adapter adapter() {
@@ -306,8 +384,8 @@ public class ControllerConfig implements ITemplate {
          *
          * @return this
          */
-        public Adapter enableCrossOrigins() {
-            this.config.crossOrigins = true;
+        public Adapter enableCrossOrigin() {
+            this.config.crossOrigin = true;
             return this;
         }
 

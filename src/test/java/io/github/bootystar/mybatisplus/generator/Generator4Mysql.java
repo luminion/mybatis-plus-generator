@@ -31,11 +31,12 @@ public class Generator4Mysql {
                                 .enableJavaxApi()
                                 .enableEasyExcel()
 //                                .enableMybatisPlusEnhancer()
-//                                .disableQuery()
-//                                .disableInsert()
-//                                .disableUpdate()
-//                                .disableImport()
-//                                .disableExport()
+                                .disableQuery()
+                                .disableInsert()
+                                .disableUpdate()
+                                .disableDelete()
+                                .disableImport()
+                                .disableExport()
 
                 )
 
@@ -101,7 +102,7 @@ public class Generator4Mysql {
                                 )
                                 .controller(f -> f
                                         .subPackage("controller")
-                                        .disable()
+//                                        .disable()
                                 )
                                 .insertDTO(f -> f
                                                 .subPackage("dto")
