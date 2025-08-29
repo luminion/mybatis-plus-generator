@@ -103,7 +103,17 @@ public class MapperConfig implements ITemplate {
         if (sortColumnMap != null && !sortColumnMap.isEmpty()) {
             sortColumnMap.entrySet().stream().filter(e -> existColumnNames.contains(e.getKey())).map(e -> String.format("a.%s%s", e.getKey(), e.getValue() ? " DESC" : "")).reduce((e1, e2) -> e1 + ", " + e2).ifPresent(e -> data.put("orderBySql", e));
         }
-        
+
+        Set<String> mapperImportPackages = this.mapperImportPackages(tableInfo);
+        Collection<String> javaPackages = mapperImportPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        Collection<String> frameworkPackages = mapperImportPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("mapperImportPackages4Java", javaPackages);
+        data.put("mapperImportPackages4Framework", frameworkPackages);
+
+        return data;
+    }
+    
+    public Set<String> mapperImportPackages(TableInfo tableInfo){
         Set<String> importPackages = new TreeSet<>();
         if (StringUtils.isNotBlank(superClass)) {
             importPackages.add(superClass);
@@ -122,14 +132,7 @@ public class MapperConfig implements ITemplate {
             importPackages.add(classCanonicalNameMap.get(OutputFile.queryVO.name()));
             importPackages.add("com.baomidou.mybatisplus.core.metadata.IPage");
         }
-        
-        Collection<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-        Collection<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importMapperJavaPackages", javaPackages);
-        data.put("importMapperFrameworkPackages", frameworkPackages);
-
-
-        return data;
+        return importPackages;
     }
 
     public Adapter adapter() {
