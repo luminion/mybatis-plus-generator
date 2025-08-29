@@ -1,13 +1,15 @@
-package ${package.contoller};
+package ${package.controller};
+#if($controllerImportPackages4Framework.size()>0)
 
-#foreach($pkg in ${importControllerFrameworkPackages})
+#end
+#foreach($pkg in ${controllerImportPackages4Framework})
 import ${pkg};
 #end
-#if($importControllerJavaPackages.size()>0)
+#if($controllerImportPackages4Java.size()>0)
 
-#foreach($pkg in ${importControllerJavaPackages})
-import ${pkg};
 #end
+#foreach($pkg in ${controllerImportPackages4Java})
+import ${pkg};
 #end
 
 /**
@@ -22,25 +24,33 @@ import ${pkg};
  * @author ${author}
  * @since ${date}
  */
+#if(${crossOrigin})
+@CrossOrigin
+#end
 #if(${restControllerStyle})
 @RestController
 #else
 @Controller
 #end
 @RequestMapping("$!{requestBaseUrl}")
-#if(${entityLombokModel})
+#if(${lombok})
 @RequiredArgsConstructor
 #end
+#if(${springdoc})
+@Tag(name= "$!{table.comment}", description = "$!{table.comment}")
+#elseif(${swagger})
+@Api(tags = "$!{table.comment}")
+#end
 #if(${superControllerClass})
-public class ${table.controllerName} extends ${superControllerClass} {
+public class ${controller} extends ${superControllerClass} {
 #else
-public class ${table.controllerName} {
+public class ${controller} {
 #end
 
     private final ${baseService} baseService;
-#if(${entityLombokModel})
+#if(${lombok})
 
-    public ${table.controllerName}(${baseService} baseService) {
+    public ${controller}(${baseService} baseService) {
         this.baseService = baseService;
     }
 #end
@@ -66,7 +76,7 @@ public class ${table.controllerName} {
     #else
     @GetMapping("/select$!{idPathParams}")
     #end
-    public ${returnMethod.clazz("${entityVO}")} selectId($!{idMethodParams}${primaryKeyPropertyType} id) {
+    public ${returnMethod.clazz("${queryVO}")} selectId($!{idMethodParams}${primaryKeyPropertyType} id) {
         return ${returnMethod.method("baseService.voById(id)")};
     }
 
@@ -86,7 +96,7 @@ public class ${table.controllerName} {
     @ResponseBody
     #end
     ${requestMethod4Select}("/list")
-    public ${returnMethod.clazz("List<${entityVO}>")} selectList($!{optionalBodyStr}${entityQueryDTOStr} param) {
+    public ${returnMethod.clazz("List<${queryVO}>")} selectList($!{optionalBodyStr}${entityQueryDTOStr} param) {
         return ${returnMethod.method("baseService.voList(param)")};
     }
     
@@ -131,7 +141,7 @@ public class ${table.controllerName} {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis() + ".xlsx");
-        baseService.excelExport(param, response.getOutputStream(), ${entityVO}.class, current, size);
+        baseService.excelExport(param, response.getOutputStream(), ${queryVO}.class, current, size);
     }
 #end
 #if(${generateImport})
