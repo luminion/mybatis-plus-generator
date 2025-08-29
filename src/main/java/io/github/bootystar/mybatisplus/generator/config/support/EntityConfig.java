@@ -325,8 +325,8 @@ public class EntityConfig implements ITemplate {
             importPackages.add("io.swagger.annotations.ApiModelProperty");
         }
         if (globalConfig.isGenerateExport() && modelConfig.isQueryVOExtendsEntity()) {
-            String excelIgnoreUnannotated = globalConfig.resolveExcelApiPackage("annotation.ExcelIgnoreUnannotated");
-            String excelProperty = globalConfig.resolveExcelApiPackage("annotation.ExcelProperty");
+            String excelIgnoreUnannotated = globalConfig.resolveExcelClassCanonicalName("annotation.ExcelIgnoreUnannotated");
+            String excelProperty = globalConfig.resolveExcelClassCanonicalName("annotation.ExcelProperty");
             importPackages.add(excelIgnoreUnannotated);
             importPackages.add(excelProperty);
         }

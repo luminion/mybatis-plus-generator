@@ -1,13 +1,15 @@
-package ${package.createDTO};
+package ${package.insertDTO};
+#if($insertDTOImportPackages4Framework.size()>0)
 
-#foreach($pkg in ${importCreateDTOFrameworkPackages})
+#end
+#foreach($pkg in ${insertDTOImportPackages4Framework})
 import ${pkg};
 #end
-#if($importCreateDTOJavaPackages.size()>0)
-    
-#foreach($pkg in ${importCreateDTOJavaPackages})
-import ${pkg};
+#if($insertDTOImportPackages4Java.size()>0)
+
 #end
+#foreach($pkg in ${insertDTOImportPackages4Java})
+import ${pkg};
 #end
 
 /**
@@ -35,9 +37,9 @@ import ${pkg};
 @ExcelIgnoreUnannotated
 #end
 #if(${extendsQueryDTO})
-public class ${createDTO} extends ${entity} {
+public class ${insertDTO} extends ${entity} {
 #else
-public class ${createDTO} {
+public class ${insertDTO} {
 #end
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
@@ -95,7 +97,7 @@ public class ${createDTO} {
     }
 
     #if(${chainModel})
-    public ${createDTO} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+    public ${insertDTO} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
     #else
     public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
     #end

@@ -31,7 +31,7 @@ public enum OutputFile {
     mapper,
     mapperXml,
     controller,
-    createDTO,
+    insertDTO,
     updateDTO,
     queryDTO,
     queryVO,

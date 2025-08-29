@@ -1,13 +1,15 @@
 package ${package.queryDTO};
+#if($queryVOImportPackages4Framework.size()>0)
 
-#foreach($pkg in ${importQueryDTOFrameworkPackages})
+#end
+#foreach($pkg in ${queryVOImportPackages4Framework})
 import ${pkg};
 #end
-#if($importQueryDTOJavaPackages.size()>0)
+#if($queryVOImportPackages4Java.size()>0)
 
-#foreach($pkg in ${importQueryDTOJavaPackages})
-import ${pkg};
 #end
+#foreach($pkg in ${queryVOImportPackages4Java})
+import ${pkg};
 #end
 
 /**

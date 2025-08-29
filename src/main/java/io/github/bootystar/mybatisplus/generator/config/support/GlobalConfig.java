@@ -52,7 +52,7 @@ public class GlobalConfig implements ITemplate {
      *
      * @since 3.5.0
      */
-    protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd" ).format(new Date());
 
     /**
      * 【实体】是否为lombok模型（默认 false）<br>
@@ -99,7 +99,7 @@ public class GlobalConfig implements ITemplate {
      * <p>
      * 涉及HttpServletRequest,HttpServletResponse,@Resource
      */
-    protected String javaApiPackagePrefix = "jakarta";
+    protected String jakartaApiPackagePrefix = "jakarta";
 
     /**
      * excel注解的包
@@ -109,6 +109,7 @@ public class GlobalConfig implements ITemplate {
     /**
      * excel类
      */
+    @Getter
     protected String excelClass = "FastExcel";
 
     /**
@@ -170,16 +171,29 @@ public class GlobalConfig implements ITemplate {
     }
 
     /**
-     * 解析java api包
+     * 解析jakarta类规范名称
+     * <p>
+     * 根据{@link #jakartaApiPackagePrefix}解析
      *
      * @param suffix 后缀
      */
-    public String resolveJavaApiPackage(String suffix) {
-        return javaApiPackagePrefix + "." + suffix;
+    public String resolveJakartaClassCanonicalName(String suffix) {
+        return jakartaApiPackagePrefix + "." + suffix;
     }
 
-    public String resolveExcelApiPackage(String suffix) {
+    /**
+     * 解析excel类规范名称
+     * <p>
+     * 根据{@link #excelApiPackagePrefix}解析
+     *
+     * @param suffix 后缀
+     */
+    public String resolveExcelClassCanonicalName(String suffix) {
         return excelApiPackagePrefix + "." + suffix;
+    }
+
+    public String resolveExcelClassApiCanonicalName() {
+        return excelApiPackagePrefix + "." + excelClass;
     }
 
     @Override
@@ -191,11 +205,11 @@ public class GlobalConfig implements ITemplate {
         data.put("commentLink", this.commentLink);
         data.put("lombok", this.lombok);
         data.put("chainModel", this.chainModel);
-        
+
         data.put("swagger", this.isSwagger());
         data.put("springdoc", this.springdoc);
         data.put("enhancer", this.enhancer);
-        data.put("javaApiPackagePrefix", this.javaApiPackagePrefix);
+        data.put("javaApiPackagePrefix", this.jakartaApiPackagePrefix);
         data.put("excelApiPackagePrefix", this.excelApiPackagePrefix);
         data.put("excelClass", this.excelClass);
 
@@ -270,7 +284,7 @@ public class GlobalConfig implements ITemplate {
             this.config.chainModel = true;
             return this;
         }
-    
+
         /**
          * 文档注释添加相关类链接
          *
@@ -325,7 +339,7 @@ public class GlobalConfig implements ITemplate {
          * @return this
          */
         public Adapter enableJavaxApi() {
-            this.config.javaApiPackagePrefix = "javax";
+            this.config.jakartaApiPackagePrefix = "javax";
             return this;
         }
 
@@ -410,6 +424,6 @@ public class GlobalConfig implements ITemplate {
             this.config.generateExport = false;
             return this;
         }
-       
+
     }
 }

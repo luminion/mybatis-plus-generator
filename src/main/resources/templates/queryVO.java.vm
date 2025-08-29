@@ -1,13 +1,15 @@
 package ${package.queryVO};
+#if($queryVOImportPackages4Framework.size()>0)
 
-#foreach($pkg in ${importQueryVOFrameworkPackages})
+#end
+#foreach($pkg in ${queryVOImportPackages4Framework})
 import ${pkg};
 #end
-#if($importQueryVOJavaPackages.size()>0)
-    
-#foreach($pkg in ${importQueryVOJavaPackages})
-import ${pkg};
+#if($queryVOImportPackages4Java.size()>0)
+
 #end
+#foreach($pkg in ${queryVOImportPackages4Java})
+import ${pkg};
 #end
 
 /**
