@@ -235,11 +235,11 @@ public class EntityConfig implements ITemplate {
         data.put("excelOnEntity", excelImport || excelExport);
 
         // 导入包
-        Set<String> importPackages = importEntityPackages(tableInfo);
+        Set<String> importPackages = this.entityImportPackages(tableInfo);
         Collection<String> javaPackages = importPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
         Collection<String> frameworkPackages = importPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importEntityJavaPackages", javaPackages);
-        data.put("importEntityFrameworkPackages", frameworkPackages);
+        data.put("entityImportPackages4Java", javaPackages);
+        data.put("entityImportPackages4Framework", frameworkPackages);
    
         return data;
     }
@@ -249,7 +249,7 @@ public class EntityConfig implements ITemplate {
      *
      * @since 3.5.0
      */
-    public Set<String> importEntityPackages(TableInfo tableInfo) {
+    public Set<String> entityImportPackages(TableInfo tableInfo) {
         GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
         ModelConfig modelConfig = tableInfo.getConfigurer().getModelConfig();
         TreeSet<String> importPackages = new TreeSet<>();

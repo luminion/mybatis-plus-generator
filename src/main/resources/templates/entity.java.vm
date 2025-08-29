@@ -1,13 +1,15 @@
 package ${package.entity};
+#if($entityImportPackages4Framework.size()>0)
 
-#foreach($pkg in ${importEntityFrameworkPackages})
+#end
+#foreach($pkg in ${entityImportPackages4Framework})
 import ${pkg};
 #end
-#if($importEntityJavaPackages.size()>0)
+#if($entityImportPackages4Java.size()>0)
 
-#foreach($pkg in ${importEntityJavaPackages})
-import ${pkg};
 #end
+#foreach($pkg in ${entityImportPackages4Java})
+import ${pkg};
 #end
 
 /**

@@ -1,13 +1,15 @@
 package ${package.mapper};
+#if($mapperImportPackages4Framework.size()>0)
 
-#foreach($pkg in ${importMapperFrameworkPackages})
+#end
+#foreach($pkg in ${mapperImportPackages4Framework})
 import ${pkg};
 #end
-#if($importMapperJavaPackages.size()>0)
+#if($mapperImportPackages4Java.size()>0)
 
-#foreach($pkg in ${importMapperJavaPackages})
-import ${pkg};
 #end
+#foreach($pkg in ${mapperImportPackages4Java})
+import ${pkg};
 #end
 
 /**
