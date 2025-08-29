@@ -17,13 +17,12 @@ package io.github.bootystar.mybatisplus.generator.config.po;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.Configurer;
-import io.github.bootystar.mybatisplus.generator.config.base.ConstVal;
-import io.github.bootystar.mybatisplus.generator.config.base.IKeyWordsHandler;
+import io.github.bootystar.mybatisplus.generator.config.common.IKeyWordsHandler;
+import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
+import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.config.support.DataSourceConfig;
 import io.github.bootystar.mybatisplus.generator.config.support.EntityConfig;
 import io.github.bootystar.mybatisplus.generator.config.support.GlobalConfig;
-import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
-import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
 import io.github.bootystar.mybatisplus.generator.fill.Column;
 import io.github.bootystar.mybatisplus.generator.fill.Property;
 import io.github.bootystar.mybatisplus.generator.jdbc.DatabaseMetaDataWrapper;
@@ -187,7 +186,7 @@ public class TableField {
             this.convert = true;
         } else {
             if (this.keyFlag) {
-                this.convert = !ConstVal.DEFAULT_ID_NAME.equals(propertyName);
+                this.convert = !"id".equals(propertyName);
             }
         }
         this.propertyName = propertyName;

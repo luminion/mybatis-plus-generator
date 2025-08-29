@@ -18,7 +18,7 @@ package io.github.bootystar.mybatisplus.generator.config.support;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import io.github.bootystar.mybatisplus.generator.config.base.INameConvert;
+import io.github.bootystar.mybatisplus.generator.config.common.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.rules.IColumnType;
 import io.github.bootystar.mybatisplus.generator.config.rules.NamingStrategy;
@@ -96,6 +96,10 @@ public class EntityConfig implements ITemplate {
      */
     @Setter
     protected NamingStrategy columnNaming = null;
+    public NamingStrategy getColumnNaming() {
+        // 未指定以 naming 策略为准
+        return Optional.ofNullable(columnNaming).orElse(naming);
+    }
 
     /**
      * 自定义基础的Entity类，公共字段
@@ -161,11 +165,6 @@ public class EntityConfig implements ITemplate {
      */
     @Getter
     protected boolean activeRecord;
-
-    public NamingStrategy getColumnNaming() {
-        // 未指定以 naming 策略为准
-        return Optional.ofNullable(columnNaming).orElse(naming);
-    }
 
     /**
      * <p>

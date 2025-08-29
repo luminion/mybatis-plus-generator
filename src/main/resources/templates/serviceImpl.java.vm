@@ -1,13 +1,15 @@
 package ${package.serviceImpl};
+#if($serviceImplImportPackages4Framework.size()>0)
 
-#foreach($pkg in ${importServiceImplFrameworkPackages})
+#end
+#foreach($pkg in ${serviceImplImportPackages4Framework})
 import ${pkg};
 #end
-#if($importServiceImplJavaPackages.size()>0)
+#if($serviceImplImportPackages4Java.size()>0)
 
-#foreach($pkg in ${importServiceImplJavaPackages})
-import ${pkg};
 #end
+#foreach($pkg in ${serviceImplImportPackages4Java})
+import ${pkg};
 #end
 
 /**
@@ -26,7 +28,7 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
 #else
 public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> {
 #end
-#if(${generateQuery} || ${generateExport})
+#if(${generateQuery})
     
     #if(${generate.service} || ${enhancer})
     @Override
@@ -48,7 +50,7 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
     #if(${generate.service} || ${enhancer})
     @Override
     #end
-    public List<${queryVO}> voList(${entityQueryDTO} param) {
+    public List<${queryVO}> voList(Object param) {
         #if(${enhancer})
         return ${enhanceMethod}.voList(param);
         #else
@@ -59,7 +61,7 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
     #if(${generate.service} || ${enhancer})
     @Override
     #end
-    public IPage<${queryVO}> voPage(${entityQueryDTO} param, Long current, Long size) {
+    public IPage<${queryVO}> voPage(Object param, Long current, Long size) {
         #if(${enhancer})
         return ${enhanceMethod}.voPage(param, current, size);
         #else
@@ -77,7 +79,7 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
     #if(${generate.service} || ${enhancer})
     @Override
     #end
-    public void excelExport(${entityQueryDTO} param, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
+    public void excelExport(Object param, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
         #if(${enhancer})
         ${enhanceMethod}.excelExport(param, os, clazz, current, size, includeFields);
         #else
@@ -104,12 +106,12 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
     #end
     public int excelImport(InputStream is, Class<?> clazz) {
         #if(${enhancer})
-//        List<${createDTO}> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
+//        List<${insertDTO}> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
         return ${enhanceMethod}.excelImport(is, clazz);
         #else
         List<?> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
         List<${entity}> entityList = dataList.stream().map(e -> {
-//            ${createDTO} dto = (${createDTO}) e;
+//            ${insertDTO} dto = (${insertDTO}) e;
             ${entity} entity = new ${entity}();
             BeanUtils.copyProperties(e, entity);
             return entity;
@@ -125,7 +127,7 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
     @Override
     #end
     public Object insertByDTO(Object param) {
-//        ${sourceEntityInsertDTO} dto = (${sourceEntityInsertDTO}) param;
+//        ${insertDTO} dto = (${insertDTO}) param;
         #if(${enhancer})
         return ${enhanceMethod}.insertByDTO(param);    
         #else
@@ -143,7 +145,7 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
     @Override
     #end
     public boolean updateByDTO(Object param) {
-//        ${sourceEntityUpdateDTO} dto = (${sourceEntityUpdateDTO}) param;
+//        ${updateDTO} dto = (${updateDTO}) param;
         #if(${enhancer})
         return ${enhanceMethod}.updateByDTO(param);
         #else

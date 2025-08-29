@@ -70,16 +70,15 @@ public class MapperConfig implements ITemplate {
      * @since 3.5.0
      */
     protected Class<? extends Cache> cache;
+    public Class<? extends Cache> getCache() {
+        return this.cache == null ? LoggingCache.class : this.cache;
+    }
 
     /**
      * 排序字段map
      * 字段名 -> 是否倒序
      */
     protected Map<String, Boolean> sortColumnMap = new LinkedHashMap<>();
-
-    public Class<? extends Cache> getCache() {
-        return this.cache == null ? LoggingCache.class : this.cache;
-    }
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {

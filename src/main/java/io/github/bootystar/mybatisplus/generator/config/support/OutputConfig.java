@@ -103,9 +103,9 @@ public class OutputConfig implements ITemplate {
     @Getter
     protected TemplateFile insertDTO = new TemplateFile(
             OutputFile.insertDTO.name(),
-            "%sCreateDTO",
+            "%sInsertDTO",
             "dto",
-            "/templates/createDTO.java",
+            "/templates/insertDTO.java",
             ".java"
     );
     @Getter
