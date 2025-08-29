@@ -1,6 +1,7 @@
 package io.github.bootystar.mybatisplus.generator;
 
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author booty
@@ -8,7 +9,8 @@ import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 public class Generator4Mysql {
 
 
-    public static void main(String[] args) {
+    @Test
+    void generator() {
         String url = "jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8";
         String username = "root";
         String password = "root";
@@ -91,11 +93,11 @@ public class Generator4Mysql {
                                 )
                                 .service(f -> f
                                         .subPackage("service")
-                                        .disable()
+//                                        .disable()
                                 )
                                 .serviceImpl(f -> f
                                         .subPackage("service.impl")
-                                        .disable()
+//                                        .disable()
                                 )
                                 .controller(f -> f
                                         .subPackage("controller")

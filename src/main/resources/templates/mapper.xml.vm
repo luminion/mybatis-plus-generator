@@ -53,7 +53,7 @@
     </sql>
 
 #end
-#if(!${enhancer})
+#if(!${enhancer} && ${generateQuery})
     <sql id="queryFragment">
         <if test="param1 != null">
     #foreach($field in ${table.fields})
@@ -117,7 +117,7 @@
     </sql>
 
 #end
-#if($generateQuery)
+#if(${generateQuery})
     #if(${baseResultMap})
     <select id="voQueryByXml" resultMap="voResultMap">
     #else

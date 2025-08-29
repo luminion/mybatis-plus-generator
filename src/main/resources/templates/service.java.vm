@@ -1,33 +1,40 @@
 package ${package.service};
+#if($serviceImportPackages4Framework.size()>0)
 
-import ${package.Entity}.${entity};
-import ${superServiceClassPackage};
+#end
+#foreach($pkg in ${serviceImportPackages4Framework})
+import ${pkg};
+#end
+#if($serviceImportPackages4Java.size()>0)
+
+#end
+#foreach($pkg in ${serviceImportPackages4Java})
+import ${pkg};
+#end
 
 /**
- * <p>
  * $!{table.comment} 服务类
- * </p>
  *
  * @author ${author}
  * @since ${date}
  */
 #if(${enhancer})
-public interface ${table.serviceName} extends ${superServiceClass}<${entity}> implements EnhancedService<${entityVO}> {
+public interface ${service} extends ${superServiceClass}<${entity}> implements EnhancedService<${queryVO}> {
 #else
-public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+public interface ${service} extends ${superServiceClass}<${entity}> {
 #end
-#if(${methodOverride})
+#if(!${enhancer})
     #if(${generateQuery})
 
-    ${entityVO} voById(Serializable id);
+    ${queryVO} voById(Serializable id);
 
-    List<${entityVO}> voList(${entityQueryDTO} param);
+    List<${queryVO}> voList(Object param);
 
-    IPage<${entityVO}> voPage(${entityQueryDTO} param, Long current, Long size);
+    IPage<${queryVO}> voPage(Object param, Long current, Long size);
     #end
     #if(${generateExport})
 
-    void excelExport(${entityQueryDTO} param, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields);
+    void excelExport(Object param, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields);
     #end
     #if(${generateImport})
 
@@ -37,11 +44,11 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
     #end
     #if(${generateInsert})
 
-    Object insertByDTO(${entityInsertDTO} param);
+    Object insertByDTO(Object param);
     #end
     #if(${generateUpdate})
 
-    boolean updateByDTO(${entityUpdateDTO} param);
+    boolean updateByDTO(Object param);
     #end
 #end
 }

@@ -15,7 +15,7 @@
  */
 package io.github.bootystar.mybatisplus.generator.config;
 
-import io.github.bootystar.mybatisplus.generator.config.base.INameConvert;
+import io.github.bootystar.mybatisplus.generator.config.common.INameConvert;
 import io.github.bootystar.mybatisplus.generator.config.support.*;
 import io.github.bootystar.mybatisplus.generator.config.enums.TemplateLoadWay;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -97,6 +97,8 @@ public class Configurer {
     }
 
     public List<TableInfo> getTableInfo() {
+        getStrategyConfig().validate();
+        getGlobalConfig().validate();
         if (this.tableInfo.isEmpty()){
             INameConvert nameConvert = entityConfig.getNameConvert();
             if (nameConvert == null) {

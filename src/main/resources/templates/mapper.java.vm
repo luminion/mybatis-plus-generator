@@ -26,7 +26,7 @@ public interface ${mapper} extends ${superMapperClass}<${entity}>, EnhancedMappe
 #else
 public interface ${mapper} extends ${superMapperClass}<${entity}> {
 #end
-#if(${generateQuery})
+#if(${generateQuery} || ${generateExport})
 
     #if(${enhancer})
     @Override

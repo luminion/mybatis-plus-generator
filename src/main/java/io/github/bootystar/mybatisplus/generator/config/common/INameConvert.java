@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.bootystar.mybatisplus.generator.config.base;
+package io.github.bootystar.mybatisplus.generator.config.common;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.Configurer;

@@ -19,14 +19,13 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import io.github.bootystar.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.converts.TypeConverts;
-import io.github.bootystar.mybatisplus.generator.config.base.IDbQuery;
-import io.github.bootystar.mybatisplus.generator.config.base.IKeyWordsHandler;
-import io.github.bootystar.mybatisplus.generator.config.base.ITypeConvert;
+import io.github.bootystar.mybatisplus.generator.config.common.IDbQuery;
+import io.github.bootystar.mybatisplus.generator.config.common.IKeyWordsHandler;
+import io.github.bootystar.mybatisplus.generator.config.common.ITypeConvert;
 import io.github.bootystar.mybatisplus.generator.config.querys.DbQueryDecorator;
 import io.github.bootystar.mybatisplus.generator.config.querys.DbQueryRegistry;
 import io.github.bootystar.mybatisplus.generator.query.AbstractDatabaseQuery;
 import io.github.bootystar.mybatisplus.generator.query.DefaultQuery;
-import io.github.bootystar.mybatisplus.generator.query.IDatabaseQuery;
 import io.github.bootystar.mybatisplus.generator.query.SQLQuery;
 import io.github.bootystar.mybatisplus.generator.type.ITypeConvertHandler;
 import lombok.Getter;
@@ -59,6 +58,15 @@ public class DataSourceConfig {
      * 数据库信息查询
      */
     protected IDbQuery dbQuery;
+    public IDbQuery getDbQuery() {
+        if (null == dbQuery) {
+            DbType dbType = getDbType();
+            DbQueryRegistry dbQueryRegistry = new DbQueryRegistry();
+            // 默认 MYSQL
+            dbQuery = Optional.ofNullable(dbQueryRegistry.getDbQuery(dbType)).orElseGet(() -> dbQueryRegistry.getDbQuery(DbType.MYSQL));
+        }
+        return dbQuery;
+    }
 
     /**
      * schemaName
@@ -125,6 +133,7 @@ public class DataSourceConfig {
      * @see SQLQuery SQL语句查询方式，配合{@link #typeConvert} 使用
      * @since 3.5.3
      */
+    @Getter
     protected Class<? extends AbstractDatabaseQuery> databaseQueryClass = DefaultQuery.class;
 
     /**
@@ -134,6 +143,17 @@ public class DataSourceConfig {
      */
     @Getter
     protected ITypeConvertHandler typeConvertHandler;
+    public ITypeConvert getTypeConvert() {
+        if (null == typeConvert) {
+            DbType dbType = getDbType();
+            // 默认 MYSQL
+            typeConvert = TypeConverts.getTypeConvert(dbType);
+            if (null == typeConvert) {
+                typeConvert = MySqlTypeConvert.INSTANCE;
+            }
+        }
+        return typeConvert;
+    }
 
     /**
      * 驱动全类名
@@ -142,19 +162,6 @@ public class DataSourceConfig {
      */
     @Getter
     protected String driverClassName;
-
-    /**
-     * 获取数据库查询
-     */
-    public IDbQuery getDbQuery() {
-        if (null == dbQuery) {
-            DbType dbType = getDbType();
-            DbQueryRegistry dbQueryRegistry = new DbQueryRegistry();
-            // 默认 MYSQL
-            dbQuery = Optional.ofNullable(dbQueryRegistry.getDbQuery(dbType)).orElseGet(() -> dbQueryRegistry.getDbQuery(DbType.MYSQL));
-        }
-        return dbQuery;
-    }
 
     /**
      * 判断数据库类型
@@ -209,21 +216,6 @@ public class DataSourceConfig {
         } else {
             return DbType.OTHER;
         }
-    }
-
-    /**
-     * 获取数据库字段类型转换
-     */
-    public ITypeConvert getTypeConvert() {
-        if (null == typeConvert) {
-            DbType dbType = getDbType();
-            // 默认 MYSQL
-            typeConvert = TypeConverts.getTypeConvert(dbType);
-            if (null == typeConvert) {
-                typeConvert = MySqlTypeConvert.INSTANCE;
-            }
-        }
-        return typeConvert;
     }
 
     /**
@@ -305,10 +297,6 @@ public class DataSourceConfig {
             schema = this.username.toUpperCase();
         }
         return schema;
-    }
-
-    public Class<? extends IDatabaseQuery> getDatabaseQueryClass() {
-        return databaseQueryClass;
     }
 
     public Adapter adapter() {

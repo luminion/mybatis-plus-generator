@@ -53,6 +53,9 @@ public class GlobalConfig implements ITemplate {
      * @since 3.5.0
      */
     protected Supplier<String> commentDate = () -> new SimpleDateFormat("yyyy-MM-dd" ).format(new Date());
+    public String getCommentDate() {
+        return commentDate.get();
+    }
 
     /**
      * 【实体】是否为lombok模型（默认 false）<br>
@@ -73,6 +76,10 @@ public class GlobalConfig implements ITemplate {
      * 开启 swagger 模式（默认 false 与 springdoc 不可同时使用）
      */
     protected boolean swagger;
+    public boolean isSwagger() {
+        // springdoc 设置优先于 swagger
+        return !springdoc && swagger;
+    }
 
     /**
      * 开启 springdoc 模式（默认 false 与 swagger 不可同时使用）
@@ -110,7 +117,7 @@ public class GlobalConfig implements ITemplate {
      * excel类
      */
     @Getter
-    protected String excelClass = "FastExcel";
+    protected String excelApiClass = "FastExcel";
 
     /**
      * 生成查询相关方法及配套类
@@ -145,9 +152,10 @@ public class GlobalConfig implements ITemplate {
     /**
      * 生成导出方法(需允许查询)
      */
-    @Getter
     protected boolean generateExport = true;
-
+    public boolean isGenerateExport() {
+        return generateExport && generateQuery;
+    }
 
     /**
      * 参数校验
@@ -160,15 +168,6 @@ public class GlobalConfig implements ITemplate {
      */
     @Getter
     protected boolean enhancer;
-
-    public boolean isSwagger() {
-        // springdoc 设置优先于 swagger
-        return !springdoc && swagger;
-    }
-
-    public String getCommentDate() {
-        return commentDate.get();
-    }
 
     /**
      * 解析jakarta类规范名称
@@ -193,7 +192,14 @@ public class GlobalConfig implements ITemplate {
     }
 
     public String resolveExcelClassApiCanonicalName() {
-        return excelApiPackagePrefix + "." + excelClass;
+        return excelApiPackagePrefix + "." + excelApiClass;
+    }
+    
+    public void validate() {
+        if (!generateQuery && generateExport){
+            log.warn("已配置生成导出但未配置生成查询, 导出功能依赖查询功能, 将不会生成导出相关功能!!!");
+            generateExport = false;
+        }
     }
 
     @Override
@@ -211,7 +217,7 @@ public class GlobalConfig implements ITemplate {
         data.put("enhancer", this.enhancer);
         data.put("javaApiPackagePrefix", this.jakartaApiPackagePrefix);
         data.put("excelApiPackagePrefix", this.excelApiPackagePrefix);
-        data.put("excelClass", this.excelClass);
+        data.put("excelApiClass", this.excelApiClass);
 
 
         data.put("generateQuery", this.generateQuery);
@@ -351,7 +357,7 @@ public class GlobalConfig implements ITemplate {
          */
         public Adapter enableEasyExcel() {
             this.config.excelApiPackagePrefix = "com.alibaba.excel";
-            this.config.excelClass = "EasyExcel";
+            this.config.excelApiClass = "EasyExcel";
             return this;
         }
 
