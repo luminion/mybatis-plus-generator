@@ -1,28 +1,32 @@
 package ${package.serviceImpl};
 
-import ${package.Entity}.${entity};
-import ${package.Mapper}.${table.mapperName};
-#if(${generate.service})
-import ${package.Service}.${table.serviceName};
+#foreach($pkg in ${importServiceImplFrameworkPackages})
+import ${pkg};
 #end
-import ${superServiceImplClassPackage};
-import org.springframework.stereotype.Service;
+#if($importServiceImplJavaPackages.size()>0)
+
+#foreach($pkg in ${importServiceImplJavaPackages})
+import ${pkg};
+#end
+#end
 
 /**
- * <p>
  * $!{table.comment} 服务实现类
- * </p>
  *
  * @author ${author}
  * @since ${date}
  */
 @Service
-#if(${enhancer})
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${mapper}, ${entity}> implements#if(${generate.service}) ${service},#end EnhancedService<${queryVO}> {
+#if(${enhancer} && ${generate.service})
+public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> implements ${service}, EnhancedService<${queryVO}> {
+#elseif(${enhancer})
+public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> implements EnhancedService<${queryVO}> {
+#elseif(${generate.service})
+public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> implements ${service} {
 #else
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${mapper}, ${entity}>#if(${generate.service}) implements ${service}#end {
+public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> {
 #end
-    #if(${generateQuery}||${generateExport})
+#if(${generateQuery} || ${generateExport})
     
     #if(${generate.service} || ${enhancer})
     @Override
@@ -67,8 +71,8 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${mapper}
         return page;
         #end
     }
-    #end
-    #if(${generateExport})
+#end
+#if(${generateExport})
 
     #if(${generate.service} || ${enhancer})
     @Override
@@ -81,10 +85,12 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${mapper}
         ${excelApiClass}.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(voList);
         #end
     }
-    #end
-    #if(${generateImport})
+#end
+#if(${generateImport})
 
-    #if(${generate.service} || ${enhancer})@Override#end
+    #if(${generate.service} || ${enhancer})
+    @Override
+    #end
     public void excelTemplate(OutputStream os, Class<?> clazz) {
         #if(${enhancer})
         ${enhanceMethod}.excelTemplate(os, clazz);
@@ -93,15 +99,17 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${mapper}
         #end
     }
 
-    #if(${generate.service} || ${enhancer})@Override#end
+    #if(${generate.service} || ${enhancer})
+    @Override
+    #end
     public int excelImport(InputStream is, Class<?> clazz) {
         #if(${enhancer})
-//        List<${entityInsertDTO}> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
+//        List<${createDTO}> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
         return ${enhanceMethod}.excelImport(is, clazz);
         #else
         List<?> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
         List<${entity}> entityList = dataList.stream().map(e -> {
-//            ${entityInsertDTO} dto = (${entityInsertDTO}) e;
+//            ${createDTO} dto = (${createDTO}) e;
             ${entity} entity = new ${entity}();
             BeanUtils.copyProperties(e, entity);
             return entity;
@@ -110,10 +118,12 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${mapper}
         return entityList.size();
         #end
     }
-    #end
-    #if(${generateInsert})
+#end
+#if(${generateInsert})
 
-    #if(${generate.service} || ${enhancer})@Override#end
+    #if(${generate.service} || ${enhancer})
+    @Override
+    #end
     public Object insertByDTO(Object param) {
 //        ${sourceEntityInsertDTO} dto = (${sourceEntityInsertDTO}) param;
         #if(${enhancer})
@@ -126,10 +136,12 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${mapper}
         return tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
         #end
     }
-    #end
-    #if(${generateUpdate})
+#end
+#if(${generateUpdate})
 
-    #if(${generate.service} || ${enhancer})@Override#end
+    #if(${generate.service} || ${enhancer})
+    @Override
+    #end
     public boolean updateByDTO(Object param) {
 //        ${sourceEntityUpdateDTO} dto = (${sourceEntityUpdateDTO}) param;
         #if(${enhancer})
@@ -140,12 +152,12 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${mapper}
         return super.updateById(entity);
         #end
     }
-    #end
-    #if(${generateDelete})
+#end
+#if(${generateDelete})
 
     @Override
     public boolean removeById(Serializable id) {
         return super.removeById(id);
     }
-    #end
+#end
 }

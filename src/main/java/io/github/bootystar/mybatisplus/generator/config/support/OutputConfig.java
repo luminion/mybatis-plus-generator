@@ -101,8 +101,8 @@ public class OutputConfig implements ITemplate {
             ".java"
     );
     @Getter
-    protected TemplateFile createDTO = new TemplateFile(
-            OutputFile.createDTO.name(),
+    protected TemplateFile insertDTO = new TemplateFile(
+            OutputFile.insertDTO.name(),
             "%sCreateDTO",
             "dto",
             "/templates/createDTO.java",
@@ -134,7 +134,7 @@ public class OutputConfig implements ITemplate {
     );
 
     protected Stream<TemplateFile> templateFileStream() {
-        return Stream.of(entity, mapper, mapperXml, service, serviceImpl, controller, createDTO, updateDTO, queryDTO, queryVO);
+        return Stream.of(entity, mapper, mapperXml, service, serviceImpl, controller, insertDTO, updateDTO, queryDTO, queryVO);
     }
 
     /**
@@ -177,12 +177,12 @@ public class OutputConfig implements ITemplate {
     }
 
     /**
-     * 获取类规范名称
+     * 获取输出文件类规范名称map
      *
      * @param tableInfo 表信息
      * @see OutputFile#name()
      */
-    public Map<String, String> getClassCanonicalName(TableInfo tableInfo) {
+    public Map<String, String> getOutputClassCanonicalName(TableInfo tableInfo) {
         return templateFileStream().collect(Collectors.toMap(
                 TemplateFile::getKey,
                 e -> joinPackage(e.getSubPackage()) + "." + e.convertFormatName(tableInfo)
@@ -190,12 +190,12 @@ public class OutputConfig implements ITemplate {
     }
 
     /**
-     * 获取类简单名称
+     * 获取类简单名称map
      *
      * @param tableInfo 表信息
      * @see OutputFile#name() 
      */
-    public Map<String, String> getClassSimpleName(TableInfo tableInfo) {
+    public Map<String, String> getOutputClassSimpleName(TableInfo tableInfo) {
         return templateFileStream().collect(Collectors.toMap(
                 TemplateFile::getKey,
                 e -> e.convertFormatName(tableInfo)
@@ -205,16 +205,15 @@ public class OutputConfig implements ITemplate {
     /**
      * 获取类生成信息
      *
-     * @return {@link Map }<{@link String }, {@link Boolean }>
      */
-    public Map<String, Boolean> getGenerateMap() {
+    public Map<String, Boolean> getOutputClassGenerateMap() {
         return templateFileStream().collect(Collectors.toMap(TemplateFile::getKey, TemplateFile::isGenerate));
     }
 
     /**
      * 获取包信息
      */
-    public Map<String, String> getPackageInfo() {
+    public Map<String, String> getOutputClassPackageInfo() {
         return templateFileStream().collect(Collectors.toMap(TemplateFile::getKey, e -> joinPackage(e.getSubPackage())));
     }
 
@@ -237,10 +236,10 @@ public class OutputConfig implements ITemplate {
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> map = ITemplate.super.renderData(tableInfo);
-        map.putAll(this.getClassSimpleName(tableInfo));
-        map.put("package", this.getPackageInfo());
-        map.put("class", this.getClassCanonicalName(tableInfo));
-        map.put("generate", this.getGenerateMap());
+        map.putAll(this.getOutputClassSimpleName(tableInfo));
+        map.put("package", this.getOutputClassPackageInfo());
+        map.put("class", this.getOutputClassCanonicalName(tableInfo));
+        map.put("generate", this.getOutputClassGenerateMap());
         return map;
     }
 
@@ -369,12 +368,12 @@ public class OutputConfig implements ITemplate {
         }
 
         /**
-         * createDTO配置
+         * insertDTO配置
          *
          * @param adapter 适配器
          */
-        public Adapter createDTO(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
-            adapter.apply(this.config.createDTO.adapter());
+        public Adapter insertDTO(Function<TemplateFile.Adapter, TemplateFile.Adapter> adapter) {
+            adapter.apply(this.config.insertDTO.adapter());
             return this;
         }
 

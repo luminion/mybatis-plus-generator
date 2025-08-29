@@ -39,29 +39,29 @@ public class ModelConfig implements ITemplate {
         data.put("queryDTOExtendsEntity", this.queryDTOExtendsEntity);
         data.put("queryVOExtendsEntity", this.queryVOExtendsEntity);
 
-        Set<String> importCreateDTOPackages = this.importCreateDTOPackages(tableInfo);
-        List<String> importCreateDTOFrameworkPackages = importCreateDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importCreateDTOFrameworkPackages", importCreateDTOFrameworkPackages);
-        List<String> importCreateDTOJavaPackages = importCreateDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importCreateDTOJavaPackages", importCreateDTOJavaPackages);
+        Set<String> insertDTOImportPackages = this.insertDTOImportPackages(tableInfo);
+        List<String> insertDTOImportPackages4Framework = insertDTOImportPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("insertDTOImportPackages4Framework", insertDTOImportPackages4Framework);
+        List<String> insertDTOImportPackages4Java = insertDTOImportPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("insertDTOImportPackages4Java", insertDTOImportPackages4Java);
 
-        Set<String> importUpdateDTOPackages = this.importUpdateDTOPackages(tableInfo);
-        List<String> importUpdateDTOFrameworkPackages = importUpdateDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importUpdateDTOFrameworkPackages", importUpdateDTOFrameworkPackages);
-        List<String> importUpdateDTOJavaPackages = importUpdateDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importUpdateDTOJavaPackages", importUpdateDTOJavaPackages);
+        Set<String> updateDTOImportPackages = this.updateDTOImportPackages(tableInfo);
+        List<String> updateDTOImportPackages4Framework = updateDTOImportPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("updateDTOImportPackages4Framework", updateDTOImportPackages4Framework);
+        List<String> updateDTOImportPackages4Java = updateDTOImportPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("updateDTOImportPackages4Java", updateDTOImportPackages4Java);
 
-        Set<String> importQueryDTOPackages = this.importQueryDTOPackages(tableInfo);
-        List<String> importQueryDTOFrameworkPackages = importQueryDTOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importQueryDTOFrameworkPackages", importQueryDTOFrameworkPackages);
-        List<String> importQueryDTOJavaPackages = importQueryDTOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importQueryDTOJavaPackages", importQueryDTOJavaPackages);
+        Set<String> queryDTOImportPackages = this.queryDTOImportPackages(tableInfo);
+        List<String> queryDTOImportPackages4Framework = queryDTOImportPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("queryDTOImportPackages4Framework", queryDTOImportPackages4Framework);
+        List<String> queryDTOImportPackages4Java = queryDTOImportPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("queryDTOImportPackages4Java", queryDTOImportPackages4Java);
 
-        Set<String> importQueryVOPackages = this.importQueryVOPackages(tableInfo);
-        List<String> importQueryVOFrameworkPackages = importQueryVOPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importQueryVOFrameworkPackages", importQueryVOFrameworkPackages);
-        List<String> importQueryVOJavaPackages = importQueryVOPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
-        data.put("importQueryVOJavaPackages", importQueryVOJavaPackages);
+        Set<String> queryVOImportPackages = this.queryVOImportPackages(tableInfo);
+        List<String> queryVOImportPackages4Framework = queryVOImportPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("queryVOImportPackages4Framework", queryVOImportPackages4Framework);
+        List<String> queryVOImportPackages4Java = queryVOImportPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("queryVOImportPackages4Java", queryVOImportPackages4Java);
 
         return data;
     }
@@ -82,14 +82,14 @@ public class ModelConfig implements ITemplate {
         }
     }
 
-    private Set<String> importCreateDTOPackages(TableInfo tableInfo) {
+    private Set<String> insertDTOImportPackages(TableInfo tableInfo) {
         GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
         TreeSet<String> importPackages = new TreeSet<>();
         List<TableField> fields = tableInfo.getFields();
 
-        String size = globalConfig.resolveJavaApiPackage("validation.constraints.Size");
-        String notBlank = globalConfig.resolveJavaApiPackage("validation.constraints.NotBlank");
-        String notNull = globalConfig.resolveJavaApiPackage("validation.constraints.NotNull");
+        String size = globalConfig.resolveJakartaClassCanonicalName("validation.constraints.Size");
+        String notBlank = globalConfig.resolveJakartaClassCanonicalName("validation.constraints.NotBlank");
+        String notNull = globalConfig.resolveJakartaClassCanonicalName("validation.constraints.NotNull");
         for (TableField field : fields) {
             if (field.isKeyFlag()) {
                 continue;
@@ -120,8 +120,8 @@ public class ModelConfig implements ITemplate {
         }
         this.resolveDocImportPackages(globalConfig, importPackages);
         if (globalConfig.isGenerateImport()) {
-            String excelIgnoreUnannotated = globalConfig.resolveExcelApiPackage("annotation.ExcelIgnoreUnannotated");
-            String excelProperty = globalConfig.resolveExcelApiPackage("annotation.ExcelProperty");
+            String excelIgnoreUnannotated = globalConfig.resolveExcelClassCanonicalName("annotation.ExcelIgnoreUnannotated");
+            String excelProperty = globalConfig.resolveExcelClassCanonicalName("annotation.ExcelProperty");
             importPackages.add(excelIgnoreUnannotated);
             importPackages.add(excelProperty);
         }
@@ -129,13 +129,13 @@ public class ModelConfig implements ITemplate {
     }
 
 
-    private Set<String> importUpdateDTOPackages(TableInfo tableInfo) {
+    private Set<String> updateDTOImportPackages(TableInfo tableInfo) {
         GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
         TreeSet<String> importPackages = new TreeSet<>();
         this.resolveDocImportPackages(globalConfig, importPackages);
-        String size = globalConfig.resolveJavaApiPackage("validation.constraints.Size");
-        String notBlank = globalConfig.resolveJavaApiPackage("validation.constraints.NotBlank");
-        String notNull = globalConfig.resolveJavaApiPackage("validation.constraints.NotNull");
+        String size = globalConfig.resolveJakartaClassCanonicalName("validation.constraints.Size");
+        String notBlank = globalConfig.resolveJakartaClassCanonicalName("validation.constraints.NotBlank");
+        String notNull = globalConfig.resolveJakartaClassCanonicalName("validation.constraints.NotNull");
         for (TableField field : tableInfo.getFields()) {
             if (field.isLogicDeleteField()) {
                 continue;
@@ -160,13 +160,13 @@ public class ModelConfig implements ITemplate {
         return importPackages;
     }
 
-    private Set<String> importQueryDTOPackages(TableInfo tableInfo) {
+    private Set<String> queryDTOImportPackages(TableInfo tableInfo) {
         GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
         TreeSet<String> importPackages = new TreeSet<>();
         this.resolveDocImportPackages(globalConfig, importPackages);
         importPackages.add(List.class.getCanonicalName());
         if (queryDTOExtendsEntity) {
-            importPackages.add(tableInfo.getConfigurer().getOutputConfig().getClassCanonicalName(tableInfo).get(OutputFile.entity.name()));
+            importPackages.add(tableInfo.getConfigurer().getOutputConfig().getOutputClassCanonicalName(tableInfo).get(OutputFile.entity.name()));
             if (globalConfig.isLombok()){
                 importPackages.add("lombok.EqualsAndHashCode");
             }
@@ -181,16 +181,16 @@ public class ModelConfig implements ITemplate {
         return importPackages;
     }
 
-    private Set<String> importQueryVOPackages(TableInfo tableInfo) {
+    private Set<String> queryVOImportPackages(TableInfo tableInfo) {
         TreeSet<String> importPackages = new TreeSet<>();
         GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
         this.resolveDocImportPackages(globalConfig, importPackages);
         if (globalConfig.isGenerateExport()) {
-            String excelIgnoreUnannotated = globalConfig.resolveExcelApiPackage("annotation.ExcelIgnoreUnannotated");
+            String excelIgnoreUnannotated = globalConfig.resolveExcelClassCanonicalName("annotation.ExcelIgnoreUnannotated");
             importPackages.add(excelIgnoreUnannotated);
         }
         if (queryVOExtendsEntity) {
-            importPackages.add(tableInfo.getConfigurer().getOutputConfig().getClassCanonicalName(tableInfo).get(OutputFile.entity.name()));
+            importPackages.add(tableInfo.getConfigurer().getOutputConfig().getOutputClassCanonicalName(tableInfo).get(OutputFile.entity.name()));
             if (globalConfig.isLombok()){
                 importPackages.add("lombok.EqualsAndHashCode");
             }
@@ -202,7 +202,7 @@ public class ModelConfig implements ITemplate {
                 Optional.ofNullable(field.getColumnType().getPkg()).ifPresent(importPackages::add);
             }
             if (globalConfig.isGenerateExport()) {
-                String excelProperty = globalConfig.resolveExcelApiPackage("annotation.ExcelProperty");
+                String excelProperty = globalConfig.resolveExcelClassCanonicalName("annotation.ExcelProperty");
                 importPackages.add(excelProperty);
             }
         }

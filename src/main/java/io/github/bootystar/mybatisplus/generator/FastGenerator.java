@@ -69,7 +69,7 @@ public class FastGenerator {
                 )
                 .global(e -> e.dateType(DateType.TIME_PACK))
                 .output(e -> e
-                        .createDTO(f -> f.formatPattern("%sCO"))
+                        .insertDTO(f -> f.formatPattern("%sCO"))
                         .updateDTO(f -> f.formatPattern("%sUO"))
                         .queryDTO(f -> f.formatPattern("%sQO"))
                         .queryVO(f -> f.formatPattern("%sVO"))

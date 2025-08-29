@@ -1,13 +1,15 @@
 package ${package.updateDTO};
+#if($updateDTOImportPackages4Framework.size()>0)
 
-#foreach($pkg in ${importUpdateDTOFrameworkPackages})
+#end
+#foreach($pkg in ${updateDTOImportPackages4Framework})
 import ${pkg};
 #end
-#if($importUpdateDTOJavaPackages.size()>0)
+#if($updateDTOImportPackages4Java.size()>0)
 
-#foreach($pkg in ${importUpdateDTOJavaPackages})
-import ${pkg};
 #end
+#foreach($pkg in ${updateDTOImportPackages4Java})
+import ${pkg};
 #end
 
 /**

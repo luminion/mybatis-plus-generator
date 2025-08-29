@@ -23,6 +23,7 @@ import io.github.bootystar.mybatisplus.generator.util.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Service属性配置
@@ -53,32 +54,105 @@ public class ServiceConfig implements ITemplate {
         data.put("superServiceImplClass", ClassUtils.getSimpleName(this.superServiceImplClass));
         Configurer configurer = tableInfo.getConfigurer();
         GlobalConfig globalConfig = configurer.getGlobalConfig();
-        if (globalConfig.isEnhancer()){
+        if (globalConfig.isEnhancer()) {
             data.put("enhanceMethod", "EnhancedService.super");
         }
+        Set<String> importServiceImplPackages = this.importServiceImplPackages(tableInfo);
+        Collection<String> importServiceImplJavaPackages = importServiceImplPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
+        Collection<String> importServiceImplFrameworkPackages = importServiceImplPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
+        data.put("importServiceImplJavaPackages", importServiceImplJavaPackages);
+        data.put("importServiceImplFrameworkPackages", importServiceImplFrameworkPackages);
 
         return data;
     }
-    
-    
-    private Set<String> importServicePackages(TableInfo tableInfo) {
+
+
+    private Set<String> importServiceImplPackages(TableInfo tableInfo) {
         Set<String> importPackages = new TreeSet<>();
         Configurer configurer = tableInfo.getConfigurer();
         GlobalConfig globalConfig = configurer.getGlobalConfig();
         OutputConfig outputConfig = configurer.getOutputConfig();
+        Map<String, String> classCanonicalNameMap = outputConfig.getOutputClassCanonicalName(tableInfo);
+        importPackages.add(classCanonicalNameMap.get(OutputFile.entity.name()));
+        importPackages.add(classCanonicalNameMap.get(OutputFile.mapper.name()));
         importPackages.add(this.superServiceImplClass);
         importPackages.add("org.springframework.stereotype.Service");
-        Map<String, String> classCanonicalNameMap = outputConfig.getClassCanonicalName(tableInfo);
-        if (outputConfig.getService().isGenerate()){
+        if (outputConfig.getService().isGenerate()) {
             importPackages.add(classCanonicalNameMap.get(OutputFile.service.name()));
         }
-        if (globalConfig.isEnhancer()){
-            importPackages.add("io.github.bootystar.mybatisplus.enhancer.EnhancedService");
+        // 生成项
+        if (globalConfig.isGenerateQuery()) {
+            importPackages.add("java.util.List");
+            importPackages.add("java.io.Serializable");
+            importPackages.add("com.baomidou.mybatisplus.core.metadata.IPage");
+            importPackages.add(classCanonicalNameMap.get(OutputFile.queryVO.name()));
         }
-        
-        
+        if (globalConfig.isGenerateExport()) {
+            importPackages.add("java.io.OutputStream");
+        }
+        if (globalConfig.isGenerateImport()) {
+            importPackages.add("java.io.InputStream");
+            importPackages.add("java.io.OutputStream");
+        }
+        if (globalConfig.isGenerateDelete()) {
+            importPackages.add("java.io.Serializable");
+        }
+        if (globalConfig.isEnhancer()) {
+            importPackages.add("io.github.bootystar.mybatisplus.enhancer.EnhancedService");
+            importPackages.add(classCanonicalNameMap.get(OutputFile.queryVO.name()));
+        } else {
+            if (globalConfig.isGenerateQuery()) {
+//                importPackages.add("com.baomidou.mybatisplus.core.metadata.TableInfo");
+                importPackages.add("com.baomidou.mybatisplus.core.metadata.TableInfoHelper");
+                importPackages.add("java.util.HashMap");
+                importPackages.add("com.baomidou.mybatisplus.extension.plugins.pagination.Page");
+                importPackages.add("org.apache.ibatis.exceptions.TooManyResultsException");
+            }
+            if (globalConfig.isGenerateExport()) {
+                importPackages.add(globalConfig.resolveExcelClassApiCanonicalName());
+                importPackages.add(globalConfig.resolveExcelClassCanonicalName("write.style.column.LongestMatchColumnWidthStyleStrategy"));
+            }
+            if (globalConfig.isGenerateImport()){
+                importPackages.add(globalConfig.resolveExcelClassApiCanonicalName());
+                importPackages.add("org.springframework.beans.BeanUtils");
+            }
+            
+            if (globalConfig.isGenerateInsert()){
+                importPackages.add("com.baomidou.mybatisplus.core.metadata.TableInfo");
+                importPackages.add("com.baomidou.mybatisplus.core.metadata.TableInfoHelper");
+                importPackages.add("org.springframework.beans.BeanUtils");
+            }
+            if (globalConfig.isGenerateUpdate()){
+                importPackages.add("org.springframework.beans.BeanUtils");
+            }
+            
+            
+            
+            
+            
+            if (globalConfig.isGenerateInsert() || globalConfig.isGenerateUpdate() || globalConfig.isGenerateImport()) {
+                importPackages.add("org.springframework.beans.BeanUtils");
+            }
+            if (globalConfig.isGenerateImport() || globalConfig.isGenerateExport()) {
+                String excelApi = globalConfig.resolveExcelClassApiCanonicalName();
+                importPackages.add(excelApi);
+            }
+            if (globalConfig.isGenerateInsert() || globalConfig.isGenerateQuery()) {
+                importPackages.add("com.baomidou.mybatisplus.core.metadata.TableInfo");
+                importPackages.add("com.baomidou.mybatisplus.core.metadata.TableInfoHelper");
+            }
+            if (globalConfig.isGenerateQuery() || globalConfig.isGenerateExport()) {
+                importPackages.add("com.baomidou.mybatisplus.extension.plugins.pagination.Page");
+            }
 
-
+            if (globalConfig.isGenerateImport()) {
+                importPackages.add("java.util.stream.Collectors");
+            }
+            if (globalConfig.isGenerateExport()) {
+                String longestMatchColumnWidthStyleStrategy = globalConfig.resolveExcelClassCanonicalName("write.style.column.LongestMatchColumnWidthStyleStrategy");
+                importPackages.add(longestMatchColumnWidthStyleStrategy);
+            }
+        }
         return importPackages;
     }
 
