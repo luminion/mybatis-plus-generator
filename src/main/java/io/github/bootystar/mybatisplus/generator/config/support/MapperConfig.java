@@ -124,7 +124,7 @@ public class MapperConfig implements ITemplate {
         if (globalConfig.isEnhancer()){
             importPackages.add("io.github.bootystar.mybatisplus.enhancer.EnhancedMapper");
         }
-        Map<String, String> classCanonicalNameMap = tableInfo.getConfigurer().getOutputConfig().getOutputClassCanonicalName(tableInfo);
+        Map<String, String> classCanonicalNameMap = tableInfo.getConfigurer().getOutputConfig().getOutputClassCanonicalNameMap(tableInfo);
         importPackages.add(classCanonicalNameMap.get(OutputFile.entity.name()));
         if (globalConfig.isGenerateQuery()){
             importPackages.add(List.class.getCanonicalName());

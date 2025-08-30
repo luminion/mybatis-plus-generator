@@ -31,12 +31,13 @@ public class Generator4Mysql {
                                 .enableJavaxApi()
                                 .enableEasyExcel()
 //                                .enableMybatisPlusEnhancer()
-                                .disableQuery()
-                                .disableInsert()
-                                .disableUpdate()
-                                .disableDelete()
-                                .disableImport()
-                                .disableExport()
+//                                .disableQuery()
+//                                .disableInsert()
+//                                .disableUpdate()
+//                                .disableDelete()
+//                                .disableImport()
+//                                .disableExport()
+                                .disableValidated()
 
                 )
 
@@ -75,6 +76,9 @@ public class Generator4Mysql {
                 .service(e -> e
                 )
                 .controller(e -> e
+                        .disableBatchQueryPost()
+                        .disablePathVariable()
+                        .disableRequestBody()
                 )
                 .output(e -> e
                                 .outputDir(System.getProperty("user.dir") + "/src/test/java")

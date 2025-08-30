@@ -37,6 +37,7 @@ public class OutputConfig implements ITemplate {
     /**
      * 父包模块名
      */
+    @Getter
     protected String moduleName = "";
 
     /**
@@ -182,7 +183,7 @@ public class OutputConfig implements ITemplate {
      * @param tableInfo 表信息
      * @see OutputFile#name()
      */
-    public Map<String, String> getOutputClassCanonicalName(TableInfo tableInfo) {
+    public Map<String, String> getOutputClassCanonicalNameMap(TableInfo tableInfo) {
         return templateFileStream().collect(Collectors.toMap(
                 TemplateFile::getKey,
                 e -> joinPackage(e.getSubPackage()) + "." + e.convertFormatName(tableInfo)
@@ -195,7 +196,7 @@ public class OutputConfig implements ITemplate {
      * @param tableInfo 表信息
      * @see OutputFile#name() 
      */
-    public Map<String, String> getOutputClassSimpleName(TableInfo tableInfo) {
+    public Map<String, String> getOutputClassSimpleNameMap(TableInfo tableInfo) {
         return templateFileStream().collect(Collectors.toMap(
                 TemplateFile::getKey,
                 e -> e.convertFormatName(tableInfo)
@@ -213,7 +214,7 @@ public class OutputConfig implements ITemplate {
     /**
      * 获取包信息
      */
-    public Map<String, String> getOutputClassPackageInfo() {
+    public Map<String, String> getOutputClassPackageInfoMap() {
         return templateFileStream().collect(Collectors.toMap(TemplateFile::getKey, e -> joinPackage(e.getSubPackage())));
     }
 
@@ -236,9 +237,9 @@ public class OutputConfig implements ITemplate {
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> map = ITemplate.super.renderData(tableInfo);
-        map.putAll(this.getOutputClassSimpleName(tableInfo));
-        map.put("package", this.getOutputClassPackageInfo());
-        map.put("class", this.getOutputClassCanonicalName(tableInfo));
+        map.putAll(this.getOutputClassSimpleNameMap(tableInfo));
+        map.put("package", this.getOutputClassPackageInfoMap());
+        map.put("class", this.getOutputClassCanonicalNameMap(tableInfo));
         map.put("generate", this.getOutputClassGenerateMap());
         return map;
     }

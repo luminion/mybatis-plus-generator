@@ -27,6 +27,10 @@ public class MethodPayload extends ClassPayload {
         this.isStatic = Modifier.isStatic(method.getModifiers());
         this.isConstructor = method.getName().startsWith("<init>");
     }
+    
+    public boolean isMethodReady(){
+        return methodName != null;
+    }
 
     public MethodPayload(Constructor<?> method) {
         super(method.getDeclaringClass());
@@ -36,7 +40,7 @@ public class MethodPayload extends ClassPayload {
         this.isConstructor = true;
     }
 
-    public String method(String parametersStr) {
+    public String invokeMethodStr(String parametersStr) {
         if (methodName == null) {
             return parametersStr;
         }
