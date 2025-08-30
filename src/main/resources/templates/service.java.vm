@@ -24,6 +24,14 @@ public interface ${service} extends ${superServiceClass}<${entity}> implements E
 public interface ${service} extends ${superServiceClass}<${entity}> {
 #end
 #if(!${enhancer})
+    #if(${generateInsert})
+
+    Object insertByDTO(Object param);
+    #end
+    #if(${generateUpdate})
+
+    boolean updateByDTO(Object param);
+    #end
     #if(${generateQuery})
 
     ${queryVO} voById(Serializable id);
@@ -41,14 +49,6 @@ public interface ${service} extends ${superServiceClass}<${entity}> {
     void excelTemplate(OutputStream os, Class<?> clazz);
 
     int excelImport(InputStream is, Class<?> clazz);
-    #end
-    #if(${generateInsert})
-
-    Object insertByDTO(Object param);
-    #end
-    #if(${generateUpdate})
-
-    boolean updateByDTO(Object param);
     #end
 #end
 }

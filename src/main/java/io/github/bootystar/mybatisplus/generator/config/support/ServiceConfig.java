@@ -79,7 +79,7 @@ public class ServiceConfig implements ITemplate {
         Configurer configurer = tableInfo.getConfigurer();
         GlobalConfig globalConfig = configurer.getGlobalConfig();
         OutputConfig outputConfig = configurer.getOutputConfig();
-        Map<String, String> outputClassCanonicalNameMap = outputConfig.getOutputClassCanonicalName(tableInfo);
+        Map<String, String> outputClassCanonicalNameMap = outputConfig.getOutputClassCanonicalNameMap(tableInfo);
         importPackages.add(outputClassCanonicalNameMap.get(OutputFile.entity.name()));
         importPackages.add(this.superServiceClass);
         if (globalConfig.isEnhancer()){
@@ -111,7 +111,7 @@ public class ServiceConfig implements ITemplate {
         Configurer configurer = tableInfo.getConfigurer();
         GlobalConfig globalConfig = configurer.getGlobalConfig();
         OutputConfig outputConfig = configurer.getOutputConfig();
-        Map<String, String> outputClassCanonicalNameMap = outputConfig.getOutputClassCanonicalName(tableInfo);
+        Map<String, String> outputClassCanonicalNameMap = outputConfig.getOutputClassCanonicalNameMap(tableInfo);
         importPackages.add(outputClassCanonicalNameMap.get(OutputFile.entity.name()));
         importPackages.add(outputClassCanonicalNameMap.get(OutputFile.mapper.name()));
         importPackages.add(this.superServiceImplClass);

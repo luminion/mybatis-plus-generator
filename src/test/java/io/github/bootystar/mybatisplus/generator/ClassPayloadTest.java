@@ -1,6 +1,5 @@
 package io.github.bootystar.mybatisplus.generator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bootystar.mybatisplus.generator.config.po.ClassPayload;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,7 @@ public class ClassPayloadTest {
     @Test
     void test1(){
         ClassPayload classPayload = new ClassPayload(Map.class);
-        String clazz = classPayload.clazz();
+        String clazz = classPayload.returnGenericTypeStr();
         System.out.println(clazz);
     }
     

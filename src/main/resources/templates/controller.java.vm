@@ -13,9 +13,7 @@ import ${pkg};
 #end
 
 /**
- * <p>
  * $!{table.comment} 前端控制器
- * </p>
 #if(${commentLink})
  * @see ${class.entity}
  * @see ${class.mapper}
@@ -48,10 +46,88 @@ public class ${controller} {
 #end
 
     private final ${baseService} baseService;
-#if(${lombok})
+#if(!${lombok})
 
     public ${controller}(${baseService} baseService) {
         this.baseService = baseService;
+    }
+#end
+#if(${generateInsert})
+
+    #if(${springdoc})
+    @Operation(summary = "新增")
+    #elseif(${swagger})
+    @ApiOperation(value = "新增")
+    #else
+    /**
+     * 新增
+     *
+     * @param param 新增入参对象
+     * @return 新增后的数据id
+     */
+    #end
+    #if(${restful})
+    @PostMapping("")
+    #else
+    @PostMapping("/insert")
+    #end
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    public ${returnMethod.returnGenericTypeStr("Object")} insert($!{requiredBodyStr}$!{validatedStr}${insertDTO} param) {
+        return ${returnMethod.invokeMethodStr("baseService.insertByDTO(param)")};
+    }
+#end
+#if(${generateUpdate})
+
+    #if(${springdoc})
+    @Operation(summary = "修改")
+    #elseif(${swagger})
+    @ApiOperation(value = "修改")
+    #else
+    /**
+     * 修改
+     *
+     * @param param 修改入参对象
+     * @return 是否成功
+     */
+    #end
+    #if(${restful})
+    @PutMapping("")
+    #else
+    @PostMapping("/update")
+    #end
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    public ${returnMethod.returnGenericTypeStr("Boolean")} update($!{requiredBodyStr}$!{validatedStr}${updateDTO} param) {
+        return ${returnMethod.invokeMethodStr("baseService.updateByDTO(param)")};
+    }
+#end
+#if(${generateDelete})
+
+    #if(${springdoc})
+    @Operation(summary = "删除")
+    #elseif(${swagger})
+    @ApiOperation(value = "删除")
+    #else
+    /**
+     * 删除
+     *
+     * @param id 主键id
+     * @return 是否成功
+     */
+    #end
+    #if(${restful})
+    @DeleteMapping("$!{idPathParams}")
+    #else
+    @PostMapping("/delete$!{idPathParams}")
+    #end
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    public ${returnMethod.returnGenericTypeStr("Boolean")} delete($!{idMethodParams}${primaryKeyPropertyType} id) {
+        return ${returnMethod.invokeMethodStr("baseService.removeById(id)")};
     }
 #end
 #if(${generateQuery})
@@ -68,16 +144,16 @@ public class ${controller} {
      * @return 查询结果
      */
     #end
-    #if(!${restControllerStyle})
-    @ResponseBody
-    #end
     #if(${restful})
     @GetMapping("$!{idPathParams}")
     #else
     @GetMapping("/select$!{idPathParams}")
     #end
-    public ${returnMethod.clazz("${queryVO}")} selectId($!{idMethodParams}${primaryKeyPropertyType} id) {
-        return ${returnMethod.method("baseService.voById(id)")};
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    public ${returnMethod.returnGenericTypeStr("${queryVO}")} selectId($!{idMethodParams}${primaryKeyPropertyType} id) {
+        return ${returnMethod.invokeMethodStr("baseService.voById(id)")};
     }
 
     #if(${springdoc})
@@ -92,12 +168,12 @@ public class ${controller} {
      * @return 查询结果
      */
     #end
+    ${batchQueryMethod}("/list")
     #if(!${restControllerStyle})
     @ResponseBody
     #end
-    ${requestMethod4Select}("/list")
-    public ${returnMethod.clazz("List<${queryVO}>")} selectList($!{optionalBodyStr}${entityQueryDTOStr} param) {
-        return ${returnMethod.method("baseService.voList(param)")};
+    public ${returnMethod.returnGenericTypeStr("List<${queryVO}>")} selectList($!{optionalBodyStr}${queryDTO} param) {
+        return ${returnMethod.invokeMethodStr("baseService.voList(param)")};
     }
     
     #if(${springdoc})
@@ -114,34 +190,12 @@ public class ${controller} {
      * @return 查询结果
      */
     #end
+    ${batchQueryMethod}("/page$!{pagePathParams}")
     #if(!${restControllerStyle})
     @ResponseBody
     #end
-    ${requestMethod4Select}("/page$!{pagePathParams}")
-    public ${returnMethod.clazz(${pageClazz4return})} selectPage($!{optionalBodyStr}${entityQueryDTOStr} param, $!{pageMethodParams}) {
-        return ${returnMethod.method(${pageMethod.method("baseService.voPage(param, current, size)")})};
-    }
-#end
-#if(${generateExport})
-
-    #if(${springdoc})
-    @Operation(summary = "excel文件导出")
-        #elseif(${swagger})
-    @ApiOperation(value = "excel文件导出")
-        #else
-    /**
-     * excel文件导出
-     * @param param 查询条件
-     * @param current 页码
-     * @param size 每页大小(-1为全部)
-     */
-    #end
-    ${requestMethod4Select}("/excel/export$!{pagePathParams}")
-    public void excelExport($!{optionalBodyStr}${entityQueryDTOStr} param, ${pageMethodParams}, HttpServletResponse response) throws IOException {
-        response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
-        response.setHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis() + ".xlsx");
-        baseService.excelExport(param, response.getOutputStream(), ${queryVO}.class, current, size);
+    public ${returnMethod.returnGenericTypeStr(${pageReturnType})} selectPage($!{optionalBodyStr}${queryDTO} param, $!{pageMethodParams}) {
+        return ${returnMethod.invokeMethodStr(${pageMethod.invokeMethodStr("baseService.voPage(param, current, size)")})};
     }
 #end
 #if(${generateImport})
@@ -160,14 +214,14 @@ public class ${controller} {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis() + ".xlsx");
-        baseService.excelTemplate(response.getOutputStream(), ${entityInsertDTO}.class);
+        baseService.excelTemplate(response.getOutputStream(), ${insertDTO}.class);
     }
 
     #if(${springdoc})
     @Operation(summary = "excel文件导入")
-        #elseif(${swagger})
+    #elseif(${swagger})
     @ApiOperation(value = "excel文件导入")
-        #else
+    #else
     /**
      * excel文件导入
      *
@@ -175,93 +229,36 @@ public class ${controller} {
      * @return 导入条数
      */
     #end
-    #if(!${restControllerStyle})
-    @ResponseBody
-    #end
     @PostMapping("/excel/import")
-    public ${returnMethod.clazz("Integer")} excelImport(@RequestParam("excel") MultipartFile excel) throws IOException {
-        if (excel == null || excel.isEmpty()) return ${returnMethod.method(0)};
-        return ${returnMethod.method("baseService.excelImport(excel.getInputStream(), ${entityInsertDTO}.class)")};
-    }
-#end
-#if(${generateInsert})
-
-    #if(${springdoc})
-    @Operation(summary = "新增")
-    #elseif(${swagger})
-    @ApiOperation(value = "新增")
-    #else
-    /**
-     * 新增
-     *
-     * @param param 新增入参对象
-     * @return 新增后的数据
-     */
-    #end
     #if(!${restControllerStyle})
     @ResponseBody
     #end
-    #if(${restful})
-    @PostMapping("")
-        #else
-    @PostMapping("/insert")
-    #end
-    public ${returnMethod.clazz("Object")} insert($!{requiredBodyStr}$!{validatedStr}${entityInsertDTO} param) {
-        return ${returnMethod.method("baseService.insertByDTO(param)")};
+    public ${returnMethod.returnGenericTypeStr("Integer")} excelImport(@RequestParam("excel") MultipartFile excel) throws IOException {
+        if (excel == null || excel.isEmpty()) return ${returnMethod.invokeMethodStr(0)};
+        return ${returnMethod.invokeMethodStr("baseService.excelImport(excel.getInputStream(), ${insertDTO}.class)")};
     }
 #end
-#if(${generateUpdate})
+#if(${generateExport})
 
     #if(${springdoc})
-    @Operation(summary = "修改")
+    @Operation(summary = "excel文件导出")
     #elseif(${swagger})
-    @ApiOperation(value = "修改")
+    @ApiOperation(value = "excel文件导出")
     #else
     /**
-     * 修改
-     *
-     * @param param 修改入参对象
-     * @return 是否成功
+     * excel文件导出
+     * @param param 查询条件
+     * @param current 页码
+     * @param size 每页大小(-1为全部)
      */
     #end
-    #if(!${restControllerStyle})
-    @ResponseBody
-    #end
-    #if(${restful})
-    @PutMapping("")
-    #else
-    @PostMapping("/update")
-    #end
-    public ${returnMethod.clazz("Boolean")} update($!{requiredBodyStr}$!{validatedStr}${entityUpdateDTO} param) {
-        return ${returnMethod.method("baseService.updateByDTO(param)")};
+    ${batchQueryMethod}("/excel/export$!{pagePathParams}")
+    public void excelExport($!{optionalBodyStr}${queryDTO} param, ${pageMethodParams}, HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis() + ".xlsx");
+        baseService.excelExport(param, response.getOutputStream(), ${queryVO}.class, current, size);
     }
 #end
-#if(${generateDelete})
-
-    #if(${springdoc})
-    @Operation(summary = "删除")
-    #elseif(${swagger})
-    @ApiOperation(value = "删除")
-    #else
-    /**
-     * 删除
-     *
-     * @param id 主键id
-     * @return 是否成功
-     */
-    #end
-    #if(!${restControllerStyle})
-    @ResponseBody
-    #end
-    #if(${restful})
-    @DeleteMapping("$!{idPathParams}")
-    #else
-    @PostMapping("/delete$!{idPathParams}")
-    #end
-    public ${returnMethod.clazz("Boolean")} delete($!{idMethodParams}${primaryKeyPropertyType} id) {
-        return ${returnMethod.method("baseService.removeById(id)")};
-    }
-#end
-
 }
 

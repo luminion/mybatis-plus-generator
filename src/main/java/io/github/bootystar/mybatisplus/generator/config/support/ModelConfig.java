@@ -166,7 +166,7 @@ public class ModelConfig implements ITemplate {
         this.resolveDocImportPackages(globalConfig, importPackages);
         importPackages.add(List.class.getCanonicalName());
         if (queryDTOExtendsEntity) {
-            importPackages.add(tableInfo.getConfigurer().getOutputConfig().getOutputClassCanonicalName(tableInfo).get(OutputFile.entity.name()));
+            importPackages.add(tableInfo.getConfigurer().getOutputConfig().getOutputClassCanonicalNameMap(tableInfo).get(OutputFile.entity.name()));
             if (globalConfig.isLombok()){
                 importPackages.add("lombok.EqualsAndHashCode");
             }
@@ -190,7 +190,7 @@ public class ModelConfig implements ITemplate {
             importPackages.add(excelIgnoreUnannotated);
         }
         if (queryVOExtendsEntity) {
-            importPackages.add(tableInfo.getConfigurer().getOutputConfig().getOutputClassCanonicalName(tableInfo).get(OutputFile.entity.name()));
+            importPackages.add(tableInfo.getConfigurer().getOutputConfig().getOutputClassCanonicalNameMap(tableInfo).get(OutputFile.entity.name()));
             if (globalConfig.isLombok()){
                 importPackages.add("lombok.EqualsAndHashCode");
             }

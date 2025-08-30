@@ -28,6 +28,47 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
 #else
 public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> {
 #end
+#if(${generateInsert})
+
+    #if(${generate.service} || ${enhancer})
+    @Override
+    #end
+    public Object insertByDTO(Object param) {
+//        ${insertDTO} dto = (${insertDTO}) param;
+        #if(${enhancer})
+        return ${enhanceMethod}.insertByDTO(param);    
+        #else
+        ${entity} entity = new ${entity}();
+        BeanUtils.copyProperties(param, entity);
+        super.save(entity);
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
+        return tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
+        #end
+    }
+#end
+#if(${generateUpdate})
+
+    #if(${generate.service} || ${enhancer})
+    @Override
+    #end
+    public boolean updateByDTO(Object param) {
+//        ${updateDTO} dto = (${updateDTO}) param;
+        #if(${enhancer})
+        return ${enhanceMethod}.updateByDTO(param);
+        #else
+        ${entity} entity = new ${entity}();
+        BeanUtils.copyProperties(param, entity);
+        return super.updateById(entity);
+        #end
+    }
+#end
+#if(${generateDelete})
+
+    @Override
+    public boolean removeById(Serializable id) {
+        return super.removeById(id);
+    }
+#end
 #if(${generateQuery})
     
     #if(${generate.service} || ${enhancer})
@@ -74,20 +115,6 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
         #end
     }
 #end
-#if(${generateExport})
-
-    #if(${generate.service} || ${enhancer})
-    @Override
-    #end
-    public void excelExport(Object param, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
-        #if(${enhancer})
-        ${enhanceMethod}.excelExport(param, os, clazz, current, size, includeFields);
-        #else
-        List<${queryVO}> voList = this.voPage(param, current, size).getRecords();
-        ${excelApiClass}.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(voList);
-        #end
-    }
-#end
 #if(${generateImport})
 
     #if(${generate.service} || ${enhancer})
@@ -121,45 +148,18 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
         #end
     }
 #end
-#if(${generateInsert})
+#if(${generateExport})
 
     #if(${generate.service} || ${enhancer})
     @Override
     #end
-    public Object insertByDTO(Object param) {
-//        ${insertDTO} dto = (${insertDTO}) param;
+    public void excelExport(Object param, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
         #if(${enhancer})
-        return ${enhanceMethod}.insertByDTO(param);    
+        ${enhanceMethod}.excelExport(param, os, clazz, current, size, includeFields);
         #else
-        ${entity} entity = new ${entity}();
-        BeanUtils.copyProperties(param, entity);
-        super.save(entity);
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
-        return tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
+        List<${queryVO}> voList = this.voPage(param, current, size).getRecords();
+        ${excelApiClass}.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(voList);
         #end
-    }
-#end
-#if(${generateUpdate})
-
-    #if(${generate.service} || ${enhancer})
-    @Override
-    #end
-    public boolean updateByDTO(Object param) {
-//        ${updateDTO} dto = (${updateDTO}) param;
-        #if(${enhancer})
-        return ${enhanceMethod}.updateByDTO(param);
-        #else
-        ${entity} entity = new ${entity}();
-        BeanUtils.copyProperties(param, entity);
-        return super.updateById(entity);
-        #end
-    }
-#end
-#if(${generateDelete})
-
-    @Override
-    public boolean removeById(Serializable id) {
-        return super.removeById(id);
     }
 #end
 }
