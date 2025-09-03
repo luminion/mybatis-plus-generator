@@ -104,9 +104,9 @@ public class ControllerConfig implements ITemplate {
     protected MethodPayload pageMethod = new MethodPayload();
 
     /**
-     * 指定查询的DTO
+     * 指定查询的参数
      */
-    protected ClassPayload queryDTOClass = new ClassPayload();
+    protected ClassPayload queryParam = new ClassPayload();
 
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
@@ -195,6 +195,9 @@ public class ControllerConfig implements ITemplate {
         data.put("primaryKeyPropertyType", primaryKeyPropertyType);
         if (requestBody) {
             data.put("requiredBodyStr", requiredBodyStr);
+            if (batchQueryPost){
+                data.put("optionalBodyStr", optionalBodyStr);
+            }
         }
         if (globalConfig.isValidated()) {
             data.put("validatedStr", validatedStr);
@@ -224,23 +227,23 @@ public class ControllerConfig implements ITemplate {
                 importPackages.add(primaryKeyPropertyClass);
             }
             importPackages.add("java.util.List");
-            if (this.queryDTOClass.isClassReady()){
-                Class<?> queryDTOClazz = queryDTOClass.getClazz();
+            if (this.queryParam.isClassReady()) {
+                Class<?> queryParamClass = queryParam.getClazz();
                 String entityName = outputClassSimpleNameMap.get(OutputFile.entity.name());
-                data.put("queryDTO4Controller", queryDTOClass.returnGenericTypeStr(entityName));
-                if (queryDTOClass.getClassGenericTypeCount()==1){
+                data.put("controllerQueryParam", queryParam.returnGenericTypeStr(entityName));
+                if (queryParam.getClassGenericTypeCount() == 1) {
                     importPackages.add(outputClassClassCanonicalNameMap.get(OutputFile.entity.name()));
                 }
-                importPackages.add(queryDTOClazz.getCanonicalName());
-                if (Map.class.isAssignableFrom(queryDTOClazz)){
-                    data.put("queryDTO4Controller","@RequestParam "+ queryDTOClazz.getSimpleName());
+                importPackages.add(queryParamClass.getCanonicalName());
+                if (Map.class.isAssignableFrom(queryParamClass)) {
+                    data.put("mapRequestParam", "@RequestParam ");
                 }
-            }else{
-                data.put("queryDTO4Controller", outputClassSimpleNameMap.get(OutputFile.queryDTO.name()));
+            } else {
+                data.put("controllerQueryParam", outputClassSimpleNameMap.get(OutputFile.queryDTO.name()));
                 importPackages.add(outputClassClassCanonicalNameMap.get(OutputFile.queryDTO.name()));
             }
             importPackages.add(outputClassClassCanonicalNameMap.get(OutputFile.queryVO.name()));
-            
+
             if (pageMethod.isMethodReady()) {
                 importPackages.add(pageMethod.getClassCanonicalName());
                 data.put("pageReturnType", pageMethod.returnGenericTypeStr(outputClassSimpleNameMap.get(OutputFile.queryVO.name())));
@@ -248,9 +251,9 @@ public class ControllerConfig implements ITemplate {
                 importPackages.add("com.baomidou.mybatisplus.core.metadata.IPage");
                 data.put("pageReturnType", String.format("IPage<%s>", outputClassSimpleNameMap.get(OutputFile.queryVO.name())));
             }
-            if (batchQueryPost) {
-                data.put("optionalBodyStr", optionalBodyStr);
-            }
+//            if (batchQueryPost) {
+//                data.put("optionalBodyStr", optionalBodyStr);
+//            }
         }
         String responseClass = globalConfig.resolveJakartaClassCanonicalName("servlet.http.HttpServletResponse");
         if (globalConfig.isGenerateImport()) {
@@ -420,12 +423,12 @@ public class ControllerConfig implements ITemplate {
         }
 
         /**
-         * 指定查询的DTO
+         * 指定用于查询的类
          *
          * @return this
          */
-        public Adapter queryDTO(Class<?> queryDTO) {
-            this.config.queryDTOClass = new io.github.bootystar.mybatisplus.generator.config.po.ClassPayload(queryDTO);
+        public Adapter queryParam(Class<?> queryDTO) {
+            this.config.queryParam = new io.github.bootystar.mybatisplus.generator.config.po.ClassPayload(queryDTO);
             return this;
         }
     }
