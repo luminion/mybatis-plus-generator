@@ -99,6 +99,7 @@ public class Configurer {
     public List<TableInfo> getTableInfo() {
         getStrategyConfig().validate();
         getGlobalConfig().validate();
+        
         if (this.tableInfo.isEmpty()){
             INameConvert nameConvert = entityConfig.getNameConvert();
             if (nameConvert == null) {

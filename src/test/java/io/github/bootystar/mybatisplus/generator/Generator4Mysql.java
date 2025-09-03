@@ -1,7 +1,14 @@
 package io.github.bootystar.mybatisplus.generator;
 
+import com.example.P;
+import com.example.R;
+import io.github.bootystar.mybatisplus.enhancer.query.helper.SqlHelper;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author booty
@@ -21,13 +28,14 @@ public class Generator4Mysql {
 
                                 .author("bootystar")
                                 .dateType(DateType.SQL_PACK)
-                                .commentDate("yyyy-MM-dd HH:mm:ss")
+//                                .commentDate("yyyy-MM-dd HH:mm:ss")
+                                .commentDate("yyyy-MM-dd")
                                 .enableLombok()
                                 .enableChainModel()
                                 .enableCommentLink()
                                 .enableCommentUUID()
-                                .enableSwagger()
-                                .enableSpringdoc()
+//                                .enableSwagger()
+//                                .enableSpringdoc()
                                 .enableJavaxApi()
                                 .enableEasyExcel()
 //                                .enableMybatisPlusEnhancer()
@@ -37,7 +45,7 @@ public class Generator4Mysql {
 //                                .disableDelete()
 //                                .disableImport()
 //                                .disableExport()
-                                .disableValidated()
+//                                .disableValidated()
 
                 )
 
@@ -76,9 +84,14 @@ public class Generator4Mysql {
                 .service(e -> e
                 )
                 .controller(e -> e
-                        .disableBatchQueryPost()
+//                        .disableBatchQueryPost()
                         .disablePathVariable()
-                        .disableRequestBody()
+//                        .disableRequestBody()
+                                .disableBatchQueryPost()
+                        .returnMethod(R::of)
+                        .pageMethod(P::of)
+                        .queryParam(LinkedHashMap.class)
+//                        .queryParam(SqlHelper.class)
                 )
                 .output(e -> e
                                 .outputDir(System.getProperty("user.dir") + "/src/test/java")
@@ -86,7 +99,7 @@ public class Generator4Mysql {
                                 .parentPackage("com.example.test")
                                 .disableOpenOutputDir()
                                 .entity(f -> f
-                                        .formatPattern("%sPOJO")
+//                                        .formatPattern("%sPOJO")
                                 )
                                 .mapper(f -> f
                                                 .subPackage("mapper")
@@ -98,10 +111,12 @@ public class Generator4Mysql {
                                 )
                                 .service(f -> f
                                         .subPackage("service")
+                                                .disable()
 //                                        .disable()
                                 )
                                 .serviceImpl(f -> f
-                                        .subPackage("service.impl")
+//                                        .subPackage("service.impl")
+                                        .subPackage("impl")
 //                                        .disable()
                                 )
                                 .controller(f -> f
