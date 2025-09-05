@@ -37,7 +37,10 @@
     #end
     #foreach($field in ${table.fields})
         #if(!${field.keyFlag})##生成普通字段
+            #if(${field.logicDeleteField} && !${queryVOExtendsEntity})
+            #else
         <result column="${field.name}" property="${field.propertyName}" />
+            #end
         #end
     #end
     </resultMap>

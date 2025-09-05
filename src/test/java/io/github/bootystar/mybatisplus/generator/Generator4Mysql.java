@@ -93,7 +93,7 @@ public class Generator4Mysql {
                 .service(e -> e
                 )
                 .controller(e -> e
-                        .disableRestController()
+//                        .disableRestController()
                         .disableHyphenStyle()
                         .baseUrl("/api")
                         .enableCrossOrigin()
@@ -103,8 +103,8 @@ public class Generator4Mysql {
                         .disableRequestBody()
                         .returnMethod(R::of)
                         .pageMethod(P::of)
-                        .queryParam(Map.class)
-                        .queryParam(SqlHelper.class)
+//                        .queryParam(Map.class)
+//                        .queryParam(SqlHelper.class)
                 )
                 .output(e -> e
                                 .outputDir(System.getProperty("user.dir") + "/src/test/java")
