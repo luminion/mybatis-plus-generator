@@ -1,9 +1,12 @@
 package io.github.bootystar.mybatisplus.generator;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.example.P;
 import com.example.R;
 import io.github.bootystar.mybatisplus.enhancer.query.helper.SqlHelper;
 import io.github.bootystar.mybatisplus.generator.config.rules.DateType;
+import io.github.bootystar.mybatisplus.generator.fill.Column;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -23,7 +26,7 @@ public class Generator4Mysql {
         String password = "root";
         FastGenerator
                 .create(url, username, password)
-                .initialize()
+//                .initialize()
                 .global(e -> e
 
                                 .author("bootystar")
@@ -31,13 +34,13 @@ public class Generator4Mysql {
 //                                .commentDate("yyyy-MM-dd HH:mm:ss")
                                 .commentDate("yyyy-MM-dd")
                                 .enableLombok()
-                                .enableChainModel()
-                                .enableCommentLink()
-                                .enableCommentUUID()
+//                                .enableChainModel()
+//                                .enableCommentLink()
+//                                .enableCommentUUID()
 //                                .enableSwagger()
 //                                .enableSpringdoc()
                                 .enableJavaxApi()
-                                .enableEasyExcel()
+//                                .enableEasyExcel()
 //                                .enableMybatisPlusEnhancer()
 //                                .disableQuery()
 //                                .disableInsert()
@@ -50,8 +53,8 @@ public class Generator4Mysql {
                 )
 
                 .model(e -> e
-                                .enableQueryDTOExtendsEntity()
-                        .enableQueryVOExtendsEntity()
+//                                .enableQueryDTOExtendsEntity()
+//                        .enableQueryVOExtendsEntity()
 
                 )
                 .strategy(e -> e
@@ -75,30 +78,43 @@ public class Generator4Mysql {
                                 .logicDeleteColumnName("deleted")
                                 .versionColumnName("version")
                                 .enableActiveRecord()
+                                .idType(IdType.ASSIGN_ID)
+                                .logicDeleteColumnName("deleted")
+                                .versionColumnName("version")
+                                .addTableFills(
+                                        new Column("create_time", FieldFill.INSERT),
+                                        new Column("update_time", FieldFill.INSERT_UPDATE)
+                                )
                 )
                 .mapper(e -> e
-//                        .enableBaseColumnList()
-//                        .enableBaseResultMap()
+                        .enableBaseResultMap()
 
                 )
                 .service(e -> e
                 )
                 .controller(e -> e
-//                        .disableBatchQueryPost()
+                        .disableRestController()
+                        .disableHyphenStyle()
+                        .baseUrl("/api")
+                        .enableCrossOrigin()
+                        .disableBatchQueryPost()
+                        .enableRestful()
                         .disablePathVariable()
-//                        .disableRequestBody()
-                                .disableBatchQueryPost()
+                        .disableRequestBody()
                         .returnMethod(R::of)
                         .pageMethod(P::of)
-                        .queryParam(LinkedHashMap.class)
-//                        .queryParam(SqlHelper.class)
+                        .queryParam(Map.class)
+                        .queryParam(SqlHelper.class)
                 )
                 .output(e -> e
                                 .outputDir(System.getProperty("user.dir") + "/src/test/java")
                                 .enableGlobalFileOverride()
-                                .parentPackage("com.example.test")
                                 .disableOpenOutputDir()
+                                .parentPackage("com.example.test")
+//                                .disableOpenOutputDir()
                                 .entity(f -> f
+
+                                                .disable()
 //                                        .formatPattern("%sPOJO")
                                 )
                                 .mapper(f -> f
@@ -110,17 +126,17 @@ public class Generator4Mysql {
 //                                .disable()
                                 )
                                 .service(f -> f
-                                        .subPackage("service")
+                                                .subPackage("service")
                                                 .disable()
 //                                        .disable()
                                 )
                                 .serviceImpl(f -> f
 //                                        .subPackage("service.impl")
-                                        .subPackage("impl")
+                                                .subPackage("impl")
 //                                        .disable()
                                 )
                                 .controller(f -> f
-                                        .subPackage("controller")
+                                                .subPackage("controller")
 //                                        .disable()
                                 )
                                 .insertDTO(f -> f

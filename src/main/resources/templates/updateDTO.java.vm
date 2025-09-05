@@ -37,7 +37,7 @@ public class ${updateDTO} {
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
 #if(${field.logicDeleteField})
-#elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE"))
+#elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE" || ${field.fill}=="INSERT"))
 #else
 
     #if("$!field.comment" != "")
@@ -75,7 +75,7 @@ public class ${updateDTO} {
 #if(!${lombok})
 #foreach($field in ${table.fields})
 #if(${field.logicDeleteField})
-#elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE"))
+#elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE" || ${field.fill}=="INSERT"))
 #else
     #if(${field.propertyType.equals("boolean")})
         #set($getprefix="is")

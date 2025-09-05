@@ -70,7 +70,7 @@ public class ${queryVO} {
 #end
 #end
 ## ----------  END 字段循环遍历  ----------
-#if(!${lombok})
+#if(!${lombok} && !${queryVOExtendsEntity})
 #foreach($field in ${table.fields})
 #if(${field.logicDeleteField})
 #else

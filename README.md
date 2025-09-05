@@ -1,231 +1,295 @@
 # mybatis-plus-generator
-基于`mybatis-plus`的代码生成器, 提供了额外的功能
-* 兼容`mybatis-plus代码生成器`的所有配置项目, 并提供更多额外的可选配置项
-* 提供`新增DTO`,`修改DTO`,`导入DTO`,`导出DTO`,`出参VO`的额外生成
-* 选择性生成`增删查改导入导出`相关方法及配套类 
-* 支持动态sql入参映射查询
-* 支持额外字段自定义后缀映射查询
 
-基于`mybatis-plus`3.5.9及以上版本, 若出现运行时异常, 请检查`mybatis-plus`版本是否过低
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.bootystar/mybatis-plus-generator)](https://mvnrepository.com/artifact/io.github.bootystar/mybatis-plus-generator)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+
+[English](README_EN.md) | 中文
+
+MyBatis-Plus 代码生成器，提供了比官方代码生成器更丰富的功能和可配置项，旨在提升开发效率，减少重复代码编写。
+
+## 功能特性
+
+- **基础代码生成**：生成实体类、Mapper、Service、Controller 等基础代码
+- **领域模型生成**：支持生成新增 DTO、修改 DTO、查询 DTO、查询 VO 等领域模型
+- **选择性方法生成**：支持选择性生成增删查改、导入导出等方法
+- **动态 SQL 支持**：支持动态 SQL 入参映射查询
+- **字段后缀映射**：支持字段自定义后缀映射查询
+- **多种数据库支持**：支持 MySQL、PostgreSQL、Oracle 等主流数据库
+- **模板引擎支持**：使用 Velocity 模板引擎，支持自定义模板
+- **配置灵活**：提供链式调用的配置方式，配置简单易用
+
+## 仓库地址
+
+- GitHub: https://github.com/bootystar/mybatis-plus-generator
+- Maven Central: https://central.sonatype.com/artifact/io.github.bootystar/mybatis-plus-generator
 
 ## Maven依赖
+
+当前最新版本为:  
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.bootystar/mybatis-plus-generator)](https://mvnrepository.com/artifact/io.github.bootystar/mybatis-plus-generator)
+
 ```xml
 <dependency>
     <groupId>io.github.bootystar</groupId>
     <artifactId>mybatis-plus-generator</artifactId>
-    <version>1.2.7</version>
+    <version>latest</version>
 </dependency>
 ```
 
-### 如果需要使用Excel功能,请自行引入FastExcel或EasyExcel依赖(任一)
-```xml
-<!-- (可选)Excel导入导出 -->
-<dependency>
-    <groupId>cn.idev.excel</groupId>
-    <artifactId>FastExcel</artifactId>
-    <version>1.2.0</version>
-</dependency>
-<!-- (可选)Excel导入导出 -->
-<dependency>
-    <groupId>com.alibaba</groupId>
-    <artifactId>easyexcel</artifactId>
-    <version>4.0.3</version>
-</dependency>
-```
-默认使用FastExcel, 若使用EasyExcel,需要在程序任意位置调用方法进行切换
-```java
-//io.github.bootystar.mybatisplus.enhancer.util.ExcelAdapter.userFastExcel();// 使用FastExcel(默认)
-io.github.bootystar.mybatisplus.enhancer.util.ExcelAdapter.userEasyExcel();// 使用EasyExcel
-```
-## 代码生成器
+## 快速开始
 
-### 代码生成(Lambda链式)
-对`Lambda表达式`不熟悉的见[代码生成(编码式)](#代码生成编码式)
+使用 [FastGenerator](src/main/java/io/github/bootystar/mybatisplus/generator/FastGenerator.java) 可以快速生成代码：
 
 ```java
-String url = "jdbc:postgresql://localhost:5432/test?useUnicode=true&characterEncoding=UTF-8";
-String username = "postgres";
-String password = "root";
-GeneratorHelper
-//        .extraCodeGenerator(url, username, password) // 额外代码生成器
-//        .dynamicSqlGenerator(url, username, password) // 动态SQL生成器
-        .dynamicFieldGenerator(url, username, password) // 动态字段生成器
-        .initialize() // 初始化常用配置
-        .packageConfig(pkg -> pkg.parent("io.github.bootystar" ))// 父包名
-//        .mapperXmlResource("static/mapper") // mapper.xml文件在Resources下的路径
-        .execute("sys_user" )// 要生成的表(不输入为全部)
-;
+public static void main(String[] args) {
+    FastGenerator.create("jdbc:mysql://localhost:3306/your_database", "username", "password")
+            .initialize() // 一键初始化常用配置项
+            .execute("user","role") // 指定要生成的表名
+    ;
+}
 ```
 
-### 可选配置项
-```java
-String url = "jdbc:postgresql://localhost:5432/test?useUnicode=true&characterEncoding=UTF-8";
-String username = "postgres";
-String password = "root";
-GeneratorHelper
-        // .extraCodeGenerator(url, username, password) // 额外代码生成器
-        // .dynamicSqlGenerator(url, username, password) // 动态SQL生成器
-        .dynamicFieldGenerator(url, username, password) // 动态字段生成器
-        .enableGlobalFileOverwrite() // 全局文件覆盖生成(覆盖所有的文件)
-        .mapperXmlResource("static/mapper") // mapper.xml文件在Resources下的路径
-        .initialize() // 初始化常用配置
-        .customConfig(custom -> {
-        // 自定义配置
-            custom
-                .enableJakartaApi() // 启用Jakarta API, springboot3及以上需要开启
-                .enableFileOverride() // 文件覆盖生成(DTO、VO)
-                .disableInsert() // 不生成新增
-                .disableUpdate() // 不生成更新
-                .disableDelete() // 不生成删除
-                .disableSelect() // 不生成查询
-                .disableImport() // 不生成导入
-                .disableExport() // 不生成导出
-                // 略... 更多可配置项见下文说明
-        ;})
-        .dataSourceConfig(dataSource -> {
-        // 数据源配置(参考mybatis-plus官方文档)
-        })
-        .globalConfig(global -> {
-        // 全局配置(参考mybatis-plus官方文档)
-        })
-        .packageConfig(pkg -> {
-        // 包配置(参考mybatis-plus官方文档)
-        })
-        .strategyConfig(strategy -> {
-        // 策略配置(参考mybatis-plus官方文档)
-        })
-        .execute("sys_user") // 要生成的表(不输入为全部)
-        ;
-```
+## 生成文件说明
 
-### 自定义配置内容
-* 通用配置项:[BaseBuilder.java](src/main/java/io/github/bootystar/mybatisplus/generator/config/builder/BaseBuilder.java)
-* 特殊配置项:[BaseEnhanceBuilder.java](src/main/java/io/github/bootystar/mybatisplus/generator/config/builder/BaseEnhanceBuilder.java)
-* 额外代码生成器特殊配置项:[ExtraCodeBuilder.java](src/main/java/io/github/bootystar/mybatisplus/generator/config/builder/ExtraCodeBuilder.java)
-* 动态sql生成器特殊配置项:[DynamicSqlBuilder.java](src/main/java/io/github/bootystar/mybatisplus/generator/config/builder/DynamicSqlBuilder.java)
-* 动态字段生成器特殊配置项:[DynamicFieldBuilder.java](src/main/java/io/github/bootystar/mybatisplus/generator/config/builder/DynamicFieldBuilder.java)
+生成器会生成以下类型的文件：
 
-自定义配置示例:(或因版本不同或修改有所变动, 详见源码)
-```java
-custom
-    // 文件相关
-    .enableFileOverride() // 文件覆盖生成(DTO、VO)
-    .disableInsert() // 不生成新增
-    .disableUpdate() // 不生成更新
-    .disableDelete() // 不生成删除
-    .disableSelect() // 不生成查询
-    .disableImport() // 不生成导入
-    .disableExport() // 不生成导出
-    .useEasyExcel() // 使用easyexcel处理excel
-    .useFastExcel() // 使用fastexcel处理excel
-    .package4DTO("dto") // DTO的包名
-    .path4DTO("C:/Project/test21/") // DTO的路径(全路径或相对路径)
-    .package4VO("vo") // VO的包名
-    .path4VO("C:/Project/test21/") // VO的路径(全路径或相对路径)
-    .editExcludeColumns("create_time", "update_time") // 新增/修改时忽略的字段
-    // controller额外生成项
-    .baseUrl("/api") // 请求url前缀
-    .enableCrossOrigins() // 启用跨域
-    .enableJakartaApi() // 启用Jakarta API, springboot3以上需要开启
-    .enableAutoWired() // 使用@Autowired替换@Resource
-    .returnMethod(R1::new) // 返回值对象封装的方法
-    .pageMethod(P1::of) // 分页对象封装的方法(需要接收IPage作为参数)
-    .disableRestful() // 禁用restful
-    .disableRequestBody() // 禁用请求体
-    .disableValidated() // 禁用参数校验
-    .disablePostQuery() // 复杂查询不使用post请求(使用get请求, 并关闭@RequestBody)
-    // mapper额外生成项
-    .sortColumnClear() // 清空排序
-    .sortColumn("create_time",true) // 添加排序(字段,是否倒序)
-    .sortColumn("id",true) // 添加排序(字段,是否倒序)
-    // 特殊配置项, 因不同生成器而异
-    .disableOverrideMethods() // 不生成重写的父类方法
-    .withMapSelectDTO() // 使用Map作为查询入参DTO
-    .withSqlHelperSelectDTO() // 使用SqlHelper作为查询入参DTO
-    .extraFieldGenerateStrategy((sqlOperator,tableFiled)->{
-            // 根据比较符号和字段信息决定是否生成额外字段
-            return true;
-        }) // 自定义额外字段策略(字段何时生成/不生成对应后缀的额外字段)
-    .extraFieldSuffixBuilder(builder -> { 
-    // 该项默认无需配置, 配置后, 只会根据已配置的字段生成额外后缀, 未配置的类型不会生成后缀
-                    builder
-                        .defaultSimpleSuffix() // 添加默认的后缀字符(默认生成LIKE,IN,<=,>=的特殊后缀)
-                        .defaultCompleteSuffix() // 添加支持的所有后缀字符
-                        .ne("Ne") // 不等于字段额外后缀
-                        .lt("Lt") // 小于字段额外后缀
-                        .le("Le") // 小于等于字段额外后缀
-                        .ge("Ge") // 大于等于字段额外后缀
-                        .gt("Gt") // 大于字段额外后缀
-                        .like("Like") // 模糊匹配字段额外后缀
-                        .notLike("NotLike") // 反模糊匹配字段额外后缀
-                        .in("In") // 包含字段额外后缀
-                        .notIn("NotIn") // 不包含字段额外后缀
-                        .isNull("IsNull") // 空字段额外后缀
-                        .isNotNull("IsNotNull") // 非空字段额外后缀
-        ;})// 自定义字段额外后缀
-```
+1. **Entity(实体类)** - 数据库表对应的实体类
+2. **Mapper** - MyBatis Mapper接口
+3. **Mapper XML** - MyBatis XML映射文件
+4. **Service** - 服务接口
+5. **ServiceImpl** - 服务实现类
+6. **Controller** - 控制器类
+7. **InsertDTO** - 插入数据传输对象
+8. **UpdateDTO** - 更新数据传输对象
+9. **QueryDTO** - 查询数据传输对象
+10. **VO** - 视图对象
 
-### 代码生成(编码式)
+## 自定义配置示例
 
 ```java
-String url = "jdbc:postgresql://localhost:5432/test?useUnicode=true&characterEncoding=UTF-8";
-String username = "postgres";
-String password = "root";
-//ExtraCodeGenerator generator = new ExtraCodeGenerator(url, username, password); // 额外代码生成器
-//DynamicSqlGenerator generator = new DynamicSqlGenerator(url, username, password); // 动态SQL生成器
-DynamicFieldGenerator generator = new DynamicFieldGenerator(url, username, password); // 动态字段生成器
-
-generator.enableGlobalFileOverwrite() // 全局文件覆盖生成(覆盖所有的文件)
-        .mapperXmlResource("static/mapper") // mapper.xml文件在Resources下的路径
-        .initialize() // 初始化常用配置
-;
-generator.getCustomConfigBuilder() // 自定义配置
-        .enableJakartaApi() // ...略
-;
-generator.getDataSourceConfigBuilder() // 数据源配置(参考mybatis-plus官方文档)
-    //.driverClassName("org.postgresql.Driver")
-;
-generator.getGlobalConfigBuilder() // 全局配置(参考mybatis-plus官方文档)
-    //.author("bootystar")
-;
-generator.getPackageConfigBuilder() // 包配置(参考mybatis-plus官方文档)
-    //.parent("io.github.bootystar")
-;
-generator.getStrategyConfigBuilder() // 策略配置(参考mybatis-plus官方文档)
-    //.addTablePrefix("sys_")
-;
-generator.execute("sys_user"); // 要生成的表(不输入为全部)
+public static void main(String[] args) {
+    FastGenerator.create("jdbc:mysql://localhost:3306/your_database", "username", "password")
+            // 数据源配置
+            .datasource(e -> e
+                    .schema("your_schema")
+            )
+            // 全局配置
+            .global(e -> e
+                    .author("your_name")
+                    .enableLombok()
+                    .enableSwagger()
+            )
+            // 输出配置
+            .output(e -> e
+                    .outputDir("D:/project/src/main/java") // 指定文件输出目录
+                    .parentPackage("com.example.project") // 父包名
+                    .moduleName("system") // 模块名
+                    .insertDTO(f -> f
+                            .formatPattern("%sInsertDTO") // 格式化名称
+                            .subPackage("dto") // 指定文件所在的子包 
+                            .templatePath("/templates/insertDTO.java") // 指定模板路径
+                            .outputDir("D:/project/src/main/java") // 单独指定文件输出目录
+                            .disable() // 禁用生成
+                    )
+                    .updateDTO(f -> f.formatPattern("%sUpdateDTO"))
+                    .queryDTO(f -> f.formatPattern("%sQueryDTO"))
+                    .queryVO(f -> f.formatPattern("%sVO"))
+            )
+            // 策略配置
+            .strategy(e -> e
+                    .enableCapitalMode()
+                    .enableSkipView()
+                    .disableSqlFilter()
+                    .addInclude("table1", "table2") // 指定需要生成的表名
+                    .addExclude("test") // 排除生成的表名
+                    .addTablePrefix("t_", "c_") // 添加表前缀
+                    .addFieldPrefix("is_", "has_") // 添加字段前缀
+            )
+            // 实体配置
+            .entity(e -> e
+                    .enableTableFieldAnnotation()
+                    .idType(IdType.AUTO)
+                    .naming(NamingStrategy.underline_to_camel)
+                    .columnNaming(NamingStrategy.underline_to_camel)
+                    .logicDeleteColumnName("deleted")
+                    .versionColumnName("version")
+            )
+            // Mapper配置
+            .mapper(e -> e
+                    .enableBaseResultMap()
+                    .enableBaseColumnList()
+                    .sortColumn("create_time", true)
+                    .sortColumn("id", true)
+            )
+            // Service配置
+            .service(e -> e
+                    .superServiceClass("com.baomidou.mybatisplus.extension.service.IService")
+                    .superServiceImplClass("com.baomidou.mybatisplus.extension.service.impl.ServiceImpl")
+            )
+            // Controller配置
+            .controller(e -> e
+                    .enableCrossOrigin()
+            )
+            // 模型配置
+            .model(e -> e
+                    .enableQueryDTOExtendsEntity()
+            )
+            // 指定需要生成的表名       
+            .execute("user","role");
+    ;
+}
 ```
 
-## 生成器
+## 配置说明
 
-### 额外代码生成器`ExtraCodeGenerator`
-* 兼容性最强
-* 该生成器增强方式为`代码注入`, 可生成后直接复制代码到其他`mybatis-plus`项目使用
-* 运行时除`mybatis-plus`外无其他依赖, 依赖耦合低
-* 支持通过`属性`+`特殊后缀`的方式自动映射不同类型的查询
-* `Service`和`ServiceImpl`内硬编码了`DTO`,`VO`
-* `mapper.xml`内代码量较多
-* 若生成后的实体数据库模型发生变化, 需要修改对应的`mapper.xml`和`SelectDTO`
+### 全局配置 (GlobalConfig)
 
-### 动态sql生成器`DynamicSqlGenerator`
-* 灵活性最强
-* 默认使用`SqlHelper`入参, 支持`lambda`链式调用, `灵活`性极高
-* 可动态映射`属性`和`值`为查询条件, 并支持嵌套子条件
-* 可动态映射`排序属性`和`升降`序
-* 可添加`非本表字段`的动态映射
-* 支持直接使用`实体类`和`Map`入参,可根据入参动态映射
-* 可自定义额外参数, 在`mapper.xml`中可直接使用
-* `Service`继承实现, 无需实现, 无额外代码
-* `ServiceImpl`继承实现, 无需实现, 无额外代码
-* `mapper.xml`中内容`简洁`且`兼容性`强, 可无缝衔接自行编写的sql
+| 配置方法 | 参数类型 | 详细说明                           |
+|---------|---------|--------------------------------|
+| author | String | 设置代码作者名称                       |
+| dateType | DateType | 设置时间类型策略                       |
+| commentDate | String | 指定注释日期格式化模式                    |
+| enableLombok | - | 开启lombok模型                     |
+| enableChainModel | - | 开启链式getter和setter              |
+| enableCommentLink | - | 文档注释添加相关类链接                    |
+| enableCommentUUID | - | 启用类注释随机UUID                    |
+| disableValidated | - | 禁用新增和修改的入参校验                   |
+| enableSwagger | - | 使用swagger文档                    |
+| enableSpringdoc | - | 使用springdoc文档                  |
+| enableJavaxApi | - | 使用javax包作为javaEE api           |
+| enableEasyExcel | - | 使用EasyExcel(默认为FastExcel)      |
+| enableMybatisPlusEnhancer | - | 使用mybatis-plus-enhancer(需自行引入依赖) |
+| disableQuery | - | 不生成查询方法                        |
+| disableInsert | - | 不生成新增方法                        |
+| disableUpdate | - | 不生成更新方法                        |
+| disableDelete | - | 不生成删除方法                        |
+| disableImport | - | 不生成导入方法                        |
+| disableExport | - | 不生成导出方法                        |
 
-### 动态字段生成器`DynamicFieldGenerator`
-* 实用性最强
-* 入参为`SqlHelper`时, 兼容`DynamicSqlGenerator`的动态映射功能
-* 支持通过`属性`+`特殊后缀`的方式自动映射不同类型的查询
-* 可自定义额外参数, 在`mapper.xml`中可直接使用
-* `Service`继承实现, 无需实现, 无额外代码
-* `ServiceImpl`继承实现, 无需实现, 无额外代码
-* `mapper.xml`中内容`简洁`且`兼容性`强, 可无缝衔接自行编写的sql
+### 输出配置 (OutputConfig)
+
+| 配置方法 | 参数类型 | 详细说明 |
+|---------|---------|---------|
+| outputDir | String | 设置文件输出目录 |
+| parentPackage | String | 设置父包名 |
+| moduleName | String | 设置模块名 |
+| enableGlobalFileOverride | - | 启用全局文件覆盖 |
+| disableOpenOutputDir | - | 禁用打开输出目录 |
+| entity | Function<TemplateFile.Adapter, TemplateFile.Adapter> | 实体类配置 |
+| mapper | Function<TemplateFile.Adapter, TemplateFile.Adapter> | mapper配置 |
+| mapperXml | Function<TemplateFile.Adapter, TemplateFile.Adapter> | mapperXml配置 |
+| service | Function<TemplateFile.Adapter, TemplateFile.Adapter> | service配置 |
+| serviceImpl | Function<TemplateFile.Adapter, TemplateFile.Adapter> | serviceImpl配置 |
+| controller | Function<TemplateFile.Adapter, TemplateFile.Adapter> | controller配置 |
+| insertDTO | Function<TemplateFile.Adapter, TemplateFile.Adapter> | insertDTO配置 |
+| updateDTO | Function<TemplateFile.Adapter, TemplateFile.Adapter> | updateDTO配置 |
+| queryDTO | Function<TemplateFile.Adapter, TemplateFile.Adapter> | queryDTO配置 |
+| queryVO | Function<TemplateFile.Adapter, TemplateFile.Adapter> | vo配置 |
+
+### 策略配置 (StrategyConfig)
+
+| 配置方法 | 参数类型 | 详细说明 |
+|---------|---------|---------|
+| addTablePrefix | String... | 增加过滤表前缀 |
+| addTableSuffix | String... | 增加过滤表后缀 |
+| addFieldPrefix | String... | 增加过滤字段前缀 |
+| addFieldSuffix | String... | 增加过滤字段后缀 |
+| addInclude | String... | 增加包含的表名 |
+| addExclude | String... | 增加排除表 |
+| likeTable | LikeTable | 包含表名 |
+| notLikeTable | LikeTable | 不包含表名 |
+| extraFieldSuffix | String, String | 额外字段后缀 |
+| clearExtraFieldSuffix | - | 清除额外字段后缀 |
+| extraFieldStrategy | BiFunction<String, TableField, Boolean> | 额外字段策略 |
+| enableCapitalMode | - | 开启大写命名 |
+| enableSkipView | - | 开启跳过视图 |
+| enableSchema | - | 启用 schema |
+| disableSqlFilter | - | 禁用sql过滤 |
+
+### 实体配置 (EntityConfig)
+
+| 配置方法 | 参数类型 | 详细说明 |
+|---------|---------|---------|
+| superClass | Class<?> 或 String | 自定义继承的Entity类 |
+| versionColumnName | String | 设置乐观锁数据库表字段名称 |
+| versionPropertyName | String | 设置乐观锁实体属性字段名称 |
+| logicDeleteColumnName | String | 逻辑删除数据库字段名称 |
+| logicDeletePropertyName | String | 逻辑删除实体属性名称 |
+| naming | NamingStrategy | 数据库表映射到实体的命名策略 |
+| columnNaming | NamingStrategy | 数据库表字段映射到实体的命名策略 |
+| addSuperEntityColumns | String... | 添加父类公共字段 |
+| addIgnoreColumns | String... | 添加忽略字段 |
+| addTableFills | IFill... | 添加表字段填充 |
+| idType | IdType | 指定生成的主键的ID类型 |
+| enableSerialAnnotation | - | 启用生成 @Serial |
+| enableColumnConstant | - | 开启生成字段常量 |
+| enableRemoveIsPrefix | - | 开启Boolean类型字段移除is前缀 |
+| enableTableFieldAnnotation | - | 开启生成实体时生成字段注解 |
+| enableActiveRecord | - | 开启 ActiveRecord 模式 |
+| disableSerialVersionUID | - | 禁用生成serialVersionUID |
+
+### Mapper配置 (MapperConfig)
+
+| 配置方法 | 参数类型 | 详细说明 |
+|---------|---------|---------|
+| superClass | String 或 Class<?> | 父类Mapper |
+| mapperAnnotation | Class<? extends Annotation> | 标记 MapperConfig 注解 |
+| enableBaseResultMap | - | 开启baseResultMap |
+| enableBaseColumnList | - | 开启baseColumnList |
+| cache | Class<? extends Cache> | 设置缓存实现类 |
+| clearSortColumnMap | - | 清空排序字段 |
+| sortColumn | String, boolean | 添加排序字段 |
+
+### Service配置 (ServiceConfig)
+
+| 配置方法 | 参数类型 | 详细说明 |
+|---------|---------|---------|
+| superServiceClass | Class<?> 或 String | Service接口父类 |
+| superServiceImplClass | Class<?> 或 String | Service实现类父类 |
+
+### Controller配置 (ControllerConfig)
+
+| 配置方法 | 参数类型 | 详细说明 |
+|---------|---------|---------|
+| superClass | Class<?> 或 String | 父类控制器 |
+| disableRestController | - | 关闭@RestController控制器 |
+| disableHyphenStyle | - | 关闭驼峰转连字符 |
+| baseUrl | String | controller请求前缀 |
+| enableCrossOrigin | - | 跨域注解 |
+| disableBatchQueryPost | - | 禁止批量数据查询使用post请求 |
+| enableRestful | - | 增删查改使用restful风格 |
+| disablePathVariable | - | 禁用路径变量 |
+| disableRequestBody | - | 禁用消息体接收数据 |
+| returnMethod | SFunction<Object, R> | 指定controller的返回结果包装类及方法 |
+| pageMethod | SFunction<IPage<O>, R> | 指定controller返回的分页包装类及方法 |
+| queryParam | Class<?> | 指定用于查询的类 |
+
+### 模型配置 (ModelConfig)
+
+| 配置方法 | 参数类型 | 详细说明 |
+|---------|---------|---------|
+| enableQueryDTOExtendsEntity | - | 查询dto继承实体类 |
+| enableQueryVOExtendsEntity | - | 查询vo继承实体类 |
+
+
+
+
+
+## 注意事项
+
+1. 开启文件覆盖后, 生成的代码会覆盖同名文件，请注意备份重要文件
+2. 需要确保数据库连接信息正确
+3. 根据实际需要调整配置参数
+4. 可以通过自定义模板来满足特殊需求
+
+## 版本依赖
+建议依赖版本如下:
+
+| 生成器版本         | mybatis-plus    | mybatis-plus-enhancer | 说明                                                                                          |
+|---------------|-----------------|-----------------------|---------------------------------------------------------------------------------------------|
+| 0.0.3 - 0.0.9 | 3.5.3.2         | -                     | 实验版本, 不建议使用                                                                                 |
+| 1.0.0 - 1.0.1 | 3.5.3.2 - 3.5.5 | -                     | 初版<br/>依赖于mybatis-plus官方生成器                                                                 |
+| 1.2.0 - 1.2.7 | 3.5.7 - 3.5.11  | 1.2.0 - 1.2.4         | 聚合mybatis-plus-enhancer(1.2.0 - 1.2.4)功能的版本<br/>依赖于mybatis-plus官方生成器和mybatis-plus-enhancer  |
+| 2.0.0         | 3.5.0 以上        | 2.0.0(可选)             | 2.0重构版, 独立运行, 移除所有非必要依赖<br/>兼容mybatis-plus:3.5.0及以上版本<br/>聚合mybatis-plus-enhancer:2.0.0版本功能 |
+
 
