@@ -19,12 +19,10 @@ import ${pkg};
  * @since ${date}
  */
 @Service
-#if(${enhancer} && ${generate.service})
-public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> implements ${service}, EnhancedService<${queryVO}> {
+#if(${generate.service})
+public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> implements ${service} {
 #elseif(${enhancer})
 public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> implements EnhancedService<${queryVO}> {
-#elseif(${generate.service})
-public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> implements ${service} {
 #else
 public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity}> {
 #end

@@ -120,12 +120,13 @@ public class MapperConfig implements ITemplate {
         if (mapperAnnotationClass != null) {
             importPackages.add(mapperAnnotationClass.getName());
         }
+        Map<String, String> classCanonicalNameMap = tableInfo.getConfigurer().getOutputConfig().getOutputClassCanonicalNameMap(tableInfo);
+        importPackages.add(classCanonicalNameMap.get(OutputFile.entity.name()));
         GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
         if (globalConfig.isEnhancer()){
             importPackages.add("io.github.bootystar.mybatisplus.enhancer.EnhancedMapper");
+            importPackages.add(classCanonicalNameMap.get(OutputFile.queryVO.name()));
         }
-        Map<String, String> classCanonicalNameMap = tableInfo.getConfigurer().getOutputConfig().getOutputClassCanonicalNameMap(tableInfo);
-        importPackages.add(classCanonicalNameMap.get(OutputFile.entity.name()));
         if (globalConfig.isGenerateQuery()){
             importPackages.add(List.class.getCanonicalName());
             importPackages.add(classCanonicalNameMap.get(OutputFile.queryVO.name()));

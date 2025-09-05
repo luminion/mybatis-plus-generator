@@ -92,6 +92,10 @@ public class FastGenerator {
                                 new Column("created_by", FieldFill.INSERT),
                                 new Column("updated_by", FieldFill.INSERT_UPDATE)
                         ))
+                .model(e-> e
+                                .enableQueryDTOExtendsEntity()
+                                .enableQueryVOExtendsEntity()
+                )
                 .mapper(e -> e.
                         mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
                         .sortColumn("order", false)

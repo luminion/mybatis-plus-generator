@@ -55,9 +55,9 @@ public class ServiceConfig implements ITemplate {
         Configurer configurer = tableInfo.getConfigurer();
         GlobalConfig globalConfig = configurer.getGlobalConfig();
         if (globalConfig.isEnhancer()) {
-            data.put("enhanceMethod", "EnhancedService.super");
+            OutputConfig outputConfig = tableInfo.getConfigurer().getOutputConfig();
+            data.put("enhanceMethod", outputConfig.getService().isGenerate() ? outputConfig.getService().convertFormatName(tableInfo) + ".super" : "EnhancedService.super");
         }
-
         Set<String> serviceImportPackages = this.serviceImportPackages(tableInfo);
         Collection<String> serviceImportPackages4Java = serviceImportPackages.stream().filter(pkg -> pkg.startsWith("java")).collect(Collectors.toList());
         Collection<String> serviceImportPackages4Framework = serviceImportPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
@@ -82,11 +82,11 @@ public class ServiceConfig implements ITemplate {
         Map<String, String> outputClassCanonicalNameMap = outputConfig.getOutputClassCanonicalNameMap(tableInfo);
         importPackages.add(outputClassCanonicalNameMap.get(OutputFile.entity.name()));
         importPackages.add(this.superServiceClass);
-        if (globalConfig.isEnhancer()){
+        if (globalConfig.isEnhancer()) {
             importPackages.add("io.github.bootystar.mybatisplus.enhancer.EnhancedService");
             importPackages.add(outputClassCanonicalNameMap.get(OutputFile.queryVO.name()));
-        }else {
-            if (globalConfig.isGenerateQuery()){
+        } else {
+            if (globalConfig.isGenerateQuery()) {
                 importPackages.add(outputClassCanonicalNameMap.get(OutputFile.queryVO.name()));
                 importPackages.add("java.util.List");
                 importPackages.add("java.io.Serializable");
@@ -138,8 +138,10 @@ public class ServiceConfig implements ITemplate {
         }
         // enhancer
         if (globalConfig.isEnhancer()) {
-            importPackages.add("io.github.bootystar.mybatisplus.enhancer.EnhancedService");
-            importPackages.add(outputClassCanonicalNameMap.get(OutputFile.queryVO.name()));
+            if (!outputConfig.getService().isGenerate()){
+                importPackages.add("io.github.bootystar.mybatisplus.enhancer.EnhancedService");
+                importPackages.add(outputClassCanonicalNameMap.get(OutputFile.queryVO.name()));
+            }
         } else {
             if (globalConfig.isGenerateQuery()) {
 //                importPackages.add("com.baomidou.mybatisplus.core.metadata.TableInfo");
@@ -147,25 +149,26 @@ public class ServiceConfig implements ITemplate {
                 importPackages.add("java.util.HashMap");
                 importPackages.add("com.baomidou.mybatisplus.extension.plugins.pagination.Page");
                 importPackages.add("org.apache.ibatis.exceptions.TooManyResultsException");
+                importPackages.add(outputClassCanonicalNameMap.get(OutputFile.queryVO.name()));
             }
             if (globalConfig.isGenerateExport()) {
                 importPackages.add(globalConfig.resolveExcelClassApiCanonicalName());
                 importPackages.add("java.util.Arrays");
                 importPackages.add(globalConfig.resolveExcelClassCanonicalName("write.style.column.LongestMatchColumnWidthStyleStrategy"));
             }
-            if (globalConfig.isGenerateImport()){
+            if (globalConfig.isGenerateImport()) {
                 importPackages.add(globalConfig.resolveExcelClassApiCanonicalName());
                 importPackages.add("java.util.List");
                 importPackages.add("java.util.Collections");
                 importPackages.add("java.util.stream.Collectors");
                 importPackages.add("org.springframework.beans.BeanUtils");
             }
-            if (globalConfig.isGenerateInsert()){
+            if (globalConfig.isGenerateInsert()) {
                 importPackages.add("com.baomidou.mybatisplus.core.metadata.TableInfo");
                 importPackages.add("com.baomidou.mybatisplus.core.metadata.TableInfoHelper");
                 importPackages.add("org.springframework.beans.BeanUtils");
             }
-            if (globalConfig.isGenerateUpdate()){
+            if (globalConfig.isGenerateUpdate()) {
                 importPackages.add("org.springframework.beans.BeanUtils");
             }
         }
