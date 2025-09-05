@@ -26,11 +26,11 @@ public class Generator4Mysql {
         String password = "root";
         FastGenerator
                 .create(url, username, password)
-//                .initialize()
+                .initialize()
                 .global(e -> e
 
                                 .author("bootystar")
-                                .dateType(DateType.SQL_PACK)
+                                .dateType(DateType.TIME_PACK)
 //                                .commentDate("yyyy-MM-dd HH:mm:ss")
                                 .commentDate("yyyy-MM-dd")
                                 .enableLombok()
@@ -42,7 +42,7 @@ public class Generator4Mysql {
                                 .enableJavaxApi()
 //                                .enableEasyExcel()
 //                                .enableMybatisPlusEnhancer()
-//                                .disableQuery()
+                                .disableQuery()
 //                                .disableInsert()
 //                                .disableUpdate()
 //                                .disableDelete()
@@ -58,19 +58,19 @@ public class Generator4Mysql {
 
                 )
                 .strategy(e -> e
-                        .extraFieldSuffix("In", "IN")
-                        .extraFieldSuffix("NotIn", "NOT IN")
+//                        .extraFieldSuffix("In", "IN")
+//                        .extraFieldSuffix("NotIn", "NOT IN")
                         .extraFieldSuffix("Like", "LIKE")
-                        .extraFieldSuffix("NotLike", "NOT LIKE")
-                        .extraFieldSuffix("IsNull", "IS NULL")
-                        .extraFieldSuffix("IsNotNull", "IS NOT NULL")
-                        .extraFieldSuffix("Ne", "!=")
-                        .extraFieldSuffix("Lt", "<")
-                        .extraFieldSuffix("Le", "<=")
-                        .extraFieldSuffix("Ge", ">=")
-                        .extraFieldSuffix("Gt", ">")
-                        .extraFieldSuffix("WithBit", "&>")
-                        .extraFieldSuffix("WithoutBit", "&=")
+//                        .extraFieldSuffix("NotLike", "NOT LIKE")
+//                        .extraFieldSuffix("IsNull", "IS NULL")
+//                        .extraFieldSuffix("IsNotNull", "IS NOT NULL")
+//                        .extraFieldSuffix("Ne", "!=")
+//                        .extraFieldSuffix("Lt", "<")
+//                        .extraFieldSuffix("Le", "<=")
+//                        .extraFieldSuffix("Ge", ">=")
+//                        .extraFieldSuffix("Gt", ">")
+//                        .extraFieldSuffix("WithBit", "&>")
+//                        .extraFieldSuffix("WithoutBit", "&=")
 
                 )
                 .entity(e -> e
@@ -114,45 +114,45 @@ public class Generator4Mysql {
 //                                .disableOpenOutputDir()
                                 .entity(f -> f
 
-                                                .disable()
+//                                                .disable()
 //                                        .formatPattern("%sPOJO")
                                 )
                                 .mapper(f -> f
-                                                .subPackage("mapper")
+//                                                .subPackage("mapper")
 //                                .disable()
                                 )
                                 .mapperXml(f -> f
-                                                .subPackage("mapper")
+//                                                .subPackage("mapper")
 //                                .disable()
                                 )
                                 .service(f -> f
-                                                .subPackage("service")
+//                                                .subPackage("service")
                                                 .disable()
 //                                        .disable()
                                 )
                                 .serviceImpl(f -> f
 //                                        .subPackage("service.impl")
-                                                .subPackage("impl")
+//                                                .subPackage("impl")
 //                                        .disable()
                                 )
                                 .controller(f -> f
-                                                .subPackage("controller")
+//                                                .subPackage("controller")
 //                                        .disable()
                                 )
                                 .insertDTO(f -> f
-                                                .subPackage("dto")
+//                                                .subPackage("dto")
 //                                .disable()
                                 )
                                 .updateDTO(f -> f
-                                                .subPackage("dto")
+//                                                .subPackage("dto")
 //                                .disable()
                                 )
                                 .queryDTO(f -> f
-                                                .subPackage("dto")
+//                                                .subPackage("dto")
 //                                .disable()
                                 )
                                 .queryVO(f -> f
-                                                .subPackage("vo")
+//                                                .subPackage("vo")
 //                                .disable()
                                 )
                 )

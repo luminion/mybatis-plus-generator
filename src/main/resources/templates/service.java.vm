@@ -19,7 +19,7 @@ import ${pkg};
  * @since ${date}
  */
 #if(${enhancer})
-public interface ${service} extends ${superServiceClass}<${entity}> implements EnhancedService<${queryVO}> {
+public interface ${service} extends ${superServiceClass}<${entity}>, EnhancedService<${queryVO}> {
 #else
 public interface ${service} extends ${superServiceClass}<${entity}> {
 #end
