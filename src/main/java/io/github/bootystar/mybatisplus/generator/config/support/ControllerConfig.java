@@ -126,6 +126,8 @@ public class ControllerConfig implements ITemplate {
                 .filter(StringUtils::isNotBlank)
                 .collect(Collectors.joining("/"));
         data.put("requestBaseUrl", requestBaseUrl);
+        data.put("crossOrigin", this.crossOrigin);
+        data.put("restful", this.restful);
         data.put("returnMethod", this.returnMethod);
         data.put("pageMethod", this.pageMethod);
         data.put("batchQueryMethod", batchQueryPost ? "@PostMapping" : "@GetMapping");
@@ -136,6 +138,15 @@ public class ControllerConfig implements ITemplate {
             data.put("pageMethodParams", "@PathVariable(\"current\") Long current, @PathVariable(\"size\") Long size");
         } else {
             data.put("pageMethodParams", "Long current, Long size");
+        }
+        String requiredBodyStr = "@RequestBody ";
+        String optionalBodyStr = "@RequestBody(required = false) ";
+        String validatedStr = "@Validated ";
+        if (requestBody) {
+            data.put("requiredBodyStr", requiredBodyStr);
+            if (batchQueryPost){
+                data.put("optionalBodyStr", optionalBodyStr);
+            }
         }
         TreeSet<String> importPackages = new TreeSet<>();
         GlobalConfig globalConfig = tableInfo.getConfigurer().getGlobalConfig();
@@ -189,20 +200,10 @@ public class ControllerConfig implements ITemplate {
                 break;
             }
         }
-        String requiredBodyStr = "@RequestBody ";
-        String optionalBodyStr = "@RequestBody(required = false) ";
-        String validatedStr = "@Validated ";
         data.put("primaryKeyPropertyType", primaryKeyPropertyType);
-        if (requestBody) {
-            data.put("requiredBodyStr", requiredBodyStr);
-            if (batchQueryPost){
-                data.put("optionalBodyStr", optionalBodyStr);
-            }
-        }
         if (globalConfig.isValidated()) {
             data.put("validatedStr", validatedStr);
         }
-
         // 生成方法
         if (globalConfig.isGenerateInsert()) {
             importPackages.add(outputClassClassCanonicalNameMap.get(OutputFile.insertDTO.name()));
@@ -235,7 +236,7 @@ public class ControllerConfig implements ITemplate {
                     importPackages.add(outputClassClassCanonicalNameMap.get(OutputFile.entity.name()));
                 }
                 importPackages.add(queryParamClass.getCanonicalName());
-                if (Map.class.isAssignableFrom(queryParamClass)) {
+                if (Map.class.isAssignableFrom(queryParamClass) && !requestBody) {
                     data.put("mapRequestParam", "@RequestParam ");
                 }
             } else {

@@ -1,5 +1,6 @@
 package io.github.bootystar.mybatisplus.generator.config.support;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import io.github.bootystar.mybatisplus.generator.config.enums.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
 import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
@@ -100,7 +101,7 @@ public class ModelConfig implements ITemplate {
             if (field.isLogicDeleteField()) {
                 continue;
             }
-            if ("INSERT".equals(field.getFill()) || "INSERT_UPDATE".equals(field.getFill())) {
+            if (FieldFill.INSERT.name().equals(field.getFill()) || FieldFill.INSERT_UPDATE.name().equals(field.getFill())) {
                 continue;
             }
             Optional.ofNullable(field.getColumnType().getPkg()).ifPresent(importPackages::add);
@@ -140,7 +141,7 @@ public class ModelConfig implements ITemplate {
             if (field.isLogicDeleteField()) {
                 continue;
             }
-            if ("INSERT".equals(field.getFill()) || "INSERT_UPDATE".equals(field.getFill())) {
+            if (FieldFill.INSERT.name().equals(field.getFill()) || FieldFill.INSERT_UPDATE.name().equals(field.getFill()) || FieldFill.UPDATE.name().equals(field.getFill())) {
                 continue;
             }
             Optional.ofNullable(field.getColumnType().getPkg()).ifPresent(importPackages::add);

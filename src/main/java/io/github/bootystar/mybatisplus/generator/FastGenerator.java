@@ -33,10 +33,6 @@ public class FastGenerator {
         if (tableNames.length > 0) {
             configurer.getStrategyConfig().adapter().addInclude(tableNames);
         }
-        this.execute();
-    }
-
-    private void execute() {
         log.debug("==========================准备生成文件...==========================");
         VelocityTemplateEngine templateEngine = new VelocityTemplateEngine(this.configurer);
         // 模板引擎初始化执行文件输出
