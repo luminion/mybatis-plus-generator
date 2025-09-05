@@ -3,7 +3,6 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.bootystar/mybatis-plus-generator)](https://mvnrepository.com/artifact/io.github.bootystar/mybatis-plus-generator)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
-[English](README_EN.md) | 中文
 
 MyBatis-Plus 代码生成器，提供了比官方代码生成器更丰富的功能和可配置项，旨在提升开发效率，减少重复代码编写。
 
