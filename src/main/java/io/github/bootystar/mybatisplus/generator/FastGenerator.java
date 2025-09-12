@@ -73,7 +73,25 @@ public class FastGenerator {
                         .queryDTO(f -> f.formatPattern("%sQO"))
                         .queryVO(f -> f.formatPattern("%sVO"))
                 )
-                .strategy(e -> e)
+                .strategy(e -> e
+                        .extraFieldSuffix("In", "IN")
+                        .extraFieldSuffix("Like", "LIKE")
+                        .extraFieldSuffix("Le", "<=")
+                        .extraFieldSuffix("Ge", ">=")
+//                        .extraFieldSuffix("In", "IN")
+//                        .extraFieldSuffix("NotIn", "NOT IN")
+//                        .extraFieldSuffix("Like", "LIKE")
+//                        .extraFieldSuffix("NotLike", "NOT LIKE")
+//                        .extraFieldSuffix("IsNull", "IS NULL")
+//                        .extraFieldSuffix("IsNotNull", "IS NOT NULL")
+//                        .extraFieldSuffix("Ne", "!=")
+//                        .extraFieldSuffix("Lt", "<")
+//                        .extraFieldSuffix("Le", "<=")
+//                        .extraFieldSuffix("Ge", ">=")
+//                        .extraFieldSuffix("Gt", ">")
+//                        .extraFieldSuffix("WithBit", "&>")
+//                        .extraFieldSuffix("WithoutBit", "&=")
+                )
                 .injection(e -> e)
                 .entity(e -> e
                         .idType(IdType.ASSIGN_ID)
@@ -95,9 +113,9 @@ public class FastGenerator {
                                 new Column("created_by", FieldFill.INSERT),
                                 new Column("updated_by", FieldFill.INSERT_UPDATE)
                         ))
-                .model(e-> e
-                                .enableQueryDTOExtendsEntity()
-                                .enableQueryVOExtendsEntity()
+                .model(e -> e
+                        .enableQueryDTOExtendsEntity()
+                        .enableQueryVOExtendsEntity()
                 )
                 .mapper(e -> e.
                         mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
