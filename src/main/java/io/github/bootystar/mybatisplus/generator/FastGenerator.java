@@ -63,7 +63,10 @@ public class FastGenerator {
                             return typeRegistry.getColumnType(metaInfo);
                         })
                 )
-                .global(e -> e.dateType(DateType.TIME_PACK))
+                .global(e -> e
+                        .dateType(DateType.TIME_PACK)
+                        .enableLombok()
+                )
                 .output(e -> e
                         .insertDTO(f -> f.formatPattern("%sIO"))
                         .updateDTO(f -> f.formatPattern("%sUO"))
