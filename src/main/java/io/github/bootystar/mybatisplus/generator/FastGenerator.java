@@ -114,8 +114,8 @@ public class FastGenerator {
 //                                new Column("updated_by", FieldFill.INSERT_UPDATE)
                         ))
                 .model(e -> e
-                        .enableQueryDTOExtendsEntity()
-                        .enableQueryVOExtendsEntity()
+//                        .enableQueryDTOExtendsEntity()
+//                        .enableQueryVOExtendsEntity()
                 )
                 .mapper(e -> e.
                         mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)

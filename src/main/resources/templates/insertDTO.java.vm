@@ -36,11 +36,7 @@ import ${pkg};
 #if(${generateImport})
 @ExcelIgnoreUnannotated
 #end
-#if(${extendsQueryDTO})
-public class ${insertDTO} extends ${entity} {
-#else
 public class ${insertDTO} {
-#end
 ## ----------  BEGIN 字段循环遍历  ----------
 #foreach($field in ${table.fields})
 #if(${field.keyFlag})

@@ -46,8 +46,8 @@ public class Generator4Mysql {
 //                                .disableInsert()
 //                                .disableUpdate()
 //                                .disableDelete()
-                                .disableImport()
-                                .disableExport()
+//                                .disableImport()
+//                                .disableExport()
 //                                .disableValidated()
 
                 )
