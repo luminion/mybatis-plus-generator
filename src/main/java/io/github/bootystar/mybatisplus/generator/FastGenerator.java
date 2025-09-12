@@ -100,18 +100,18 @@ public class FastGenerator {
                         .addTableFills(
                                 new Column("create_time", FieldFill.INSERT),
                                 new Column("update_time", FieldFill.INSERT_UPDATE),
-                                new Column("created_time", FieldFill.INSERT),
-                                new Column("updated_time", FieldFill.INSERT_UPDATE),
-                                new Column("create_at", FieldFill.INSERT),
-                                new Column("update_at", FieldFill.INSERT_UPDATE),
-                                new Column("created_at", FieldFill.INSERT),
-                                new Column("updated_at", FieldFill.INSERT_UPDATE),
-                                new Column("creator_id", FieldFill.INSERT),
-                                new Column("updater_id", FieldFill.INSERT_UPDATE),
-                                new Column("create_by", FieldFill.INSERT),
-                                new Column("update_by", FieldFill.INSERT_UPDATE),
-                                new Column("created_by", FieldFill.INSERT),
-                                new Column("updated_by", FieldFill.INSERT_UPDATE)
+//                                new Column("created_time", FieldFill.INSERT),
+//                                new Column("updated_time", FieldFill.INSERT_UPDATE),
+//                                new Column("create_at", FieldFill.INSERT),
+//                                new Column("update_at", FieldFill.INSERT_UPDATE),
+//                                new Column("created_at", FieldFill.INSERT),
+//                                new Column("updated_at", FieldFill.INSERT_UPDATE),
+//                                new Column("creator_id", FieldFill.INSERT),
+//                                new Column("updater_id", FieldFill.INSERT_UPDATE),
+//                                new Column("create_by", FieldFill.INSERT),
+//                                new Column("update_by", FieldFill.INSERT_UPDATE),
+//                                new Column("created_by", FieldFill.INSERT),
+//                                new Column("updated_by", FieldFill.INSERT_UPDATE)
                         ))
                 .model(e -> e
                         .enableQueryDTOExtendsEntity()
