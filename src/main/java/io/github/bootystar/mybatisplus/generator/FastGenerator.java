@@ -99,7 +99,7 @@ public class FastGenerator {
                         .versionColumnName("version")
                         .addTableFills(
                                 new Column("create_time", FieldFill.INSERT),
-                                new Column("update_time", FieldFill.INSERT_UPDATE),
+                                new Column("update_time", FieldFill.INSERT_UPDATE)
 //                                new Column("created_time", FieldFill.INSERT),
 //                                new Column("updated_time", FieldFill.INSERT_UPDATE),
 //                                new Column("create_at", FieldFill.INSERT),
