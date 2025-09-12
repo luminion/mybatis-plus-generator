@@ -144,6 +144,9 @@ public class ModelConfig implements ITemplate {
             if (FieldFill.INSERT.name().equals(field.getFill()) || FieldFill.INSERT_UPDATE.name().equals(field.getFill()) || FieldFill.UPDATE.name().equals(field.getFill())) {
                 continue;
             }
+            if (field.isKeyFlag()){
+                importPackages.add(notNull);
+            }
             Optional.ofNullable(field.getColumnType().getPkg()).ifPresent(importPackages::add);
             boolean notnullFlag = field.isKeyFlag() || field.isVersionField();
             boolean isString = "String".equals(field.getPropertyType());
