@@ -68,16 +68,17 @@ public class FastGenerator {
                         .enableLombok()
                 )
                 .output(e -> e
+                        .disableOpenOutputDir()
                         .insertDTO(f -> f.formatPattern("%sIO"))
                         .updateDTO(f -> f.formatPattern("%sUO"))
                         .queryDTO(f -> f.formatPattern("%sQO"))
                         .queryVO(f -> f.formatPattern("%sVO"))
                 )
                 .strategy(e -> e
-                        .extraFieldSuffix("In", "IN")
-                        .extraFieldSuffix("Like", "LIKE")
-                        .extraFieldSuffix("Le", "<=")
-                        .extraFieldSuffix("Ge", ">=")
+                                .extraFieldSuffix("In", "IN")
+                                .extraFieldSuffix("Like", "LIKE")
+                                .extraFieldSuffix("Le", "<=")
+                                .extraFieldSuffix("Ge", ">=")
 //                        .extraFieldSuffix("In", "IN")
 //                        .extraFieldSuffix("NotIn", "NOT IN")
 //                        .extraFieldSuffix("Like", "LIKE")
@@ -97,9 +98,9 @@ public class FastGenerator {
                         .idType(IdType.ASSIGN_ID)
                         .logicDeleteColumnName("deleted")
                         .versionColumnName("version")
-                        .addTableFills(
-                                new Column("create_time", FieldFill.INSERT),
-                                new Column("update_time", FieldFill.INSERT_UPDATE)
+//                        .addTableFills(
+//                                new Column("create_time", FieldFill.INSERT),
+//                                new Column("update_time", FieldFill.INSERT_UPDATE),
 //                                new Column("created_time", FieldFill.INSERT),
 //                                new Column("updated_time", FieldFill.INSERT_UPDATE),
 //                                new Column("create_at", FieldFill.INSERT),
@@ -112,10 +113,12 @@ public class FastGenerator {
 //                                new Column("update_by", FieldFill.INSERT_UPDATE),
 //                                new Column("created_by", FieldFill.INSERT),
 //                                new Column("updated_by", FieldFill.INSERT_UPDATE)
-                        ))
+//                        )
+                )
                 .model(e -> e
 //                        .enableQueryDTOExtendsEntity()
 //                        .enableQueryVOExtendsEntity()
+                                .addEditExcludeColumns("create_time", "update_time")
                 )
                 .mapper(e -> e.
                         mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
