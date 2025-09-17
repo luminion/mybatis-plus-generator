@@ -3,16 +3,12 @@ package io.github.bootystar.mybatisplus.generator.config.support;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import io.github.bootystar.mybatisplus.generator.config.enums.OutputFile;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField;
-import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.config.po.TableField.MetaInfo;
+import io.github.bootystar.mybatisplus.generator.config.po.TableInfo;
 import io.github.bootystar.mybatisplus.generator.fill.ITemplate;
 import lombok.Getter;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -34,11 +30,25 @@ public class ModelConfig implements ITemplate {
     @Getter
     protected boolean queryVOExtendsEntity;
 
+    /**
+     * 编辑排除字段
+     */
+    @Getter
+    protected Set<String> editExcludeFields = new HashSet<>();
+
+    /**
+     * 编辑排除数据库列
+     */
+    @Getter
+    protected Set<String> editExcludeColumns = new HashSet<>();
+
     @Override
     public Map<String, Object> renderData(TableInfo tableInfo) {
         Map<String, Object> data = ITemplate.super.renderData(tableInfo);
         data.put("queryDTOExtendsEntity", this.queryDTOExtendsEntity);
         data.put("queryVOExtendsEntity", this.queryVOExtendsEntity);
+        data.put("editExcludeFields", this.editExcludeFields);
+        data.put("editExcludeColumns", this.editExcludeColumns);
 
         Set<String> insertDTOImportPackages = this.insertDTOImportPackages(tableInfo);
         List<String> insertDTOImportPackages4Framework = insertDTOImportPackages.stream().filter(pkg -> !pkg.startsWith("java")).collect(Collectors.toList());
@@ -242,6 +252,26 @@ public class ModelConfig implements ITemplate {
          */
         public Adapter enableQueryVOExtendsEntity() {
             this.config.queryVOExtendsEntity = true;
+            return this;
+        }
+
+        /**
+         * 添加编辑排除字段
+         *
+         * @param fields 字段
+         */
+        public Adapter addEditExcludeFields(String... fields) {
+            this.config.editExcludeFields.addAll(Arrays.asList(fields));
+            return this;
+        }
+
+        /**
+         * 添加编辑排除列
+         *
+         * @param columns 列
+         */
+        public Adapter addEditExcludeColumns(String... columns) {
+            this.config.editExcludeColumns.addAll(Arrays.asList(columns));
             return this;
         }
         

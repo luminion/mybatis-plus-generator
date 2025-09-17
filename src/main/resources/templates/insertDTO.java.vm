@@ -43,6 +43,8 @@ public class ${insertDTO} {
 #elseif(${field.versionField})
 #elseif(${field.logicDeleteField})
 #elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
+#elseif(${editExcludeFields.contains(${field.propertyName})})
+#elseif(${editExcludeColumns.contains(${field.columnName})})
 #else
 
     #if("$!field.comment" != "")
@@ -81,6 +83,8 @@ public class ${insertDTO} {
 #elseif(${field.versionField})
 #elseif(${field.logicDeleteField})
 #elseif(${field.fill} && (${field.fill}=="INSERT" || ${field.fill}=="INSERT_UPDATE"))
+#elseif(${editExcludeFields.contains(${field.propertyName})})
+#elseif(${editExcludeColumns.contains(${field.columnName})})
 #else
     #if(${field.propertyType.equals("boolean")})
         #set($getprefix="is")

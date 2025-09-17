@@ -38,6 +38,8 @@ public class ${updateDTO} {
 #foreach($field in ${table.fields})
 #if(${field.logicDeleteField})
 #elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE" || ${field.fill}=="INSERT"))
+#elseif(${editExcludeFields.contains(${field.propertyName})})
+#elseif(${editExcludeColumns.contains(${field.columnName})})
 #else
 
     #if("$!field.comment" != "")
@@ -76,6 +78,8 @@ public class ${updateDTO} {
 #foreach($field in ${table.fields})
 #if(${field.logicDeleteField})
 #elseif(${field.fill} && (${field.fill}=="UPDATE" || ${field.fill}=="INSERT_UPDATE" || ${field.fill}=="INSERT"))
+#elseif(${editExcludeFields.contains(${field.propertyName})})
+#elseif(${editExcludeColumns.contains(${field.columnName})})
 #else
     #if(${field.propertyType.equals("boolean")})
         #set($getprefix="is")
