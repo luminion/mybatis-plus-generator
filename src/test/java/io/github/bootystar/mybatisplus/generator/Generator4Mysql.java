@@ -98,7 +98,7 @@ public class Generator4Mysql {
 //                        .disableHyphenStyle()
                         .baseUrl("/api")
                         .enableCrossOrigin()
-//                        .disableBatchQueryPost()
+                        .disableBatchQueryPost()
                         .enableRestful()
 //                        .disablePathVariable()
 //                        .disableRequestBody()

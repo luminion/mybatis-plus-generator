@@ -142,7 +142,7 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
         List<${entity}> entityList = dataList.stream().map(insertDTO -> {
 //            ${insertDTO} dto = (${insertDTO}) insertDTO;
             ${entity} entity = new ${entity}();
-            BeanUtils.copyProperties(e, entity);
+            BeanUtils.copyProperties(insertDTO, entity);
             return entity;
         }).collect(Collectors.toList());
         super.saveBatch(entityList);
