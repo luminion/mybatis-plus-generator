@@ -235,6 +235,7 @@ public class TableInfo {
                     extraField.setPropertyName(field.getPropertyName() + suffix);
                     extraField.setCapitalName(field.getCapitalName() + suffix);
                     extraField.setColumnName(field.getColumnName());
+                    extraField.setComment(field.getComment());
                     extraFields.add(extraField.refactor());
                 }
             }

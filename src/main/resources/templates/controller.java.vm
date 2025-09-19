@@ -61,9 +61,9 @@ public class ${controller} {
     #else
     /**
      * 新增
-##     *
-##     * @param param 新增入参对象
-##     * @return 新增后的数据id
+     *
+     * @param param 新增入参对象
+     * @return 新增后的数据id
      */
     #end
     #if(${restful})
@@ -87,9 +87,9 @@ public class ${controller} {
     #else
     /**
      * 修改
-##     *
-##     * @param param 修改入参对象
-##     * @return 是否成功
+     *
+     * @param param 修改入参对象
+     * @return 是否成功
      */
     #end
     #if(${restful})
@@ -113,9 +113,9 @@ public class ${controller} {
     #else
     /**
      * 删除
-##     *
-##     * @param id 主键id
-##     * @return 是否成功
+     *
+     * @param id 主键id
+     * @return 是否成功
      */
     #end
     #if(${restful})
@@ -139,9 +139,9 @@ public class ${controller} {
     #else
     /**
      * 根据id查询详情
-##     *
-##     * @param id 主键id
-##     * @return 查询结果
+     *
+     * @param id 主键id
+     * @return 查询结果
      */
     #end
     #if(${restful})
@@ -157,24 +157,46 @@ public class ${controller} {
     }
 
     #if(${springdoc})
-    @Operation(summary = "列表")
+    @Operation(summary = "列表查询")
     #elseif(${swagger})
-    @ApiOperation(value = "列表")
+    @ApiOperation(value = "列表查询")
     #else
     /**
-     * 列表
-##     *
-##     * @param param 查询条件
-##     * @return 查询结果
+     * 列表查询
+     *
+     * @param param 查询条件
+     * @return 查询结果
      */
     #end
     ${batchQueryMethod}("/list")
     #if(!${restControllerStyle})
     @ResponseBody
     #end
-    public ${returnMethod.returnGenericTypeStr("List<${queryVO}>")} selectList($!{mapRequestParam}$!{optionalBodyStr}${controllerQueryParam} param) {
+    public ${returnMethod.returnGenericTypeStr("List<${queryVO}>")} selectList($!{optionalBodyStr}${queryDTO} param) {
         return ${returnMethod.invokeMethodStr("baseService.voList(param)")};
     }
+#if(${enhancer})
+
+    #if(${springdoc})
+    @Operation(summary = "列表查询-动态条件")
+    #elseif(${swagger})
+    @ApiOperation(value = "列表查询-动态条件")
+    #else
+    /**
+     * 列表查询-动态条件
+     *
+     * @param sqlHelper 条件构造器
+     * @return 查询结果
+     */
+    #end
+    @PostMapping("/dynamic/list")
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    public ${returnMethod.returnGenericTypeStr("List<${queryVO}>")} dynamicList($!{requiredBodyStr}SqlHelper<${entity}> sqlHelper) {
+        return ${returnMethod.invokeMethodStr("baseService.voList(sqlHelper)")};
+    }
+#end
     
     #if(${springdoc})
     @Operation(summary = "分页查询")
@@ -183,30 +205,55 @@ public class ${controller} {
     #else
     /**
      * 分页查询
-##     *
-##     * @param param 查询条件
-##     * @param current 页码
-##     * @param size 每页大小
-##     * @return 查询结果
+     *
+     * @param param 查询条件
+     * @param current 页码
+     * @param size 每页大小(-1为全部)
+     * @return 查询结果
      */
     #end
     ${batchQueryMethod}("/page$!{pagePathParams}")
     #if(!${restControllerStyle})
     @ResponseBody
     #end
-    public ${returnMethod.returnGenericTypeStr(${pageReturnType})} selectPage($!{mapRequestParam}$!{optionalBodyStr}${controllerQueryParam} param, $!{pageMethodParams}) {
+##    public ${returnMethod.returnGenericTypeStr(${pageReturnType})} selectPage($!{mapRequestParam}$!{optionalBodyStr}${controllerQueryParam} param, $!{pageMethodParams}) {
+    public ${returnMethod.returnGenericTypeStr(${pageReturnType})} selectPage($!{optionalBodyStr}${queryDTO} param, $!{pageMethodParams}) {
         return ${returnMethod.invokeMethodStr(${pageMethod.invokeMethodStr("baseService.voPage(param, current, size)")})};
     }
+#if(${enhancer})
+
+    #if(${springdoc})
+    @Operation(summary = "分页查询-动态条件")
+    #elseif(${swagger})
+    @ApiOperation(value = "分页查询-动态条件")
+    #else
+    /**
+     * 分页查询-动态条件
+     *
+     * @param sqlHelper 条件构造器
+     * @param current 页码
+     * @param size 每页大小(-1为全部)
+     * @return 查询结果
+     */
+    #end
+    @PostMapping("/dynamic/page/$!{pagePathParams}")
+    #if(!${restControllerStyle})
+    @ResponseBody
+    #end
+    public ${returnMethod.returnGenericTypeStr(${pageReturnType})} dynamicPage($!{requiredBodyStr}SqlHelper<${entity}> sqlHelper, $!{pageMethodParams}) {
+        return ${returnMethod.invokeMethodStr(${pageMethod.invokeMethodStr("baseService.voPage(sqlHelper, current, size)")})};
+    }
+#end
 #end
 #if(${generateImport})
 
     #if(${springdoc})
-    @Operation(summary = "excel导入模板")
+    @Operation(summary = "下载excel导入模板")
     #elseif(${swagger})
-    @ApiOperation(value = "excel导入模板")
+    @ApiOperation(value = "下载excel导入模板")
     #else
     /**
-     * excel导入模板
+     * 下载excel导入模板
      */
     #end
     @GetMapping("/excel/template")
@@ -224,9 +271,9 @@ public class ${controller} {
     #else
     /**
      * excel文件导入
-##     *
-##     * @param excel excel文件
-##     * @return 导入条数
+     *
+     * @param excel excel文件
+     * @return 导入条数
      */
     #end
     @PostMapping("/excel/import")
@@ -247,19 +294,42 @@ public class ${controller} {
     #else
     /**
      * excel文件导出
-##     * 
-##     * @param param 查询条件
-##     * @param current 页码
-##     * @param size 每页大小(-1为全部)
+     * 
+     * @param param 查询条件
+     * @param current 页码
+     * @param size 每页大小(-1为全部)
      */
     #end
     ${batchQueryMethod}("/excel/export$!{pagePathParams}")
-    public void excelExport($!{mapRequestParam}$!{optionalBodyStr}${controllerQueryParam} param, ${pageMethodParams}, HttpServletResponse response) throws IOException {
+    public void excelExport($!{optionalBodyStr}${queryDTO} param, ${pageMethodParams}, HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis() + ".xlsx");
         baseService.excelExport(param, response.getOutputStream(), ${queryVO}.class, current, size);
     }
+#if(${enhancer})
+    
+    #if(${springdoc})
+    @Operation(summary = "excel文件导出-动态条件")
+    #elseif(${swagger})
+    @ApiOperation(value = "excel文件导出-动态条件")
+    #else
+    /**
+     * excel文件导出-动态条件
+     * 
+     * @param sqlHelper 条件构造器
+     * @param current 页码
+     * @param size 每页大小(-1为全部)+
+     */
+    #end
+    @PostMapping("/dynamic/excel/export$!{pagePathParams}")
+    public void excelExport($!{requiredBodyStr}SqlHelper<${entity}> sqlHelper, ${pageMethodParams}, HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis() + ".xlsx");
+        baseService.excelExport(sqlHelper, response.getOutputStream(), ${queryVO}.class, current, size);
+    }
+#end
 #end
 }
 

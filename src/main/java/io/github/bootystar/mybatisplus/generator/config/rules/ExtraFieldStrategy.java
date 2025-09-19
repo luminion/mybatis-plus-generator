@@ -79,11 +79,11 @@ public class ExtraFieldStrategy implements BiFunction<String, TableField, Boolea
         }
         sqlOperator = sqlOperator.toUpperCase();
         String propertyType = tableField.getPropertyType();
-//        int length = tableField.getMetaInfo().getLength();
-//        boolean isShortString = isString && length > 0 && length <= 64;
         boolean isKeyFlag = tableField.isKeyFlag();
         boolean isNullable = tableField.getMetaInfo().isNullable();
         boolean isString = "String".equals(propertyType);
+//        int length = tableField.getMetaInfo().getLength();
+//        boolean isShortString = isString && length > 0 && length <= 32;
         boolean isIdColumn = tableField.getColumnName().endsWith("id");
 
         // 大小比较
@@ -122,6 +122,15 @@ public class ExtraFieldStrategy implements BiFunction<String, TableField, Boolea
         ) {
             return isNullable
                     && !isKeyFlag
+                    ;
+        }
+        
+        // 比特位
+        if (sqlOperator.contains("&")){
+            return "Byte".equals(propertyType)
+                    || "Short".equals(propertyType)
+                    || "Integer".equals(propertyType)
+                    || "Long".equals(propertyType)
                     ;
         }
         return true;

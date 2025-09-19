@@ -40,6 +40,7 @@ public class Generator4Mysql {
 //                                .enableSwagger()
 //                                .enableSpringdoc()
                                 .enableJavaxApi()
+                                .enableMybatisPlusEnhancer()
 //                                .enableEasyExcel()
 //                                .enableMybatisPlusEnhancer()
 //                                .disableQuery()

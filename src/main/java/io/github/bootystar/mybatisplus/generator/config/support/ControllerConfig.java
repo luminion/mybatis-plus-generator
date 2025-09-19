@@ -228,23 +228,12 @@ public class ControllerConfig implements ITemplate {
                 importPackages.add(primaryKeyPropertyClass);
             }
             importPackages.add("java.util.List");
-            if (this.queryParam.isClassReady()) {
-                Class<?> queryParamClass = queryParam.getClazz();
-                String entityName = outputClassSimpleNameMap.get(OutputFile.entity.name());
-                data.put("controllerQueryParam", queryParam.returnGenericTypeStr(entityName));
-                if (queryParam.getClassGenericTypeCount() == 1) {
-                    importPackages.add(outputClassClassCanonicalNameMap.get(OutputFile.entity.name()));
-                }
-                importPackages.add(queryParamClass.getCanonicalName());
-                if (Map.class.isAssignableFrom(queryParamClass) && !requestBody) {
-                    data.put("mapRequestParam", "@RequestParam ");
-                }
-            } else {
-                data.put("controllerQueryParam", outputClassSimpleNameMap.get(OutputFile.queryDTO.name()));
-                importPackages.add(outputClassClassCanonicalNameMap.get(OutputFile.queryDTO.name()));
-            }
+            importPackages.add(outputClassClassCanonicalNameMap.get(OutputFile.queryDTO.name()));
             importPackages.add(outputClassClassCanonicalNameMap.get(OutputFile.queryVO.name()));
-
+            if (globalConfig.isEnhancer()){
+                importPackages.add(outputClassClassCanonicalNameMap.get(OutputFile.entity.name()));
+                importPackages.add("io.github.bootystar.mybatisplus.enhancer.query.helper.SqlHelper");
+            }
             if (pageMethod.isMethodReady()) {
                 importPackages.add(pageMethod.getClassCanonicalName());
                 data.put("pageReturnType", pageMethod.returnGenericTypeStr(outputClassSimpleNameMap.get(OutputFile.queryVO.name())));
@@ -252,9 +241,6 @@ public class ControllerConfig implements ITemplate {
                 importPackages.add("com.baomidou.mybatisplus.core.metadata.IPage");
                 data.put("pageReturnType", String.format("IPage<%s>", outputClassSimpleNameMap.get(OutputFile.queryVO.name())));
             }
-//            if (batchQueryPost) {
-//                data.put("optionalBodyStr", optionalBodyStr);
-//            }
         }
         String responseClass = globalConfig.resolveJakartaClassCanonicalName("servlet.http.HttpServletResponse");
         if (globalConfig.isGenerateImport()) {
