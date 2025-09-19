@@ -14,12 +14,13 @@ import ${pkg};
 
 /**
  * $!{table.comment} 前端控制器
+ *
+ * @author ${author}
 #if(${commentLink})
  * @see ${class.entity}
  * @see ${class.mapper}
  * @see ${class.serviceImpl}
 #end
- * @author ${author}
  * @since ${date}
  */
 #if(${crossOrigin})
@@ -62,7 +63,7 @@ public class ${controller} {
     /**
      * 新增
      *
-     * @param param 新增入参对象
+     * @param insertDTO 新增入参对象
      * @return 新增后的数据id
      */
     #end
@@ -74,8 +75,8 @@ public class ${controller} {
     #if(!${restControllerStyle})
     @ResponseBody
     #end
-    public ${returnMethod.returnGenericTypeStr("Object")} insert($!{requiredBodyStr}$!{validatedStr}${insertDTO} param) {
-        return ${returnMethod.invokeMethodStr("baseService.insertByDTO(param)")};
+    public ${returnMethod.returnGenericTypeStr("Object")} insert($!{requiredBodyStr}$!{validatedStr}${insertDTO} insertDTO) {
+        return ${returnMethod.invokeMethodStr("baseService.insertByDTO(insertDTO)")};
     }
 #end
 #if(${generateUpdate})
@@ -88,7 +89,7 @@ public class ${controller} {
     /**
      * 修改
      *
-     * @param param 修改入参对象
+     * @param updateDTO 修改入参对象
      * @return 是否成功
      */
     #end
@@ -100,8 +101,8 @@ public class ${controller} {
     #if(!${restControllerStyle})
     @ResponseBody
     #end
-    public ${returnMethod.returnGenericTypeStr("Boolean")} update($!{requiredBodyStr}$!{validatedStr}${updateDTO} param) {
-        return ${returnMethod.invokeMethodStr("baseService.updateByDTO(param)")};
+    public ${returnMethod.returnGenericTypeStr("Boolean")} update($!{requiredBodyStr}$!{validatedStr}${updateDTO} updateDTO) {
+        return ${returnMethod.invokeMethodStr("baseService.updateByDTO(updateDTO)")};
     }
 #end
 #if(${generateDelete})
@@ -164,7 +165,7 @@ public class ${controller} {
     /**
      * 列表查询
      *
-     * @param param 查询条件
+     * @param queryDTO 查询条件
      * @return 查询结果
      */
     #end
@@ -172,8 +173,8 @@ public class ${controller} {
     #if(!${restControllerStyle})
     @ResponseBody
     #end
-    public ${returnMethod.returnGenericTypeStr("List<${queryVO}>")} selectList($!{optionalBodyStr}${queryDTO} param) {
-        return ${returnMethod.invokeMethodStr("baseService.voList(param)")};
+    public ${returnMethod.returnGenericTypeStr("List<${queryVO}>")} selectList($!{optionalBodyStr}${queryDTO} queryDTO) {
+        return ${returnMethod.invokeMethodStr("baseService.voList(queryDTO)")};
     }
 #if(${enhancer})
 
@@ -206,7 +207,7 @@ public class ${controller} {
     /**
      * 分页查询
      *
-     * @param param 查询条件
+     * @param queryDTO 查询条件
      * @param current 页码
      * @param size 每页大小(-1为全部)
      * @return 查询结果
@@ -216,9 +217,9 @@ public class ${controller} {
     #if(!${restControllerStyle})
     @ResponseBody
     #end
-##    public ${returnMethod.returnGenericTypeStr(${pageReturnType})} selectPage($!{mapRequestParam}$!{optionalBodyStr}${controllerQueryParam} param, $!{pageMethodParams}) {
-    public ${returnMethod.returnGenericTypeStr(${pageReturnType})} selectPage($!{optionalBodyStr}${queryDTO} param, $!{pageMethodParams}) {
-        return ${returnMethod.invokeMethodStr(${pageMethod.invokeMethodStr("baseService.voPage(param, current, size)")})};
+##    public ${returnMethod.returnGenericTypeStr(${pageReturnType})} selectPage($!{mapRequestParam}$!{optionalBodyStr}${controllerQueryParam} queryDTO, $!{pageMethodParams}) {
+    public ${returnMethod.returnGenericTypeStr(${pageReturnType})} selectPage($!{optionalBodyStr}${queryDTO} queryDTO, $!{pageMethodParams}) {
+        return ${returnMethod.invokeMethodStr(${pageMethod.invokeMethodStr("baseService.voPage(queryDTO, current, size)")})};
     }
 #if(${enhancer})
 
@@ -295,17 +296,17 @@ public class ${controller} {
     /**
      * excel文件导出
      * 
-     * @param param 查询条件
+     * @param queryDTO 查询条件
      * @param current 页码
      * @param size 每页大小(-1为全部)
      */
     #end
     ${batchQueryMethod}("/excel/export$!{pagePathParams}")
-    public void excelExport($!{optionalBodyStr}${queryDTO} param, ${pageMethodParams}, HttpServletResponse response) throws IOException {
+    public void excelExport($!{optionalBodyStr}${queryDTO} queryDTO, ${pageMethodParams}, HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("Content-Disposition", "attachment;filename=" + System.currentTimeMillis() + ".xlsx");
-        baseService.excelExport(param, response.getOutputStream(), ${queryVO}.class, current, size);
+        baseService.excelExport(queryDTO, response.getOutputStream(), ${queryVO}.class, current, size);
     }
 #if(${enhancer})
     

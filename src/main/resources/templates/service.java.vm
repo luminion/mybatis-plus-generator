@@ -26,23 +26,23 @@ public interface ${service} extends ${superServiceClass}<${entity}> {
 #if(!${enhancer})
     #if(${generateInsert})
 
-    Object insertByDTO(Object param);
+    Object insertByDTO(Object insertDTO);
     #end
     #if(${generateUpdate})
 
-    boolean updateByDTO(Object param);
+    boolean updateByDTO(Object updateDTO);
     #end
     #if(${generateQuery})
 
     ${queryVO} voById(Serializable id);
 
-    List<${queryVO}> voList(Object param);
+    List<${queryVO}> voList(Object queryDTO);
 
-    IPage<${queryVO}> voPage(Object param, Long current, Long size);
+    IPage<${queryVO}> voPage(Object queryDTO, Long current, Long size);
     #end
     #if(${generateExport})
 
-    void excelExport(Object param, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields);
+    void excelExport(Object queryDTO, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields);
     #end
     #if(${generateImport})
 

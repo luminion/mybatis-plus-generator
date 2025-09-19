@@ -71,9 +71,9 @@ public class FastGenerator {
                 )
                 .output(e -> e
                         .disableOpenOutputDir()
-                        .insertDTO(f -> f.formatPattern("%sIO"))
-                        .updateDTO(f -> f.formatPattern("%sUO"))
-                        .queryDTO(f -> f.formatPattern("%sQO"))
+//                        .insertDTO(f -> f.formatPattern("%sIO"))
+//                        .updateDTO(f -> f.formatPattern("%sUO"))
+//                        .queryDTO(f -> f.formatPattern("%sQO"))
                         .queryVO(f -> f.formatPattern("%sVO"))
                 )
                 .strategy(e -> e

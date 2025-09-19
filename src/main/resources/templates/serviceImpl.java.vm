@@ -31,13 +31,13 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
     #if(${generate.service} || ${enhancer})
     @Override
     #end
-    public Object insertByDTO(Object param) {
-//        ${insertDTO} dto = (${insertDTO}) param;
+    public Object insertByDTO(Object insertDTO) {
+//        ${insertDTO} dto = (${insertDTO}) insertDTO;
         #if(${enhancer})
-        return ${enhanceMethod}.insertByDTO(param);    
+        return ${enhanceMethod}.insertByDTO(insertDTO);    
         #else
         ${entity} entity = new ${entity}();
-        BeanUtils.copyProperties(param, entity);
+        BeanUtils.copyProperties(insertDTO, entity);
         super.save(entity);
         TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
         return tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
@@ -49,13 +49,13 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
     #if(${generate.service} || ${enhancer})
     @Override
     #end
-    public boolean updateByDTO(Object param) {
-//        ${updateDTO} dto = (${updateDTO}) param;
+    public boolean updateByDTO(Object updateDTO) {
+//        ${updateDTO} dto = (${updateDTO}) updateDTO;
         #if(${enhancer})
-        return ${enhanceMethod}.updateByDTO(param);
+        return ${enhanceMethod}.updateByDTO(updateDTO);
         #else
         ${entity} entity = new ${entity}();
-        BeanUtils.copyProperties(param, entity);
+        BeanUtils.copyProperties(updateDTO, entity);
         return super.updateById(entity);
         #end
     }
@@ -80,8 +80,12 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
         map.put(TableInfoHelper.getTableInfo(getEntityClass()).getKeyProperty(), id);
         IPage<${queryVO}> page = new Page<>(1L, 1L);
         List<${queryVO}> vs = getBaseMapper().voQuery(map, page);
-        if (vs == null || vs.isEmpty()) return null;
-        if (page.getTotal() > 1) throw new TooManyResultsException("Expected one result (or null) to be returned by id, but found:" + page.getTotal());
+        if (vs == null || vs.isEmpty()) {
+            return null;
+        }
+        if (page.getTotal() > 1) {
+            throw new TooManyResultsException("Expected one result (or null) , but found:" + page.getTotal());
+        }
         return vs.get(0);
         #end
     }
@@ -89,25 +93,25 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
     #if(${generate.service} || ${enhancer})
     @Override
     #end
-    public List<${queryVO}> voList(Object param) {
+    public List<${queryVO}> voList(Object queryDTO) {
         #if(${enhancer})
-        return ${enhanceMethod}.voList(param);
+        return ${enhanceMethod}.voList(queryDTO);
         #else
-        return getBaseMapper().voQuery(param, null);
+        return getBaseMapper().voQuery(queryDTO, null);
         #end
     }
 
     #if(${generate.service} || ${enhancer})
     @Override
     #end
-    public IPage<${queryVO}> voPage(Object param, Long current, Long size) {
+    public IPage<${queryVO}> voPage(Object queryDTO, Long current, Long size) {
         #if(${enhancer})
-        return ${enhanceMethod}.voPage(param, current, size);
+        return ${enhanceMethod}.voPage(queryDTO, current, size);
         #else
         if (current == null || current < 1) current = 1L;
         if (size == null) size = 10L;
         Page<${queryVO}> page = new Page<>(current, size);
-        List<${queryVO}> voList = getBaseMapper().voQuery(param, page);
+        List<${queryVO}> voList = getBaseMapper().voQuery(queryDTO, page);
         page.setRecords(voList);
         return page;
         #end
@@ -135,8 +139,8 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
         return ${enhanceMethod}.excelImport(is, clazz);
         #else
         List<?> dataList = ${excelApiClass}.read(is).head(clazz).sheet().doReadSync();
-        List<${entity}> entityList = dataList.stream().map(e -> {
-//            ${insertDTO} dto = (${insertDTO}) e;
+        List<${entity}> entityList = dataList.stream().map(insertDTO -> {
+//            ${insertDTO} dto = (${insertDTO}) insertDTO;
             ${entity} entity = new ${entity}();
             BeanUtils.copyProperties(e, entity);
             return entity;
@@ -151,12 +155,16 @@ public class ${serviceImpl} extends ${superServiceImplClass}<${mapper}, ${entity
     #if(${generate.service} || ${enhancer})
     @Override
     #end
-    public void excelExport(Object param, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
+    public void excelExport(Object queryDTO, OutputStream os, Class<?> clazz, Long current, Long size, String... includeFields) {
         #if(${enhancer})
-        ${enhanceMethod}.excelExport(param, os, clazz, current, size, includeFields);
+        ${enhanceMethod}.excelExport(queryDTO, os, clazz, current, size, includeFields);
         #else
-        List<${queryVO}> voList = this.voPage(param, current, size).getRecords();
-        ${excelApiClass}.write(os, clazz).includeColumnFieldNames(Arrays.asList(includeFields)).registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()).sheet().doWrite(voList);
+        List<${queryVO}> voList = this.voPage(queryDTO, current, size).getRecords();
+        ${excelApiClass}.write(os, clazz)
+                .includeColumnFieldNames(Arrays.asList(includeFields))
+                .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
+                .sheet()
+                .doWrite(voList);
         #end
     }
 #end

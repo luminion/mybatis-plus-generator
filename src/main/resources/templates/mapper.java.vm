@@ -16,6 +16,9 @@ import ${pkg};
  * $!{table.comment} Mapper接口
  *
  * @author ${author}
+#if(${commentLink})
+ * @see ${class.queryDTO}
+#end
  * @since ${date}
  */
 #if(${mapperAnnotationClass})
@@ -31,16 +34,16 @@ public interface ${mapper} extends ${superMapperClass}<${entity}> {
     #if(${enhancer})
     @Override
     #end
-    List<${queryVO}> voQueryByXml(Object param, IPage<${queryVO}> page);
+    List<${queryVO}> voQueryByXml(Object queryDTO, IPage<${queryVO}> page);
 
     #if(${enhancer})
     @Override
     #end
-    default List<${queryVO}> voQuery(Object param, IPage<${queryVO}> page) {
+    default List<${queryVO}> voQuery(Object queryDTO, IPage<${queryVO}> page) {
         #if(${enhancer})
-        return EnhancedMapper.super.voQuery(param, page);
+        return EnhancedMapper.super.voQuery(queryDTO, page);
         #else
-        return this.voQueryByXml(param, page);      
+        return this.voQueryByXml(queryDTO, page);      
         #end
     }
 #end

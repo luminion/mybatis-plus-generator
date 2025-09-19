@@ -128,7 +128,7 @@ public class Generator4Mysql {
                                 )
                                 .service(f -> f
 //                                                .subPackage("service")
-                                                .disable()
+//                                                .disable()
 //                                        .disable()
                                 )
                                 .serviceImpl(f -> f

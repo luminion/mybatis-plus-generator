@@ -16,12 +16,12 @@ import ${pkg};
  * $!{table.comment}-VO
  *
  * @author ${author}
- * @since ${date}
 #if(${commentLink})
  * @see ${class.entity}
  * @see ${class.mapper}
  * @see ${class.serviceImpl}
 #end
+ * @since ${date}
  */
 #if(${lombok})
 @Data
