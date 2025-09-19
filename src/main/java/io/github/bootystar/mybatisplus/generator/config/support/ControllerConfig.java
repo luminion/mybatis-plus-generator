@@ -94,6 +94,11 @@ public class ControllerConfig implements ITemplate {
     protected boolean batchQueryPost = true;
 
     /**
+     * 批量查询body参数是否必填
+     */
+    protected boolean batchQueryRequiredBody = true;
+
+    /**
      * 返回结果方法
      */
     protected MethodPayload returnMethod = new MethodPayload();
@@ -106,6 +111,7 @@ public class ControllerConfig implements ITemplate {
     /**
      * 指定查询的参数
      */
+    @Deprecated
     protected ClassPayload queryParam = new ClassPayload();
 
     @Override
@@ -140,7 +146,7 @@ public class ControllerConfig implements ITemplate {
             data.put("pageMethodParams", "Long current, Long size");
         }
         String requiredBodyStr = "@RequestBody ";
-        String optionalBodyStr = "@RequestBody(required = false) ";
+        String optionalBodyStr = batchQueryRequiredBody ? "@RequestBody " : "@RequestBody(required = false) ";
         String validatedStr = "@Validated ";
         if (requestBody) {
             data.put("requiredBodyStr", requiredBodyStr);
@@ -358,6 +364,16 @@ public class ControllerConfig implements ITemplate {
         }
 
         /**
+         * 批量查询body参数是否必填
+         *
+         * @return this
+         */
+        public Adapter disableBatchQueryRequiredBody() {
+            this.config.batchQueryRequiredBody = false;
+            return this;
+        }
+
+        /**
          * 增删查改使用restful风格
          *
          * @return this
@@ -414,8 +430,9 @@ public class ControllerConfig implements ITemplate {
          *
          * @return this
          */
+        @Deprecated
         public Adapter queryParam(Class<?> queryDTO) {
-            this.config.queryParam = new io.github.bootystar.mybatisplus.generator.config.po.ClassPayload(queryDTO);
+//            this.config.queryParam = new io.github.bootystar.mybatisplus.generator.config.po.ClassPayload(queryDTO);
             return this;
         }
     }

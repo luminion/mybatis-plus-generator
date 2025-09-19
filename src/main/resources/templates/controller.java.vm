@@ -319,7 +319,7 @@ public class ${controller} {
      * 
      * @param sqlHelper 条件构造器
      * @param current 页码
-     * @param size 每页大小(-1为全部)+
+     * @param size 每页大小(-1为全部)
      */
     #end
     @PostMapping("/dynamic/excel/export$!{pagePathParams}")

@@ -105,7 +105,7 @@ public class Generator4Mysql {
                         .returnMethod(R::of)
                         .pageMethod(P::of)
 //                        .queryParam(Map.class)
-                        .queryParam(SqlHelper.class)
+//                        .queryParam(SqlHelper.class)
                 )
                 .output(e -> e
                                 .outputDir(System.getProperty("user.dir") + "/src/test/java")
